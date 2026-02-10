@@ -1,0 +1,262 @@
+# Tryambakam Noesis — Brandmint Config
+# Working example for the V2 "Bioluminescent Architecture" brand identity.
+
+# ─── EXECUTION CONTEXT (from ARC v2 orchestrator) ───────
+execution_context:
+  budget_tier: "standard"
+  launch_channel: "kickstarter"
+  maturity_stage: "pre-launch"
+  depth_level: "focused"
+  tone: "conversion-focused"
+  quality_bar: "standard"
+
+brand:
+  name: "Tryambakam Noesis"
+  tagline: "Train you to author your own meaning"
+  archetype: "The Seasoned Cartographer"
+  voice: "Grounded, direct, respectful-challenging"
+  domain: "Philosophical Practice / Meaning Architecture"
+
+theme:
+  name: "Bioluminescent Architecture"
+  description: "Tech-Solarpunk-Art-Nouveau-Art-Deco fusion. Living systems rendered in architectural glass and bronze."
+  metaphor: "An Art Nouveau conservatory where living systems grow through engineered structures"
+  mood_keywords:
+    - bioluminescent
+    - architectural
+    - solarpunk
+    - art-nouveau
+    - art-deco
+    - living-systems
+    - phosphorescent
+    - organic-geometry
+    - regenerative
+    - precision-engineered
+
+palette:
+  primary:
+    name: "Void Teal"
+    hex: "#0A1628"
+    role: "60% backgrounds, anchoring surfaces"
+  secondary:
+    name: "Phosphor Cream"
+    hex: "#F0EDE3"
+    role: "30% text, light surfaces, contrast"
+  accent:
+    name: "Solar Bronze"
+    hex: "#C4873B"
+    role: "10% CTAs, highlights, sigils"
+  support:
+    name: "Titanium"
+    hex: "#8A9BA8"
+    role: "Borders, metadata, secondary text"
+  signal:
+    name: "Chlorophyll"
+    hex: "#4A7C59"
+    role: "Growth indicators, alive elements"
+
+typography:
+  header:
+    font: "Exo 2"
+    weights: ["Light", "Regular", "SemiBold"]
+    display_weight: "Light"
+    emphasis_weight: "SemiBold"
+    case: "all caps"
+  body:
+    font: "Space Grotesk"
+    weights: ["Regular", "Medium"]
+  data:
+    font: "Fira Code"
+    weights: ["Regular"]
+
+materials:
+  - brushed titanium
+  - phosphorescent glass
+  - living moss on concrete
+  - hammered bronze
+  - translucent mycelium panels
+  - oxidized copper
+  - volcanic basalt
+  - luminescent resin
+  - carbon-fiber mesh
+  - hand-pressed botanical paper
+  - smoked crystal
+  - polished terrazzo
+  - bio-resin
+  - stained glass
+  - copper wire
+
+photography:
+  style: "High contrast + accent lighting, reflective surfaces, botanical-mechanical hybrids"
+  environment: "Art Nouveau greenhouse conservatory with oxidized copper ironwork and stained glass"
+  constraint: "Hands not faces. No frontal view. No stock photo aesthetics."
+  camera: "Phase One XF, 80mm, f/8"
+
+illustration:
+  style: "Art Nouveau organic curves + Art Deco geometry + circuit-trace filigree"
+  references: "Mucha-inspired compositions with tech elements, Ernst Haeckel meets Zaha Hadid"
+
+sigil:
+  description: "Three converging fiber-optic filaments -- bioluminescent glass tubes"
+  components:
+    - "Soma (source signal)"
+    - "Manas (witness capacity)"
+    - "Muladhara (physical grounding)"
+
+# ─── AUDIENCE (from buyer-persona skill) ───────────────────
+audience:
+  persona_name: "The Conscious Achiever"
+  aesthetic_affinity: "minimalist luxury, intentional craft, engineered precision"
+  aspirational_brands: "Aesop, Muji, Bang & Olufsen, Moleskin"
+  emotional_register: "earned confidence, quiet authority, sovereign clarity"
+
+# ─── COMPETITIVE CONTEXT (from competitor-analysis skill) ──
+competitive_context:
+  avoid_visual_patterns: "wellness-pastel gradients, generic mandala imagery, soft-focus candle photos, chakra rainbows"
+  differentiate_from: "Headspace (soft/pastel), Calm (blue/soothing), Gaia (new-age mystical)"
+  occupy_territory: "engineering precision meets living systems — philosophical practice as craft, not comfort"
+
+# ─── POSITIONING (from product-positioning-summary skill) ──
+positioning:
+  statement: "The only philosophical practice platform that treats meaning-making as precision engineering, not wellness therapy"
+  hero_headline: "Author Your Own Meaning"
+  identity_pillars: ["engineering precision", "living wisdom", "personal sovereignty"]
+
+# ─── PRODUCTS (what the brand actually sells) ──────────────
+products:
+  hero:
+    name: "Noesis Codex"
+    description: "The foundational practice manual for meaning architecture"
+    physical_form: "hardcover codex with custom spine in Solar Bronze (#C4873B) material, pages made of fine craft paper, geometric diagrams visible on open pages in Fira Code"
+  capsule_lineup:
+    - name: "Practice Codex"
+      description: "bio-digital notebook with embossed Solar Bronze details and custom spine"
+    - name: "Essence Vessel"
+      description: "small borosilicate glass vessel with oxidized copper stopper"
+    - name: "Ritual Holder"
+      description: "hammered bronze ceremonial incense holder with living moss accent"
+  essence:
+    name: "Essence Concentrate"
+    container: "Small borosilicate glass bottle with oxidized metal dropper cap"
+    size: "30ml"
+  flatlay_objects:
+    count: 5
+    items:
+      - "open practice codex with visible diagrams"
+      - "essence vessel with copper cap"
+      - "bronze incense holder"
+      - "sealed wax letter with brand sigil"
+      - "terrarium with living moss"
+  category: "philosophical practice product"
+
+negative_prompt: |
+  steampunk cliche, cyberpunk neon excess, dystopian decay, grungy,
+  retro-futurism kitsch, generic sci-fi, lens flare, overblown HDR,
+  chrome excess, tron-lines, wireframe hologram, Matrix green text,
+  stock photo, posed faces, glossy plastic, rounded corners,
+  gradient backgrounds, wellness aesthetic, soft lighting, pastel colors,
+  vaporwave, synthwave, glitch art, anime, manga, cartoon, pixel art, low poly, 8-bit
+
+generation:
+  output_dir: "generated"
+  seeds: [42, 137]
+  resolution: "2K"
+  output_format: "png"
+  env_file: "~/.claude/.env"
+  reference_overrides: {}
+
+prompts:
+  brand_identity:
+    - bento_grid
+    - seal
+    - logo_emboss
+  products:
+    - capsule_collection
+    - hero_book
+    - essence_vial
+  photography:
+    - catalog_layout
+    - flatlay
+  illustration:
+    types:
+      - heritage_engraving
+      - campaign_grid
+      - art_panel
+    icon_groups:
+      - name: "Vedic Engines"
+        icons:
+          - { name: "Vimshottari Dasha", description: "Concentric orbital rings with organic curves" }
+          - { name: "Nakshatra", description: "Crescent moon with star field in flowing pattern" }
+          - { name: "Chakra-Kosha", description: "Layered concentric body silhouette with circuit-trace meridians" }
+          - { name: "Human Design", description: "Bodygraph diamond form with organic connecting lines" }
+      - name: "Western Engines"
+        icons:
+          - { name: "Gene Keys", description: "Spectrum wave with three tiers" }
+          - { name: "Astrocartography", description: "Globe with organic meridian curves" }
+          - { name: "Enneagram", description: "Nine-pointed figure with curved connections" }
+          - { name: "Numerology", description: "Digits in Fibonacci spiral column" }
+      - name: "Bridge Engines"
+        icons:
+          - { name: "Tarot", description: "Card silhouette with decorative interior" }
+          - { name: "TCM Organ Clock", description: "12-segment circle with organic sector borders" }
+          - { name: "Biorhythm", description: "Three overlapping sine waves as organic curves" }
+      - name: "Biofield Engines"
+        icons:
+          - { name: "HRV Engine", description: "ECG heart rhythm waveform through vine pattern" }
+          - { name: "Biofield & Raga", description: "Ascending frequency sound wave as flowering forms" }
+  narrative:
+    types:
+      - contact_sheet
+  posters:
+    types:
+      - seeker_poster
+    engines:
+      - id: "9A-01"
+        name: "Vimshottari Dasha"
+        engine_name: "VIMSHOTTARI DASHA"
+        tagline: "The compass of planetary time cycles"
+        object: "oxidized copper orrery with concentric orbital rings"
+        material_a: "patinated copper"
+        material_b: "etched circuit-board"
+        bg_color: "deep Void Teal"
+        bg_hex: "#0A1628"
+      - id: "9A-02"
+        name: "Nakshatra Engine"
+        engine_name: "NAKSHATRA"
+        tagline: "Star-field navigation of the lunar mansions"
+        object: "crystalline star-map sphere with 27 etched constellation points"
+        material_a: "borosilicate glass"
+        material_b: "copper wire armature"
+        bg_color: "deep Void Teal"
+        bg_hex: "#0A1628"
+      - id: "9A-03"
+        name: "Chakra-Kosha Mapping"
+        engine_name: "CHAKRA-KOSHA"
+        tagline: "Layered body cartography from core to periphery"
+        object: "nested translucent bio-resin shells arranged concentrically"
+        material_a: "amber bio-resin"
+        material_b: "fiber-optic meridian traces"
+        bg_color: "warm Solar Bronze"
+        bg_hex: "#C4873B"
+      - id: "9A-07"
+        name: "Enneagram"
+        engine_name: "ENNEAGRAM"
+        tagline: "Nine architectures of attention and desire"
+        object: "nine-pointed copper wireframe geometric sculpture on terrazzo base"
+        material_a: "oxidized copper"
+        material_b: "glass node connectors"
+        bg_color: "warm Solar Bronze"
+        bg_hex: "#C4873B"
+    sequences:
+      - id: "10A"
+        key: "morning"
+        title: "The Morning Ritual"
+        panels: "1.Right hand reaching for copper incense holder 2.Match flame touching incense 3.Both hands opening codex 4.Finger tracing diagram 5.Pen dipping into ink 6.Pen mid-stroke annotating 7.Arranging objects 8.Placing terrarium 9.Forearms resting, all arranged"
+      - id: "10B"
+        key: "evening"
+        title: "The Evening Integration"
+        panels: "1.Lifting codex from stand 2.Turning pages backward 3.Pulling essential oil bottle 4.Fingertip touching oil to wrist 5.Arranging cards in grid 6.Hovering over chosen card 7.Pressing wax seal 8.Closing codex gently 9.Hand on closed codex, cupping incense smoke"
+      - id: "10C"
+        key: "initiation"
+        title: "The Initiation"
+        panels: "1.Receiving wrapped package 2.Breaking wax seal 3.Unfolding wrapping 4.Lifting lid of box 5.Lifting out codex 6.Holding terrarium to light 7.Examining copper incense holder 8.Arranging all objects (knolling) 9.Overhead view of complete arrangement"

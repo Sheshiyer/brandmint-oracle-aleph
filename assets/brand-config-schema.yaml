@@ -1,0 +1,203 @@
+# Brandmint — brand-config.yaml Schema
+# This file documents the structure. See example-tryambakam-noesis.yaml for a working reference.
+
+# ─── EXECUTION CONTEXT (from ARC v2 orchestrator) ───────
+# Optional. Populated by orchv2 or sidecar execution-context.json.
+# All fields have safe defaults — existing configs work unchanged.
+execution_context:
+  budget_tier: "standard"       # bootstrapped|lean|standard|premium
+  launch_channel: "dtc"         # kickstarter|dtc|saas|b2b
+  maturity_stage: "pre-launch"  # pre-launch|launch-ready|growth|established
+  depth_level: "focused"        # surface|focused|comprehensive|exhaustive
+  tone: ""                      # e.g. "conversion-focused", "premium", "minimal"
+  quality_bar: "standard"       # minimal|standard|premium
+
+# ─── BRAND IDENTITY ───────────────────────────────────────
+brand:
+  name: ""                    # Brand name (used in all prompts and file naming)
+  tagline: ""                 # Primary tagline or slogan
+  archetype: ""               # Brand archetype (e.g., sage, creator, explorer, cartographer)
+  voice: ""                   # Voice description (e.g., "grounded, direct, respectful-challenging")
+  domain: ""                  # Industry or domain (e.g., "Philosophical Practice / Meaning Architecture")
+
+# ─── VISUAL THEME ─────────────────────────────────────────
+theme:
+  name: ""                    # Theme name (e.g., "Bioluminescent Architecture")
+  description: ""             # 1-2 sentence theme description
+  metaphor: ""                # Core visual metaphor (1 sentence) — injected into 2A, 5B, 5C, 8A
+  mood_keywords: []           # 6-10 mood/aesthetic keywords — injected into 2A, 5C
+
+# ─── COLOR PALETTE ────────────────────────────────────────
+# Each color has: name (human-readable), hex (#RRGGBB), role (usage description)
+# Role fields are now extracted and enforced via COLOR_DIRECTIVE in all prompts
+palette:
+  primary:                    # 60% — backgrounds, anchoring surfaces
+    name: ""
+    hex: "#000000"
+    role: ""
+  secondary:                  # 30% — text, light surfaces, contrast
+    name: ""
+    hex: "#FFFFFF"
+    role: ""
+  accent:                     # 10% — CTAs, highlights, focal points
+    name: ""
+    hex: "#FF0000"
+    role: ""
+  support:                    # Borders, metadata, secondary text
+    name: ""
+    hex: "#888888"
+    role: ""
+  signal:                     # Growth/success indicators, alive elements
+    name: ""
+    hex: "#00FF00"
+    role: ""
+
+# ─── TYPOGRAPHY ───────────────────────────────────────────
+typography:
+  header:
+    font: ""                  # Header/display font (e.g., "Exo 2")
+    weights: []               # Available weights (e.g., ["Light", "Regular", "SemiBold"])
+    display_weight: "Light"   # Weight for display/hero text (replaces hardcoded "Light")
+    emphasis_weight: "SemiBold" # Weight for emphasis text (replaces hardcoded "SemiBold")
+    case: "all caps"          # Text case for headers (e.g., "all caps", "title case")
+  body:
+    font: ""                  # Body text font (e.g., "Space Grotesk")
+    weights: []
+  data:
+    font: ""                  # Data/code font (e.g., "Fira Code")
+    weights: []
+
+# ─── MATERIALS VOCABULARY ─────────────────────────────────
+# 8-15 material descriptors that appear in prompts (e.g., "oxidized copper", "living moss")
+materials: []
+
+# ─── PHOTOGRAPHY DIRECTION ────────────────────────────────
+photography:
+  style: ""                   # Photography style description
+  environment: ""             # Primary environment/setting for shoots
+  constraint: ""              # What to avoid (e.g., "No humans. No faces.")
+  camera: ""                  # Camera spec (e.g., "Phase One XF, 80mm")
+
+# ─── ILLUSTRATION DIRECTION ───────────────────────────────
+illustration:
+  style: ""                   # Illustration style description
+  references: ""              # Artist/style references
+
+# ─── SIGIL / BRAND MARK ──────────────────────────────────
+sigil:
+  description: ""             # What the brand sigil looks like
+  components: []              # Named components (e.g., ["source", "witness", "ground"])
+
+# ─── AUDIENCE (from buyer-persona skill) ─────────────────
+# Optional. Injected into photography prompts 3A, 4A, 4B, 7A, 8A.
+audience:
+  persona_name: ""            # e.g. "The Conscious Achiever"
+  aesthetic_affinity: ""      # e.g. "minimalist luxury, intentional craft"
+  aspirational_brands: ""     # e.g. "Aesop, Muji, Bang & Olufsen"
+  emotional_register: ""      # e.g. "earned confidence, quiet authority"
+
+# ─── COMPETITIVE CONTEXT (from competitor-analysis skill) ─
+# Optional. avoid_visual_patterns auto-appends to negative_prompt.
+competitive_context:
+  avoid_visual_patterns: ""   # e.g. "wellness-pastel gradients, generic mandala imagery"
+  differentiate_from: ""      # e.g. "Headspace (soft/pastel), Calm (blue/soothing)"
+  occupy_territory: ""        # e.g. "engineering precision meets living systems"
+
+# ─── POSITIONING (from product-positioning-summary skill) ─
+# Optional. Injected into 2A bento (style anchor) for downstream propagation.
+positioning:
+  statement: ""               # e.g. "The only philosophical practice platform that..."
+  hero_headline: ""           # e.g. "Author Your Own Meaning"
+  identity_pillars: []        # e.g. ["engineering precision", "living wisdom", "personal sovereignty"]
+
+# ─── PRODUCTS (what the brand actually sells) ──────────────
+# Optional. If omitted, templates fall back to generic descriptions.
+# Follows the same {variable} pattern as 9A engine posters.
+products:
+  hero:
+    name: ""                    # Primary product name (e.g., "Kopina Garment", "Noesis Codex")
+    description: ""             # 1-sentence description
+    physical_form: ""           # Full physical description for 3B hero product shot
+  capsule_lineup:               # For 3A three-product lineup
+    - { name: "", description: "" }  # At least 3 items recommended
+  essence:                      # For 3C small-format product
+    name: ""                    # e.g., "Essence Concentrate", "Calibration Oil"
+    container: ""               # Container description
+    size: ""                    # e.g., "30ml", "15ml"
+  flatlay_objects:              # For 4B overhead arrangement
+    count: 5                    # Number of objects
+    items: []                   # List of object descriptions
+  category: ""                  # For 4A catalog: "lifestyle product", "consciousness garment", etc.
+
+# ─── AESTHETIC LANGUAGE OVERRIDES ────────────────────────
+# Optional. Override hardcoded aesthetic phrases to differentiate brand identity.
+# If omitted, backward-compatible defaults match the original Noesis/bioluminescent aesthetic.
+aesthetic:
+  hero_object_type: ""        # Default: "bio-digital object" — 2A hero block
+  hero_surface: ""            # Default: "polished surface" — 2A, 3A, 3B, 4B, 5C
+  seal_material: ""           # Default: "Oxidized copper" — 2B seal
+  seal_geometry: ""           # Default: "Art Deco geometric precision" — 2B seal
+  logo_treatment: ""          # Default: "stained-glass" — 2C logo emboss
+  logo_substrate: ""          # Default: "stained-glass window panel" — 2C logo
+  panel_structure: ""         # Default: "Bio-digital structure elements with fiber-optic filaments" — 5C
+  icon_line_style: ""         # Default: "Flowing organic curves with circuit-trace precision" — 5D
+  poster_artifact: ""         # Default: "bio-digital artifact" — 9A engine posters
+  poster_filament: ""         # Default: "fiber-optic filaments" — 8A, 9A
+  poster_border: ""           # Default: "Art Deco geometric border frame" — 9A
+  quality_reference: ""       # Default: "Behance Trend / Awwwards Winner" — 2A
+  engraving_style: ""         # Default: "heritage engraving" — 5A
+  seeker_inner_detail: ""     # Default: "circuit-trace diagrams, fiber-optic filaments" — 8A
+  sequence_type: ""           # Default: "sequential practice narrative" — 10A-C
+  sequence_constraint: ""     # Default: "hands-only" — 10A-C
+
+# ─── LOGO FILES ──────────────────────────────────────────
+# Optional. Point to actual logo files for visual reference injection.
+# Paths are relative to the brand-config.yaml directory.
+logo_files:
+  primary: ""                 # e.g., "tirak-logo.png" — uploaded as image reference
+  icon: ""                    # e.g., "tirak-icon.png" — icon variant
+
+# ─── NEGATIVE PROMPT ──────────────────────────────────────
+# Multi-line string of things to AVOID in all generations.
+# competitive_context.avoid_visual_patterns is auto-appended at runtime.
+negative_prompt: |
+  cartoon, anime, clipart, watermark, text overlay, blurry, low resolution,
+  stock photo, generic, cheap, oversaturated
+
+# ─── GENERATION SETTINGS ─────────────────────────────────
+generation:
+  output_dir: "generated"     # Subdirectory for generated assets
+  seeds: [42, 137]            # Seed values for variations (v1, v2)
+  resolution: "2K"            # Resolution for Nano Banana Pro
+  output_format: "png"        # Primary output format
+  env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
+  reference_overrides: {}     # Override default ref images: {"2B": "ref-alt-chrome-logos.jpg"}
+
+# ─── PROMPT CATEGORIES ───────────────────────────────────
+# Enable/disable which asset types to generate
+prompts:
+  brand_identity:             # Section 2: Brand identity assets
+    - bento_grid              # 2A — MUST be first (style anchor)
+    - seal                    # 2B
+    - logo_emboss             # 2C
+  products:                   # Section 3: Product concepts
+    - capsule_collection      # 3A
+    - hero_book               # 3B
+    - essence_vial            # 3C
+  photography:                # Section 4: Product photography
+    - catalog_layout          # 4A
+    - flatlay                 # 4B
+  illustration:               # Section 5: Illustrations + icons
+    types:
+      - heritage_engraving    # 5A
+      - campaign_grid         # 5B
+      - art_panel             # 5C
+    icon_groups: []           # 5D batches — see example config for structure
+  narrative:                  # Section 7: Contact sheets
+    types:
+      - contact_sheet         # 7A
+  posters:                    # Sections 8-10: Campaign posters
+    types:
+      - seeker_poster         # 8A
+    engines: []               # 9A batch — see example config for structure
+    sequences: []             # 10A-C batch — see example config for structure

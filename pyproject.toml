@@ -1,0 +1,14 @@
+[project]
+name = "brandmint"
+version = "0.1.0"
+description = "Mint production-ready visual brand assets from a single YAML config"
+requires-python = ">=3.10"
+dependencies = [
+    "python-dotenv",
+    "fal-client",
+    "requests",
+    "pyyaml",
+]
+
+[project.scripts]
+brandmint = "scripts.run_pipeline:main"
