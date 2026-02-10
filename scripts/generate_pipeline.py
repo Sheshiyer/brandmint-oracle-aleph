@@ -318,6 +318,12 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["logo_icon_path"] = _resolve_logo_path(logo_cfg.get("icon", ""), config_dir)
     v["has_logo_files"] = "true" if v["logo_primary_path"] else ""
 
+    # ── Domain tags (Phase 3) ──
+    v["domain_tags"] = cfg.get("brand", {}).get("domain_tags", [])
+
+    # ── Extended prompts (Phase 3 — domain-specific assets) ──
+    v["extended_prompts"] = cfg.get("prompts", {}).get("extended", {})
+
     return v
 
 
@@ -681,6 +687,53 @@ Camera: {photo_camera}. {accent_name} ({accent_hex}) highlights,
 
 
 # =====================================================================
+# PHASE 3: DEFAULT PROMPT TEMPLATES FOR DOMAIN-SPECIFIC ASSETS
+# (Used when brand config doesn't provide custom prompts.extended)
+# =====================================================================
+
+DEFAULT_EXTENDED_PROMPTS = {
+    "app_icon": """{brand_name} app icon. Minimalist design on solid {primary_name} ({primary_hex}) background.
+Central mark: simplified version of brand sigil ({sigil_description}).
+{icon_line_style}. Rounded corners, clean modern design, no text.
+{accent_name} ({accent_hex}) highlight accents. {quality} quality.""",
+
+    "og_image": """{brand_name} Open Graph social sharing preview. 1200x630 composition.
+{hero_object_type} scene with {theme_description}. "{brand_tagline}" headline
+in {header_font} {header_emphasis_weight}, {secondary_name} ({secondary_hex}) text on
+{primary_name} ({primary_hex}) overlay. Brand logo bottom-right.
+{color_directive} Cinematic, shareable, attention-grabbing. {quality}.""",
+
+    "ig_story": """{brand_name} Instagram Story template. Vertical 9:16 composition.
+{primary_name} ({primary_hex}) background with subtle material texture.
+{accent_name} ({accent_hex}) border frame. {poster_border}. Content area
+centered with space for text overlay. Brand sigil watermark bottom.
+{header_font} typography. {mood_keywords}. Premium social media design. {quality}.""",
+
+    "app_screenshot": """{brand_name} App Store screenshot. Mobile phone frame showing
+brand-themed UI with {primary_name} ({primary_hex}) background,
+{accent_name} ({accent_hex}) CTA buttons, {secondary_name} ({secondary_hex}) text.
+{header_font} typography. Clean modern mobile interface design.
+{icon_line_style}. {quality}.""",
+
+    "pitch_hero": """{brand_name} pitch deck hero slide. 16:9 landscape composition.
+{hero_object_type} as dramatic center piece. {theme_description}.
+"{hero_headline}" in {header_font} {header_display_weight}, {header_case},
+{secondary_name} ({secondary_hex}) text. {primary_name} ({primary_hex}) background.
+{color_directive} Presentation-quality, cinematic. {quality}.""",
+
+    "twitter_header": """{brand_name} Twitter/X header banner. 1500x500 panoramic.
+{hero_object_type} scene with {theme_description}. "{brand_tagline}" in
+{header_font} {header_emphasis_weight}. Brand sigil right-aligned.
+{color_directive} {primary_name} overlay gradient. Cinematic. {quality}.""",
+
+    "email_hero": """{brand_name} email header hero image. 600px wide landscape composition.
+{hero_object_type} with {theme_description}. Warm {accent_name} ({accent_hex})
+lighting. {primary_name} ({primary_hex}) tonal background. Brand sigil
+subtly placed. Materials: {materials_list}. Clean, inviting. {quality}.""",
+}
+
+
+# =====================================================================
 # SCRIPT GENERATORS
 # =====================================================================
 
@@ -690,7 +743,23 @@ def write_script(path, content):
     print(f"  Generated: {os.path.basename(path)}")
 
 
-def gen_anchor_script(scripts_dir, v, cfg):
+def _get_asset_ids(asset_groups, generator_name, legacy_ids):
+    """Get asset IDs for a generator. Returns legacy_ids if not in registry mode."""
+    if asset_groups is None:
+        return legacy_ids
+    group = asset_groups.get(generator_name, [])
+    return {aid for aid, _ in group}
+
+
+def _get_new_assets(asset_groups, generator_name):
+    """Get Phase 3 domain-specific assets for a generator (IDs that don't start with a digit)."""
+    if asset_groups is None:
+        return []
+    group = asset_groups.get(generator_name, [])
+    return [(aid, adef) for aid, adef in group if not aid[0].isdigit()]
+
+
+def gen_anchor_script(scripts_dir, v, cfg, asset_groups=None):
     """Generate generate-anchor.py (2A bento grid — MUST run first)."""
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt = render(PROMPT_2A_BENTO, v)
@@ -742,12 +811,39 @@ if __name__ == "__main__":
     write_script(os.path.join(scripts_dir, "generate-anchor.py"), header + func + main_body)
 
 
-def gen_identity_script(scripts_dir, v, cfg):
-    """Generate generate-identity.py (2B seal + 2C logo)."""
+def gen_identity_script(scripts_dir, v, cfg, asset_groups=None):
+    """Generate generate-identity.py (2B seal + 2C logo + domain-specific identity assets)."""
+    asset_ids = _get_asset_ids(asset_groups, "identity", {"2B", "2C"})
+    if not asset_ids:
+        return  # No identity assets selected
+
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt_2b = render(PROMPT_2B_SEAL, v)
     prompt_2c = render(PROMPT_2C_LOGO, v)
     out_sub = cfg["generation"].get("output_dir", "generated")
+
+    # Build new asset prompts
+    new_assets = _get_new_assets(asset_groups, "identity")
+    new_asset_code = ""
+    new_prompt_defs = ""
+    extended = v.get("extended_prompts", {})
+    for aid, adef in new_assets:
+        pkey = adef.get("prompt_key", aid.lower().replace("-", "_"))
+        # Use brand config prompt if available, else default template
+        if pkey in extended:
+            prompt_text = render(extended[pkey], v)
+        elif pkey in DEFAULT_EXTENDED_PROMPTS:
+            prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
+        else:
+            continue
+        aspect = adef.get("aspect", "square_hd")
+        slug = aid.lower().replace("-", "_")
+        safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
+        new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
+        new_asset_code += f'''
+    print("\\n--- {aid}: {adef.get('name', aid)} ---")
+    gen_flux_pro("{aid}", "{slug}", PROMPT_{slug.upper()} + logo_directive, "{aspect}")
+'''
 
     header = render(SCRIPT_HEADER, {
         **v, "script_desc": "Brand Identity (2B Seal + 2C Logo)",
@@ -755,15 +851,29 @@ def gen_identity_script(scripts_dir, v, cfg):
     })
     func = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
 
+    # Build conditional blocks for legacy assets
+    gen_2b = ""
+    if "2B" in asset_ids:
+        gen_2b = '''
+    print("\\n--- 2B: Brand Seal ---")
+    gen_flux_pro("2B", "brand-seal", PROMPT_2B + logo_directive, "square_hd")
+'''
+    gen_2c = ""
+    if "2C" in asset_ids:
+        gen_2c = '''
+    print("\\n--- 2C: Logo Emboss ---")
+    gen_flux_pro("2C", "logo-emboss", PROMPT_2C + logo_directive, "landscape_16_9")
+'''
+
     main_body = f'''
 PROMPT_2B = """{prompt_2b}"""
 
 PROMPT_2C = """{prompt_2c}"""
-
+{new_prompt_defs}
 
 def main():
     print("=" * 60)
-    print(f"{{BRAND_NAME}} -- Brand Identity (2B + 2C)")
+    print(f"{{BRAND_NAME}} -- Brand Identity")
     print("Model: Flux 2 Pro")
     print("=" * 60)
 
@@ -772,15 +882,9 @@ def main():
     if LOGO_PATH and os.path.exists(LOGO_PATH):
         print(f"  Logo file found: {{os.path.basename(LOGO_PATH)}}")
         logo_directive = "\\nCRITICAL: The brand's logo mark (described in the sigil section) must be reproduced faithfully as the established brand identity."
-
-    print("\\n--- 2B: Brand Seal ---")
-    gen_flux_pro("2B", "brand-seal", PROMPT_2B + logo_directive, "square_hd")
-
-    print("\\n--- 2C: Logo Emboss ---")
-    gen_flux_pro("2C", "logo-emboss", PROMPT_2C + logo_directive, "landscape_16_9")
-
+{gen_2b}{gen_2c}{new_asset_code}
     print("\\n" + "=" * 60)
-    print("  IDENTITY COMPLETE (2B + 2C)")
+    print("  IDENTITY COMPLETE")
     print("=" * 60)
 
 
@@ -790,19 +894,81 @@ if __name__ == "__main__":
     write_script(os.path.join(scripts_dir, "generate-identity.py"), header + func + main_body)
 
 
-def gen_products_script(scripts_dir, v, cfg):
-    """Generate generate-products.py (3A capsule + 3B book + 3C vial)."""
+def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
+    """Generate generate-products.py (3A capsule + 3B book + 3C vial + domain-specific)."""
+    asset_ids = _get_asset_ids(asset_groups, "products", {"3A", "3B", "3C"})
+    if not asset_ids:
+        return
+
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt_3a = render(PROMPT_3A_CAPSULE, v)
     prompt_3b = render(PROMPT_3B_BOOK, v)
     prompt_3c = render(PROMPT_3C_VIAL, v)
     out_sub = cfg["generation"].get("output_dir", "generated")
 
+    # Build new asset code (Nano Banana Pro for domain-specific product assets)
+    new_assets = _get_new_assets(asset_groups, "products")
+    new_prompt_defs = ""
+    new_asset_code = ""
+    extended = v.get("extended_prompts", {})
+    for aid, adef in new_assets:
+        pkey = adef.get("prompt_key", aid.lower().replace("-", "_"))
+        if pkey in extended:
+            prompt_text = render(extended[pkey], v)
+        elif pkey in DEFAULT_EXTENDED_PROMPTS:
+            prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
+        else:
+            continue
+        aspect = adef.get("aspect", "portrait_hd")
+        slug = aid.lower().replace("-", "_")
+        model = adef.get("model", "nano-banana-pro")
+        safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
+        new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
+        if model == "nano-banana-pro":
+            new_asset_code += f'''
+    print("\\n--- {aid}: {adef.get('name', aid)} (Nano Banana Pro) ---")
+    gen_nano_banana("{aid}", "{slug}", PROMPT_{slug.upper()}, "{aspect}", image_urls)
+'''
+        else:
+            new_asset_code += f'''
+    print("\\n--- {aid}: {adef.get('name', aid)} (Flux 2 Pro) ---")
+    gen_flux_pro("{aid}", "{slug}", PROMPT_{slug.upper()}, "{aspect}")
+'''
+
     header = render(SCRIPT_HEADER, {
-        **v, "script_desc": "Product Concepts (3A + 3B + 3C)",
+        **v, "script_desc": "Product Concepts",
         "output_subdir": out_sub,
     })
-    func = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
+    func_flux = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
+
+    # Add Nano Banana if we have new assets needing it
+    func_nb = ""
+    nb_setup = ""
+    if any(adef.get("model") == "nano-banana-pro" for _, adef in new_assets):
+        func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
+        nb_setup = '''
+    # Style anchor for Nano Banana Pro assets
+    image_urls = []
+    anchor_path = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
+    if os.path.exists(anchor_path):
+        image_urls.append(fal_client.upload_file(anchor_path))
+    logo_url = get_logo_url()
+    if logo_url:
+        image_urls.append(logo_url)
+'''
+
+    gen_3a = f'''
+    print("\\n--- 3A: Capsule Collection ---")
+    gen_flux_pro("3A", "capsule-collection", PROMPT_3A, "landscape_4_3")
+''' if "3A" in asset_ids else ""
+    gen_3b = f'''
+    print("\\n--- 3B: Hero Book ---")
+    gen_flux_pro("3B", "hero-book", PROMPT_3B, "square_hd")
+''' if "3B" in asset_ids else ""
+    gen_3c = f'''
+    print("\\n--- 3C: Essence Vial ---")
+    gen_flux_pro("3C", "essence-vial", PROMPT_3C, "square_hd")
+''' if "3C" in asset_ids else ""
 
     main_body = f'''
 PROMPT_3A = """{prompt_3a}"""
@@ -810,36 +976,27 @@ PROMPT_3A = """{prompt_3a}"""
 PROMPT_3B = """{prompt_3b}"""
 
 PROMPT_3C = """{prompt_3c}"""
-
+{new_prompt_defs}
 
 def main():
     print("=" * 60)
-    print(f"{{BRAND_NAME}} -- Product Concepts (3A + 3B + 3C)")
-    print("Model: Flux 2 Pro")
+    print(f"{{BRAND_NAME}} -- Product Concepts")
+    print("Model: Flux 2 Pro / Nano Banana Pro")
     print("=" * 60)
-
-    print("\\n--- 3A: Capsule Collection ---")
-    gen_flux_pro("3A", "capsule-collection", PROMPT_3A, "landscape_4_3")
-
-    print("\\n--- 3B: Hero Book ---")
-    gen_flux_pro("3B", "hero-book", PROMPT_3B, "square_hd")
-
-    print("\\n--- 3C: Essence Vial ---")
-    gen_flux_pro("3C", "essence-vial", PROMPT_3C, "square_hd")
-
+{nb_setup}{gen_3a}{gen_3b}{gen_3c}{new_asset_code}
     print("\\n" + "=" * 60)
-    print("  PRODUCTS COMPLETE (3A + 3B + 3C)")
+    print("  PRODUCTS COMPLETE")
     print("=" * 60)
 
 
 if __name__ == "__main__":
     main()
 '''
-    write_script(os.path.join(scripts_dir, "generate-products.py"), header + func + main_body)
+    write_script(os.path.join(scripts_dir, "generate-products.py"), header + func_flux + func_nb + main_body)
 
 
-def gen_photography_script(scripts_dir, v, cfg):
-    """Generate generate-photography.py (4A catalog + 4B flatlay)."""
+def gen_photography_script(scripts_dir, v, cfg, asset_groups=None):
+    """Generate generate-photography.py (4A catalog + 4B flatlay + domain-specific)."""
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt_4a = render(PROMPT_4A_CATALOG, v)
     prompt_4b = render(PROMPT_4B_FLATLAY, v)
@@ -852,17 +1009,59 @@ def gen_photography_script(scripts_dir, v, cfg):
     func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_flux = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
 
+    asset_ids = _get_asset_ids(asset_groups, "photography", {"4A", "4B"})
+    if not asset_ids:
+        return
+
+    # Build new asset code
+    new_assets = _get_new_assets(asset_groups, "photography")
+    new_prompt_defs = ""
+    new_asset_code = ""
+    extended = v.get("extended_prompts", {})
+    for aid, adef in new_assets:
+        pkey = adef.get("prompt_key", aid.lower().replace("-", "_"))
+        if pkey in extended:
+            prompt_text = render(extended[pkey], v)
+        elif pkey in DEFAULT_EXTENDED_PROMPTS:
+            prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
+        else:
+            continue
+        aspect = adef.get("aspect", "landscape_16_9")
+        slug = aid.lower().replace("-", "_")
+        safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
+        new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
+        new_asset_code += f'''
+    print("\\n--- {aid}: {adef.get('name', aid)} (Nano Banana Pro) ---")
+    gen_nano_banana("{aid}", "{slug}", PROMPT_{slug.upper()}, "{aspect}", anchor_urls)
+'''
+
+    gen_4a = '''
+    # 4A with composition reference
+    print("\\n--- 4A: Catalog Layout (Nano Banana Pro) ---")
+    urls_4a = list(anchor_urls)
+    ref_4a = get_ref_image("4A")
+    if ref_4a:
+        print(f"  Adding composition ref: {os.path.basename(ref_4a)}")
+        urls_4a.append(fal_client.upload_file(ref_4a))
+    gen_nano_banana("4A", "catalog-layout", PROMPT_4A, "3:4", urls_4a)
+''' if "4A" in asset_ids else ""
+
+    gen_4b = '''
+    print("\\n--- 4B: Flatlay (Flux 2 Pro) ---")
+    gen_flux_pro("4B", "flatlay", PROMPT_4B, "square_hd")
+''' if "4B" in asset_ids else ""
+
     main_body = f'''
 PROMPT_4A = """{prompt_4a}"""
 
 PROMPT_4B = """{prompt_4b}"""
-
+{new_prompt_defs}
 STYLE_ANCHOR = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
 
 
 def main():
     print("=" * 60)
-    print(f"{{BRAND_NAME}} -- Product Photography (4A + 4B)")
+    print(f"{{BRAND_NAME}} -- Product Photography")
     print("=" * 60)
 
     anchor_urls = []
@@ -877,21 +1076,9 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         anchor_urls.append(logo_url)
-
-    # 4A with composition reference
-    print("\\n--- 4A: Catalog Layout (Nano Banana Pro) ---")
-    urls_4a = list(anchor_urls)
-    ref_4a = get_ref_image("4A")
-    if ref_4a:
-        print(f"  Adding composition ref: {{os.path.basename(ref_4a)}}")
-        urls_4a.append(fal_client.upload_file(ref_4a))
-    gen_nano_banana("4A", "catalog-layout", PROMPT_4A, "3:4", urls_4a)
-
-    print("\\n--- 4B: Flatlay (Flux 2 Pro) ---")
-    gen_flux_pro("4B", "flatlay", PROMPT_4B, "square_hd")
-
+{gen_4a}{gen_4b}{new_asset_code}
     print("\\n" + "=" * 60)
-    print("  PHOTOGRAPHY COMPLETE (4A + 4B)")
+    print("  PHOTOGRAPHY COMPLETE")
     print("=" * 60)
 
 
@@ -902,7 +1089,7 @@ if __name__ == "__main__":
                  header + func_nb + func_flux + main_body)
 
 
-def gen_illustrations_script(scripts_dir, v, cfg):
+def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
     """Generate generate-illustrations.py (5A-5D)."""
     seeds = cfg["generation"].get("seeds", [42, 137])
     # Condense for Recraft 1000-char limit
@@ -1033,27 +1220,63 @@ if __name__ == "__main__":
                  header + func_rc + func_nb + main_body)
 
 
-def gen_narrative_script(scripts_dir, v, cfg):
-    """Generate generate-narrative.py (7A contact sheets)."""
+def gen_narrative_script(scripts_dir, v, cfg, asset_groups=None):
+    """Generate generate-narrative.py (7A contact sheets + domain-specific)."""
+    asset_ids = _get_asset_ids(asset_groups, "narrative", {"7A"})
+    if not asset_ids:
+        return
+
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt_7a = render(PROMPT_7A_CONTACT, v)
     out_sub = cfg["generation"].get("output_dir", "generated")
 
+    # Build new asset code
+    new_assets = _get_new_assets(asset_groups, "narrative")
+    new_prompt_defs = ""
+    new_asset_code = ""
+    extended = v.get("extended_prompts", {})
+    for aid, adef in new_assets:
+        pkey = adef.get("prompt_key", aid.lower().replace("-", "_"))
+        if pkey in extended:
+            prompt_text = render(extended[pkey], v)
+        elif pkey in DEFAULT_EXTENDED_PROMPTS:
+            prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
+        else:
+            continue
+        aspect = adef.get("aspect", "landscape_16_9")
+        slug = aid.lower().replace("-", "_")
+        safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
+        new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
+        new_asset_code += f'''
+    print("\\n--- {aid}: {adef.get('name', aid)} ---")
+    gen_nano_banana("{aid}", "{slug}", PROMPT_{slug.upper()}, "{aspect}", image_urls)
+'''
+
     header = render(SCRIPT_HEADER, {
-        **v, "script_desc": "Contact Sheets (7A)",
+        **v, "script_desc": "Narrative Assets",
         "output_subdir": out_sub,
     })
     func = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
 
+    gen_7a = '''
+    ref_7a = get_ref_image("7A")
+    if ref_7a:
+        print(f"  Adding composition ref: {os.path.basename(ref_7a)}")
+        comp_url = fal_client.upload_file(ref_7a)
+        image_urls.append(comp_url)
+
+    gen_nano_banana("7A", "contact-sheet", PROMPT_7A, "1:1", image_urls)
+''' if "7A" in asset_ids else ""
+
     main_body = f'''
 PROMPT_7A = """{prompt_7a}"""
-
+{new_prompt_defs}
 STYLE_ANCHOR = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
 
 
 def main():
     print("=" * 60)
-    print(f"{{BRAND_NAME}} -- Contact Sheets (7A)")
+    print(f"{{BRAND_NAME}} -- Narrative Assets")
     print("Model: Nano Banana Pro")
     print("=" * 60)
 
@@ -1068,17 +1291,9 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         image_urls.append(logo_url)
-
-    ref_7a = get_ref_image("7A")
-    if ref_7a:
-        print(f"  Adding composition ref: {{os.path.basename(ref_7a)}}")
-        comp_url = fal_client.upload_file(ref_7a)
-        image_urls.append(comp_url)
-
-    gen_nano_banana("7A", "contact-sheet", PROMPT_7A, "1:1", image_urls)
-
+{gen_7a}{new_asset_code}
     print("\\n" + "=" * 60)
-    print("  NARRATIVE COMPLETE (7A)")
+    print("  NARRATIVE COMPLETE")
     print("=" * 60)
 
 
@@ -1088,8 +1303,11 @@ if __name__ == "__main__":
     write_script(os.path.join(scripts_dir, "generate-narrative.py"), header + func + main_body)
 
 
-def gen_posters_script(scripts_dir, v, cfg):
-    """Generate generate-posters.py (8A seeker + 9A engines + 10A-C sequences)."""
+def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
+    """Generate generate-posters.py (8A seeker + 9A engines + 10A-C sequences + domain-specific)."""
+    asset_ids = _get_asset_ids(asset_groups, "posters", {"8A"})
+    # Posters always generate (9A/10A come from config, not registry)
+
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt_8a = render(PROMPT_8A_SEEKER, v)
     prompt_9a = render(PROMPT_9A_ENGINE, v)
@@ -1137,13 +1355,47 @@ def gen_posters_script(scripts_dir, v, cfg):
         seq_dict += "    },\n"
     seq_dict += "}\n"
 
+    # Build new asset code for posters
+    new_assets = _get_new_assets(asset_groups, "posters")
+    new_prompt_defs = ""
+    new_asset_code = ""
+    extended = v.get("extended_prompts", {})
+    for aid, adef in new_assets:
+        pkey = adef.get("prompt_key", aid.lower().replace("-", "_"))
+        if pkey in extended:
+            prompt_text = render(extended[pkey], v)
+        elif pkey in DEFAULT_EXTENDED_PROMPTS:
+            prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
+        else:
+            continue
+        aspect = adef.get("aspect", "portrait_hd")
+        slug = aid.lower().replace("-", "_")
+        safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
+        new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
+        new_asset_code += f'''
+    print("\\n--- {aid}: {adef.get('name', aid)} ---")
+    gen_nano_banana("{aid}", "{slug}", PROMPT_{slug.upper()}, "{aspect}", image_urls)
+'''
+
+    gen_8a = f'''
+    # 8A: Seeker poster (with composition reference)
+    print("\\n--- 8A: Seeker Poster ---")
+    urls_8a = list(image_urls)
+    ref_8a = get_ref_image("8A")
+    if ref_8a:
+        print(f"  Adding composition ref: {{os.path.basename(ref_8a)}}")
+        urls_8a.append(fal_client.upload_file(ref_8a))
+    gen_nano_banana("8A", "seeker-poster", PROMPT_8A, "3:4", urls_8a,
+                    seeds=({seeds[0]}, {seeds[1]}, 256))
+''' if "8A" in asset_ids else ""
+
     main_body = f'''
 PROMPT_8A = """{prompt_8a}"""
 
 PROMPT_9A_BASE = """{prompt_9a}"""
 
 PROMPT_10_BASE = """{prompt_10}"""
-
+{new_prompt_defs}
 {engine_dict}
 {seq_dict}
 STYLE_ANCHOR = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
@@ -1151,7 +1403,7 @@ STYLE_ANCHOR = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
 
 def main():
     print("=" * 60)
-    print(f"{{BRAND_NAME}} -- Campaign Posters (8A + 9A + 10A-C)")
+    print(f"{{BRAND_NAME}} -- Campaign Posters")
     print("Model: Nano Banana Pro")
     print("=" * 60)
 
@@ -1166,17 +1418,7 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         image_urls.append(logo_url)
-
-    # 8A: Seeker poster (with composition reference)
-    print("\\n--- 8A: Seeker Poster ---")
-    urls_8a = list(image_urls)
-    ref_8a = get_ref_image("8A")
-    if ref_8a:
-        print(f"  Adding composition ref: {{os.path.basename(ref_8a)}}")
-        urls_8a.append(fal_client.upload_file(ref_8a))
-    gen_nano_banana("8A", "seeker-poster", PROMPT_8A, "3:4", urls_8a,
-                    seeds=({seeds[0]}, {seeds[1]}, 256))
-
+{gen_8a}
     # 9A: Individual engine posters (with composition reference)
     if ENGINES:
         print("\\n--- 9A: Engine Posters ---")
@@ -1210,8 +1452,9 @@ def main():
             print(f"\\n  [{{sid}}] {{sdata['title']}}...")
             gen_nano_banana(sid, slug, prompt, "1:1", urls_10)
 
+{new_asset_code}
     print("\\n" + "=" * 60)
-    print("  POSTERS COMPLETE (8A + 9A + 10A-C)")
+    print("  POSTERS COMPLETE")
     print("=" * 60)
 
 
@@ -1308,7 +1551,7 @@ def gen_cookbook(out_dir, v, cfg):
 # MANIFEST GENERATOR
 # =====================================================================
 
-def gen_manifest(out_dir, v, cfg, exec_ctx):
+def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
     """Generate generation-manifest.json for orchv2 budget validation."""
     depth = exec_ctx.get("depth_level", "focused")
     depth_cfg = DEPTH_CONFIG.get(depth, DEPTH_CONFIG["focused"])
@@ -1319,64 +1562,96 @@ def gen_manifest(out_dir, v, cfg, exec_ctx):
     costs = {"nano-banana-pro": 0.08, "flux-2-pro": 0.05, "recraft-v3": 0.04}
 
     assets = []
-    # 2A: Nano Banana
-    assets.append({"id": "2A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
-    # 2B, 2C: Flux 2 Pro
-    for pid in ["2B", "2C"]:
-        if pid not in skip_ids:
-            assets.append({"id": pid, "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
-    # 3A, 3B, 3C: Flux 2 Pro
-    for pid in ["3A", "3B", "3C"]:
-        if pid not in skip_ids:
-            assets.append({"id": pid, "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
-    # 4A: Nano Banana, 4B: Flux 2
-    if "4A" not in skip_ids:
-        assets.append({"id": "4A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
-    if "4B" not in skip_ids:
-        assets.append({"id": "4B", "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
-    # 5A, 5C: Recraft
-    for pid in ["5A", "5C"]:
-        if pid not in skip_ids:
-            assets.append({"id": pid, "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
-    # 5B: Nano Banana
-    if "5B" not in skip_ids:
-        assets.append({"id": "5B", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
-    # 5D: Recraft (icon groups)
-    illus_cfg = cfg.get("prompts", {}).get("illustration", {})
-    icon_groups = illus_cfg.get("icon_groups", []) if isinstance(illus_cfg, dict) else []
-    if depth != "surface":
-        active = icon_groups[:2] if depth == "focused" else icon_groups
-        for gi, g in enumerate(active):
-            assets.append({"id": f"5D-{gi+1}", "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
-    # 7A: Nano Banana
-    if "7A" not in skip_ids:
-        assets.append({"id": "7A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
-    # 8A: Nano Banana (extra seed for seeker at non-surface depths)
-    if "8A" not in skip_ids:
-        seeker_seeds = seeds_count + 1 if depth != "surface" else seeds_count
-        assets.append({"id": "8A", "model": "nano-banana-pro", "seeds": seeker_seeds, "calls": seeker_seeds, "est_cost": seeker_seeds * costs["nano-banana-pro"]})
-    # 9A: Nano Banana (1 seed per engine)
+
+    # If we have domain-aware asset_groups, use those for the base asset list
+    if asset_groups is not None:
+        for gen_name, group in asset_groups.items():
+            for aid, adef in group:
+                model = adef.get("model", "nano-banana-pro")
+                cost_key = model if model in costs else "nano-banana-pro"
+                sc = seeds_count
+                if aid == "8A" and depth != "surface":
+                    sc = seeds_count + 1  # Seeker gets extra seed
+                assets.append({
+                    "id": aid,
+                    "name": adef.get("name", aid),
+                    "model": model,
+                    "seeds": sc,
+                    "calls": sc,
+                    "est_cost": round(sc * costs.get(cost_key, 0.08), 2),
+                })
+    else:
+        # Legacy mode: hardcoded 19 assets
+        # 2A: Nano Banana
+        assets.append({"id": "2A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
+        # 2B, 2C: Flux 2 Pro
+        for pid in ["2B", "2C"]:
+            if pid not in skip_ids:
+                assets.append({"id": pid, "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
+        # 3A, 3B, 3C: Flux 2 Pro
+        for pid in ["3A", "3B", "3C"]:
+            if pid not in skip_ids:
+                assets.append({"id": pid, "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
+        # 4A: Nano Banana, 4B: Flux 2
+        if "4A" not in skip_ids:
+            assets.append({"id": "4A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
+        if "4B" not in skip_ids:
+            assets.append({"id": "4B", "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
+        # 5A, 5C: Recraft
+        for pid in ["5A", "5C"]:
+            if pid not in skip_ids:
+                assets.append({"id": pid, "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
+        # 5B: Nano Banana
+        if "5B" not in skip_ids:
+            assets.append({"id": "5B", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
+        # 5D: Recraft (icon groups)
+        illus_cfg = cfg.get("prompts", {}).get("illustration", {})
+        icon_groups = illus_cfg.get("icon_groups", []) if isinstance(illus_cfg, dict) else []
+        if depth != "surface":
+            active = icon_groups[:2] if depth == "focused" else icon_groups
+            for gi, g in enumerate(active):
+                assets.append({"id": f"5D-{gi+1}", "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
+        # 7A: Nano Banana
+        if "7A" not in skip_ids:
+            assets.append({"id": "7A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
+        # 8A: Nano Banana (extra seed for seeker at non-surface depths)
+        if "8A" not in skip_ids:
+            seeker_seeds = seeds_count + 1 if depth != "surface" else seeds_count
+            assets.append({"id": "8A", "model": "nano-banana-pro", "seeds": seeker_seeds, "calls": seeker_seeds, "est_cost": seeker_seeds * costs["nano-banana-pro"]})
+
+    # Config-driven assets (always added regardless of mode — 9A engines, 10A-C sequences)
     engines = cfg.get("prompts", {}).get("posters", {})
     engines_list = engines.get("engines", []) if isinstance(engines, dict) else []
     for eng in engines_list:
         eid = eng.get("id", "9A")
         if eid not in skip_ids:
             assets.append({"id": eid, "model": "nano-banana-pro", "seeds": 1, "calls": 1, "est_cost": costs["nano-banana-pro"]})
-    # 10A-C: Nano Banana
     sequences_list = engines.get("sequences", []) if isinstance(engines, dict) else []
     for seq in sequences_list:
         sid = seq.get("id", "10A")
         if sid not in skip_ids:
             assets.append({"id": sid, "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
 
+    # 5D icon groups (always config-driven)
+    if asset_groups is not None:
+        illus_cfg = cfg.get("prompts", {}).get("illustration", {})
+        icon_groups = illus_cfg.get("icon_groups", []) if isinstance(illus_cfg, dict) else []
+        if depth != "surface":
+            active = icon_groups[:2] if depth == "focused" else icon_groups
+            for gi, g in enumerate(active):
+                assets.append({"id": f"5D-{gi+1}", "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
+
     total_calls = sum(a["calls"] for a in assets)
     total_cost = sum(a["est_cost"] for a in assets)
 
+    domain_tags = v.get("domain_tags", [])
     manifest = {
         "brand": v["brand_name"],
         "depth_level": depth,
         "budget_tier": exec_ctx.get("budget_tier", "standard"),
         "launch_channel": exec_ctx.get("launch_channel", "dtc"),
+        "mode": "domain-aware" if domain_tags else "legacy",
+        "domain_tags": domain_tags,
         "total_assets": len(assets),
         "total_api_calls": total_calls,
         "estimated_cost_usd": round(total_cost, 2),
@@ -1433,29 +1708,45 @@ def main():
     os.makedirs(scripts_dir, exist_ok=True)
     os.makedirs(assets_dir, exist_ok=True)
 
+    # ── Phase 3: Asset Registry Selection ──
+    domain_tags = v.get("domain_tags", [])
+    depth = exec_ctx.get("depth_level", "focused")
+
+    asset_groups = None  # None = legacy mode
+    if domain_tags:
+        try:
+            from asset_registry import select_assets, get_assets_by_generator, print_selection_summary
+            selected = select_assets(domain_tags, depth, channel)
+            asset_groups = get_assets_by_generator(selected)
+            print_selection_summary(selected, domain_tags, depth, channel)
+        except ImportError:
+            print("  WARNING: asset_registry.py not found, using legacy mode")
+
     print(f"  Output: {out_dir}")
     print(f"  Scripts: {scripts_dir}")
     print(f"  Brand: {v['brand_name']}")
     print(f"  Theme: {v['theme_name']}")
-    print(f"  Depth: {exec_ctx.get('depth_level', 'focused')}")
-    print(f"  Channel: {exec_ctx.get('launch_channel', 'dtc')}")
+    print(f"  Depth: {depth}")
+    print(f"  Channel: {channel}")
     print(f"  Tone: {exec_ctx.get('tone', 'default') or 'default'}")
+    if not domain_tags:
+        print(f"  Mode: Legacy (all 19 assets — no domain_tags)")
     print()
 
     print("Generating pipeline scripts...")
-    gen_anchor_script(scripts_dir, v, cfg)
-    gen_identity_script(scripts_dir, v, cfg)
-    gen_products_script(scripts_dir, v, cfg)
-    gen_photography_script(scripts_dir, v, cfg)
-    gen_illustrations_script(scripts_dir, v, cfg)
-    gen_narrative_script(scripts_dir, v, cfg)
-    gen_posters_script(scripts_dir, v, cfg)
+    gen_anchor_script(scripts_dir, v, cfg, asset_groups)
+    gen_identity_script(scripts_dir, v, cfg, asset_groups)
+    gen_products_script(scripts_dir, v, cfg, asset_groups)
+    gen_photography_script(scripts_dir, v, cfg, asset_groups)
+    gen_illustrations_script(scripts_dir, v, cfg, asset_groups)
+    gen_narrative_script(scripts_dir, v, cfg, asset_groups)
+    gen_posters_script(scripts_dir, v, cfg, asset_groups)
 
     print("\nGenerating prompt cookbook...")
     gen_cookbook(out_dir, v, cfg)
 
     print("\nGenerating manifest...")
-    gen_manifest(out_dir, v, cfg, exec_ctx)
+    gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups)
 
     print(f"\n{'=' * 60}")
     print("  PIPELINE GENERATION COMPLETE")

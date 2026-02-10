@@ -19,6 +19,11 @@ brand:
   archetype: ""               # Brand archetype (e.g., sage, creator, explorer, cartographer)
   voice: ""                   # Voice description (e.g., "grounded, direct, respectful-challenging")
   domain: ""                  # Industry or domain (e.g., "Philosophical Practice / Meaning Architecture")
+  domain_tags: []             # Phase 3: Domain tags for asset selection (e.g., ["app", "marketplace", "social"])
+                              # Valid tags: app, saas, dtc, ecommerce, crowdfunding, marketplace,
+                              # social, enterprise, physical-product, wellness, lifestyle, web,
+                              # brand-system, premium, mobile
+                              # If empty/omitted: legacy mode generates all 19 fixed assets
 
 # ─── VISUAL THEME ─────────────────────────────────────────
 theme:
@@ -201,3 +206,6 @@ prompts:
       - seeker_poster         # 8A
     engines: []               # 9A batch — see example config for structure
     sequences: []             # 10A-C batch — see example config for structure
+  extended: {}                # Phase 3: Domain-specific asset prompts (keyed by prompt_key from registry)
+                              # e.g., app_icon: "Minimalist app icon for {brand_name}..."
+                              # Keys must match prompt_key in asset-registry.yaml

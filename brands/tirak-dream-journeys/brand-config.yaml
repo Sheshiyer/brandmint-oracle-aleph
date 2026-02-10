@@ -16,6 +16,13 @@ brand:
   archetype: "The Confident Local Friend"
   voice: "Warm, direct, slightly irreverent, empowering"
   domain: "Travel Companion Marketplace"
+  domain_tags:
+    - "app"
+    - "marketplace"
+    - "social"
+    - "lifestyle"
+    - "mobile"
+    - "web"
 
 theme:
   name: "Warm Bangkok Nights"
@@ -254,3 +261,9 @@ prompts:
         key: "traveler_journey"
         title: "A Traveler's Journey"
         panels: "1.Scrolling Tirak app on phone in hostel 2.Tapping 'Book Now' on companion profile 3.Walking out of hotel into golden Bangkok street 4.Meeting companion with confident handshake 5.Navigating through night market crowd 6.Tasting unknown street food with delight 7.Laughing at rooftop bar with skyline 8.Exchanging contact info on phones 9.Solo traveler smiling at phone review screen"
+  extended:
+    app_icon: "Minimalist app icon for Tirak Dream Journeys. Warm golden gradient background (#E8A838 to #1A1A2E), simplified Thai-inspired interlinked-hearts mark in Temple Cream (#F5F0E6), rounded iOS corners, clean modern design, no text, centered symbol, subtle brushed brass texture"
+    og_image: "Social sharing preview card for Tirak Dream Journeys. Warm Bangkok street scene at golden hour with soft neon tubing accents, 'Not a tour. A vibe.' headline in DM Sans Bold, Temple Cream text on Bangkok Night overlay, interlinked hearts logo bottom-right, 1200x630 composition, cinematic warmth"
+    ig_story: "Instagram Story template for Tirak. Vertical 9:16 aspect, warm teak texture background with subtle grain, Golden Hour (#E8A838) glass tubing border frame, Bangkok Night (#1A1A2E) content area, DM Sans typography, space for text overlay, interlinked hearts watermark bottom, premium-casual energy"
+    app_screenshot: "App Store screenshot for Tirak companion marketplace. iPhone frame showing companion profile card with warm Bangkok Night (#1A1A2E) background, companion photo placeholder, Golden Hour (#E8A838) 'Book Now' CTA button, star ratings in Sakura Pink, DM Sans typography, clean modern mobile UI, Lavender Link accent elements"
+    twitter_header: "Twitter/X header banner for Tirak Dream Journeys. Panoramic Bangkok skyline at golden hour, warm neon market glow below, 'Not a tour. A vibe.' in DM Sans Bold center-left, interlinked hearts logo right, Bangkok Night overlay gradient, 1500x500 composition"

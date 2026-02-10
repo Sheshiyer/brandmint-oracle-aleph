@@ -1,0 +1,253 @@
+# Brandmint — Asset Registry
+# Domain-aware asset selection engine (Phase 3).
+# Each asset has tags, priority, and generator mapping.
+# Brands declare domain_tags; registry auto-selects matching assets.
+
+assets:
+  # ═══════════════════════════════════════════════════════════
+  # UNIVERSAL ASSETS (tag: "*") — always generated
+  # ═══════════════════════════════════════════════════════════
+
+  2A:
+    name: "Brand Kit Bento Grid"
+    generator: "anchor"
+    model: "nano-banana-pro"
+    tags: ["*"]
+    priority: 10
+    required: true
+    aspect: "landscape_16_9"
+    cost_usd: 0.08
+
+  2B:
+    name: "Brand Seal"
+    generator: "identity"
+    model: "flux-2-pro"
+    tags: ["*"]
+    priority: 9
+    required: true
+    aspect: "square_hd"
+    cost_usd: 0.05
+
+  # ═══════════════════════════════════════════════════════════
+  # IDENTITY ASSETS
+  # ═══════════════════════════════════════════════════════════
+
+  2C:
+    name: "Logo Emboss"
+    generator: "identity"
+    model: "flux-2-pro"
+    tags: ["brand-system", "dtc", "premium", "crowdfunding", "enterprise"]
+    priority: 7
+    required: false
+    aspect: "landscape_16_9"
+    cost_usd: 0.05
+
+  # ═══════════════════════════════════════════════════════════
+  # PRODUCT ASSETS
+  # ═══════════════════════════════════════════════════════════
+
+  3A:
+    name: "Capsule Collection"
+    generator: "products"
+    model: "flux-2-pro"
+    tags: ["dtc", "ecommerce", "crowdfunding", "physical-product"]
+    priority: 8
+    required: false
+    aspect: "landscape_16_9"
+    cost_usd: 0.05
+
+  3B:
+    name: "Hero Product"
+    generator: "products"
+    model: "flux-2-pro"
+    tags: ["dtc", "ecommerce", "crowdfunding", "physical-product", "marketplace", "app"]
+    priority: 8
+    required: false
+    aspect: "square_hd"
+    cost_usd: 0.05
+
+  3C:
+    name: "Essence Vial"
+    generator: "products"
+    model: "flux-2-pro"
+    tags: ["dtc", "wellness", "beauty", "physical-product"]
+    priority: 5
+    required: false
+    aspect: "portrait_hd"
+    cost_usd: 0.05
+
+  # ═══════════════════════════════════════════════════════════
+  # PHOTOGRAPHY ASSETS
+  # ═══════════════════════════════════════════════════════════
+
+  4A:
+    name: "Catalog Layout"
+    generator: "photography"
+    model: "nano-banana-pro"
+    tags: ["dtc", "ecommerce", "physical-product", "crowdfunding"]
+    priority: 7
+    required: false
+    aspect: "portrait_3_4"
+    cost_usd: 0.08
+
+  4B:
+    name: "Flatlay"
+    generator: "photography"
+    model: "flux-2-pro"
+    tags: ["dtc", "ecommerce", "physical-product", "lifestyle"]
+    priority: 6
+    required: false
+    aspect: "square_hd"
+    cost_usd: 0.05
+
+  # ═══════════════════════════════════════════════════════════
+  # ILLUSTRATION ASSETS
+  # ═══════════════════════════════════════════════════════════
+
+  5A:
+    name: "Heritage Engraving"
+    generator: "illustrations"
+    model: "recraft-v3"
+    tags: ["brand-system", "dtc", "premium", "crowdfunding"]
+    priority: 6
+    required: false
+    aspect: "square_hd"
+    cost_usd: 0.04
+
+  5B:
+    name: "Campaign Grid"
+    generator: "illustrations"
+    model: "nano-banana-pro"
+    tags: ["dtc", "crowdfunding", "social", "marketplace", "app"]
+    priority: 7
+    required: false
+    aspect: "portrait_3_4"
+    cost_usd: 0.08
+
+  5C:
+    name: "Art Panel"
+    generator: "illustrations"
+    model: "recraft-v3"
+    tags: ["brand-system", "dtc", "premium", "lifestyle"]
+    priority: 5
+    required: false
+    aspect: "portrait_4_3"
+    cost_usd: 0.04
+
+  # 5D icon groups are config-driven (not registry-selected)
+  # They're controlled by prompts.illustration.icon_groups in brand-config.yaml
+
+  # ═══════════════════════════════════════════════════════════
+  # NARRATIVE ASSETS
+  # ═══════════════════════════════════════════════════════════
+
+  7A:
+    name: "Contact Sheet"
+    generator: "narrative"
+    model: "nano-banana-pro"
+    tags: ["dtc", "lifestyle", "physical-product", "crowdfunding", "marketplace"]
+    priority: 6
+    required: false
+    aspect: "square"
+    cost_usd: 0.08
+
+  # ═══════════════════════════════════════════════════════════
+  # POSTER ASSETS
+  # ═══════════════════════════════════════════════════════════
+
+  8A:
+    name: "Seeker Poster"
+    generator: "posters"
+    model: "nano-banana-pro"
+    tags: ["brand-system", "crowdfunding", "premium", "lifestyle"]
+    priority: 6
+    required: false
+    aspect: "portrait_3_4"
+    cost_usd: 0.08
+
+  # 9A engine posters are config-driven (not registry-selected)
+  # They're controlled by prompts.posters.engines in brand-config.yaml
+
+  # 10A-C sequences are config-driven (not registry-selected)
+  # They're controlled by prompts.posters.sequences in brand-config.yaml
+
+  # ═══════════════════════════════════════════════════════════
+  # NEW DOMAIN-SPECIFIC ASSETS (Phase 3 additions)
+  # ═══════════════════════════════════════════════════════════
+
+  APP-ICON:
+    name: "App Icon"
+    generator: "identity"
+    model: "flux-2-pro"
+    tags: ["app", "saas", "mobile"]
+    priority: 9
+    required: false
+    aspect: "square_hd"
+    cost_usd: 0.05
+    prompt_key: "app_icon"
+
+  OG-IMAGE:
+    name: "Open Graph Image"
+    generator: "photography"
+    model: "nano-banana-pro"
+    tags: ["web", "dtc", "saas", "marketplace", "app"]
+    priority: 7
+    required: false
+    aspect: "landscape_16_9"
+    cost_usd: 0.08
+    prompt_key: "og_image"
+
+  IG-STORY:
+    name: "Instagram Story Template"
+    generator: "posters"
+    model: "nano-banana-pro"
+    tags: ["social", "dtc", "lifestyle", "app", "marketplace"]
+    priority: 6
+    required: false
+    aspect: "portrait_hd"
+    cost_usd: 0.08
+    prompt_key: "ig_story"
+
+  APP-SCREENSHOT:
+    name: "App Store Screenshot"
+    generator: "products"
+    model: "nano-banana-pro"
+    tags: ["app", "mobile"]
+    priority: 8
+    required: false
+    aspect: "portrait_hd"
+    cost_usd: 0.08
+    prompt_key: "app_screenshot"
+
+  PITCH-HERO:
+    name: "Pitch Deck Hero Slide"
+    generator: "posters"
+    model: "nano-banana-pro"
+    tags: ["saas", "enterprise", "crowdfunding"]
+    priority: 6
+    required: false
+    aspect: "landscape_16_9"
+    cost_usd: 0.08
+    prompt_key: "pitch_hero"
+
+  TWITTER-HEADER:
+    name: "Twitter/X Header Banner"
+    generator: "photography"
+    model: "nano-banana-pro"
+    tags: ["social", "web", "dtc", "saas"]
+    priority: 5
+    required: false
+    aspect: "landscape_16_9"
+    cost_usd: 0.08
+    prompt_key: "twitter_header"
+
+  EMAIL-HERO:
+    name: "Email Header Hero"
+    generator: "narrative"
+    model: "nano-banana-pro"
+    tags: ["dtc", "ecommerce", "crowdfunding", "saas"]
+    priority: 5
+    required: false
+    aspect: "landscape_16_9"
+    cost_usd: 0.08
+    prompt_key: "email_hero"
