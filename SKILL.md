@@ -1,166 +1,136 @@
 ---
 name: brandmint
-description: Use when creating a complete visual brand identity system with AI-generated assets. Generates prompt cookbooks, Python generation scripts, and executes FAL.AI pipelines for any brand — from config to 50+ production assets.
+description: End-to-end brand identity orchestration system. Generates text strategy, visual assets, campaign copy, and publishing outputs using 44 specialized skills across 9 categories. Chains FAL.AI/Nano Banana/Flux visual generation with brand positioning, buyer personas, and campaign workflows via wave-based execution.
 ---
 
 # Brandmint
 
-End-to-end visual brand generation system. Transform a brand definition into 50+ production-ready visual assets using FAL.AI models (Nano Banana Pro, Flux 2 Pro, Recraft V3).
+Orchestrated brand identity system that transforms a brand definition into comprehensive marketing outputs — from strategic text documents through AI-generated visual assets to published documentation sites.
+
+## Architecture Overview
+
+```
+brand-config.yaml
+       |
+  Wave Planner ──── Scenario Recommender
+       |                    |
+  ┌────┴────┐         (selects skills
+  │  Waves  │          for scenario)
+  │  1 → 6  │
+  └────┬────┘
+       |
+  Skills Registry (44 skills, 9 categories)
+       |
+  Hydrator (feeds outputs into config)
+       |
+  Generate Pipeline (FAL.AI visual assets)
+       |
+  Publishing Pipeline (wiki → Astro site)
+```
 
 ## Prerequisites
 
 - Python 3.10+ with `uv` package manager
 - FAL_KEY in `~/.claude/.env`
 - Dependencies: `python-dotenv`, `fal-client`, `requests`, `pyyaml`
-- macOS: `brew install librsvg` (for SVG-to-PNG conversion)
+- Bun (for Astro wiki publishing)
 
-Install dependencies:
 ```bash
 uv venv .venv && source .venv/bin/activate
 uv pip install python-dotenv fal-client requests pyyaml
 ```
 
+## Skill Categories (44 skills)
+
+| Category | Count | Purpose |
+|----------|-------|---------|
+| `text-strategy/` | 7 | Brand positioning, personas, voice, competitive analysis |
+| `visual-prompters/` | 9 | AI image prompt generation (product, fashion, editorial, brand) |
+| `campaign-copy/` | 6 | Campaign page copy, ads, hooks, press releases |
+| `email-sequences/` | 3 | Welcome, pre-launch, and launch email sequences |
+| `brand-foundation/` | 3 | Visual identity, brand naming, logo concept design |
+| `social-growth/` | 5 | Social content calendar, community, influencer outreach |
+| `advertising/` | 5 | Pre-launch ads, competitive ad extraction, niche validation |
+| `publishing/` | 2 | Wiki doc generation + Astro site builder |
+| `visual-pipeline/` | 4 | AI visual asset generation + integration orchestrator |
+
 ## Workflow Routing
 
-Route based on intent:
+- **"Create a brand for [X]"** → Full orchestration: Waves 1-6 → visual pipeline → publishing
+- **"Generate assets for [X]"** → Execute visual pipeline only (needs existing config)
+- **"Build wiki from outputs"** → Publishing pipeline: wiki-doc-generator → markdown-to-astro-wiki
+- **"Run [skill-name] for [X]"** → Individual skill execution
 
-- "Create a visual brand for [X]" or "Build brand assets for [X]" -> **Full Pipeline** (Phase 1-4)
-- "Generate assets for [X]" or "Run the pipeline for [X]" -> **Execute Only** (Phase 3-4, needs existing config)
-- "Add [type] to [X] brand" or "Extend [X] brand with [type]" -> **Extend** (add template + generate)
+## Wave Execution
 
----
+Skills execute in dependency-ordered waves:
 
-## Phase 1: Brand Definition
+| Wave | Skills | Purpose |
+|------|--------|---------|
+| 1 | buyer-persona, competitor-analysis | Foundation research |
+| 2 | product-positioning-summary, mds-messaging-direction-summary | Strategic positioning |
+| 3 | voice-and-tone, visual-identity-core | Brand personality |
+| 4 | campaign-page-copy, detailed-product-description | Core copy |
+| 5 | email sequences, social-content-engine, ads | Channels |
+| 6 | Visual pipeline, publishing pipeline | Assets & output |
 
-Create the brand config file that drives everything.
+## Hydrator
 
-**Option A — Interactive:** Run `scripts/init_brand.py`
-```bash
-python3 scripts/init_brand.py --output ./my-brand/brand-config.yaml
-```
+The hydrator feeds text skill outputs back into `brand-config.yaml` for downstream consumption:
 
-**Option B — Manual:** Create `brand-config.yaml` using the schema in `assets/brand-config-schema.yaml`.
-See `assets/example-tryambakam-noesis.yaml` for a working reference.
+| Skill Output | Config Section |
+|-------------|---------------|
+| buyer-persona | `hydrated.buyer_persona` |
+| product-positioning-summary | `hydrated.positioning` |
+| mds-messaging-direction-summary | `hydrated.messaging` |
+| voice-and-tone | `hydrated.voice` |
+| competitor-analysis | `hydrated.competitors` |
 
-**Option C — From conversation:** Extract brand details from user conversation, populate the YAML programmatically.
-
-Present the config to the user for approval before proceeding.
-
-### Required Config Sections
-
-| Section | Purpose | Critical Fields |
-|---------|---------|----------------|
-| `brand` | Identity | name, tagline, archetype, voice, domain |
-| `theme` | Visual direction | name, description, metaphor, mood_keywords |
-| `palette` | Colors | primary/secondary/accent/support/signal with name, hex, role |
-| `typography` | Fonts | header, body, data fonts with weights |
-| `materials` | Physical vocabulary | List of 8-15 material descriptors |
-| `photography` | Camera direction | style, environment, constraint, camera |
-| `illustration` | Illustration direction | style, references |
-| `negative_prompt` | What to avoid | Multi-line string of negative terms |
-| `generation` | Technical settings | output_dir, seeds, resolution, env_file |
-| `prompts` | What to generate | Categories with enabled prompt types |
-
----
-
-## Phase 2: Cookbook + Script Generation
-
-Read config, apply prompt templates, generate Python scripts and markdown cookbook.
+## Visual Generation Pipeline
 
 ```bash
-python3 scripts/generate_pipeline.py ./my-brand/brand-config.yaml
+# Phase 1: Generate prompt cookbook + Python scripts
+python3 scripts/generate_pipeline.py ./brand-config.yaml
+
+# Phase 2: Execute (anchor first, then parallel batches)
+python3 scripts/run_pipeline.py execute --batch anchor
+python3 scripts/run_pipeline.py execute --batch identity  # parallel
+python3 scripts/run_pipeline.py execute --batch products   # parallel
+python3 scripts/run_pipeline.py execute --batch photography # parallel
+
+# Phase 3: Verify
+python3 scripts/run_pipeline.py verify --config ./brand-config.yaml
 ```
 
-This produces:
-- `my-brand/prompt-cookbook.md` — All prompts with model routing, aspect ratios, references
-- `my-brand/scripts/generate-anchor.py` — Style anchor (MUST run first)
-- `my-brand/scripts/generate-identity.py` — Brand identity assets (seal, logo)
-- `my-brand/scripts/generate-products.py` — Product concepts
-- `my-brand/scripts/generate-photography.py` — Product photography
-- `my-brand/scripts/generate-illustrations.py` — Illustrations + icons
-- `my-brand/scripts/generate-narrative.py` — Contact sheets + sequences
-- `my-brand/scripts/generate-posters.py` — Campaign posters
-
-### Prompt Templates
-
-All templates are in `references/prompt-templates.md`. Each uses `{variable}` substitution from the config. Templates cover 20+ asset types across 7 categories.
-
----
-
-## Phase 3: Execute Pipeline
-
-### Critical: Anchor First
-
-The style anchor (bento grid) MUST generate before all other assets. It establishes visual consistency.
+## Publishing Pipeline
 
 ```bash
-python3 scripts/run_pipeline.py execute --config ./my-brand/brand-config.yaml --batch anchor
+# Generate wiki markdown from brand outputs
+# (uses wiki-doc-generator skill)
+
+# Build Astro documentation site
+./skills/publishing/markdown-to-astro-wiki/scripts/init-astro-wiki.sh my-wiki
+./skills/publishing/markdown-to-astro-wiki/scripts/process-markdown.sh ./docs ./my-wiki/src/content/docs
+cd my-wiki && bun run build
 ```
 
-### Then: Parallel Batches
+## Key Files
 
-After anchor completes, dispatch remaining batches in parallel using `dispatching-parallel-agents`:
+| File | Purpose |
+|------|---------|
+| `scripts/generate_pipeline.py` | Template engine: config → prompts → generation scripts |
+| `scripts/run_pipeline.py` | Pipeline executor with batch dispatch |
+| `brandmint/core/wave_planner.py` | Dependency-ordered skill execution |
+| `brandmint/core/hydrator.py` | Feeds skill outputs into config |
+| `brandmint/core/skills_registry.py` | 3-source skill discovery (orchestrator + brand + Claude) |
+| `brandmint/core/scenario_recommender.py` | Scenario-based skill selection |
+| `brandmint/installer/setup_skills.py` | Symlink management for Claude Code discovery |
 
-```
-Agent 1: python3 scripts/run_pipeline.py execute --batch identity
-Agent 2: python3 scripts/run_pipeline.py execute --batch products
-Agent 3: python3 scripts/run_pipeline.py execute --batch photography
-Agent 4: python3 scripts/run_pipeline.py execute --batch illustration
-Agent 5: python3 scripts/run_pipeline.py execute --batch narrative
-Agent 6: python3 scripts/run_pipeline.py execute --batch posters
-```
+## Critical Learnings
 
-Each agent runs independently. No shared state between batches.
-
----
-
-## Phase 4: Verify + Report
-
-```bash
-python3 scripts/run_pipeline.py verify --config ./my-brand/brand-config.yaml
-```
-
-Check:
-- All expected files exist in output directory
-- PNG files have valid headers (magic bytes `89 50 4E 47`)
-- File sizes > 100KB (rules out broken/empty files)
-- SVG/WebP native files preserved alongside PNG conversions
-- Report total: X PNG + Y SVG + Z WebP = N total files
-
----
-
-## Critical Learnings (Read `references/learnings.md` for full details)
-
-These are hard-won patterns from production use. Violating them causes broken assets.
-
-1. **Recraft V3 returns SVG for `vector_illustration`, WebP for `digital_illustration`** — NO API parameter to override. Must detect and convert.
-2. **Recraft 1000-char prompt limit** — Prompts silently truncate. Always condense for Recraft.
-3. **Style anchor cascade** — Upload bento output via `fal_client.upload_file()`, pass as `image_urls=[anchor_url]` to all Nano Banana Pro calls.
-4. **SVG-to-PNG** — `rsvg-convert -w 2048 -h 2048 --keep-aspect-ratio file.svg -o file.png`
-5. **WebP-to-PNG** — `sips -s format png file.webp --out file.png` (macOS)
-6. **API keys** — Always `load_dotenv(os.path.expanduser("~/.claude/.env"))`. Never hardcode.
-7. **Seed strategy** — seed 42 (v1), seed 137 (v2). Two variations per prompt.
-
-See `references/model-routing-guide.md` for the complete model selection decision tree.
-
----
-
-## Extend Workflow
-
-Add new prompt types to an existing brand:
-
-1. Define new template in `references/prompt-templates.md` using existing variables
-2. Add entry to config `prompts` section
-3. Re-run `generate_pipeline.py` — only new scripts generated
-4. Execute new batch only
-
----
-
-## File Naming Convention
-
-All generated assets follow: `{ID}-{slug}-{model}-{variant}.{ext}`
-
-Examples:
-- `2A-brand-kit-bento-nanobananapro-v1.png`
-- `5D-1-vedic-engine-icons-recraft-v1.svg`
-- `9A-01-vimshottari-dasha-poster-v1.png`
+1. **Anchor cascade** — Style anchor bento MUST generate before all other visual assets
+2. **Recraft V3 returns SVG/WebP** — Must detect and convert to PNG
+3. **Recraft 1000-char limit** — Prompts silently truncate
+4. **Product identity in prompts** — Use `{product_hero_physical}` not generic descriptors
+5. **Nano Banana aspect ratios** — Use `16:9` format not Flux `landscape_16_9`
+6. **API keys** — Always `load_dotenv(os.path.expanduser("~/.claude/.env"))`

@@ -1,0 +1,36 @@
+{
+  "$schema": "asset-manifest-schema",
+  "description": "Output schema for visual-asset-generator. Catalogs all generated assets.",
+  "brand": "[BRAND_NAME]",
+  "generated_at": "[ISO_DATE]",
+  "output_dir": "assets/[BRAND_NAME]/",
+  "assets": [
+    {
+      "asset_id": "hero-001",
+      "type": "hero-image",
+      "service": "fal-flux",
+      "status": "completed|failed|processing",
+      "files": {
+        "primary": "images/hero-shots/hero-001.png",
+        "webp": "images/hero-shots/hero-001.webp",
+        "thumb_800": "images/hero-shots/hero-001-800.png",
+        "thumb_400": "images/hero-shots/hero-001-400.png"
+      },
+      "dimensions": { "width": 1920, "height": 1080 },
+      "prompt_used": "[the prompt that was used]",
+      "generation_params": {}
+    },
+    {
+      "asset_id": "model-001",
+      "type": "3d-model",
+      "service": "hunyuan3d",
+      "status": "completed|failed|processing",
+      "files": {
+        "glb": "3d-models/model-001/model.glb",
+        "render": "3d-models/model-001/render.png"
+      },
+      "prompt_used": "[the prompt that was used]",
+      "job_id": "[hunyuan3d job ID]"
+    }
+  ]
+}

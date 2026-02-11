@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[BRAND_NAME] — [TAGLINE]</title>
+
+  <!-- Google Fonts: Update family names from brand visual identity -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=[HEADER_FONT]:wght@300;400;600&family=[BODY_FONT]:wght@400;600&family=[ACCENT_FONT]&display=swap" rel="stylesheet">
+
+  <!-- model-viewer for 3D (load only if 3D models present) -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+  <style>
+    /* === Brand Visual Identity CSS === */
+    :root {
+      --brand-primary: [PRIMARY_HEX];
+      --brand-secondary: [SECONDARY_HEX];
+      --brand-accent: [ACCENT_HEX];
+      --brand-support: [SUPPORT_HEX];
+      --brand-warning: [WARNING_HEX];
+
+      --font-display: '[HEADER_FONT]', serif;
+      --font-body: '[BODY_FONT]', sans-serif;
+      --font-mono: '[ACCENT_FONT]', monospace;
+
+      --text-h1: 48px;
+      --text-h2: 36px;
+      --text-h3: 24px;
+      --text-body: 18px;
+      --text-small: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      line-height: 1.6;
+      color: var(--brand-secondary);
+      background-color: var(--brand-primary);
+    }
+
+    /* === Header === */
+    .header {
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--brand-support);
+    }
+
+    .header .logo {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--brand-secondary);
+      text-decoration: none;
+    }
+
+    .header nav a {
+      color: var(--brand-support);
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: var(--text-small);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .header nav a:hover {
+      color: var(--brand-accent);
+    }
+
+    /* === Hero Section === */
+    .hero {
+      position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg picture,
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: var(--text-h1);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--brand-secondary);
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--brand-support);
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--brand-accent);
+      color: var(--brand-primary);
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-small);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+
+    .cta:hover {
+      opacity: 0.85;
+    }
+
+    /* === Product Section === */
+    .product {
+      padding: 6rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      border: 1px solid var(--brand-support);
+      overflow: hidden;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .product-card .info {
+      padding: 1.5rem;
+    }
+
+    .product-card h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* === 3D Viewer Section === */
+    .model-section {
+      padding: 6rem 4rem;
+      text-align: center;
+      background: color-mix(in srgb, var(--brand-primary) 95%, var(--brand-secondary) 5%);
+    }
+
+    .model-section h2 {
+      font-family: var(--font-display);
+      font-size: var(--text-h2);
+      font-weight: 400;
+      margin-bottom: 2rem;
+    }
+
+    model-viewer {
+      width: 100%;
+      max-width: 800px;
+      height: 500px;
+      margin: 0 auto;
+      display: block;
+      --poster-color: transparent;
+    }
+
+    /* === Features Section === */
+    .features {
+      padding: 6rem 4rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 6rem;
+    }
+
+    .feature:nth-child(even) {
+      direction: rtl;
+    }
+
+    .feature:nth-child(even) > * {
+      direction: ltr;
+    }
+
+    .feature img {
+      width: 100%;
+      height: auto;
+    }
+
+    .feature h3 {
+      font-family: var(--font-display);
+      font-size: var(--text-h3);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .feature p {
+      color: var(--brand-support);
+    }
+
+    /* === Footer === */
+    .footer {
+      padding: 3rem 4rem;
+      border-top: 1px solid var(--brand-support);
+      text-align: center;
+      color: var(--brand-support);
+      font-size: var(--text-small);
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      .header { padding: 1.5rem 2rem; }
+      .hero { padding: 2rem; min-height: 60vh; }
+      .hero h1 { font-size: 32px; }
+      .product, .model-section, .features { padding: 3rem 2rem; }
+      .feature { grid-template-columns: 1fr; gap: 2rem; }
+      .feature:nth-child(even) { direction: ltr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="#" class="logo">[BRAND_NAME]</a>
+    <nav>
+      <a href="#product">Product</a>
+      <a href="#features">Features</a>
+      <a href="#explore">Explore</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg">
+      <picture>
+        <source srcset="[HERO_IMAGE_WEBP]" type="image/webp">
+        <img src="[HERO_IMAGE_PNG]" alt="[BRAND_NAME] — [ALT_TEXT]" loading="eager">
+      </picture>
+    </div>
+    <div class="hero-content">
+      <h1>[HEADLINE]</h1>
+      <p>[SUBHEADLINE]</p>
+      <a href="#product" class="cta">[CTA_TEXT]</a>
+    </div>
+  </section>
+
+  <!-- Product Section -->
+  <section class="product" id="product">
+    <h2>[PRODUCT_SECTION_TITLE]</h2>
+    <div class="product-grid">
+      <!-- Repeat for each product shot -->
+      <div class="product-card">
+        <picture>
+          <source srcset="[PRODUCT_IMAGE_WEBP]" type="image/webp">
+          <img src="[PRODUCT_IMAGE_PNG]" alt="[PRODUCT_ALT]" loading="lazy">
+        </picture>
+        <div class="info">
+          <h3>[PRODUCT_NAME]</h3>
+          <p>[PRODUCT_DESCRIPTION]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D Model Viewer (if 3D model available) -->
+  <section class="model-section" id="explore">
+    <h2>[3D_SECTION_TITLE]</h2>
+    <model-viewer
+      src="[MODEL_GLB_PATH]"
+      alt="[BRAND_NAME] 3D Model"
+      auto-rotate
+      camera-controls
+      shadow-intensity="1"
+      environment-image="neutral"
+    ></model-viewer>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <!-- Repeat feature blocks -->
+    <div class="feature">
+      <div>
+        <picture>
+          <source srcset="[FEATURE_IMAGE_WEBP]" type="image/webp">
+          <img src="[FEATURE_IMAGE_PNG]" alt="[FEATURE_ALT]" loading="lazy">
+        </picture>
+      </div>
+      <div>
+        <h3>[FEATURE_TITLE]</h3>
+        <p>[FEATURE_DESCRIPTION]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>[BRAND_NAME] &mdash; [FOOTER_TEXT]</p>
+  </footer>
+
+</body>
+</html>

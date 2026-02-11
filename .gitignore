@@ -8,3 +8,4 @@ generated/
 *.jpg
 !references/images/*.jpg
 !brands/**/*.png
+*.egg-info/

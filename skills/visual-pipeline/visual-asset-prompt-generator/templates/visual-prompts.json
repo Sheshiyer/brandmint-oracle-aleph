@@ -1,0 +1,75 @@
+{
+  "$schema": "visual-prompts-schema",
+  "description": "Output schema for visual-asset-prompt-generator. This template shows the expected structure.",
+  "brand": "[BRAND_NAME]",
+  "generated_at": "[ISO_DATE]",
+  "output_context": "[landing-page|pitch-deck|website|social]",
+  "brand_context": {
+    "colors": {
+      "primary": { "name": "", "hex": "" },
+      "secondary": { "name": "", "hex": "" },
+      "accent": { "name": "", "hex": "" },
+      "support": { "name": "", "hex": "" }
+    },
+    "mood_keywords": [],
+    "avoid": [],
+    "imagery_style": "",
+    "illustration_style": "",
+    "graphic_elements": "",
+    "product_essence": "",
+    "materials": []
+  },
+  "prompts": [
+    {
+      "asset_id": "hero-001",
+      "type": "hero-image",
+      "service": "fal-flux",
+      "prompt": "[Detailed generation prompt incorporating brand mood, colors, and style]",
+      "negative_prompt": "[Things to avoid from brand guidelines]",
+      "parameters": {
+        "width": 1920,
+        "height": 1080,
+        "guidance_scale": 7.5,
+        "num_inference_steps": 50,
+        "model": "flux-pro"
+      },
+      "brand_alignment": {
+        "primary_color": "#HEX",
+        "mood": "keyword",
+        "style": "description"
+      }
+    },
+    {
+      "asset_id": "product-001",
+      "type": "product-shot",
+      "service": "fal-flux",
+      "prompt": "[Product-focused prompt with material and feature details]",
+      "negative_prompt": "[Things to avoid]",
+      "parameters": {
+        "width": 1200,
+        "height": 800,
+        "guidance_scale": 7.5,
+        "num_inference_steps": 50,
+        "model": "flux-pro"
+      },
+      "brand_alignment": {
+        "primary_color": "#HEX",
+        "mood": "keyword",
+        "materials": []
+      }
+    },
+    {
+      "asset_id": "model-001",
+      "type": "3d-model",
+      "service": "hunyuan3d",
+      "prompt": "[Short English description under 200 chars for 3D generation]",
+      "parameters": {
+        "bbox_condition": [1.0, 0.8, 0.3]
+      },
+      "brand_alignment": {
+        "materials": [],
+        "finish": "matte|glossy|textured"
+      }
+    }
+  ]
+}

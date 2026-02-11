@@ -318,6 +318,22 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["logo_icon_path"] = _resolve_logo_path(logo_cfg.get("icon", ""), config_dir)
     v["has_logo_files"] = "true" if v["logo_primary_path"] else ""
 
+    # ── Product reference images (Phase 4 — actual product photos for model accuracy) ──
+    prod_refs = cfg.get("generation", {}).get("product_reference_images", [])
+    resolved_refs = []
+    for ref_path in prod_refs[:3]:  # Cap at 3 images
+        if os.path.isabs(ref_path):
+            resolved = ref_path
+        elif config_path:
+            resolved = os.path.join(os.path.dirname(config_path), ref_path)
+        else:
+            resolved = ref_path
+        if os.path.exists(resolved):
+            resolved_refs.append(resolved)
+        else:
+            print(f"  WARNING: Product ref not found: {ref_path}")
+    v["product_reference_images"] = resolved_refs
+
     # ── Domain tags (Phase 3) ──
     v["domain_tags"] = cfg.get("brand", {}).get("domain_tags", [])
 
@@ -378,6 +394,23 @@ def get_logo_url():
         _logo_url_cache = fal_client.upload_file(LOGO_PATH)
         return _logo_url_cache
     return None
+
+
+# Product reference images (actual product photos for Nano Banana Pro accuracy)
+PRODUCT_REF_PATHS = {product_ref_paths_literal}
+
+_product_ref_url_cache = None
+def get_product_ref_urls():
+    """Upload product reference images once and cache URLs for reuse."""
+    global _product_ref_url_cache
+    if _product_ref_url_cache is not None:
+        return _product_ref_url_cache
+    _product_ref_url_cache = []
+    for p in PRODUCT_REF_PATHS:
+        if os.path.exists(p):
+            print(f"  Uploading product ref: {{os.path.basename(p)}}")
+            _product_ref_url_cache.append(fal_client.upload_file(p))
+    return _product_ref_url_cache
 
 
 # Reference image mapping: prompt ID -> composition reference filename
@@ -542,7 +575,7 @@ PHASE 1: VISUAL STRATEGY
 3. Select Typography: {header_font} (headers, {header_display_weight}/{header_emphasis_weight}, {header_case}). {body_font} (body).
 
 PHASE 2: THE LAYOUT (6-MODULE GRID)
-Block 1 (The Hero): High-contrast photograph of a {hero_object_type} resting on
+Block 1 (The Hero): High-contrast photograph of a {product_hero_physical} resting on
 {hero_surface} inside {photo_environment}. Warm {accent_name} light.
 Materials: {materials_list}. Overlay "{brand_name}" wordmark in
 {secondary_name} ({secondary_hex}), {header_font} {header_display_weight}, {header_case}.
@@ -645,6 +678,14 @@ PROMPT_5D_ICONS = """{count} minimalist styled flat vector icons for {brand_name
 No shading, no gradients. Icons: {icon_list}. {secondary_name} background.
 Square frames with decorative corner accents. {data_font} labels."""
 
+PROMPT_5D_ICONS_FLUX = """{count} clean, modern feature icons for {brand_name} "{group_name}".
+Arranged in a {layout} grid on clean {secondary_name} ({secondary_hex}) background.
+Style: {icon_line_style}. Professional iconography, no cartoon elements.
+Each icon is a distinct, recognizable pictogram with consistent stroke weight.
+Primary: {primary_name} ({primary_hex}). Accent: {accent_name} ({accent_hex}).
+No text labels. No newspaper or stamp aesthetic. Clean minimalist precision.
+Icons: {icon_list}. {quality}."""
+
 PROMPT_7A_CONTACT = """{brand_name} editorial contact sheet. 3x3 grid, 9 panels,
 hands-only lifestyle photography inside {photo_environment}. No face -- only hands
 and forearms. Same hands all panels. 9 panels showing different moments of a
@@ -698,38 +739,44 @@ Central mark: simplified version of brand sigil ({sigil_description}).
 {accent_name} ({accent_hex}) highlight accents. {quality} quality.""",
 
     "og_image": """{brand_name} Open Graph social sharing preview. 1200x630 composition.
-{hero_object_type} scene with {theme_description}. "{brand_tagline}" headline
-in {header_font} {header_emphasis_weight}, {secondary_name} ({secondary_hex}) text on
-{primary_name} ({primary_hex}) overlay. Brand logo bottom-right.
+PRODUCT: {product_hero_name} -- {product_hero_physical}.
+The product must match the reference photos exactly. Do NOT substitute with any other device.
+"{brand_tagline}" headline in {header_font} {header_emphasis_weight},
+{secondary_name} ({secondary_hex}) text on {primary_name} ({primary_hex}) overlay.
+Brand mark bottom-right: {sigil_description}.
 {color_directive} Cinematic, shareable, attention-grabbing. {quality}.""",
 
     "ig_story": """{brand_name} Instagram Story template. Vertical 9:16 composition.
 {primary_name} ({primary_hex}) background with subtle material texture.
 {accent_name} ({accent_hex}) border frame. {poster_border}. Content area
-centered with space for text overlay. Brand sigil watermark bottom.
+centered with space for text overlay. Bottom watermark: {sigil_description}.
 {header_font} typography. {mood_keywords}. Premium social media design. {quality}.""",
 
     "app_screenshot": """{brand_name} App Store screenshot. Mobile phone frame showing
 brand-themed UI with {primary_name} ({primary_hex}) background,
 {accent_name} ({accent_hex}) CTA buttons, {secondary_name} ({secondary_hex}) text.
 {header_font} typography. Clean modern mobile interface design.
-{icon_line_style}. {quality}.""",
+Product context: {product_hero_name}. {icon_line_style}. {quality}.""",
 
     "pitch_hero": """{brand_name} pitch deck hero slide. 16:9 landscape composition.
-{hero_object_type} as dramatic center piece. {theme_description}.
+PRODUCT: {product_hero_name} -- {product_hero_physical}.
+The product must match the reference photos exactly. Do NOT substitute with any other device.
 "{hero_headline}" in {header_font} {header_display_weight}, {header_case},
 {secondary_name} ({secondary_hex}) text. {primary_name} ({primary_hex}) background.
 {color_directive} Presentation-quality, cinematic. {quality}.""",
 
     "twitter_header": """{brand_name} Twitter/X header banner. 1500x500 panoramic.
-{hero_object_type} scene with {theme_description}. "{brand_tagline}" in
-{header_font} {header_emphasis_weight}. Brand sigil right-aligned.
+PRODUCT: {product_hero_name} -- {product_hero_physical}.
+The product must match the reference photos exactly. Do NOT substitute with any other device.
+"{brand_tagline}" in {header_font} {header_emphasis_weight}.
+Brand mark right-aligned: {sigil_description}.
 {color_directive} {primary_name} overlay gradient. Cinematic. {quality}.""",
 
     "email_hero": """{brand_name} email header hero image. 600px wide landscape composition.
-{hero_object_type} with {theme_description}. Warm {accent_name} ({accent_hex})
-lighting. {primary_name} ({primary_hex}) tonal background. Brand sigil
-subtly placed. Materials: {materials_list}. Clean, inviting. {quality}.""",
+PRODUCT: {product_hero_name} -- {product_hero_physical}.
+The product must match the reference photos exactly. Do NOT substitute with any other device.
+Warm {accent_name} ({accent_hex}) lighting. {primary_name} ({primary_hex}) tonal background.
+Brand mark: {sigil_description}. Materials: {materials_list}. Clean, inviting. {quality}.""",
 }
 
 
@@ -749,6 +796,19 @@ def _get_asset_ids(asset_groups, generator_name, legacy_ids):
         return legacy_ids
     group = asset_groups.get(generator_name, [])
     return {aid for aid, _ in group}
+
+
+def _flux_to_nb_aspect(aspect):
+    """Convert Flux 2 Pro aspect names to Nano Banana Pro ratio format."""
+    mapping = {
+        "landscape_16_9": "16:9",
+        "landscape_4_3": "4:3",
+        "portrait_hd": "9:16",
+        "portrait_4_3": "3:4",
+        "square": "1:1",
+        "square_hd": "1:1",
+    }
+    return mapping.get(aspect, aspect)  # Pass through if already ratio format
 
 
 def _get_new_assets(asset_groups, generator_name):
@@ -925,9 +985,10 @@ def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
         safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
         new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
         if model == "nano-banana-pro":
+            nb_aspect = _flux_to_nb_aspect(aspect)
             new_asset_code += f'''
     print("\\n--- {aid}: {adef.get('name', aid)} (Nano Banana Pro) ---")
-    gen_nano_banana("{aid}", "{slug}", PROMPT_{slug.upper()}, "{aspect}", image_urls)
+    gen_nano_banana("{aid}", "{slug}", PROMPT_{slug.upper()}, "{nb_aspect}", image_urls)
 '''
         else:
             new_asset_code += f'''
@@ -955,6 +1016,9 @@ def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
     logo_url = get_logo_url()
     if logo_url:
         image_urls.append(logo_url)
+    # Product reference images for model accuracy
+    for purl in get_product_ref_urls():
+        image_urls.append(purl)
 '''
 
     gen_3a = f'''
@@ -1026,7 +1090,7 @@ def gen_photography_script(scripts_dir, v, cfg, asset_groups=None):
             prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
         else:
             continue
-        aspect = adef.get("aspect", "landscape_16_9")
+        aspect = _flux_to_nb_aspect(adef.get("aspect", "landscape_16_9"))
         slug = aid.lower().replace("-", "_")
         safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
         new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
@@ -1076,6 +1140,9 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         anchor_urls.append(logo_url)
+    # Product reference images for model accuracy
+    for purl in get_product_ref_urls():
+        anchor_urls.append(purl)
 {gen_4a}{gen_4b}{new_asset_code}
     print("\\n" + "=" * 60)
     print("  PHOTOGRAPHY COMPLETE")
@@ -1102,8 +1169,10 @@ def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
     illus_cfg = cfg.get("prompts", {}).get("illustration", {})
     if isinstance(illus_cfg, dict):
         icon_groups = illus_cfg.get("icon_groups", [])
+        icon_gen_model = illus_cfg.get("icon_generation_model", "flux")  # Default: flux (PNG), opt-in: recraft_vector (SVG)
     else:
         icon_groups = []
+        icon_gen_model = "flux"
 
     # Build 5D icon generation code (depth-gated at generation time)
     icon_code = ""
@@ -1124,28 +1193,65 @@ def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
             count = len(icons)
             layout = "2x2" if count <= 4 else "3x2" if count <= 6 else "4x2"
 
-            # Render the PROMPT_5D_ICONS template
-            icon_prompt = render(PROMPT_5D_ICONS, {
-                **v,
-                "count": str(count),
-                "group_name": gname,
-                "layout": layout,
-                "icon_list": icon_list_str,
-            })[:990]  # Recraft limit
-
             batch_id = f"5D-{gi+1}"
             slug = slugify(gname)
-            # Escape triple quotes inside prompts for safe embedding
-            safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
 
-            icon_code += f'''
-    # {batch_id}: {gname} Icons (Recraft V3 vector)
+            # Choose prompt template and generation code based on icon model
+            if icon_gen_model == "recraft_vector":
+                icon_prompt = render(PROMPT_5D_ICONS, {
+                    **v, "count": str(count), "group_name": gname,
+                    "layout": layout, "icon_list": icon_list_str,
+                })[:990]  # Recraft 1000-char limit
+                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
+                icon_code += f'''
+    # {batch_id}: {gname} Icons (Recraft V3 vector — SVG opt-in)
     print("\\n--- {batch_id}: {gname} Icons (Recraft V3 vector) ---")
     gen_recraft("{batch_id}", "{slug}-icons",
                 """{safe_prompt}""",
                 "vector_illustration",
                 ["{v['primary_hex']}", "{v['secondary_hex']}"],
                 "square_hd")
+'''
+            elif icon_gen_model == "recraft_digital":
+                icon_prompt = render(PROMPT_5D_ICONS, {
+                    **v, "count": str(count), "group_name": gname,
+                    "layout": layout, "icon_list": icon_list_str,
+                })[:990]
+                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
+                icon_code += f'''
+    # {batch_id}: {gname} Icons (Recraft V3 digital illustration)
+    print("\\n--- {batch_id}: {gname} Icons (Recraft V3 digital) ---")
+    gen_recraft("{batch_id}", "{slug}-icons",
+                """{safe_prompt}""",
+                "digital_illustration",
+                ["{v['primary_hex']}", "{v['secondary_hex']}"],
+                "square_hd")
+'''
+            elif icon_gen_model == "flux":
+                icon_prompt = render(PROMPT_5D_ICONS_FLUX, {
+                    **v, "count": str(count), "group_name": gname,
+                    "layout": layout, "icon_list": icon_list_str,
+                })
+                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
+                icon_code += f'''
+    # {batch_id}: {gname} Icons (Flux 2 Pro — default, PNG only)
+    print("\\n--- {batch_id}: {gname} Icons (Flux 2 Pro) ---")
+    gen_flux_pro("{batch_id}", "{slug}-icons",
+                 """{safe_prompt}""",
+                 "square_hd")
+'''
+            elif icon_gen_model == "nano_banana":
+                icon_prompt = render(PROMPT_5D_ICONS_FLUX, {
+                    **v, "count": str(count), "group_name": gname,
+                    "layout": layout, "icon_list": icon_list_str,
+                })
+                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
+                icon_code += f'''
+    # {batch_id}: {gname} Icons (Nano Banana Pro with style anchor)
+    print("\\n--- {batch_id}: {gname} Icons (Nano Banana Pro) ---")
+    gen_nano_banana("{batch_id}", "{slug}-icons",
+                    """{safe_prompt}""",
+                    "1:1", image_urls)
 '''
 
     header = render(SCRIPT_HEADER, {
@@ -1154,6 +1260,9 @@ def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
     })
     func_rc = render(FUNC_RECRAFT, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
+    func_flux = ""
+    if icon_gen_model == "flux":
+        func_flux = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
 
     main_body = f'''
 PROMPT_5A = """{prompt_5a}"""
@@ -1217,7 +1326,7 @@ if __name__ == "__main__":
     main()
 '''
     write_script(os.path.join(scripts_dir, "generate-illustrations.py"),
-                 header + func_rc + func_nb + main_body)
+                 header + func_rc + func_nb + func_flux + main_body)
 
 
 def gen_narrative_script(scripts_dir, v, cfg, asset_groups=None):
@@ -1243,7 +1352,7 @@ def gen_narrative_script(scripts_dir, v, cfg, asset_groups=None):
             prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
         else:
             continue
-        aspect = adef.get("aspect", "landscape_16_9")
+        aspect = _flux_to_nb_aspect(adef.get("aspect", "landscape_16_9"))
         slug = aid.lower().replace("-", "_")
         safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
         new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
@@ -1291,6 +1400,9 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         image_urls.append(logo_url)
+    # Product reference images for model accuracy
+    for purl in get_product_ref_urls():
+        image_urls.append(purl)
 {gen_7a}{new_asset_code}
     print("\\n" + "=" * 60)
     print("  NARRATIVE COMPLETE")
@@ -1309,9 +1421,11 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
     # Posters always generate (9A/10A come from config, not registry)
 
     seeds = cfg["generation"].get("seeds", [42, 137])
-    prompt_8a = render(PROMPT_8A_SEEKER, v)
-    prompt_9a = render(PROMPT_9A_ENGINE, v)
-    prompt_10 = render(PROMPT_10_SEQUENCE, v)
+    # Check for brand-specific prompt overrides (Phase 4 — detemplatization)
+    extended = v.get("extended_prompts", {})
+    prompt_8a = render(extended["prompt_8a"], v) if "prompt_8a" in extended else render(PROMPT_8A_SEEKER, v)
+    prompt_9a = render(extended["prompt_9a"], v) if "prompt_9a" in extended else render(PROMPT_9A_ENGINE, v)
+    prompt_10 = render(extended["prompt_10"], v) if "prompt_10" in extended else render(PROMPT_10_SEQUENCE, v)
     out_sub = cfg["generation"].get("output_dir", "generated")
 
     # Load engine definitions from config
@@ -1368,7 +1482,7 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
             prompt_text = render(DEFAULT_EXTENDED_PROMPTS[pkey], v)
         else:
             continue
-        aspect = adef.get("aspect", "portrait_hd")
+        aspect = _flux_to_nb_aspect(adef.get("aspect", "portrait_hd"))
         slug = aid.lower().replace("-", "_")
         safe_prompt = prompt_text.replace('"""', '\\"\\"\\"')
         new_prompt_defs += f'\nPROMPT_{slug.upper()} = """{safe_prompt}"""\n'
@@ -1418,6 +1532,9 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         image_urls.append(logo_url)
+    # Product reference images for model accuracy
+    for purl in get_product_ref_urls():
+        image_urls.append(purl)
 {gen_8a}
     # 9A: Individual engine posters (with composition reference)
     if ENGINES:
@@ -1695,6 +1812,10 @@ def main():
             ref_dict[k] = val
     ref_literal = ("{\n" + "".join(f'    "{k}": "{val}",\n' for k, val in ref_dict.items()) + "}") if ref_dict else "{}"
     v["ref_overrides_literal"] = ref_literal
+
+    # Build product reference paths literal for generated scripts
+    prod_refs = v.get("product_reference_images", [])
+    v["product_ref_paths_literal"] = repr(prod_refs) if prod_refs else "[]"
 
     if args.output_dir:
         out_dir = os.path.abspath(args.output_dir)

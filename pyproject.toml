@@ -1,14 +1,28 @@
 [project]
 name = "brandmint"
-version = "0.1.0"
-description = "Mint production-ready visual brand assets from a single YAML config"
+version = "4.0.0"
+description = "Unified brand creation orchestrator — text skills, visual assets, campaigns"
 requires-python = ">=3.10"
 dependencies = [
-    "python-dotenv",
-    "fal-client",
-    "requests",
-    "pyyaml",
+    "typer>=0.9.0",
+    "rich>=13.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "requests>=2.28",
+    "fal-client>=0.4.0",
 ]
 
 [project.scripts]
-brandmint = "scripts.run_pipeline:main"
+brandmint = "brandmint.cli.app:main"
+bm = "brandmint.cli.app:main"
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["brandmint*"]
