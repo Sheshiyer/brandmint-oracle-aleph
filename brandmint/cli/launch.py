@@ -48,6 +48,9 @@ def run_launch(
     waves: Optional[str] = None,
     dry_run: bool = False,
     json_output: bool = False,
+    max_cost: Optional[float] = None,
+    resume_from: Optional[int] = None,
+    webhook: Optional[str] = None,
 ) -> None:
     """Full pipeline wizard -- orchestrate text skills + visual assets.
 
@@ -57,6 +60,9 @@ def run_launch(
         waves: Optional wave range string (e.g. ``"1-3"``, ``"4"``).
         dry_run: Show plan without executing.
         json_output: Agent-compatible JSON output.
+        max_cost: Abort if estimated cost exceeds this budget (USD).
+        resume_from: Resume execution from this wave number.
+        webhook: URL to POST completion notification.
     """
     from ..cli.ui import (
         render_brand_banner,
@@ -112,7 +118,20 @@ def run_launch(
     render_wave_table(wave_plan, console)
     render_cost_summary(wave_plan, console)
 
-    # -- 6. Dry-run gate -----------------------------------------------------
+    # -- 6a. Cost budget gate ------------------------------------------------
+    if max_cost is not None:
+        total_cost = sum(w.estimated_cost for w in wave_plan)
+        if total_cost > max_cost:
+            console.print(
+                f"\n[red bold]ABORT:[/red bold] Estimated cost ${total_cost:.2f} "
+                f"exceeds budget ${max_cost:.2f}\n"
+            )
+            return
+        console.print(
+            f"[green]✓[/green] Estimated cost ${total_cost:.2f} within budget ${max_cost:.2f}"
+        )
+
+    # -- 6b. Dry-run gate ----------------------------------------------------
     if dry_run:
         console.print(
             "\n[yellow]--dry-run: No execution. Plan displayed above.[/yellow]\n"
@@ -121,6 +140,13 @@ def run_launch(
 
     # -- 7. Wave selection ---------------------------------------------------
     wave_range = _parse_wave_range(waves)
+    
+    # Handle --resume-from flag
+    if resume_from is not None:
+        # Override wave range to start from resume point
+        max_wave = max(w.number for w in wave_plan)
+        wave_range = range(resume_from, max_wave + 1)
+        console.print(f"[cyan]Resuming from Wave {resume_from}[/cyan]")
 
     if wave_range is None and waves is None:
         # Interactive: let user choose.
@@ -153,6 +179,20 @@ def run_launch(
     # Persist scenario choice in state.
     if selected_scenario_id and state.scenario is None:
         state.scenario = selected_scenario_id
+
+    # -- 11. Webhook notification --------------------------------------------
+    if webhook:
+        from .notifications import send_webhook_notification
+        brand_name = cfg.get("brand", {}).get("name", "Unknown")
+        success = all(
+            w.get("status") == "completed" for w in state.waves.values()
+        )
+        send_webhook_notification(
+            webhook,
+            brand_name=brand_name,
+            success=success,
+            waves_completed=len([w for w in state.waves.values() if w.get("status") == "completed"]),
+        )
 
     console.print("\n[bold green]Launch complete.[/bold green]\n")
 

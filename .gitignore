@@ -9,3 +9,4 @@ generated/
 !references/images/*.jpg
 !brands/**/*.png
 *.egg-info/
+node_modules

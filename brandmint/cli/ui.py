@@ -3,14 +3,17 @@ Brandmint CLI -- Rich TUI display components.
 Reusable rendering functions for the launch wizard and wave executor.
 """
 from typing import List, Optional, Dict, Any
+from time import sleep
 
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.prompt import Prompt, IntPrompt
 from rich.text import Text
+from rich.live import Live
 
 from ..models.wave import Wave, WaveStatus
+from .icons import Icons, get_status_icon, get_status_style, format_status_line
 
 
 # ---------------------------------------------------------------------------
@@ -24,8 +27,14 @@ _TEXT_COST_PER_SKILL = 600
 # Brand banner
 # ---------------------------------------------------------------------------
 
-def render_brand_banner(config: dict, console: Console) -> None:
-    """Display brand header panel with name, domain tags, execution context, and palette."""
+def render_brand_banner(config: dict, console: Console, animated: bool = True) -> None:
+    """Display brand header panel with name, domain tags, execution context, and palette.
+    
+    Args:
+        config: Brand configuration dict
+        console: Rich console instance
+        animated: If True, show typing animation for brand name
+    """
     brand = config.get("brand", {})
     ec = config.get("execution_context", {})
     palette = config.get("theme", {}).get("palette", {})
@@ -45,16 +54,27 @@ def render_brand_banner(config: dict, console: Console) -> None:
             parts.append(f"[on #{h}]  [/on #{h}] {display}")
         swatches = "\n[bold]Palette:[/bold] " + "  ".join(parts)
 
+    # Animated brand name reveal
+    if animated:
+        console.print()
+        with Live(console=console, refresh_per_second=30, transient=True) as live:
+            for i in range(len(name) + 1):
+                text = Text()
+                text.append(f"  {Icons.BRAND} ", style="cyan")
+                text.append(name[:i].upper(), style="bold cyan")
+                text.append("▌" if i < len(name) else "", style="cyan dim")
+                live.update(text)
+                sleep(0.04)
+
     body = (
         f"[bold]{name.upper()}[/bold]\n\n"
-        f"[cyan]Domain:[/cyan] {', '.join(tags) if tags else 'general'}\n"
-        f"[cyan]Channel:[/cyan] {channel}  |  "
+        f"[cyan]{Icons.CHEVRON} Domain:[/cyan] {', '.join(tags) if tags else 'general'}\n"
+        f"[cyan]{Icons.CHEVRON} Channel:[/cyan] {channel}  {Icons.BULLET}  "
         f"[cyan]Depth:[/cyan] {depth}"
         f"{swatches}"
     )
 
-    console.print()
-    console.print(Panel(body, title="BRANDMINT -- Launch Wizard", border_style="cyan"))
+    console.print(Panel(body, title=f"{Icons.BRAND} BRANDMINT {Icons.DASH} Launch Wizard", border_style="cyan"))
 
 
 # ---------------------------------------------------------------------------
@@ -184,21 +204,12 @@ def render_wave_progress(wave: Wave, state: dict, console: Console) -> None:
 
 
 def _format_status_line(item_id: str, info: dict) -> str:
-    """Format a single skill/asset status line."""
+    """Format a single skill/asset status line using standardized icons."""
     status = info.get("status", "pending")
     duration = info.get("duration_seconds")
     error = info.get("error")
-
-    if status == "completed":
-        dur_str = f" ({duration:.1f}s)" if duration else ""
-        return f"  [green]v[/green] {item_id}{dur_str}"
-    elif status == "in_progress":
-        return f"  [yellow]...[/yellow] {item_id}"
-    elif status == "failed":
-        err_str = f" - {error}" if error else ""
-        return f"  [red]x[/red] {item_id}{err_str}"
-    else:
-        return f"  [dim]o[/dim] {item_id}"
+    
+    return format_status_line(item_id, status, duration, error)
 
 
 # ---------------------------------------------------------------------------
@@ -249,6 +260,125 @@ def render_cost_summary(waves: List[Wave], console: Console) -> None:
 
     console.print()
     console.print(table)
+
+
+# ---------------------------------------------------------------------------
+# Dry-run cost preview (detailed per-asset breakdown)
+# ---------------------------------------------------------------------------
+
+# Asset cost per seed (mirrors VISUAL_ASSET_COSTS in wave_planner.py)
+_ASSET_COSTS = {
+    "2A": 0.08, "2B": 0.05, "2C": 0.05,
+    "3A": 0.05, "3B": 0.05, "3C": 0.05,
+    "4A": 0.08, "4B": 0.05,
+    "5A": 0.04, "5B": 0.08, "5C": 0.04,
+    "7A": 0.08, "8A": 0.08,
+    "APP-ICON": 0.05, "OG-IMAGE": 0.08, "IG-STORY": 0.08,
+    "APP-SCREENSHOT": 0.08, "PITCH-HERO": 0.08,
+    "TWITTER-HEADER": 0.08, "EMAIL-HERO": 0.08,
+}
+
+_ASSET_MODELS = {
+    "2A": "nano-banana-pro", "2B": "flux-2-pro", "2C": "flux-2-pro",
+    "3A": "flux-2-pro", "3B": "flux-2-pro", "3C": "flux-2-pro",
+    "4A": "nano-banana-pro", "4B": "flux-2-pro",
+    "5A": "recraft-v3", "5B": "nano-banana-pro", "5C": "recraft-v3",
+    "7A": "nano-banana-pro", "8A": "nano-banana-pro",
+    "APP-ICON": "flux-2-pro", "OG-IMAGE": "nano-banana-pro",
+    "IG-STORY": "nano-banana-pro", "APP-SCREENSHOT": "nano-banana-pro",
+    "PITCH-HERO": "nano-banana-pro", "TWITTER-HEADER": "flux-2-pro",
+    "EMAIL-HERO": "nano-banana-pro",
+}
+
+
+def render_cost_preview(
+    waves: List[Wave],
+    seeds: int,
+    console: Console,
+    show_assets: bool = True,
+) -> None:
+    """Display detailed dry-run cost preview with per-asset breakdown.
+    
+    Args:
+        waves: List of Wave objects to preview
+        seeds: Number of seeds per asset
+        console: Rich console instance
+        show_assets: If True, show individual asset costs
+    """
+    console.print()
+    console.print(f"[bold cyan]{Icons.SPARKLE} Cost Preview[/bold cyan] (dry-run)")
+    console.print(f"[dim]Seeds per asset: {seeds}[/dim]\n")
+
+    if show_assets:
+        # Detailed asset table
+        asset_table = Table(show_header=True, title="Visual Asset Costs")
+        asset_table.add_column("Asset", style="cyan")
+        asset_table.add_column("Model", style="dim")
+        asset_table.add_column("× Seeds", justify="right")
+        asset_table.add_column("Cost", justify="right", style="green")
+
+        total_asset_cost = 0.0
+        all_assets = []
+        for w in waves:
+            all_assets.extend(w.visual_assets)
+
+        for asset_id in sorted(set(all_assets)):
+            model = _ASSET_MODELS.get(asset_id, "unknown")
+            cost_per = _ASSET_COSTS.get(asset_id, 0.08)
+            cost = cost_per * seeds
+            total_asset_cost += cost
+            asset_table.add_row(
+                asset_id,
+                model,
+                str(seeds),
+                f"${cost:.2f}",
+            )
+
+        asset_table.add_section()
+        asset_table.add_row(
+            f"[bold]{len(all_assets)} assets[/bold]",
+            "",
+            "",
+            f"[bold green]${total_asset_cost:.2f}[/bold green]",
+        )
+        console.print(asset_table)
+        console.print()
+
+    # Summary table
+    summary_table = Table(show_header=True, title="Cost Summary")
+    summary_table.add_column("Category")
+    summary_table.add_column("Items", justify="right")
+    summary_table.add_column("Cost", justify="right", style="green")
+
+    total_text = sum(len(w.text_skills) for w in waves)
+    total_visual = sum(len(w.visual_assets) for w in waves)
+    text_cost = total_text * (_TEXT_COST_PER_SKILL / 1000)  # Convert to dollars
+    visual_cost = sum(
+        _ASSET_COSTS.get(a, 0.08) * seeds
+        for w in waves
+        for a in w.visual_assets
+    )
+
+    summary_table.add_row(
+        f"{Icons.SKILL} Text Skills",
+        str(total_text),
+        f"${text_cost:.2f}",
+    )
+    summary_table.add_row(
+        f"{Icons.ASSET} Visual Assets",
+        str(total_visual),
+        f"${visual_cost:.2f}",
+    )
+    summary_table.add_section()
+    summary_table.add_row(
+        "[bold]Total[/bold]",
+        f"[bold]{total_text + total_visual}[/bold]",
+        f"[bold green]${text_cost + visual_cost:.2f}[/bold green]",
+    )
+
+    console.print(summary_table)
+    console.print()
+    console.print(f"[dim]{Icons.INFO} Actual costs may vary slightly based on provider and model.[/dim]")
 
 
 # ---------------------------------------------------------------------------

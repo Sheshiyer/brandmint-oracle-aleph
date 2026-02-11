@@ -51,7 +51,7 @@ def run_generate(config: Path, output_dir: Optional[str] = None, assets: Optiona
     sys.exit(result.returncode)
 
 
-def run_execute(config: Path, batch: str = "all", output_dir: Optional[str] = None):
+def run_execute(config: Path, batch: str = "all", output_dir: Optional[str] = None, force: bool = False):
     """Execute generated pipeline scripts."""
     scripts_dir = _resolve_scripts_dir()
     run_script = os.path.join(scripts_dir, "run_pipeline.py")
@@ -59,6 +59,8 @@ def run_execute(config: Path, batch: str = "all", output_dir: Optional[str] = No
     cmd = [sys.executable, run_script, "execute", "--config", str(config), "--batch", batch]
     if output_dir:
         cmd.extend(["--output-dir", output_dir])
+    if force:
+        cmd.append("--force")
 
     console.print(f"[dim]Running: {' '.join(cmd)}[/dim]")
     result = subprocess.run(cmd)

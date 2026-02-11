@@ -12,6 +12,10 @@ from rich.console import Console
 
 console = Console()
 
+# Global state for verbose/debug flags
+_verbose = False
+_debug = False
+
 # Main app
 app = typer.Typer(
     name="brandmint",
@@ -20,16 +24,34 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
+
+@app.callback()
+def main_callback(
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Enable verbose output"),
+    debug: bool = typer.Option(False, "--debug", help="Enable debug output (very detailed)"),
+    quiet: bool = typer.Option(False, "--quiet", "-q", help="Suppress most output"),
+):
+    """Brandmint — Unified brand creation orchestrator."""
+    global _verbose, _debug
+    _verbose = verbose
+    _debug = debug
+    
+    from .logging import setup_logging
+    setup_logging(verbose=verbose, debug=debug, quiet=quiet)
+
+
 # Subcommand groups
 plan_app = typer.Typer(help="Scenario planning and context analysis", no_args_is_help=True)
 visual_app = typer.Typer(help="Visual asset pipeline (generate, execute, preview)", no_args_is_help=True)
 registry_app = typer.Typer(help="Unified skill registry management", no_args_is_help=True)
 install_app = typer.Typer(help="Installation and setup utilities", no_args_is_help=True)
+cache_app = typer.Typer(help="Prompt and asset cache management", no_args_is_help=True)
 
 app.add_typer(plan_app, name="plan")
 app.add_typer(visual_app, name="visual")
 app.add_typer(registry_app, name="registry")
 app.add_typer(install_app, name="install")
+app.add_typer(cache_app, name="cache")
 
 
 # ━━━ Top-level commands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -41,10 +63,22 @@ def launch(
     waves: Optional[str] = typer.Option(None, "--waves", "-w", help="Wave range to run (e.g., 1-3, 3, 4-6)"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show plan without executing"),
     json_output: bool = typer.Option(False, "--json", help="Agent-compatible JSON output"),
+    max_cost: Optional[float] = typer.Option(None, "--max-cost", help="Abort if estimated cost exceeds budget (USD)"),
+    resume_from: Optional[int] = typer.Option(None, "--resume-from", help="Resume from specific wave number"),
+    webhook: Optional[str] = typer.Option(None, "--webhook", help="Webhook URL for completion notification"),
 ):
     """Full pipeline wizard — text skills + visual assets in orchestrated waves."""
     from .launch import run_launch
-    run_launch(config, scenario=scenario, waves=waves, dry_run=dry_run, json_output=json_output)
+    run_launch(
+        config, 
+        scenario=scenario, 
+        waves=waves, 
+        dry_run=dry_run, 
+        json_output=json_output,
+        max_cost=max_cost,
+        resume_from=resume_from,
+        webhook=webhook,
+    )
 
 
 @app.command()
@@ -56,11 +90,35 @@ def init(
     run_init(output)
 
 
+# ASCII Art Logo
+LOGO = """
+[cyan]╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   ██████╗ ██████╗  █████╗ ███╗   ██╗██████╗ ███╗   ███╗  ║
+║   ██╔══██╗██╔══██╗██╔══██╗████╗  ██║██╔══██╗████╗ ████║  ║
+║   ██████╔╝██████╔╝███████║██╔██╗ ██║██║  ██║██╔████╔██║  ║
+║   ██╔══██╗██╔══██╗██╔══██║██║╚██╗██║██║  ██║██║╚██╔╝██║  ║
+║   ██████╔╝██║  ██║██║  ██║██║ ╚████║██████╔╝██║ ╚═╝ ██║  ║
+║   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝     ╚═╝  ║
+║   [bold]██╗███╗   ██╗████████╗[/bold]                                 ║
+║   [bold]██║████╗  ██║╚══██╔══╝[/bold]    [white]Unified Brand Orchestrator[/white]   ║
+║   [bold]██║██╔██╗ ██║   ██║[/bold]                                    ║
+║   [bold]██║██║╚██╗██║   ██║[/bold]       [dim]text • visuals • campaigns[/dim]  ║
+║   [bold]██║██║ ╚████║   ██║[/bold]                                    ║
+║   [bold]╚═╝╚═╝  ╚═══╝   ╚═╝[/bold]                                    ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝[/cyan]
+"""
+
+
 @app.command()
 def version():
     """Show version information."""
     from .. import __version__
-    console.print(f"\n  Brandmint v[bold cyan]{__version__}[/bold cyan] — Unified Brand Orchestrator\n")
+    console.print(LOGO)
+    console.print(f"  [bold]Version:[/bold] [cyan]{__version__}[/cyan]")
+    console.print(f"  [bold]Python:[/bold]  [dim]{__import__('sys').version.split()[0]}[/dim]")
+    console.print()
 
 
 # ━━━ Plan subcommands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -111,10 +169,11 @@ def visual_execute(
     config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
     batch: str = typer.Option("all", "--batch", "-b", help="Batch to run: anchor, identity, products, etc."),
     output_dir: Optional[str] = typer.Option(None, "--output-dir", "-o"),
+    force: bool = typer.Option(False, "--force", "-f", help="Bypass cache, regenerate all assets"),
 ):
     """Execute generated pipeline scripts."""
     from .visual import run_execute
-    run_execute(config, batch=batch, output_dir=output_dir)
+    run_execute(config, batch=batch, output_dir=output_dir, force=force)
 
 
 @visual_app.command("preview")
@@ -190,6 +249,70 @@ def install_check():
     """Verify brandmint installation is complete."""
     from ..installer.setup_skills import check_installation
     check_installation(console=console)
+
+
+# ━━━ Report command ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+@app.command()
+def report(
+    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
+    format: str = typer.Option("markdown", "--format", "-f", help="Output format: markdown, json, html"),
+    output: Optional[Path] = typer.Option(None, "--output", "-o", help="Output file (default: stdout)"),
+):
+    """Generate execution report from state file."""
+    from .report import run_report
+    run_report(config, format=format, output=output)
+
+
+# ━━━ Cache subcommands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+@cache_app.command("stats")
+def cache_stats():
+    """Show cache statistics."""
+    from ..core.cache import get_prompt_cache
+    from rich.table import Table
+    
+    cache = get_prompt_cache()
+    stats = cache.stats()
+    
+    table = Table(title="📦 Prompt Cache Statistics", show_header=True, header_style="bold cyan")
+    table.add_column("Metric")
+    table.add_column("Value", justify="right")
+    
+    table.add_row("Total Entries", str(stats["total_entries"]))
+    table.add_row("Valid Entries", f"[green]{stats['valid_entries']}[/green]")
+    table.add_row("Expired Entries", f"[yellow]{stats['expired_entries']}[/yellow]")
+    table.add_row("Cache Size", f"{stats['total_size_mb']:.2f} MB")
+    table.add_row("Location", f"[dim]{stats['cache_dir']}[/dim]")
+    
+    console.print(table)
+
+
+@cache_app.command("clear")
+def cache_clear(
+    expired: bool = typer.Option(False, "--expired", help="Only clear expired entries"),
+    force: bool = typer.Option(False, "--force", "-f", help="Skip confirmation"),
+):
+    """Clear cached prompts."""
+    from ..core.cache import get_prompt_cache
+    from rich.prompt import Confirm
+    
+    cache = get_prompt_cache()
+    stats = cache.stats()
+    
+    if expired:
+        # Only clear expired
+        removed = cache.clear_expired()
+        console.print(f"[green]Cleared {removed} expired cache entries.[/green]")
+    else:
+        # Clear all
+        if not force and stats["total_entries"] > 0:
+            if not Confirm.ask(f"Clear all {stats['total_entries']} cache entries?"):
+                console.print("[dim]Cancelled.[/dim]")
+                return
+        
+        cache.clear_all()
+        console.print(f"[green]Cache cleared. Removed {stats['total_entries']} entries.[/green]")
 
 
 def main():

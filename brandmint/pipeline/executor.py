@@ -27,12 +27,14 @@ outputs into brand-config.yaml so visual prompts use strategy data.
 from __future__ import annotations
 
 import json
+import signal
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from rich.console import Console
 from rich.prompt import Confirm
@@ -48,6 +50,23 @@ from ..cli.ui import (
     render_skill_prompt,
     render_execution_summary,
 )
+from ..cli.icons import Icons
+from ..cli.spinners import create_wave_progress, create_skill_progress
+from ..cli.notifications import notify_completion, notify_error
+from ..cli.report import (
+    ExecutionReport, 
+    SkillExecution, 
+    AssetExecution,
+    save_report,
+)
+
+# Estimated costs per provider (USD per image)
+PROVIDER_COSTS = {
+    "fal": 0.08,
+    "openrouter": 0.05,
+    "openai": 0.08,
+    "replicate": 0.06,
+}
 
 # Root of the brandmint package (three levels up from this file).
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -120,9 +139,46 @@ class WaveExecutor:
         # Runtime state
         self.state = self._load_or_create_state()
         self.upstream_data: Dict[str, Any] = {}
+        self._interrupted = False
+        
+        # Cost tracking
+        self._actual_costs: Dict[str, float] = {}  # asset_id -> cost
+        self._provider = self.config.get("generation", {}).get("provider", "fal")
+        
+        # Execution report
+        self._report = ExecutionReport(
+            brand_name=self.config.get("brand", {}).get("name", "Unknown"),
+            scenario=execution_context.scenario_id or "custom",
+            started_at=datetime.now().isoformat(),
+        )
+
+        # Setup graceful interrupt handling
+        self._setup_signal_handlers()
 
         # Hydrate upstream_data from any pre-existing outputs on disk.
         self._load_existing_outputs()
+
+    def _setup_signal_handlers(self) -> None:
+        """Install signal handlers for graceful shutdown.
+        
+        Catches SIGINT (Ctrl+C) and SIGTERM to save state before exit.
+        """
+        def handler(signum, frame):
+            if self._interrupted:
+                # Second interrupt - force exit
+                self.console.print("\n[red]Force quit.[/red]")
+                sys.exit(130)
+            
+            self._interrupted = True
+            self.console.print(f"\n[yellow]{Icons.WARNING} Interrupted. Saving state...[/yellow]")
+            self._save_state()
+            self._finalize_report(success=False)
+            self.console.print(f"  [dim]State saved to: {self.state_path}[/dim]")
+            self.console.print(f"  [dim]Resume with: bm launch --config {self.config_path}[/dim]")
+            sys.exit(130)
+        
+        signal.signal(signal.SIGINT, handler)
+        signal.signal(signal.SIGTERM, handler)
 
     # ------------------------------------------------------------------
     # Public API
@@ -213,6 +269,33 @@ class WaveExecutor:
             self.console,
         )
 
+        # Finalize and save report
+        self._finalize_report(success=all_success)
+
+        # Send completion notification
+        total_assets = sum(
+            len([a for a in w.get("visual_assets", {}).values() if a.get("status") == "completed"])
+            for w in self.state.waves.values()
+        )
+        all_success = all(
+            w.get("status") == "completed" for w in self.state.waves.values()
+        )
+        brand_name = self.config.get("brand", {}).get("name", "Brand")
+        
+        if self.state.started_at:
+            from datetime import datetime as dt
+            start = dt.fromisoformat(self.state.started_at)
+            duration = (dt.now() - start).total_seconds()
+        else:
+            duration = None
+        
+        notify_completion(
+            brand_name,
+            success=all_success,
+            assets_generated=total_assets,
+            duration_seconds=duration,
+        )
+
         return self.state
 
     # ------------------------------------------------------------------
@@ -274,6 +357,13 @@ class WaveExecutor:
                 "completed",
                 duration_seconds=round(duration, 1),
             )
+            # Track in report
+            self._report.skills.append(SkillExecution(
+                skill_id=skill_id,
+                wave=wave_num,
+                status="success",
+                duration_seconds=round(duration, 1),
+            ))
             self.console.print(f"  [green]Captured output for {skill_id}[/green]")
             return True
 
@@ -285,6 +375,13 @@ class WaveExecutor:
             "skipped",
             duration_seconds=round(duration, 1),
         )
+        # Track in report
+        self._report.skills.append(SkillExecution(
+            skill_id=skill_id,
+            wave=wave_num,
+            status="skipped",
+            duration_seconds=round(duration, 1),
+        ))
         self.console.print(f"  [yellow]Skipped {skill_id} (no output found)[/yellow]")
         return False
 
@@ -296,8 +393,14 @@ class WaveExecutor:
         self,
         asset_ids: List[str],
         wave_num: int,
+        parallel: bool = True,
     ) -> bool:
         """Group assets into batches and dispatch to the visual pipeline.
+
+        Args:
+            asset_ids: List of asset IDs to generate.
+            wave_num: Wave number for state tracking.
+            parallel: If True, run independent batches in parallel.
 
         Returns ``True`` when every batch succeeds.
         """
@@ -317,96 +420,203 @@ class WaveExecutor:
             batch = self.ASSET_BATCH_MAP.get(aid, "misc")
             batches.setdefault(batch, []).append(aid)
 
+        # Anchor batch must run first (style reference)
+        anchor_batch = batches.pop("anchor", None)
+        if anchor_batch:
+            ok = self._run_single_batch("anchor", anchor_batch, wave_num, script_path)
+            if not ok:
+                return False
+        
+        # Run remaining batches (can be parallelized)
+        if not batches:
+            return True
+        
+        if parallel and len(batches) > 1:
+            return self._run_batches_parallel(batches, wave_num, script_path)
+        else:
+            return self._run_batches_sequential(batches, wave_num, script_path)
+    
+    def _run_batches_parallel(
+        self,
+        batches: Dict[str, List[str]],
+        wave_num: int,
+        script_path: Path,
+    ) -> bool:
+        """Execute batches in parallel using ThreadPoolExecutor."""
+        all_ok = True
+        max_workers = min(len(batches), 4)  # Cap at 4 parallel batches
+        
+        self.console.print(
+            f"  [cyan]Running {len(batches)} batches in parallel "
+            f"(max {max_workers} workers)...[/cyan]"
+        )
+        
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = {
+                executor.submit(
+                    self._run_single_batch, batch_name, batch_asset_ids, wave_num, script_path
+                ): batch_name
+                for batch_name, batch_asset_ids in batches.items()
+            }
+            
+            for future in as_completed(futures):
+                batch_name = futures[future]
+                try:
+                    ok = future.result()
+                    if not ok:
+                        all_ok = False
+                except Exception as exc:
+                    all_ok = False
+                    self.console.print(
+                        f"  [red]Batch '{batch_name}' exception: {exc}[/red]"
+                    )
+        
+        return all_ok
+    
+    def _run_batches_sequential(
+        self,
+        batches: Dict[str, List[str]],
+        wave_num: int,
+        script_path: Path,
+    ) -> bool:
+        """Execute batches sequentially."""
         all_ok = True
         for batch_name, batch_asset_ids in batches.items():
-            # Mark all assets in the batch as in-progress.
-            for aid in batch_asset_ids:
-                self._update_state(wave_num, aid, "visual_assets", "in_progress")
-
-            self.console.print(
-                f"  [cyan]Running visual batch '{batch_name}' "
-                f"({len(batch_asset_ids)} assets)...[/cyan]"
-            )
-
-            start_ts = time.monotonic()
-            cmd = [
-                sys.executable,
-                str(script_path),
-                "execute",
-                "--config",
-                str(self.config_path),
-                "--batch",
-                batch_name,
-            ]
-
-            try:
-                result = subprocess.run(
-                    cmd,
-                    capture_output=True,
-                    text=True,
-                    timeout=600,
-                )
-                duration = round(time.monotonic() - start_ts, 1)
-
-                if result.returncode == 0:
-                    for aid in batch_asset_ids:
-                        self._update_state(
-                            wave_num,
-                            aid,
-                            "visual_assets",
-                            "completed",
-                            duration_seconds=duration,
-                        )
-                    self.console.print(
-                        f"  [green]Batch '{batch_name}' completed "
-                        f"({duration}s)[/green]"
-                    )
-                else:
-                    all_ok = False
-                    error_msg = (result.stderr or result.stdout or "")[:300]
-                    for aid in batch_asset_ids:
-                        self._update_state(
-                            wave_num,
-                            aid,
-                            "visual_assets",
-                            "failed",
-                            error=error_msg,
-                        )
-                    self.console.print(
-                        f"  [red]Batch '{batch_name}' failed "
-                        f"(exit {result.returncode})[/red]"
-                    )
-                    if error_msg:
-                        self.console.print(f"  [dim]{error_msg}[/dim]")
-
-            except subprocess.TimeoutExpired:
+            ok = self._run_single_batch(batch_name, batch_asset_ids, wave_num, script_path)
+            if not ok:
                 all_ok = False
-                for aid in batch_asset_ids:
-                    self._update_state(
-                        wave_num,
-                        aid,
-                        "visual_assets",
-                        "failed",
-                        error="Subprocess timed out after 600s",
-                    )
-                self.console.print(
-                    f"  [red]Batch '{batch_name}' timed out.[/red]"
-                )
-            except Exception as exc:
-                all_ok = False
-                for aid in batch_asset_ids:
-                    self._update_state(
-                        wave_num,
-                        aid,
-                        "visual_assets",
-                        "failed",
-                        error=str(exc)[:300],
-                    )
-                self.console.print(
-                    f"  [red]Batch '{batch_name}' error: {exc}[/red]"
-                )
-
         return all_ok
+    
+    def _run_single_batch(
+        self,
+        batch_name: str,
+        batch_asset_ids: List[str], 
+        wave_num: int,
+        script_path: Path,
+    ) -> bool:
+        """Run a single batch of visual assets."""
+        # Mark all assets in the batch as in-progress.
+        for aid in batch_asset_ids:
+            self._update_state(wave_num, aid, "visual_assets", "in_progress")
+
+        self.console.print(
+            f"  [cyan]Running visual batch '{batch_name}' "
+            f"({len(batch_asset_ids)} assets)...[/cyan]"
+        )
+
+        start_ts = time.monotonic()
+        cmd = [
+            sys.executable,
+            str(script_path),
+            "execute",
+            "--config",
+            str(self.config_path),
+            "--batch",
+            batch_name,
+        ]
+
+        try:
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=600,
+            )
+            duration = round(time.monotonic() - start_ts, 1)
+
+            if result.returncode == 0:
+                # Calculate cost for this batch
+                batch_cost = len(batch_asset_ids) * PROVIDER_COSTS.get(self._provider, 0.08)
+                
+                for aid in batch_asset_ids:
+                    asset_cost = PROVIDER_COSTS.get(self._provider, 0.08)
+                    self._actual_costs[aid] = asset_cost
+                    self._update_state(
+                        wave_num,
+                        aid,
+                        "visual_assets",
+                        "completed",
+                        duration_seconds=duration,
+                        cost_usd=asset_cost,
+                    )
+                    # Track in report
+                    self._report.assets.append(AssetExecution(
+                        asset_id=aid,
+                        batch=batch_name,
+                        status="success",
+                        provider=self._provider,
+                        cost_usd=asset_cost,
+                        duration_seconds=duration / len(batch_asset_ids),
+                    ))
+                
+                self.console.print(
+                    f"  [green]Batch '{batch_name}' completed "
+                    f"({duration}s, ${batch_cost:.2f})[/green]"
+                )
+                return True
+            else:
+                error_msg = (result.stderr or result.stdout or "")[:300]
+                for aid in batch_asset_ids:
+                    self._update_state(
+                        wave_num,
+                        aid,
+                        "visual_assets",
+                        "failed",
+                        error=error_msg,
+                    )
+                    self._report.assets.append(AssetExecution(
+                        asset_id=aid,
+                        batch=batch_name,
+                        status="failed",
+                        provider=self._provider,
+                        error=error_msg[:100],
+                    ))
+                self.console.print(
+                    f"  [red]Batch '{batch_name}' failed "
+                    f"(exit {result.returncode})[/red]"
+                )
+                if error_msg:
+                    self.console.print(f"  [dim]{error_msg}[/dim]")
+                return False
+
+        except subprocess.TimeoutExpired:
+            for aid in batch_asset_ids:
+                self._update_state(
+                    wave_num,
+                    aid,
+                    "visual_assets",
+                    "failed",
+                    error="Subprocess timed out after 600s",
+                )
+                self._report.assets.append(AssetExecution(
+                    asset_id=aid,
+                    batch=batch_name,
+                    status="failed",
+                    error="Timeout",
+                ))
+            self.console.print(
+                f"  [red]Batch '{batch_name}' timed out.[/red]"
+            )
+            return False
+        except Exception as exc:
+            for aid in batch_asset_ids:
+                self._update_state(
+                    wave_num,
+                    aid,
+                    "visual_assets",
+                    "failed",
+                    error=str(exc)[:300],
+                )
+                self._report.assets.append(AssetExecution(
+                    asset_id=aid,
+                    batch=batch_name,
+                    status="failed",
+                    error=str(exc)[:100],
+                ))
+            self.console.print(
+                f"  [red]Batch '{batch_name}' error: {exc}[/red]"
+            )
+            return False
 
     # ------------------------------------------------------------------
     # Auto-hydration
@@ -435,6 +645,57 @@ class WaveExecutor:
         except Exception as exc:
             self.console.print(
                 f"  [red]Hydration failed: {exc}[/red]"
+            )
+
+    # ------------------------------------------------------------------
+    # Reporting
+    # ------------------------------------------------------------------
+
+    def _finalize_report(self, success: bool = True) -> None:
+        """Finalize and save the execution report."""
+        self._report.completed_at = datetime.now().isoformat()
+        self._report.status = "completed" if success else "failed"
+        
+        # Calculate totals
+        if self._report.started_at:
+            start = datetime.fromisoformat(self._report.started_at)
+            self._report.total_duration_seconds = (datetime.now() - start).total_seconds()
+        
+        # Costs
+        self._report.actual_cost_usd = sum(self._actual_costs.values())
+        self._report.estimated_cost_usd = sum(
+            w.get("estimated_cost", 0) for w in self.state.waves.values()
+        )
+        
+        # Count summaries
+        self._report.skills_succeeded = sum(
+            1 for s in self._report.skills if s.status == "success"
+        )
+        self._report.skills_failed = sum(
+            1 for s in self._report.skills if s.status == "failed"
+        )
+        self._report.skills_skipped = sum(
+            1 for s in self._report.skills if s.status == "skipped"
+        )
+        self._report.assets_generated = sum(
+            1 for a in self._report.assets if a.status == "success"
+        )
+        self._report.assets_failed = sum(
+            1 for a in self._report.assets if a.status == "failed"
+        )
+        
+        # Save report
+        save_report(self.config_path, self._report)
+        
+        # Display cost summary
+        if self._actual_costs:
+            variance = self._report.actual_cost_usd - self._report.estimated_cost_usd
+            color = "green" if variance <= 0 else "yellow"
+            self.console.print(
+                f"\n[bold]Cost Summary:[/bold] "
+                f"Estimated ${self._report.estimated_cost_usd:.2f} | "
+                f"Actual [{color}]${self._report.actual_cost_usd:.2f}[/] | "
+                f"Variance [{color}]${variance:+.2f}[/]"
             )
 
     # ------------------------------------------------------------------

@@ -5,10 +5,81 @@ All provider adapters inherit from ImageProvider and implement
 the generate() method with provider-specific API calls.
 """
 
+import time
+import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Any
+from functools import wraps
+from typing import Optional, Dict, Any, Callable, TypeVar
 from enum import Enum
+
+logger = logging.getLogger(__name__)
+
+T = TypeVar('T')
+
+
+# ---------------------------------------------------------------------------
+# Retry decorator with exponential backoff
+# ---------------------------------------------------------------------------
+
+def with_retry(
+    max_attempts: int = 3,
+    base_delay: float = 1.0,
+    max_delay: float = 30.0,
+    exponential_base: float = 2.0,
+    retryable_exceptions: tuple = (Exception,),
+) -> Callable[[Callable[..., T]], Callable[..., T]]:
+    """Decorator for retrying functions with exponential backoff.
+    
+    Args:
+        max_attempts: Maximum number of retry attempts (default: 3)
+        base_delay: Initial delay between retries in seconds (default: 1.0)
+        max_delay: Maximum delay cap in seconds (default: 30.0)
+        exponential_base: Multiplier for exponential backoff (default: 2.0)
+        retryable_exceptions: Tuple of exceptions that trigger retry
+        
+    Returns:
+        Decorated function that automatically retries on failure.
+        
+    Example:
+        @with_retry(max_attempts=3, base_delay=1.0)
+        def call_api():
+            return requests.post(...)
+    """
+    def decorator(func: Callable[..., T]) -> Callable[..., T]:
+        @wraps(func)
+        def wrapper(*args, **kwargs) -> T:
+            last_exception = None
+            
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except retryable_exceptions as e:
+                    last_exception = e
+                    
+                    if attempt == max_attempts:
+                        logger.error(
+                            f"{func.__name__} failed after {max_attempts} attempts: {e}"
+                        )
+                        raise
+                    
+                    # Calculate delay with exponential backoff
+                    delay = min(
+                        base_delay * (exponential_base ** (attempt - 1)),
+                        max_delay
+                    )
+                    
+                    logger.warning(
+                        f"{func.__name__} attempt {attempt}/{max_attempts} failed: {e}. "
+                        f"Retrying in {delay:.1f}s..."
+                    )
+                    time.sleep(delay)
+            
+            # Should never reach here, but just in case
+            raise last_exception  # type: ignore
+        
+        return wrapper
+    return decorator
 
 
 class ProviderName(str, Enum):
