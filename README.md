@@ -77,8 +77,9 @@ Pre-built execution profiles that select skills and set context:
 # 1. Install
 curl -sSL https://raw.githubusercontent.com/brandmint/brandmint/main/install.sh | bash
 
-# 2. Set your FAL API key
+# 2. Set your image provider API key (FAL.AI recommended, but supports multiple providers)
 echo "FAL_KEY=your_key_here" >> ~/.claude/.env
+# Or use: OPENROUTER_API_KEY, OPENAI_API_KEY, or REPLICATE_API_TOKEN
 
 # 3. Create a brand config
 bm init --output ./my-brand/brand-config.yaml
@@ -89,6 +90,29 @@ bm plan recommend --config ./my-brand/brand-config.yaml
 # 5. Launch full pipeline (text + visuals)
 bm launch --config ./my-brand/brand-config.yaml --scenario crowdfunding-lean
 ```
+
+## Image Providers
+
+Brandmint supports multiple image generation providers:
+
+| Provider | Style Anchor Support | Cost | Best For |
+|----------|---------------------|------|----------|
+| **FAL.AI** (default) | ✅ Full | $0.04-0.08/img | Maximum consistency |
+| **OpenRouter** | ❌ Text-only | $0.03-0.05/img | Single API key |
+| **OpenAI** | ⚠️ Limited | $0.04-0.08/img | Creative variations |
+| **Replicate** | ⚠️ Limited | $0.03-0.05/img | Budget batches |
+
+```bash
+# Set provider via env var
+export IMAGE_PROVIDER=openrouter
+
+# Or in brand-config.yaml
+generation:
+  provider: openrouter
+```
+
+See [docs/providers.md](docs/providers.md) for full provider documentation.
+
 
 Or run just the visual pipeline:
 

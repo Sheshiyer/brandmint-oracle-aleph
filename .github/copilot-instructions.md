@@ -99,15 +99,36 @@ Assets are filtered by `brand.domain_tags` in config. Only matching assets are g
 | `social` | IG-STORY, TWITTER-HEADER |
 | `enterprise` | PITCH-HERO, 2C |
 
+### Image Providers
+
+Brandmint supports multiple image generation providers. Set via env var or config:
+
+```bash
+# Environment variable
+export IMAGE_PROVIDER=fal  # or: openrouter, openai, replicate, auto
+
+# Or in brand-config.yaml
+generation:
+  provider: openrouter
+```
+
+| Provider | Env Var | Style Anchor | Notes |
+|----------|---------|--------------|-------|
+| **FAL.AI** (default) | `FAL_KEY` | ✅ Full | Best consistency, recommended |
+| **OpenRouter** | `OPENROUTER_API_KEY` | ❌ | Unified API, text-only prompts |
+| **OpenAI** | `OPENAI_API_KEY` | ⚠️ Limited | DALL-E 3 has fixed sizes |
+| **Replicate** | `REPLICATE_API_TOKEN` | ⚠️ Limited | Pay-per-second pricing |
+
+**Important:** Only FAL.AI's Nano Banana Pro supports image references (style anchor cascade). Other providers use text-only prompts.
+
 ### Cost Estimation
 
-| Item | Cost |
-|------|------|
-| Full brand run (19 assets × 2 seeds) | ~$2-3 |
-| Nano Banana Pro (complex layouts) | $0.08/image |
-| Flux 2 Pro (clean products) | $0.05/image |
-| Recraft V3 (vector illustrations) | $0.04/image |
-| Text skill execution | ~$600/skill (token estimate) |
+| Item | FAL | OpenRouter | OpenAI |
+|------|-----|------------|--------|
+| Full brand run (19 assets × 2 seeds) | ~$2-3 | ~$2-2.50 | ~$3-4 |
+| Nano Banana Pro equivalent | $0.08/img | $0.05/img | $0.08/img |
+| Flux 2 Pro equivalent | $0.05/img | $0.05/img | $0.04/img |
+| Recraft V3 equivalent | $0.04/img | $0.04/img | $0.04/img |
 
 Use `bm visual preview --config brand-config.yaml --json` for detailed cost breakdown.
 
