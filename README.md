@@ -7,85 +7,132 @@
 [![GitHub Copilot](https://img.shields.io/badge/Copilot-Compatible-black?logo=github)](#github-copilot)
 [![Cursor IDE](https://img.shields.io/badge/Cursor-Compatible-00D084)](#cursor-ide)
 
-> Mint production-ready visual brand assets from a single YAML config.
+> End-to-end brand identity orchestration — from strategy to visual assets to campaign copy.
 
-Brandmint transforms a `brand-config.yaml` definition into 19+ production-ready visual assets using [FAL.AI](https://fal.ai) image generation models. One config file defines your brand's colors, typography, photography style, and aesthetic language — the pipeline generates scripts that produce consistent, on-brand visuals across every asset type.
+Brandmint transforms a single `brand-config.yaml` into comprehensive marketing outputs using **44 specialized skills across 9 categories**. The system chains text strategy (buyer personas, positioning, voice) through AI-generated visual assets (via FAL.AI) to campaign copy and publishing pipelines.
 
-## What It Generates
+## What It Does
+
+```
+brand-config.yaml
+       │
+  Wave Planner ──── Scenario Recommender
+       │                    │
+  ┌────┴────┐         (selects skills
+  │  Waves  │          for scenario)
+  │  1 → 6  │
+  └────┬────┘
+       │
+  Skills Registry (44 skills, 9 categories)
+       │
+  Hydrator (feeds outputs into config)
+       │
+  Visual Pipeline (FAL.AI: 19+ assets)
+       │
+  Publishing Pipeline (wiki → Astro site)
+```
+
+## Skill Categories (44 skills)
+
+| Category | Skills | Purpose |
+|----------|--------|---------|
+| **text-strategy/** | 7 | Buyer personas, positioning, voice, competitive analysis |
+| **visual-prompters/** | 9 | AI image prompt generation (product, fashion, editorial) |
+| **campaign-copy/** | 6 | Campaign pages, video scripts, press releases |
+| **email-sequences/** | 3 | Welcome, pre-launch, launch email flows |
+| **brand-foundation/** | 3 | Packaging design, unboxing experience |
+| **social-growth/** | 5 | Content calendar, influencer outreach, community |
+| **advertising/** | 5 | Pre-launch ads, live campaign ads, affiliate programs |
+| **publishing/** | 2 | Wiki generation, Astro site builder |
+| **visual-pipeline/** | 4 | FAL.AI asset generation orchestration |
+
+## Wave Execution
+
+Skills execute in dependency-ordered waves:
+
+| Wave | Purpose | Examples |
+|------|---------|----------|
+| 1 | Foundation | buyer-persona, competitor-analysis, niche-validator |
+| 2 | Strategy | product-positioning, voice-and-tone, messaging-direction |
+| 3 | Visual Identity | visual-identity-core + assets 2A/2B/2C |
+| 4 | Products & Content | campaign-page-copy + assets 3A/3B/4A |
+| 5 | Campaign Assets | email sequences + assets 5A/7A/8A |
+| 6 | Distribution | ads, press, social content |
+
+## Scenarios
+
+Pre-built execution profiles that select skills and set context:
+
+| Scenario | Budget | Best For |
+|----------|--------|----------|
+| `brand-genesis` | Bootstrapped | Pre-launch foundation building |
+| `crowdfunding-lean` | Lean | Kickstarter/Indiegogo essentials |
+| `crowdfunding-full` | Standard | Full crowdfunding campaign |
+| `bootstrapped-dtc` | Bootstrapped | Shopify/organic DTC launch |
+| `enterprise-gtm` | Premium | B2B SaaS go-to-market |
+
+## Quick Start
+
+```bash
+# 1. Install
+curl -sSL https://raw.githubusercontent.com/brandmint/brandmint/main/install.sh | bash
+
+# 2. Set your FAL API key
+echo "FAL_KEY=your_key_here" >> ~/.claude/.env
+
+# 3. Create a brand config
+bm init --output ./my-brand/brand-config.yaml
+
+# 4. Get scenario recommendations
+bm plan recommend --config ./my-brand/brand-config.yaml
+
+# 5. Launch full pipeline (text + visuals)
+bm launch --config ./my-brand/brand-config.yaml --scenario crowdfunding-lean
+```
+
+Or run just the visual pipeline:
+
+```bash
+bm visual generate --config ./my-brand/brand-config.yaml
+bm visual execute --config ./my-brand/brand-config.yaml --batch anchor  # Style anchor FIRST
+bm visual execute --config ./my-brand/brand-config.yaml --batch all
+```
+
+## Visual Assets Generated
 
 | Category | Assets | Model |
 |----------|--------|-------|
 | **Brand Identity** | Bento Grid (2A), Seal (2B), Logo Emboss (2C) | Nano Banana Pro / Flux 2 Pro |
 | **Products** | Capsule Collection (3A), Hero Book (3B), Essence Vial (3C) | Flux 2 Pro |
 | **Photography** | Catalog Layout (4A), Flatlay (4B) | Nano Banana Pro / Flux 2 Pro |
-| **Illustration** | Heritage Engraving (5A), Campaign Grid (5B), Art Panel (5C), Icon Sets (5D) | Recraft V3 / Nano Banana Pro |
-| **Narrative** | Contact Sheets (7A) | Nano Banana Pro |
-| **Campaign** | Seeker Poster (8A), Engine Posters (9A), Sequences (10A-C) | Nano Banana Pro |
+| **Illustration** | Heritage Engraving (5A), Campaign Grid (5B), Art Panel (5C) | Recraft V3 / Nano Banana Pro |
+| **Campaign** | Contact Sheets (7A), Seeker Poster (8A), Sequences (10A-C) | Nano Banana Pro |
 
-**Estimated cost:** ~$2-3 per full brand run (19 assets × 2 seed variants).
+**Cost:** ~$2-3 per full visual run (19 assets × 2 seeds)
 
-## Quick Start
+## Key Architecture
+
+### Hydrator Pattern
+Text skill outputs automatically feed back into `brand-config.yaml`:
+- `buyer-persona` → `audience.persona_name`, `audience.pain_points`
+- `voice-and-tone` → `brand.voice`, `brand.tone`
+- `product-positioning` → `positioning.statement`, `positioning.pillars`
+
+### Style Anchor Cascade
+The 2A Bento Grid generates first and serves as visual reference for all subsequent Nano Banana Pro calls — ensuring style consistency across all assets.
+
+### Domain-Aware Asset Selection
+Assets auto-filter based on `brand.domain_tags` (dtc, saas, app, crowdfunding). Only relevant assets are generated.
+
+## CLI Reference
 
 ```bash
-# 1. Set up environment
-cd brandmint
-uv venv .venv && source .venv/bin/activate
-uv pip install -r requirements.txt
-
-# 2. Set your FAL API key
-echo "FAL_KEY=your_key_here" >> ~/.claude/.env
-
-# 3. Create a brand config (interactive)
-python3 scripts/init_brand.py --output ./my-brand/brand-config.yaml
-
-# 4. Generate pipeline scripts
-python3 scripts/generate_pipeline.py ./my-brand/brand-config.yaml --output-dir ./my-brand
-
-# 5. Execute (anchor first, then rest in parallel)
-python3 scripts/run_pipeline.py execute --config ./my-brand/brand-config.yaml --batch anchor
-python3 scripts/run_pipeline.py execute --config ./my-brand/brand-config.yaml --batch all
+bm launch     # Full pipeline wizard (text + visuals)
+bm plan       # Scenario planning (context, recommend, compare)
+bm visual     # Visual pipeline (generate, execute, verify, status)
+bm registry   # Skill management (list, info, sync)
+bm install    # Setup (skills, check)
 ```
-
-## Brand Config
-
-Every brand is defined by a single `brand-config.yaml` file. See [`assets/brand-config-schema.yaml`](assets/brand-config-schema.yaml) for the full schema and [`assets/example-tryambakam-noesis.yaml`](assets/example-tryambakam-noesis.yaml) for a working example.
-
-Key sections:
-
-- **`brand:`** — Name, tagline, archetype, voice, domain
-- **`theme:`** — Visual theme name, metaphor, mood keywords
-- **`palette:`** — 5 colors with hex codes and usage roles (60/30/10 split)
-- **`typography:`** — Header, body, and data fonts with weights
-- **`aesthetic:`** — Override default visual language (prevents all brands from looking the same)
-- **`logo_files:`** — Point to actual logo PNGs for visual reference injection
-- **`products:`** — What the brand sells (drives product photography prompts)
-- **`prompts:`** — Which asset types to generate
-
-## How It Works
-
-```
-brand-config.yaml
-       ↓
-  generate_pipeline.py    →  7 Python scripts + prompt cookbook
-       ↓
-  run_pipeline.py         →  Executes scripts against FAL.AI
-       ↓
-  generated/              →  19+ PNG assets with consistent brand identity
-```
-
-**Style Anchor Cascade:** The 2A Bento Grid is generated first and uploaded as a visual reference to all subsequent Nano Banana Pro calls, ensuring style consistency across the entire asset set.
-
-## AI Models
-
-| Model | Use | Cost/call | Image Refs |
-|-------|-----|-----------|------------|
-| **Nano Banana Pro** | Complex compositions, multi-element layouts | ~$0.08 | Yes (image_urls) |
-| **Flux 2 Pro** | Clean product shots, seals, logos | ~$0.05 | No |
-| **Recraft V3** | Vector illustrations, icons, engravings | ~$0.04 | No |
-
-## Claude Code Integration
-
-Brandmint works as a Claude Code skill. When symlinked to `~/.claude/skills/brandmint`, it automatically triggers on brand-related prompts and provides the full pipeline workflow.
 
 ## AI Assistant Installation
 
