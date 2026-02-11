@@ -1,0 +1,65 @@
+# Brandmint - Cursor IDE Rules
+
+Brand identity orchestration system. Transforms `brand-config.yaml` into marketing outputs via 44 skills across 9 categories.
+
+## Build & Test
+
+```bash
+uv venv .venv && source .venv/bin/activate
+uv pip install -e ".[dev]"
+pytest
+ruff check brandmint/
+```
+
+## CLI
+
+```bash
+bm launch --config brand-config.yaml --scenario crowdfunding-lean
+bm visual generate --config brand-config.yaml
+bm visual execute --config brand-config.yaml --batch anchor  # MUST run first
+bm visual execute --config brand-config.yaml --batch all
+```
+
+## Architecture
+
+### Wave Execution (1→6)
+Skills run in dependency order. Wave 1 (foundation) → Wave 6 (distribution).
+
+### Style Anchor Cascade
+**CRITICAL**: 2A Bento Grid MUST generate before all other visual assets. It's the style reference for Nano Banana Pro calls.
+
+### Hydrator
+Text skill outputs auto-inject into brand-config.yaml:
+- buyer-persona → audience.persona_name, audience.pain_points
+- voice-and-tone → brand.voice, brand.tone
+- product-positioning → positioning.statement, positioning.pillars
+
+## Key Constraints
+
+| Model | Constraint |
+|-------|------------|
+| Recraft V3 | 1000-char prompt limit (silently truncates!), returns SVG/WebP |
+| Nano Banana Pro | Use `16:9` aspect ratio, NOT `landscape_16_9` |
+| Flux 2 Pro | No image reference support |
+
+## API Keys
+
+```python
+from dotenv import load_dotenv
+load_dotenv(os.path.expanduser("~/.claude/.env"))
+# Expects: FAL_KEY=your_key_here
+```
+
+## Project Structure
+
+```
+brandmint/
+├── cli/           # Typer CLI (app.py entry point)
+├── core/          # wave_planner, hydrator, skills_registry, scenario_recommender
+├── models/        # Pydantic models
+├── pipeline/      # Executor
+└── installer/     # Symlink management
+scripts/           # Standalone pipeline scripts
+skills/            # 44 skills (9 categories)
+assets/            # Schema, registry, examples
+```

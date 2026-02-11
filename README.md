@@ -1,5 +1,12 @@
 # Brandmint
 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-Install-blueviolet?logo=anthropic)](#claude-code)
+[![Claude Desktop](https://img.shields.io/badge/Claude_Desktop-MCP-purple?logo=anthropic)](#claude-desktop)
+[![GitHub Copilot](https://img.shields.io/badge/Copilot-Compatible-black?logo=github)](#github-copilot)
+[![Cursor IDE](https://img.shields.io/badge/Cursor-Compatible-00D084)](#cursor-ide)
+
 > Mint production-ready visual brand assets from a single YAML config.
 
 Brandmint transforms a `brand-config.yaml` definition into 19+ production-ready visual assets using [FAL.AI](https://fal.ai) image generation models. One config file defines your brand's colors, typography, photography style, and aesthetic language — the pipeline generates scripts that produce consistent, on-brand visuals across every asset type.
@@ -79,6 +86,75 @@ brand-config.yaml
 ## Claude Code Integration
 
 Brandmint works as a Claude Code skill. When symlinked to `~/.claude/skills/brandmint`, it automatically triggers on brand-related prompts and provides the full pipeline workflow.
+
+## AI Assistant Installation
+
+<details>
+<summary><strong>Claude Code</strong></summary>
+
+One-line install:
+```bash
+curl -sSL https://raw.githubusercontent.com/brandmint/brandmint/main/install.sh | bash
+```
+
+Or manual:
+```bash
+git clone https://github.com/brandmint/brandmint.git ~/.claude/skills/brandmint
+cd ~/.claude/skills/brandmint
+uv pip install -e ".[dev]"
+bm install skills
+```
+
+Verify: `bm install check`
+
+</details>
+
+<details>
+<summary><strong>Claude Desktop</strong></summary>
+
+Add to your Claude Desktop MCP config (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+
+```json
+{
+  "mcpServers": {
+    "brandmint": {
+      "command": "bm",
+      "args": ["mcp-serve"],
+      "env": {
+        "FAL_KEY": "your_fal_key_here"
+      }
+    }
+  }
+}
+```
+
+Requires brandmint installed via Claude Code method first.
+
+</details>
+
+<details>
+<summary><strong>GitHub Copilot</strong></summary>
+
+Copilot automatically reads `.github/copilot-instructions.md` when working in this repository. No additional setup needed—just clone the repo and start coding.
+
+```bash
+git clone https://github.com/brandmint/brandmint.git
+cd brandmint
+```
+
+</details>
+
+<details>
+<summary><strong>Cursor IDE</strong></summary>
+
+Cursor automatically reads `.cursorrules` when working in this repository. No additional setup needed—just open the project folder.
+
+```bash
+git clone https://github.com/brandmint/brandmint.git
+cursor brandmint/
+```
+
+</details>
 
 ## License
 
