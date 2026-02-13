@@ -1,15 +1,34 @@
 #!/bin/bash
 # process-markdown.sh - Process markdown files and copy to Astro content directory
-# Usage: ./process-markdown.sh <source-dir> <dest-dir>
+# Usage: ./process-markdown.sh <source-dir> <dest-dir> [--images <images-dir>]
 
 set -e
 
 SOURCE_DIR="${1:?Source directory required}"
 DEST_DIR="${2:?Destination directory required}"
 
+# Parse optional --images flag
+IMAGES_DIR=""
+shift 2
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --images)
+            IMAGES_DIR="${2:?--images requires a directory path}"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+done
+
 echo "📄 Processing markdown files"
 echo "   Source: $SOURCE_DIR"
 echo "   Destination: $DEST_DIR"
+if [ -n "$IMAGES_DIR" ]; then
+    echo "   Images: $IMAGES_DIR"
+fi
 echo ""
 
 # Create destination directory
@@ -94,5 +113,28 @@ done
 
 echo ""
 echo "✅ Processed $processed markdown files"
+
+# Copy images if --images flag was provided
+if [ -n "$IMAGES_DIR" ]; then
+    if [ -d "$IMAGES_DIR" ]; then
+        # Resolve public/images relative to dest-dir (dest is src/content/docs, public is ../../public)
+        PUBLIC_IMAGES="$(cd "$DEST_DIR" && cd ../../.. && pwd)/public/images"
+        mkdir -p "$PUBLIC_IMAGES"
+
+        image_count=0
+        for ext in png jpg jpeg webp svg; do
+            for img in "$IMAGES_DIR"/*."$ext"; do
+                [ -f "$img" ] || continue
+                cp "$img" "$PUBLIC_IMAGES/"
+                ((image_count++)) || true
+            done
+        done
+
+        echo "🖼️  Copied $image_count images to $PUBLIC_IMAGES"
+    else
+        echo "⚠️  Images directory not found: $IMAGES_DIR" >&2
+    fi
+fi
+
 echo ""
 echo "Your content is ready in $DEST_DIR"

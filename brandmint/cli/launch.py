@@ -51,6 +51,7 @@ def run_launch(
     max_cost: Optional[float] = None,
     resume_from: Optional[int] = None,
     webhook: Optional[str] = None,
+    non_interactive: bool = False,
 ) -> None:
     """Full pipeline wizard -- orchestrate text skills + visual assets.
 
@@ -63,6 +64,7 @@ def run_launch(
         max_cost: Abort if estimated cost exceeds this budget (USD).
         resume_from: Resume execution from this wave number.
         webhook: URL to POST completion notification.
+        non_interactive: Skip all interactive prompts (for agent/CI environments).
     """
     from ..cli.ui import (
         render_brand_banner,
@@ -79,6 +81,9 @@ def run_launch(
     ec = cfg.get("execution_context", {})
     depth = ec.get("depth_level", "focused")
 
+    # Auto-detect non-interactive environment
+    is_interactive = not non_interactive and sys.stdin.isatty()
+
     # -- 2. JSON fast-path ---------------------------------------------------
     if json_output:
         wave_plan = compute_wave_plan(cfg, scenario_id=scenario, depth=depth)
@@ -93,9 +98,26 @@ def run_launch(
     scenario_obj = None
 
     if selected_scenario_id is None:
-        selected_scenario_id, scenario_obj = _recommend_and_select(
-            cfg, render_scenario_cards, prompt_scenario_selection
-        )
+        if is_interactive:
+            selected_scenario_id, scenario_obj = _recommend_and_select(
+                cfg, render_scenario_cards, prompt_scenario_selection
+            )
+        else:
+            # Non-interactive: use first recommended scenario
+            from ..core.context_analyzer import ContextAnalyzer
+            from ..core.scenario_recommender import ScenarioRecommender
+            product = _build_product_from_config(cfg)
+            analyzer = ContextAnalyzer()
+            context = analyzer.analyze(product)
+            product.launch_context = context
+            recommender = ScenarioRecommender()
+            matches = recommender.recommend(product, context, limit=1)
+            if matches:
+                selected_scenario_id = matches[0].scenario_id
+                scenario_obj = _get_scenario_by_id(selected_scenario_id)
+                console.print(f"[cyan]Auto-selected scenario: {selected_scenario_id}[/cyan]")
+            else:
+                console.print("[yellow]No scenario auto-selected, proceeding without filter.[/yellow]")
     else:
         # Fetch scenario object for the explicitly-provided ID.
         scenario_obj = _get_scenario_by_id(selected_scenario_id)
@@ -149,12 +171,16 @@ def run_launch(
         console.print(f"[cyan]Resuming from Wave {resume_from}[/cyan]")
 
     if wave_range is None and waves is None:
-        # Interactive: let user choose.
-        wave_input = prompt_wave_selection(console)
-        if wave_input == "exit":
-            console.print("[dim]Exiting.[/dim]")
-            return
-        wave_range = _parse_wave_range(wave_input)
+        if is_interactive:
+            # Interactive: let user choose.
+            wave_input = prompt_wave_selection(console)
+            if wave_input == "exit":
+                console.print("[dim]Exiting.[/dim]")
+                return
+            wave_range = _parse_wave_range(wave_input)
+        else:
+            # Non-interactive: run all waves
+            console.print("[cyan]Non-interactive mode: running all waves[/cyan]")
 
     # -- 8. Build execution context ------------------------------------------
     execution_context = _build_execution_context(scenario_obj, cfg)
@@ -174,7 +200,7 @@ def run_launch(
         console=console,
     )
 
-    state = executor.execute(wave_range=wave_range, interactive=True)
+    state = executor.execute(wave_range=wave_range, interactive=is_interactive)
 
     # Persist scenario choice in state.
     if selected_scenario_id and state.scenario is None:

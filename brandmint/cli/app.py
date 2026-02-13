@@ -66,18 +66,20 @@ def launch(
     max_cost: Optional[float] = typer.Option(None, "--max-cost", help="Abort if estimated cost exceeds budget (USD)"),
     resume_from: Optional[int] = typer.Option(None, "--resume-from", help="Resume from specific wave number"),
     webhook: Optional[str] = typer.Option(None, "--webhook", help="Webhook URL for completion notification"),
+    non_interactive: bool = typer.Option(False, "--non-interactive", help="Skip all interactive prompts (for agent/CI environments)"),
 ):
     """Full pipeline wizard — text skills + visual assets in orchestrated waves."""
     from .launch import run_launch
     run_launch(
-        config, 
-        scenario=scenario, 
-        waves=waves, 
-        dry_run=dry_run, 
+        config,
+        scenario=scenario,
+        waves=waves,
+        dry_run=dry_run,
         json_output=json_output,
         max_cost=max_cost,
         resume_from=resume_from,
         webhook=webhook,
+        non_interactive=non_interactive,
     )
 
 

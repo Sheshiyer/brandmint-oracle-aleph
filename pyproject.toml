@@ -1,6 +1,6 @@
 [project]
 name = "brandmint"
-version = "4.0.0"
+version = "4.1.0"
 description = "Unified brand creation orchestrator — text skills, visual assets, campaigns"
 requires-python = ">=3.10"
 dependencies = [

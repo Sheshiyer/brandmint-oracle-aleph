@@ -3,6 +3,13 @@ name: markdown-to-astro-wiki
 description: Transform markdown documentation folders into beautiful Astro-based wikis with Apple iOS26-style glassmorphism design. Use when the user has a folder of .md files and wants to generate a polished wiki/documentation site with dark/light mode support, readable typography, and modern frosted-glass aesthetics. Triggers on requests involving markdown-to-wiki conversion, documentation site generation, Astro wiki creation, or glassmorphism documentation themes.
 ---
 
+## Execution Context
+
+> **This skill runs AFTER wiki-doc-generator, not as part of the bm launch pipeline.**
+> It converts wiki markdown pages into a glassmorphism Astro site.
+> Use `process-markdown.sh --images <generated-dir>` to include visual assets alongside markdown.
+> Always run `init-astro-wiki.sh` first to scaffold the Astro project.
+
 # Markdown to Astro Wiki Generator
 
 Transform any folder of markdown documentation into a stunning glassmorphism-styled wiki powered by Astro and Bun.

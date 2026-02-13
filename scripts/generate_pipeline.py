@@ -504,6 +504,15 @@ def download_image(url, filepath):
     resp.raise_for_status()
     with open(filepath, "wb") as f:
         f.write(resp.content)
+    # Auto-convert JPEG-as-PNG: Flux 2 Pro returns JPEG but pipeline names files .png
+    if filepath.endswith(".png"):
+        with open(filepath, "rb") as f:
+            header = f.read(4)
+        if header[:2] == b"\\xff\\xd8":  # JPEG magic bytes
+            import subprocess
+            subprocess.run(["sips", "-s", "format", "png", filepath, "--out", filepath],
+                         capture_output=True, check=True)
+            print(f"  Converted JPEG -> PNG: {{os.path.getsize(filepath) // 1024}} KB")
     size_kb = os.path.getsize(filepath) / 1024
     print(f"  Saved: {{os.path.basename(filepath)}} ({{size_kb:.0f}} KB)")
 

@@ -103,6 +103,30 @@ DOCUMENT_PATTERNS = {
         'skill': 'visual-identity-core',
         'wiki_section': 'brand',
         'priority': 2
+    },
+    'social_content': {
+        'keywords': ['social content', 'content calendar', 'content engine', 'instagram', 'reels'],
+        'skill': 'social-content-engine',
+        'wiki_section': 'marketing',
+        'priority': 3
+    },
+    'short_form_hooks': {
+        'keywords': ['hook', 'short-form', 'tiktok', 'reels', 'shorts', 'scroll-stopper'],
+        'skill': 'short-form-hook-generator',
+        'wiki_section': 'marketing',
+        'priority': 3
+    },
+    'video_script': {
+        'keywords': ['video script', 'brand film', 'storyboard', 'scene', 'campaign video'],
+        'skill': 'campaign-video-script',
+        'wiki_section': 'marketing',
+        'priority': 2
+    },
+    'press_release': {
+        'keywords': ['press release', 'media', 'dateline', 'boilerplate', 'press'],
+        'skill': 'press-release-copy',
+        'wiki_section': 'marketing',
+        'priority': 3
     }
 }
 
@@ -111,7 +135,7 @@ AGENT_GROUPS = {
     'foundation': ['mds', 'positioning', 'product_description'],
     'brand': ['voice_tone', 'visual_identity'],
     'persona': ['buyer_persona', 'competitor'],
-    'marketing': ['campaign_copy', 'email_welcome', 'email_prelaunch', 'email_launch', 'ads_prelaunch', 'ads_live'],
+    'marketing': ['campaign_copy', 'email_welcome', 'email_prelaunch', 'email_launch', 'ads_prelaunch', 'ads_live', 'social_content', 'short_form_hooks', 'video_script', 'press_release'],
     'project': ['proposal', 'contract']
 }
 
@@ -119,7 +143,7 @@ AGENT_GROUPS = {
 def read_file_sample(filepath: Path, max_chars: int = 2000) -> str:
     """Read first N characters of a file for classification."""
     try:
-        if filepath.suffix.lower() in ['.md', '.txt']:
+        if filepath.suffix.lower() in ['.md', '.txt', '.json']:
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
                 return f.read(max_chars).lower()
         elif filepath.suffix.lower() == '.docx':
@@ -167,64 +191,134 @@ def classify_document(filepath: Path) -> dict:
     }
 
 
+def scan_visual_assets(brand_dir: Path) -> dict:
+    """Scan for visual assets in the generated/ directory.
+
+    Looks for a generated/ directory as a sibling to .brandmint/outputs/
+    (i.e., at brand_dir/../<brand-name>/generated/).
+    """
+    visual_inventory = {
+        'found': False,
+        'directory': None,
+        'total_files': 0,
+        'asset_ids': [],
+        'by_extension': {},
+        'files': []
+    }
+
+    # The source_dir is typically .brandmint/outputs/ — walk up to the brand root
+    brand_root = brand_dir
+    if brand_root.name == 'outputs':
+        brand_root = brand_root.parent  # .brandmint
+    if brand_root.name == '.brandmint':
+        brand_root = brand_root.parent  # brand root
+
+    # Look for generated/ directories under brand root
+    image_extensions = {'.png', '.jpg', '.jpeg', '.webp'}
+    generated_dirs = list(brand_root.rglob('generated'))
+
+    for gen_dir in generated_dirs:
+        if not gen_dir.is_dir():
+            continue
+
+        visual_inventory['found'] = True
+        visual_inventory['directory'] = str(gen_dir)
+
+        for filepath in sorted(gen_dir.iterdir()):
+            if filepath.suffix.lower() not in image_extensions:
+                continue
+
+            visual_inventory['total_files'] += 1
+            visual_inventory['files'].append(filepath.name)
+
+            # Track by extension
+            ext = filepath.suffix.lower()
+            visual_inventory['by_extension'][ext] = visual_inventory['by_extension'].get(ext, 0) + 1
+
+            # Parse asset ID from filename
+            stem = filepath.stem
+            asset_id_patterns = [
+                r'^(EMAIL-HERO|IG-STORY|OG-IMAGE|TWITTER-HEADER)',
+                r'^(5D-[123])',
+                r'^(9A)-\d+',
+                r'^(10[ABC])',
+                r'^([2-8][A-C])',
+            ]
+            for pattern in asset_id_patterns:
+                match = re.match(pattern, stem)
+                if match:
+                    aid = match.group(1)
+                    if aid not in visual_inventory['asset_ids']:
+                        visual_inventory['asset_ids'].append(aid)
+                    break
+
+        break  # Use first generated/ directory found
+
+    return visual_inventory
+
+
 def scan_directory(source_dir: str) -> dict:
     """Scan directory and classify all documents."""
     source_path = Path(source_dir)
-    
+
     if not source_path.exists():
         print(f"Error: Directory not found: {source_dir}", file=sys.stderr)
         sys.exit(1)
-    
+
     inventory = {
         'scan_date': datetime.now().isoformat(),
         'source_directory': str(source_path.absolute()),
         'documents': [],
         'by_type': {},
         'by_section': {},
-        'agent_dispatch': {}
+        'agent_dispatch': {},
+        'visual_assets': {}
     }
-    
+
     # Scan for documents
-    extensions = ['.md', '.txt', '.docx']
+    extensions = ['.md', '.txt', '.docx', '.json']
     for ext in extensions:
         for filepath in source_path.rglob(f'*{ext}'):
             classification = classify_document(filepath)
-            
+
             doc_entry = {
                 'path': str(filepath.absolute()),
                 'filename': filepath.name,
                 'relative_path': str(filepath.relative_to(source_path)),
                 **classification
             }
-            
+
             inventory['documents'].append(doc_entry)
-            
+
             # Group by type
             doc_type = classification['type']
             if doc_type not in inventory['by_type']:
                 inventory['by_type'][doc_type] = []
             inventory['by_type'][doc_type].append(doc_entry)
-            
+
             # Group by wiki section
             section = classification['wiki_section']
             if section not in inventory['by_section']:
                 inventory['by_section'][section] = []
             inventory['by_section'][section].append(doc_entry)
-    
+
+    # Scan for visual assets
+    inventory['visual_assets'] = scan_visual_assets(source_path)
+
     # Build agent dispatch plan
     for agent_name, doc_types in AGENT_GROUPS.items():
         agent_docs = []
         for doc_type in doc_types:
             if doc_type in inventory['by_type']:
                 agent_docs.extend(inventory['by_type'][doc_type])
-        
+
         if agent_docs:
             inventory['agent_dispatch'][agent_name] = {
                 'document_count': len(agent_docs),
                 'documents': [d['relative_path'] for d in agent_docs],
                 'wiki_sections': list(set(d['wiki_section'] for d in agent_docs))
             }
-    
+
     return inventory
 
 
@@ -245,6 +339,19 @@ def print_summary(inventory: dict):
     for section, docs in sorted(inventory['by_section'].items()):
         print(f"  • {section}: {len(docs)} file(s)")
     
+    # Visual assets
+    va = inventory.get('visual_assets', {})
+    if va.get('found'):
+        print(f"\n🖼️  VISUAL ASSETS:")
+        print(f"  Directory: {va['directory']}")
+        print(f"  Total files: {va['total_files']}")
+        print(f"  Unique asset IDs: {len(va['asset_ids'])}")
+        if va['by_extension']:
+            exts = ', '.join(f"{ext}: {count}" for ext, count in sorted(va['by_extension'].items()))
+            print(f"  By type: {exts}")
+    else:
+        print(f"\n🖼️  VISUAL ASSETS: None found")
+
     print("\n🤖 AGENT DISPATCH PLAN:")
     for agent, info in inventory['agent_dispatch'].items():
         print(f"\n  Agent: {agent.upper()}")
@@ -254,7 +361,7 @@ def print_summary(inventory: dict):
             print(f"      - {doc}")
         if len(info['documents']) > 3:
             print(f"      ... and {len(info['documents']) - 3} more")
-    
+
     print("\n" + "="*60)
 
 

@@ -1,8 +1,44 @@
+# Release Notes
+
+## What's New in v4.1.0
+
+### Non-Interactive Pipeline Execution
+- **`--non-interactive` flag** — Skip all TTY prompts for agent/CI environments
+- **Auto-detection** — Pipeline detects non-interactive environments via `sys.stdin.isatty()` and adapts automatically
+- **No more skipped skills** — Fixed `Confirm.ask()` blocking that caused skills to be silently skipped in Desktop/API contexts
+- **Auto scenario selection** — Non-interactive mode selects the best scenario automatically when none is specified
+- **Extended polling** — Non-interactive timeout increased to 600s with 30-second progress indicators
+
+### Agent Execution Guide (CLAUDE.md)
+- **CLAUDE.md at repo root** — Automatically read by Claude Code agents, prevents ad-hoc skill execution
+- **Pipeline-first enforcement** — Guides agents to use `bm launch --non-interactive` instead of running skills individually
+- **Key paths documented** — Brand config, prompts, outputs, visual assets, pipeline state
+
+### Publishing Pipeline
+- **Wiki Documentation Generator** — Transforms pipeline JSON outputs into structured, interconnected wiki markdown using 4-6 parallel agents
+- **Astro Wiki Site Builder** — Converts wiki markdown into iOS26 glassmorphism-styled Astro sites with dark/light mode
+- **Visual Asset Integration** — `map-assets-to-wiki.py` bridges 26 asset categories to wiki pages with hero/inline/gallery roles
+- **`process-markdown.sh --images`** — Copies generated visual assets to Astro `public/images/` alongside markdown
+- **`inventory-sources.py` visual scanning** — Inventories both text documents and visual assets from `generated/` directory
+- **Asset gallery page** — `brand/visual-assets.md` catalogs all generated assets organized by category
+
+### Visual Pipeline Fixes
+- **JPEG-as-PNG detection** — Flux 2 Pro API returns JPEG data but pipeline names files `.png`; now auto-detects via magic bytes and converts
+- **Executor bug fixes** — Fixed `scenario_id` AttributeError and `all_success` UnboundLocalError in executor.py
+
+### Documentation
+- **README overhaul** — Added publishing pipeline section, non-interactive mode docs, CLI flags table, agent execution section, visual asset integration architecture
+- **Version badge** — Added version badge linking to GitHub release
+- **Expanded visual assets table** — Now includes Icons (5D series), Social assets (Email Hero, IG Story, OG Image, Twitter Header)
+- **Execution context headers** — Publishing skills now document their position in the pipeline lifecycle
+
+---
+
 ## What's New in v4.0.0
 
 ### Wave 1: UX Polish & Resilience
 - **Progress Spinners** - Visual feedback during API calls
-- **Status Icons** - Standardized ○ ◐ ● ✗ ◌ system
+- **Status Icons** - Standardized circle/half/filled/cross/empty system
 - **ASCII Logo** - Branded version command
 - **Graceful Interrupts** - Ctrl+C saves state for resume
 - **Config Validation** - Required fields checked on load

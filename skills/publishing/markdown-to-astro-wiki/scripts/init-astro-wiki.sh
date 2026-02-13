@@ -28,6 +28,7 @@ mkdir -p src/layouts
 mkdir -p src/pages/docs
 mkdir -p src/styles
 mkdir -p public/fonts
+mkdir -p public/images
 
 echo "📁 Created project structure"
 

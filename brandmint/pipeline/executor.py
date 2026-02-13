@@ -148,7 +148,7 @@ class WaveExecutor:
         # Execution report
         self._report = ExecutionReport(
             brand_name=self.config.get("brand", {}).get("name", "Unknown"),
-            scenario=execution_context.scenario_id or "custom",
+            scenario=getattr(execution_context, "scenario_id", None) or "custom",
             started_at=datetime.now().isoformat(),
         )
 
@@ -269,17 +269,17 @@ class WaveExecutor:
             self.console,
         )
 
-        # Finalize and save report
-        self._finalize_report(success=all_success)
-
-        # Send completion notification
+        # Compute success status
+        all_success = all(
+            w.get("status") == "completed" for w in self.state.waves.values()
+        )
         total_assets = sum(
             len([a for a in w.get("visual_assets", {}).values() if a.get("status") == "completed"])
             for w in self.state.waves.values()
         )
-        all_success = all(
-            w.get("status") == "completed" for w in self.state.waves.values()
-        )
+
+        # Finalize and save report
+        self._finalize_report(success=all_success)
         brand_name = self.config.get("brand", {}).get("name", "Brand")
         
         if self.state.started_at:
@@ -846,7 +846,7 @@ class WaveExecutor:
             return None
 
         # Non-interactive: poll with timeout.
-        max_wait = 300
+        max_wait = 600
         interval = 2
         elapsed = 0
 
@@ -860,6 +860,11 @@ class WaveExecutor:
             data = self._try_load_output(output_path)
             if data is not None:
                 return data
+            # Progress indicator every 30 seconds
+            if elapsed % 30 == 0:
+                self.console.print(
+                    f"  [dim]Still waiting... {elapsed}s / {max_wait}s for {output_path.name}[/dim]"
+                )
 
         return None
 

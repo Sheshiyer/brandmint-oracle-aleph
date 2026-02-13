@@ -3,6 +3,13 @@ name: wiki-doc-generator
 description: Generate structured wiki documentation from brand campaign outputs and business artifacts using parallel agent dispatch.
 ---
 
+## Execution Context
+
+> **This skill runs AFTER the brandmint pipeline completes, not as part of it.**
+> It reads JSON outputs from `.brandmint/outputs/` and generates wiki markdown.
+> Always use parallel agents (Task tool) for document generation — never generate pages sequentially.
+> If running from `bm launch`, ensure all waves have completed first.
+
 # Wiki Documentation Generator
 
 Transform campaign outputs and business documents into structured, interconnected wiki documentation using parallel agent dispatch for maximum efficiency.
@@ -38,6 +45,16 @@ Run inventory script to classify:
 python3 scripts/inventory-sources.py /path/to/source/documents
 ```
 
+### Visual Asset Inventory
+
+If the brand has generated visual assets (via `bm visual`), also generate the asset-to-wiki mapping:
+
+```bash
+python3 scripts/map-assets-to-wiki.py /path/to/brand/generated/
+```
+
+This produces `wiki-asset-map.json` which maps each visual asset to its target wiki page, section, and role (hero, inline, gallery, or meta). Pass this mapping to agents in Phase 2 so they embed images in the correct locations.
+
 ## Phase 2: Dispatch Parallel Agents
 
 Each document category becomes an independent agent task. Process 3-5 categories in parallel using the dispatching-parallel-agents pattern.
@@ -64,6 +81,11 @@ Each document category becomes an independent agent task. Process 3-5 categories
 - Sources: Proposal, Contract
 - Outputs: `project/architecture.md`, `project/timeline.md`, `project/team-roles.md`
 
+**Agent 6: Visual Assets** (if `wiki-asset-map.json` exists)
+- Sources: `wiki-asset-map.json`, generated image directory
+- Outputs: `brand/visual-assets.md` — a gallery page listing ALL visual assets organized by category
+- Schema: See `references/doc-schemas.md` → Visual Asset Library
+
 ### Agent Task Template
 
 ```markdown
@@ -77,6 +99,7 @@ Each document category becomes an independent agent task. Process 3-5 categories
 2. Generate markdown files with proper frontmatter
 3. Include cross-references to related documents (use relative paths)
 4. Maintain heading hierarchy (H1 = page title, H2 = sections)
+5. If `wiki-asset-map.json` is available, embed images for your pages using `![Alt](/images/filename.png)` syntax. Place hero images after the H1. Place inline images within their mapped sections.
 
 **Output Location:** /home/claude/wiki-output/{category}/
 
@@ -150,7 +173,8 @@ wiki-output/
 │   └── specifications.md
 ├── brand/
 │   ├── voice-tone.md
-│   └── visual-guidelines.md
+│   ├── visual-guidelines.md
+│   └── visual-assets.md          # Gallery of all visual assets (Agent 6)
 ├── audience/
 │   ├── primary-persona.md
 │   └── secondary-personas.md
@@ -204,12 +228,14 @@ After generating wiki docs, build with markdown-to-astro-wiki:
 # Initialize Astro project
 ./scripts/init-astro-wiki.sh project-wiki
 
-# Process markdown
-./scripts/process-markdown.sh /home/claude/wiki-output ./project-wiki/src/content/docs
+# Process markdown WITH images (if generated/ directory exists)
+./scripts/process-markdown.sh /home/claude/wiki-output ./project-wiki/src/content/docs --images /path/to/brand/generated/
 
 # Build
 cd project-wiki && bun run build
 ```
+
+The `--images` flag copies all visual assets (PNG, JPG, WebP) from the generated directory into `public/images/` so that `![Alt](/images/filename.png)` references in markdown resolve correctly.
 
 ## Error Handling
 
@@ -221,5 +247,6 @@ cd project-wiki && bun run build
 
 - `references/doc-schemas.md` - Detailed schemas for each wiki page type
 - `references/frontmatter-templates.md` - Frontmatter examples by category
-- `scripts/inventory-sources.py` - Scan and classify input documents
+- `scripts/inventory-sources.py` - Scan and classify input documents (text + visual)
+- `scripts/map-assets-to-wiki.py` - Map visual assets to wiki pages
 - `scripts/validate-wiki.py` - Check output structure and links
