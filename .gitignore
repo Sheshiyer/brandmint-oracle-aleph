@@ -1,32 +1,15 @@
-# Python
 .venv/
 __pycache__/
 *.pyc
-*.egg-info/
 .env
-
-# OS
 .DS_Store
-
-# IDE
-.vscode/
-
-# Node (Remotion workspace, etc.)
-node_modules/
-package.json
-package-lock.json
-
-# Generated assets (images live outside repo)
 generated/
 *.png
 *.jpg
-
-# Output directories (user brand data, not product code)
-brands/
-configs/
-deliverables/
-.brandmint/
-.remotion-workspace/
-
-# Reference images (installed via bm install skills, not tracked in repo)
-references/images/
+!references/images/*.jpg
+!brands/**/*.png
+*.egg-info/
+node_modules
+package.json
+package-lock.json
+.vscode/
