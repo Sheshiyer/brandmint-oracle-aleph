@@ -1,15 +1,32 @@
+# Python
 .venv/
 __pycache__/
 *.pyc
+*.egg-info/
 .env
+
+# OS
 .DS_Store
+
+# IDE
+.vscode/
+
+# Node (Remotion workspace, etc.)
+node_modules/
+package.json
+package-lock.json
+
+# Generated assets (user brand images, not product code)
 generated/
 *.png
 *.jpg
+
+# KEEP reference images (composition refs sent to FAL.AI with prompts)
 !references/images/*.jpg
-!brands/**/*.png
-*.egg-info/
-node_modules
-package.json
-package-lock.json
-.vscode/
+
+# Output directories (user brand data, not product code)
+brands/
+configs/
+deliverables/
+.brandmint/
+.remotion-workspace/
