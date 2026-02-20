@@ -237,6 +237,18 @@ class WaveExecutor:
             self.state.waves[wkey]["status"] = WaveStatus.IN_PROGRESS.value
             self._save_state()
 
+            # Post-hook waves delegate to a custom publisher.
+            if wave.post_hook:
+                hook_ok = self._execute_post_hook(wave.post_hook, wave.number)
+                self.state.waves[wkey]["status"] = (
+                    WaveStatus.COMPLETED.value if hook_ok
+                    else WaveStatus.FAILED.value
+                )
+                self.state.updated_at = datetime.now().isoformat()
+                self._save_state()
+                render_wave_progress(wave, self.state.waves[wkey], self.console)
+                continue
+
             # Execute text skills sequentially (prompt-file handoff).
             all_text_ok = True
             for skill_id in wave.text_skills:
@@ -297,6 +309,177 @@ class WaveExecutor:
         )
 
         return self.state
+
+    # ------------------------------------------------------------------
+    # Post-hook execution (Wave 7+)
+    # ------------------------------------------------------------------
+
+    def _execute_post_hook(self, hook_name: str, wave_number: int) -> bool:
+        """Execute a wave post-hook (e.g. publishing pipeline).
+
+        Returns True on success.
+        """
+        if hook_name == "notebooklm":
+            return self._hook_notebooklm()
+        elif hook_name == "publishing":
+            return self._hook_publishing_pipeline(wave_number)
+        else:
+            self.console.print(
+                f"[red]Unknown post hook: {hook_name}[/red]"
+            )
+            return False
+
+    def _hook_notebooklm(self) -> bool:
+        """Run NotebookLM publishing sub-step."""
+        try:
+            from ..publishing.notebooklm_publisher import NotebookLMPublisher
+        except ImportError:
+            self.console.print(
+                "[red]NotebookLM publishing requires notebooklm-py.[/red]\n"
+                "Install with: [bold]pip install notebooklm-py[/bold]"
+            )
+            return False
+
+        publisher = NotebookLMPublisher(
+            brand_dir=self.brand_dir,
+            config=self.config,
+            config_path=self.config_path,
+            console=self.console,
+        )
+        return publisher.publish()
+
+    def _hook_publishing_pipeline(self, wave_number: int) -> bool:
+        """Run the full Wave 7 publishing pipeline with sub-steps.
+
+        Sub-steps:
+            7A: Brand Theme Export
+            7B: NotebookLM Publishing
+            7C: Slide Decks (Marp)
+            7D: Reports (Typst)
+            7E: Mind Maps & Diagrams
+        """
+        all_ok = True
+
+        # 7A: Brand Theme Export
+        self.console.print("\n  [bold cyan]7A: Brand Theme Export[/bold cyan]")
+        try:
+            from ..publishing.theme_exporter import BrandThemeExporter
+            theme_dir = self.brand_dir / "deliverables" / ".themes"
+            exporter = BrandThemeExporter(self.config, theme_dir)
+            paths = exporter.export_all()
+            self.console.print(
+                f"  [green]\u2713[/green] Exported {len(paths)} theme configs"
+            )
+        except Exception as e:
+            self.console.print(f"  [red]\u2717 Theme export failed: {e}[/red]")
+            all_ok = False
+
+        # 7B: NotebookLM Publishing (best-effort — skip if notebooklm-py not installed)
+        self.console.print("\n  [bold cyan]7B: NotebookLM Publishing[/bold cyan]")
+        try:
+            from ..publishing.notebooklm_publisher import NotebookLMPublisher
+            publisher = NotebookLMPublisher(
+                brand_dir=self.brand_dir,
+                config=self.config,
+                config_path=self.config_path,
+                console=self.console,
+            )
+            if not publisher.publish():
+                self.console.print(
+                    "  [yellow]NotebookLM publishing did not complete[/yellow]"
+                )
+        except ImportError:
+            self.console.print(
+                "  [dim]Skipping NotebookLM (notebooklm-py not installed)[/dim]"
+            )
+        except Exception as e:
+            self.console.print(f"  [yellow]NotebookLM error: {e}[/yellow]")
+
+        # 7C: Slide Decks (Marp)
+        self.console.print("\n  [bold cyan]7C: Slide Decks (Marp)[/bold cyan]")
+        try:
+            from ..publishing.marp_generator import MarpDeckGenerator
+            gen = MarpDeckGenerator(
+                brand_dir=self.brand_dir,
+                config=self.config,
+                config_path=self.config_path,
+                console=self.console,
+            )
+            if not gen.generate():
+                self.console.print("  [yellow]Some slide decks failed[/yellow]")
+                all_ok = False
+        except ImportError:
+            self.console.print(
+                "  [dim]Skipping decks (jinja2 not installed)[/dim]"
+            )
+        except Exception as e:
+            self.console.print(f"  [yellow]Deck generation error: {e}[/yellow]")
+            all_ok = False
+
+        # 7D: Reports (Typst)
+        self.console.print("\n  [bold cyan]7D: Reports (Typst)[/bold cyan]")
+        try:
+            from ..publishing.report_generator import TypstReportGenerator
+            gen = TypstReportGenerator(
+                brand_dir=self.brand_dir,
+                config=self.config,
+                config_path=self.config_path,
+                console=self.console,
+            )
+            if not gen.generate():
+                self.console.print("  [yellow]Some reports failed[/yellow]")
+                all_ok = False
+        except ImportError:
+            self.console.print(
+                "  [dim]Skipping reports (jinja2 not installed)[/dim]"
+            )
+        except Exception as e:
+            self.console.print(f"  [yellow]Report generation error: {e}[/yellow]")
+            all_ok = False
+
+        # 7E: Mind Maps & Diagrams
+        self.console.print("\n  [bold cyan]7E: Mind Maps & Diagrams[/bold cyan]")
+        try:
+            from ..publishing.diagram_generator import DiagramGenerator
+            gen = DiagramGenerator(
+                brand_dir=self.brand_dir,
+                config=self.config,
+                config_path=self.config_path,
+                console=self.console,
+            )
+            if not gen.generate():
+                self.console.print("  [yellow]Some diagrams failed[/yellow]")
+                all_ok = False
+        except ImportError:
+            self.console.print(
+                "  [dim]Skipping diagrams (dependency missing)[/dim]"
+            )
+        except Exception as e:
+            self.console.print(f"  [yellow]Diagram generation error: {e}[/yellow]")
+            all_ok = False
+
+        # 7F: Video Overviews (Remotion)
+        self.console.print("\n  [bold cyan]7F: Video Overviews (Remotion)[/bold cyan]")
+        try:
+            from ..publishing.remotion_generator import RemotionVideoGenerator
+            gen = RemotionVideoGenerator(
+                brand_dir=self.brand_dir,
+                config=self.config,
+                config_path=self.config_path,
+                console=self.console,
+            )
+            if not gen.generate():
+                self.console.print("  [yellow]Some videos failed[/yellow]")
+                all_ok = False
+        except ImportError:
+            self.console.print(
+                "  [dim]Skipping videos (jinja2 not installed)[/dim]"
+            )
+        except Exception as e:
+            self.console.print(f"  [yellow]Video generation error: {e}[/yellow]")
+            all_ok = False
+
+        return all_ok
 
     # ------------------------------------------------------------------
     # Text skill execution

@@ -2,15 +2,15 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-4.1.0-green.svg)](https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/tag/v4.1.0)
+[![Version](https://img.shields.io/badge/version-4.2.0-green.svg)](https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/tag/v4.2.0)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-Install-blueviolet?logo=anthropic)](#claude-code)
 [![Claude Desktop](https://img.shields.io/badge/Claude_Desktop-MCP-purple?logo=anthropic)](#claude-desktop)
 [![GitHub Copilot](https://img.shields.io/badge/Copilot-Compatible-black?logo=github)](#github-copilot)
 [![Cursor IDE](https://img.shields.io/badge/Cursor-Compatible-00D084)](#cursor-ide)
 
-> End-to-end brand identity orchestration — from strategy to visual assets to campaign copy to published documentation sites.
+> End-to-end brand identity orchestration — from strategy to visual assets to campaign copy to video deliverables and published documentation sites.
 
-Brandmint transforms a single `brand-config.yaml` into comprehensive marketing outputs using **44 specialized skills across 9 categories**. The system chains text strategy (buyer personas, positioning, voice) through AI-generated visual assets (via FAL.AI) to campaign copy, and now includes a **full publishing pipeline** that generates wiki documentation and glassmorphism Astro sites with automatic visual asset integration.
+Brandmint transforms a single `brand-config.yaml` into comprehensive marketing outputs using **44 specialized skills across 9 categories**. The system chains text strategy (buyer personas, positioning, voice) through AI-generated visual assets (via FAL.AI) to campaign copy, and includes a **full publishing pipeline** with NotebookLM notebooks, slide decks, reports, diagrams, **programmatic video generation** (via Remotion), and glassmorphism Astro wiki sites.
 
 ## What It Does
 
@@ -30,12 +30,17 @@ brand-config.yaml
        │
   Visual Pipeline (FAL.AI: 19+ assets)
        │
-  Publishing Pipeline (wiki → Astro site)
+  Publishing Pipeline (Wave 7)
        │
-  ┌────┴────────────────┐
-  │  Wiki Documentation │ → Glassmorphism Astro Site
-  │  (parallel agents)  │   with visual asset integration
-  └─────────────────────┘
+  ┌────┴──────────────────────────────────┐
+  │  7A: Brand Theme Export               │
+  │  7B: NotebookLM Publishing            │
+  │  7C: Slide Decks (Marp)               │
+  │  7D: Reports (Typst)                  │
+  │  7E: Mind Maps & Diagrams             │
+  │  7F: Video Overviews (Remotion)  NEW  │
+  │  Wiki → Glassmorphism Astro Site      │
+  └───────────────────────────────────────┘
 ```
 
 ## Skill Categories (44 skills)
@@ -49,7 +54,7 @@ brand-config.yaml
 | **brand-foundation/** | 3 | Packaging design, unboxing experience |
 | **social-growth/** | 5 | Content calendar, influencer outreach, community |
 | **advertising/** | 5 | Pre-launch ads, live campaign ads, affiliate programs |
-| **publishing/** | 2 | Wiki generation, Astro site builder |
+| **publishing/** | 6 | NotebookLM, slide decks, reports, diagrams, video, wiki |
 | **visual-pipeline/** | 4 | FAL.AI asset generation orchestration |
 
 ## Wave Execution
@@ -64,6 +69,7 @@ Skills execute in dependency-ordered waves:
 | 4 | Products & Content | campaign-page-copy + assets 3A/3B/4A |
 | 5 | Campaign Assets | email sequences + assets 5A/7A/8A |
 | 6 | Distribution | ads, press, social content |
+| 7 | Publishing & Deliverables | theme export, NotebookLM, decks, reports, diagrams, video |
 
 ## Scenarios
 
@@ -166,42 +172,51 @@ bm visual execute --config ./my-brand/brand-config.yaml --batch all
 
 **Cost:** ~$2-4 per full visual run (26 asset IDs x 2 seeds)
 
-## Publishing Pipeline
+## Publishing Pipeline (Wave 7)
 
-After pipeline execution, brandmint includes two post-pipeline publishing skills that transform outputs into a complete documentation site:
+Wave 7 runs automatically at `comprehensive` depth or when `--waves 1-7` is specified. Each sub-step can also be run standalone:
 
-### Wiki Documentation Generation
+| Step | Deliverable | CLI |
+|------|-------------|-----|
+| 7A | Brand Theme Export (CSS/Typst/JSON) | automatic |
+| 7B | NotebookLM Notebook + Audio | `bm publish notebooklm` |
+| 7C | Slide Decks (PDF via Marp) | `bm publish decks` |
+| 7D | Reports (PDF via Typst) | `bm publish reports` |
+| 7E | Mind Maps & Diagrams | `bm publish diagrams` |
+| **7F** | **Video Overviews (MP4 via Remotion)** | `bm publish video` |
 
-Transforms `.brandmint/outputs/*.json` into structured, interconnected wiki markdown using parallel agent dispatch:
+### Video Generation (7F)
+
+Scaffolds a temporary Remotion project, injects brand data as React props, and renders 3 MP4 videos:
+
+| Video | Duration | Content |
+|-------|----------|---------|
+| Brand Sizzle Reel | 60-90s | Hook → Problem → Solution → Proof → Offer → CTA |
+| Product Showcase | 30-60s | Hero → Features → Differentiation → CTA |
+| Audio + Slides | dynamic | NotebookLM MP3 synced with brand visual assets |
 
 ```bash
-# Inventory source documents (text + visual assets)
-python3 scripts/inventory-sources.py /path/to/.brandmint/outputs/
+# Standalone
+bm publish video --config ./my-brand/brand-config.yaml
 
-# Map visual assets to wiki pages
-python3 scripts/map-assets-to-wiki.py /path/to/generated/
+# Specific videos only
+bm publish video --config ./my-brand/brand-config.yaml --videos brand-sizzle,product-showcase
 
-# Agents generate wiki pages in parallel (4-6 agents via Task tool)
+# Force regenerate
+bm publish video --config ./my-brand/brand-config.yaml --force
 ```
 
-Outputs structured markdown with frontmatter, cross-references, and automatic image embedding from 26 visual asset categories.
+**Requires:** Node.js >= 18 (for Remotion rendering). Install: `pip install 'brandmint[video]'` for Jinja2 templates.
 
-### Astro Wiki Site Builder
+### Wiki Documentation
 
-Converts wiki markdown into a glassmorphism-styled Astro site:
+Transforms `.brandmint/outputs/*.json` into structured wiki markdown using parallel agent dispatch, then builds a glassmorphism Astro site:
 
 ```bash
-# Initialize Astro project
 ./scripts/init-astro-wiki.sh my-wiki
-
-# Process markdown WITH visual assets
 ./scripts/process-markdown.sh wiki-output/ my-wiki/src/content/docs --images generated/
-
-# Build
 cd my-wiki && bun run build
 ```
-
-Features iOS26-inspired glassmorphism design, dark/light mode, search, and automatic visual asset integration.
 
 ## Key Architecture
 
@@ -223,9 +238,10 @@ The `map-assets-to-wiki.py` script bridges visual assets to wiki pages using a 2
 ## CLI Reference
 
 ```bash
-bm launch     # Full pipeline wizard (text + visuals)
+bm launch     # Full pipeline wizard (text + visuals + publishing)
 bm plan       # Scenario planning (context, recommend, compare)
 bm visual     # Visual pipeline (generate, execute, verify, status)
+bm publish    # Publishing deliverables (notebooklm, decks, reports, diagrams, video)
 bm registry   # Skill management (list, info, sync)
 bm install    # Setup (skills, check)
 bm report     # Execution reports (markdown, json, html)
@@ -255,6 +271,7 @@ Key paths for agent environments:
 - **Outputs:** `<brand-dir>/.brandmint/outputs/`
 - **Visual assets:** `<brand-dir>/<brand-slug>/generated/`
 - **Pipeline state:** `<brand-dir>/.brandmint/state.json`
+- **Deliverables:** `<brand-dir>/deliverables/` (notebooklm, decks, reports, diagrams, videos)
 
 ## AI Assistant Installation
 

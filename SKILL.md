@@ -1,12 +1,11 @@
-````skill
 ---
 name: brandmint
-description: End-to-end brand identity orchestration system. Generates text strategy, visual assets, campaign copy, and publishing outputs using 44 specialized skills across 9 categories. Chains FAL.AI/Nano Banana/Flux visual generation with brand positioning, buyer personas, and campaign workflows via wave-based execution.
+description: End-to-end brand identity orchestration system. Generates text strategy, visual assets, campaign copy, video deliverables, and publishing outputs using 44 specialized skills across 9 categories. Chains FAL.AI/Nano Banana/Flux visual generation with brand positioning, buyer personas, and campaign workflows via wave-based execution. Includes Remotion-based programmatic video generation.
 ---
 
 # Brandmint
 
-Orchestrated brand identity system that transforms a brand definition into comprehensive marketing outputs — from strategic text documents through AI-generated visual assets to published documentation sites.
+Orchestrated brand identity system that transforms a brand definition into comprehensive marketing outputs — from strategic text documents through AI-generated visual assets to video deliverables and published documentation sites.
 
 ## Architecture Overview
 
@@ -25,7 +24,9 @@ brand-config.yaml
        ↓
    Visual Pipeline (FAL.AI assets)
        ↓
-   Publishing Pipeline (wiki → Astro)
+   Publishing Pipeline (Wave 7: theme, NotebookLM, decks, reports, diagrams, video)
+       ↓
+   Wiki → Astro Site
 ```
 
 ## Prerequisites
@@ -34,6 +35,7 @@ brand-config.yaml
 - FAL_KEY in `~/.claude/.env`
 - Dependencies: `python-dotenv`, `fal-client`, `requests`, `pyyaml`
 - Bun (for Astro wiki publishing)
+- Node.js >= 18 (for Remotion video rendering)
 
 ```bash
 uv venv .venv && source .venv/bin/activate
@@ -109,7 +111,7 @@ Set via env var or config (`generation.provider` in brand-config.yaml):
 | `brand-foundation/` | 3 | Visual identity, brand naming, logo concept design |
 | `social-growth/` | 5 | Social content calendar, community, influencer outreach |
 | `advertising/` | 5 | Pre-launch ads, competitive ad extraction, niche validation |
-| `publishing/` | 2 | Wiki doc generation + Astro site builder |
+| `publishing/` | 6 | NotebookLM, slide decks, reports, diagrams, video, wiki |
 | `visual-pipeline/` | 4 | AI visual asset generation + integration orchestrator |
 
 ## Workflow Routing
@@ -138,6 +140,7 @@ Skills execute in dependency-ordered waves. Use `depth` to control how many wave
 | 4 | campaign-page-copy, detailed-product-description | Core copy |
 | 5 | email sequences, social-content-engine, ads | Channels |
 | 6 | Visual pipeline, publishing pipeline | Assets & output |
+| 7 | Theme, NotebookLM, decks, reports, diagrams, video | Deliverables |
 
 ## Scenarios
 
@@ -194,13 +197,17 @@ python3 scripts/run_pipeline.py execute --batch photography # parallel
 python3 scripts/run_pipeline.py verify --config ./brand-config.yaml
 ```
 
-## Publishing Pipeline
+## Publishing Pipeline (Wave 7)
 
 ```bash
-# Generate wiki markdown from brand outputs
-# (uses wiki-doc-generator skill)
+# Standalone publishing commands
+bm publish notebooklm --config brand-config.yaml    # 7B: NotebookLM notebook + audio
+bm publish decks --config brand-config.yaml          # 7C: Slide decks (Marp → PDF)
+bm publish reports --config brand-config.yaml        # 7D: Reports (Typst → PDF)
+bm publish diagrams --config brand-config.yaml       # 7E: Mind maps & diagrams
+bm publish video --config brand-config.yaml          # 7F: Videos (Remotion → MP4)
 
-# Build Astro documentation site
+# Wiki documentation site
 ./skills/publishing/markdown-to-astro-wiki/scripts/init-astro-wiki.sh my-wiki
 ./skills/publishing/markdown-to-astro-wiki/scripts/process-markdown.sh ./docs ./my-wiki/src/content/docs
 cd my-wiki && bun run build
@@ -219,6 +226,9 @@ cd my-wiki && bun run build
 | `brandmint/cli/report.py` | Execution report generator (markdown/json/html) |
 | `brandmint/cli/logging.py` | Structured logging with Rich integration |
 | `brandmint/cli/notifications.py` | macOS/Linux desktop + webhook notifications |
+| `brandmint/publishing/remotion_generator.py` | Remotion video scaffolding + rendering |
+| `brandmint/publishing/theme_exporter.py` | Brand theme export (CSS/Typst/JSON/Remotion) |
+| `brandmint/publishing/marp_generator.py` | Marp slide deck generation |
 
 ## Brand Config Schema
 

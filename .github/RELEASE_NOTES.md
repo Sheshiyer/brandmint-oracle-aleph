@@ -1,5 +1,35 @@
 # Release Notes
 
+## What's New in v4.2.0
+
+### Programmatic Video Generation (Wave 7F)
+- **Remotion Video Generator** — Scaffolds a temporary Remotion (React) project per brand, injects brand data as React props via Jinja2 templates, and renders 3 video compositions to MP4
+- **Brand Sizzle Reel** (60-90s) — 6-scene video: hook, problem, solution, proof, offer, CTA — sourced from positioning, persona, identity, and voice outputs
+- **Product Showcase** (30-60s) — 4-scene video: hero, features, differentiation, CTA — sourced from product description and competitive analysis
+- **Audio + Slides** (dynamic duration) — Auto-paced slides synced to NotebookLM MP3 audio with brand visual assets as slide backgrounds
+- **Standalone CLI** — `bm publish video --config <path>` with `--videos` filter and `--force` regeneration
+
+### Full Wave 7 Publishing Pipeline
+- **7A: Brand Theme Export** — CSS, Typst, JSON, and Remotion constants generated from brand-config.yaml palette/typography
+- **7B: NotebookLM Publishing** — Notebook creation with source documents and artifact generation
+- **7C: Slide Decks** — PDF slide decks via Marp CLI
+- **7D: Reports** — PDF reports via Typst
+- **7E: Mind Maps & Diagrams** — Markmap and Mermaid CLI output
+- **7F: Video Overviews** — Remotion-rendered MP4 videos (new in v4.2.0)
+
+### Infrastructure
+- **`pip install 'brandmint[video]'`** — New optional dependency group for Jinja2 templates
+- **State persistence** — `videos-state.json` for idempotent video generation (skip already-rendered unless `--force`)
+- **Graceful degradation** — Node.js check with helpful install instructions; audio-slides skipped if no NotebookLM MP3 exists
+- **npm caching** — `node_modules` cached between runs in `.remotion-workspace/`
+
+### Documentation
+- **README** — Updated architecture diagram, Wave 7 table, publishing pipeline section, CLI reference
+- **CLAUDE.md** — Wave 7 publishing commands and deliverable paths
+- **SKILL.md** — Updated skill categories, wave table, publishing pipeline section
+
+---
+
 ## What's New in v4.1.0
 
 ### Non-Interactive Pipeline Execution

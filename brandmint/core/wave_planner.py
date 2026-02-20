@@ -43,7 +43,7 @@ DEFAULT_SEEDS: int = 2
 DEPTH_WAVE_LIMITS: Dict[str, int] = {
     "surface": 2,
     "focused": 5,
-    "comprehensive": 6,
+    "comprehensive": 7,
     "exhaustive": 999,
 }
 """Maximum wave number included at each depth level."""
@@ -152,6 +152,22 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
         ],
         "visual_assets": ["PITCH-HERO", "EMAIL-HERO"],
         "depends_on": [5],
+    },
+    7: {
+        "name": "Publishing & Deliverables",
+        "description": "Brand theme export, NotebookLM, slide decks, reports, diagrams",
+        "text_skills": [],
+        "visual_assets": [],
+        "depends_on": [6],
+        "post_hook": "publishing",
+        "sub_steps": [
+            {"id": "7A", "name": "Brand Theme Export", "hook": "theme_export"},
+            {"id": "7B", "name": "NotebookLM Publishing", "hook": "notebooklm"},
+            {"id": "7C", "name": "Slide Decks (Marp)", "hook": "marp_decks"},
+            {"id": "7D", "name": "Reports (Typst)", "hook": "typst_reports"},
+            {"id": "7E", "name": "Mind Maps & Diagrams", "hook": "diagrams"},
+            {"id": "7F", "name": "Video Overviews (Remotion)", "hook": "remotion"},
+        ],
     },
 }
 
@@ -364,6 +380,7 @@ def compute_wave_plan(
             depends_on=list(defn["depends_on"]),
             status=WaveStatus.PENDING,
             estimated_cost=round(estimated_cost, 2),
+            post_hook=defn.get("post_hook"),
         )
         waves.append(wave)
 

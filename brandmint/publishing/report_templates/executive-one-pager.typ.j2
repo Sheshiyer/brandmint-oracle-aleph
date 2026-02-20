@@ -1,0 +1,95 @@
+// Brandmint — Executive One-Pager
+// Single-page brand summary
+
+#import "brand-template.typ": *
+
+#set page(
+  paper: "a4",
+  margin: (top: 1.5cm, bottom: 1.5cm, left: 2cm, right: 2cm),
+  header: none,
+  footer: align(center, text(size: 7pt, fill: brand-support)[{{ brand_name }} — Brand Summary | {{ date }}]),
+)
+
+#set text(size: 9pt)
+
+// --- Header ---
+#align(center)[
+  #text(size: 22pt, weight: "bold", fill: brand-primary)[{{ brand_name }}]
+  #h(0.5em)
+  #text(size: 10pt, fill: brand-accent)[{{ tagline }}]
+]
+
+#line(length: 100%, stroke: 1.5pt + brand-accent)
+#v(0.3cm)
+
+// --- Two-column layout ---
+#grid(
+  columns: (1fr, 1fr),
+  gutter: 1.5em,
+
+  // Left column
+  [
+    == Positioning
+    {{ positioning_statement | default("A distinctive brand in its market.", true) }}
+
+    == Target Audience
+    {% if persona_name %}*{{ persona_name }}*: {% endif %}{{ persona_summary | default("An underserved audience segment.", true) }}
+
+    == Product
+    {{ product_summary | default("A compelling product offering.", true) }}
+
+    {% if features %}
+    === Key Features
+    {% for f in features[:5] %}
+    - {{ f.name | default(f, true) }}
+    {% endfor %}
+    {% endif %}
+  ],
+
+  // Right column
+  [
+    == Market Opportunity
+    {{ market_summary | default("A growing market with clear demand.", true) }}
+
+    {% if competitors %}
+    === Competition
+    {% for c in competitors[:4] %}
+    - *{{ c.name | default(c, true) }}*{% if c.gap is defined %}: {{ c.gap }}{% endif %}
+
+    {% endfor %}
+    {% endif %}
+
+    == Brand Identity
+    {% if archetype %}*Archetype:* {{ archetype }} \ {% endif %}
+    {% if voice_tone %}*Voice:* {{ voice_tone }} \ {% endif %}
+    {% if palette_summary %}*Visual:* {{ palette_summary }}{% endif %}
+
+    == Strategy
+    {{ strategy_summary | default("A focused go-to-market approach.", true) }}
+  ],
+)
+
+#v(0.3cm)
+#line(length: 100%, stroke: 0.5pt + brand-support)
+#v(0.2cm)
+
+// --- Bottom CTA row ---
+#grid(
+  columns: (1fr, 1fr, 1fr),
+  gutter: 1em,
+  align(center)[
+    #text(size: 8pt, fill: brand-support)[*Next Step*]
+    #v(0.2em)
+    #text(size: 9pt)[{{ next_step | default("Connect with us", true) }}]
+  ],
+  align(center)[
+    #text(size: 8pt, fill: brand-support)[*Timeline*]
+    #v(0.2em)
+    #text(size: 9pt)[{{ timeline | default("Launch-ready", true) }}]
+  ],
+  align(center)[
+    #text(size: 8pt, fill: brand-support)[*Contact*]
+    #v(0.2em)
+    #text(size: 9pt)[{{ contact | default(brand_name, true) }}]
+  ],
+)

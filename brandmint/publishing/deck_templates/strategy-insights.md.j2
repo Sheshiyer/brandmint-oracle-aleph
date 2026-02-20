@@ -1,0 +1,159 @@
+---
+marp: true
+theme: brand
+paginate: true
+footer: "{{ brand_name }} | Strategy & Insights"
+---
+
+<!-- _class: lead -->
+
+# Strategy & Insights
+
+{{ brand_name }} — Market Intelligence Briefing
+
+---
+
+## Executive Summary
+
+{{ executive_summary | default("A strategic overview of market position, audience, and growth levers.", true) }}
+
+---
+
+## Market Analysis
+
+{{ market_analysis | default("The market landscape presents clear opportunities.", true) }}
+
+{% if market_data %}
+### Key Data Points
+{% for d in market_data %}
+- {{ d }}
+{% endfor %}
+{% endif %}
+
+---
+
+## Competitive Positioning
+
+{% if competitor_matrix %}
+| Competitor | Strengths | Weaknesses | Our Advantage |
+|-----------|-----------|------------|---------------|
+{% for c in competitor_matrix %}
+| {{ c.name }} | {{ c.strengths | default("N/A", true) }} | {{ c.weaknesses | default("N/A", true) }} | {{ c.our_advantage | default("N/A", true) }} |
+{% endfor %}
+{% endif %}
+
+{% if positioning_statement %}
+> {{ positioning_statement }}
+{% endif %}
+
+---
+
+## Buyer Persona Deep-Dive
+
+{% if persona %}
+### {{ persona.name | default("Primary Persona", true) }}
+
+- **Demographics:** {{ persona.demographics | default("N/A", true) }}
+- **Psychographics:** {{ persona.psychographics | default("N/A", true) }}
+- **Pain Points:** {{ persona.pain_points | default("N/A", true) }}
+- **Buying Triggers:** {{ persona.triggers | default("N/A", true) }}
+{% endif %}
+
+---
+
+## Brand Positioning Framework
+
+{% if positioning_pillars %}
+### Identity Pillars
+{% for p in positioning_pillars %}
+- **{{ p.name | default(p, true) }}**{% if p.description is defined %}: {{ p.description }}{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if brand_archetype %}
+**Archetype:** {{ brand_archetype }}
+{% endif %}
+
+---
+
+## Voice & Messaging Strategy
+
+{% if voice_tone %}
+> {{ voice_tone }}
+{% endif %}
+
+{% if messaging_pillars %}
+### Messaging Pillars
+{% for m in messaging_pillars %}
+- {{ m }}
+{% endfor %}
+{% endif %}
+
+---
+
+## Content & Channel Strategy
+
+{% if channels %}
+### Priority Channels
+{% for ch in channels %}
+- **{{ ch.name | default(ch, true) }}**{% if ch.strategy is defined %} — {{ ch.strategy }}{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if content_themes %}
+### Content Themes
+{% for t in content_themes %}
+- {{ t }}
+{% endfor %}
+{% endif %}
+
+---
+
+## Growth Strategy
+
+{% if growth_levers %}
+### Growth Levers
+{% for g in growth_levers %}
+1. **{{ g.name | default(g, true) }}**{% if g.impact is defined %} — {{ g.impact }}{% endif %}
+
+{% endfor %}
+{% endif %}
+
+---
+
+## Campaign Overview
+
+{% if campaign_phases %}
+### Campaign Phases
+{% for p in campaign_phases %}
+- **{{ p.name | default(p, true) }}:** {{ p.description | default("", true) }}
+{% endfor %}
+{% endif %}
+
+---
+
+## KPIs & Success Metrics
+
+{% if kpis %}
+| Metric | Target | Timeframe |
+|--------|--------|-----------|
+{% for k in kpis %}
+| {{ k.metric | default(k, true) }} | {{ k.target | default("TBD", true) }} | {{ k.timeframe | default("TBD", true) }} |
+{% endfor %}
+{% endif %}
+
+---
+
+<!-- _class: lead -->
+
+## Strategic Recommendations
+
+{% if recommendations %}
+{% for r in recommendations %}
+{{ loop.index }}. {{ r }}
+{% endfor %}
+{% else %}
+Focus on differentiation, audience engagement, and consistent brand delivery.
+{% endif %}

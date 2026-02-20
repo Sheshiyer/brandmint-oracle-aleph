@@ -1,0 +1,112 @@
+// Brandmint — Competitive Landscape Report
+// Visual comparison matrix
+
+#import "brand-template.typ": *
+
+// --- Title Page ---
+#align(center)[
+  #v(3cm)
+  #text(size: 24pt, weight: "bold", fill: brand-primary)[Competitive Landscape]
+  #v(0.3cm)
+  #text(size: 14pt, fill: brand-secondary)[{{ brand_name }}]
+  #v(0.5cm)
+  #line(length: 30%, stroke: 2pt + brand-accent)
+  #v(1cm)
+  #text(size: 10pt, fill: brand-support)[Market Intelligence Analysis | {{ date }}]
+]
+
+#pagebreak()
+
+= Market Overview
+
+{{ market_overview | default("An analysis of the competitive landscape and positioning opportunities.", true) }}
+
+{% if market_size %}
+== Market Size & Opportunity
+
+{{ market_size }}
+{% endif %}
+
+= Competitor Profiles
+
+{% if competitors %}
+{% for c in competitors %}
+== {{ c.name | default("Competitor", true) }}
+
+{% if c.description is defined %}
+{{ c.description }}
+{% endif %}
+
+#table(
+  columns: (auto, 1fr),
+  inset: 8pt,
+  {% if c.positioning is defined %}[*Positioning*], [{{ c.positioning }}],{% endif %}
+  {% if c.strengths is defined %}[*Strengths*], [{{ c.strengths }}],{% endif %}
+  {% if c.weaknesses is defined %}[*Weaknesses*], [{{ c.weaknesses }}],{% endif %}
+  {% if c.pricing is defined %}[*Pricing*], [{{ c.pricing }}],{% endif %}
+  {% if c.audience is defined %}[*Target Audience*], [{{ c.audience }}],{% endif %}
+)
+
+{% endfor %}
+{% endif %}
+
+#pagebreak()
+
+= Feature Comparison Matrix
+
+{% if feature_matrix %}
+#table(
+  columns: (auto, {% for c in competitors %}auto, {% endfor %}auto),
+  inset: 8pt,
+  [*Feature*], {% for c in competitors %}[*{{ c.name | default("Comp", true) }}*], {% endfor %}[*{{ brand_name }}*],
+  {% for row in feature_matrix %}
+  [{{ row.feature }}], {% for c in competitors %}[{{ row[c.name] | default("—", true) }}], {% endfor %}[{{ row[brand_name] | default("✓", true) }}],
+  {% endfor %}
+)
+{% else %}
+A detailed feature-by-feature comparison across key competitors.
+{% endif %}
+
+#pagebreak()
+
+= Positioning Map
+
+{{ positioning_analysis | default("Analysis of where each competitor sits relative to key market dimensions.", true) }}
+
+{% if positioning_dimensions %}
+== Key Dimensions
+
+{% for d in positioning_dimensions %}
+- *{{ d.axis | default(d, true) }}:* {{ d.description | default("", true) }}
+{% endfor %}
+{% endif %}
+
+= Strategic Implications
+
+{% if opportunities %}
+== Opportunities
+
+{% for o in opportunities %}
+- {{ o }}
+{% endfor %}
+{% endif %}
+
+{% if threats %}
+== Threats
+
+{% for t in threats %}
+- {{ t }}
+{% endfor %}
+{% endif %}
+
+= Recommendations
+
+{% if recommendations %}
+{% for r in recommendations %}
++ *{{ r }}*
+{% endfor %}
+{% else %}
++ Differentiate on underserved dimensions
++ Monitor competitor moves quarterly
++ Build defensible moats around core strengths
+{% endif %}

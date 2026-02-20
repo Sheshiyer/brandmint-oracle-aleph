@@ -1,0 +1,122 @@
+---
+marp: true
+theme: brand
+paginate: true
+footer: "{{ brand_name }} | Product Showcase"
+---
+
+<!-- _class: lead -->
+
+# {{ hero_product | default(brand_name, true) }}
+
+{{ product_tagline | default(tagline, true) }}
+
+---
+
+## The Problem It Solves
+
+{{ customer_problem | default("Current solutions fall short of what customers truly need.", true) }}
+
+{% if pain_points %}
+{% for point in pain_points %}
+- {{ point }}
+{% endfor %}
+{% endif %}
+
+---
+
+## Product Overview
+
+{{ product_overview | default("A product designed from the ground up to deliver value.", true) }}
+
+{% if how_it_works %}
+### How It Works
+{{ how_it_works }}
+{% endif %}
+
+---
+
+## Feature Deep-Dive
+
+{% if features %}
+{% for f in features[:4] %}
+### {{ f.name | default(f, true) }}
+
+{{ f.description | default("", true) }}
+
+{% if f.benefit is defined %}
+> **Benefit:** {{ f.benefit }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+---
+
+## Use Cases
+
+{% if use_cases %}
+{% for uc in use_cases %}
+### {{ uc.title | default(uc, true) }}
+{{ uc.description | default("", true) }}
+
+{% endfor %}
+{% else %}
+Real scenarios showing the product in context across different user needs.
+{% endif %}
+
+---
+
+## What Makes Us Different
+
+{% if differentiators %}
+{% for d in differentiators %}
+- **{{ d }}**
+{% endfor %}
+{% else %}
+{{ differentiation | default("A unique combination of design, quality, and value.", true) }}
+{% endif %}
+
+---
+
+## Pricing & Value
+
+{{ pricing_overview | default("Priced for value, built for quality.", true) }}
+
+{% if pricing_tiers %}
+| Tier | Price | Includes |
+|------|-------|----------|
+{% for t in pricing_tiers %}
+| {{ t.name }} | {{ t.price }} | {{ t.includes }} |
+{% endfor %}
+{% endif %}
+
+---
+
+## Social Proof
+
+{% if testimonials %}
+{% for t in testimonials %}
+> "{{ t.quote }}" — **{{ t.author }}**
+
+{% endfor %}
+{% endif %}
+
+{% if traction_metrics %}
+### Traction
+{% for m in traction_metrics %}
+- {{ m }}
+{% endfor %}
+{% endif %}
+
+---
+
+<!-- _class: lead -->
+
+## Get Started
+
+{{ cta | default("Experience the difference today.", true) }}
+
+{% if availability %}
+**{{ availability }}**
+{% endif %}

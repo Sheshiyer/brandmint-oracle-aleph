@@ -1,0 +1,53 @@
+import {AbsoluteFill, Audio, Sequence, useCurrentFrame, useVideoConfig, interpolate, Img, staticFile} from 'remotion';
+import {COLORS, FONTS, BRAND, VIDEO} from '../constants';
+import {BRAND_DATA} from '../brand-data';
+import {SlideCard} from '../components/slide-card';
+
+// Audio duration injected at scaffold time (seconds)
+const AUDIO_DURATION_SECONDS = {{ audio_duration_seconds }};
+export const AUDIO_DURATION_FRAMES = Math.ceil(AUDIO_DURATION_SECONDS * VIDEO.fps);
+
+// Visual asset filenames injected at scaffold time
+const VISUAL_ASSETS: string[] = {{ visual_assets | tojson }};
+
+// Captions for each slide segment
+const SLIDE_CAPTIONS: string[] = {{ slide_captions | tojson }};
+
+// Compute per-slide duration
+const slideCount = Math.max(VISUAL_ASSETS.length, 1);
+const framesPerSlide = Math.floor(AUDIO_DURATION_FRAMES / slideCount);
+
+export const AudioSlides = () => {
+  const {fps} = useVideoConfig();
+
+  return (
+    <AbsoluteFill style={% raw %}{{backgroundColor: COLORS.bg}}{% endraw %}>
+      {/* Audio track */}
+      <Audio src={staticFile('audio-overview.mp3')} />
+
+      {/* Title card (first 3 seconds) */}
+      <Sequence from={0} durationInFrames={fps * 3}>
+        <AbsoluteFill style={% raw %}{{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}{% endraw %}>
+          <div style={% raw %}{{fontSize: 72, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text}}{% endraw %}>
+            {BRAND.name}
+          </div>
+          <div style={% raw %}{{marginTop: 16, fontSize: 28, fontFamily: FONTS.body, color: COLORS.accent}}{% endraw %}>
+            Audio Overview
+          </div>
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* Auto-paced slides */}
+      {VISUAL_ASSETS.map((asset, i) => {
+        const start = fps * 3 + i * framesPerSlide;
+        const caption = SLIDE_CAPTIONS[i] || BRAND.tagline;
+        const src = asset ? staticFile(asset) : undefined;
+        return (
+          <Sequence key={i} from={start} durationInFrames={framesPerSlide}>
+            <SlideCard imageSrc={src} caption={caption} index={i} />
+          </Sequence>
+        );
+      })}
+    </AbsoluteFill>
+  );
+};

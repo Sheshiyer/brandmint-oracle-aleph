@@ -4,7 +4,7 @@
 
 **NEVER execute brandmint skills individually.** Always use the `bm launch` pipeline.
 
-Brandmint is an orchestrated pipeline of 44 skills across 6 waves. Each skill depends on
+Brandmint is an orchestrated pipeline of 44 skills across 7 waves plus publishing deliverables. Each skill depends on
 outputs from prior skills. Running skills individually breaks the dependency chain and
 produces incomplete or inconsistent results.
 
@@ -44,9 +44,38 @@ bm launch --config <path>/brand-config.yaml \
 2. For each skill, the executor writes a prompt to `.brandmint/prompts/{skill-id}.md`
 3. The agent (you) executes the prompt and saves JSON output to `.brandmint/outputs/{skill-id}.json`
 4. The executor polls for the output file and proceeds to the next skill
-5. Visual asset skills (Wave 5-6) call FAL API directly — no agent intervention needed
+5. Visual asset skills (Wave 3-5) call FAL API directly — no agent intervention needed
+6. Wave 7 (Publishing) runs 7A-7F: theme export, NotebookLM, slide decks, reports, diagrams, video
 
-## Post-Pipeline Publishing
+## Wave 7: Publishing & Deliverables
+
+Wave 7 runs automatically at `comprehensive` depth or when `--waves 1-7` is specified.
+Sub-steps can also be run standalone via `bm publish`:
+
+| Step | Command | Deliverable |
+|------|---------|-------------|
+| 7A | automatic | Brand theme (CSS/Typst/JSON) |
+| 7B | `bm publish notebooklm` | NotebookLM notebook + audio |
+| 7C | `bm publish decks` | Slide decks (PDF via Marp) |
+| 7D | `bm publish reports` | Reports (PDF via Typst) |
+| 7E | `bm publish diagrams` | Mind maps & diagrams |
+| 7F | `bm publish video` | Video overviews (MP4 via Remotion) |
+
+### Video Generation (7F)
+
+Renders 3 branded MP4 videos using Remotion (React-based programmatic video):
+- **Brand Sizzle Reel** (60-90s) — Hook, problem, solution, proof, offer, CTA
+- **Product Showcase** (30-60s) — Hero, features, differentiation, CTA
+- **Audio + Slides** (dynamic) — NotebookLM MP3 synced with brand visuals
+
+```bash
+bm publish video --config <path>/brand-config.yaml
+bm publish video --config <path>/brand-config.yaml --videos brand-sizzle --force
+```
+
+**Requires:** Node.js >= 18, `pip install 'brandmint[video]'`
+
+## Post-Pipeline Publishing (Wiki)
 
 After all waves complete, two publishing skills transform outputs into a documentation site:
 
@@ -74,3 +103,6 @@ Run `process-markdown.sh` with `--images <generated-dir>` to include visual asse
 - Outputs: `<brand-dir>/.brandmint/outputs/`
 - Visual assets: `<brand-dir>/<brand-slug>/generated/`
 - Pipeline state: `<brand-dir>/.brandmint/state.json`
+- Deliverables: `<brand-dir>/deliverables/` (notebooklm, decks, reports, diagrams, videos)
+- NotebookLM state: `<brand-dir>/.brandmint/notebooklm-state.json`
+- Videos state: `<brand-dir>/.brandmint/videos-state.json`

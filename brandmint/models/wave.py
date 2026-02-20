@@ -43,6 +43,7 @@ class Wave(BaseModel):
     depends_on: List[int] = Field(default_factory=list)
     status: WaveStatus = Field(default=WaveStatus.PENDING)
     estimated_cost: float = 0.0
+    post_hook: Optional[str] = None
 
     # Execution tracking
     skill_executions: Dict[str, SkillExecution] = Field(default_factory=dict)

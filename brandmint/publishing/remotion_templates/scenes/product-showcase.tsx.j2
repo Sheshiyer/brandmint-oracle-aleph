@@ -1,0 +1,162 @@
+import {AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, spring, Img} from 'remotion';
+import {COLORS, FONTS, BRAND, buildFrameMap, type SceneDef} from '../constants';
+import {BRAND_DATA} from '../brand-data';
+import {Background} from '../components/background';
+import {TextBlock} from '../components/text-block';
+
+export const SHOWCASE_SCENES: SceneDef[] = [
+  {id: 'hero', seconds: 10},
+  {id: 'features', seconds: 15},
+  {id: 'differentiation', seconds: 10},
+  {id: 'cta', seconds: 10},
+];
+
+const frameMap = buildFrameMap(SHOWCASE_SCENES);
+
+/* ── Scene: Hero ── */
+const SceneHero = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const opacity = interpolate(frame, [0, fps], [0, 1], {extrapolateRight: 'clamp'});
+  const subtitleOpacity = interpolate(frame, [fps * 0.6, fps * 1.4], [0, 1], {extrapolateRight: 'clamp'});
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 120, opacity}}{% endraw %}>
+        <div style={% raw %}{{fontSize: 84, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text, textAlign: 'center', lineHeight: 1.1}}{% endraw %}>
+          {BRAND.name}
+        </div>
+        <div style={% raw %}{{marginTop: 20, fontSize: 32, fontFamily: FONTS.body, color: COLORS.accent, textAlign: 'center', opacity: subtitleOpacity}}{% endraw %}>
+          {BRAND_DATA.heroHeadline || BRAND.tagline}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: Features ── */
+const SceneFeatures = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+
+  const features = BRAND_DATA.features || [];
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{padding: '100px 140px', justifyContent: 'center'}}{% endraw %}>
+        <div style={% raw %}{{fontSize: 48, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text, marginBottom: 48}}{% endraw %}>
+          Key Features
+        </div>
+        <div style={% raw %}{{display: 'flex', flexWrap: 'wrap', gap: 24}}{% endraw %}>
+          {features.slice(0, 4).map((feat: any, i: number) => {
+            const delay = i * 0.3 * fps;
+            const cardOpacity = interpolate(frame, [delay, delay + 0.5 * fps], [0, 1], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+            const slideUp = interpolate(frame, [delay, delay + 0.5 * fps], [30, 0], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+
+            const name = typeof feat === 'string' ? feat : feat?.name || feat?.title || String(feat);
+            const desc = typeof feat === 'object' && feat?.description ? feat.description : '';
+
+            return (
+              <div
+                key={i}
+                style={% raw %}{{
+                  flex: '1 1 380px',
+                  padding: '32px 36px',
+                  background: `${COLORS.primary}cc`,
+                  borderRadius: 16,
+                  borderTop: `3px solid ${COLORS.accent}`,
+                  opacity: cardOpacity,
+                  transform: `translateY(${slideUp}px)`,
+                }}{% endraw %}
+              >
+                <div style={% raw %}{{fontSize: 28, fontWeight: 600, fontFamily: FONTS.header, color: COLORS.text, marginBottom: 8}}{% endraw %}>
+                  {name}
+                </div>
+                {desc ? (
+                  <div style={% raw %}{{fontSize: 20, fontFamily: FONTS.body, color: COLORS.textMuted, lineHeight: 1.4}}{% endraw %}>
+                    {String(desc).slice(0, 120)}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: Differentiation ── */
+const SceneDifferentiation = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const reveal = spring({frame, fps, config: {damping: 200, stiffness: 100}});
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{padding: '120px 140px', justifyContent: 'center', opacity: reveal}}{% endraw %}>
+        <div style={% raw %}{{display: 'inline-flex', alignItems: 'center', padding: '10px 18px', borderRadius: 999, border: `1px solid ${COLORS.accent}`, color: COLORS.accent, textTransform: 'uppercase', letterSpacing: 2, fontSize: 14, fontFamily: FONTS.body, marginBottom: 40}}{% endraw %}>
+          What Sets Us Apart
+        </div>
+        <TextBlock
+          title={BRAND_DATA.competitiveMoat || BRAND_DATA.differentiation || 'Built different'}
+          subtitle={BRAND_DATA.valueProp || ''}
+        />
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: CTA ── */
+const SceneCTA = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const scale = spring({frame, fps, config: {damping: 100, stiffness: 80, mass: 0.6}});
+  const taglineOpacity = interpolate(frame, [fps * 0.5, fps * 1.2], [0, 1], {extrapolateRight: 'clamp'});
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}{% endraw %}>
+        <div style={% raw %}{{transform: `scale(${scale})`, fontSize: 72, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text, textAlign: 'center'}}{% endraw %}>
+          {BRAND_DATA.cta || `Get ${BRAND.name}`}
+        </div>
+        <div style={% raw %}{{marginTop: 20, fontSize: 28, fontFamily: FONTS.body, color: COLORS.accent, opacity: taglineOpacity, textAlign: 'center'}}{% endraw %}>
+          {BRAND.tagline}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Main Composition ── */
+export const ProductShowcase = () => {
+  const {fps} = useVideoConfig();
+  const premount = 1 * fps;
+
+  return (
+    <AbsoluteFill>
+      <Sequence from={frameMap.map.hero.start} durationInFrames={frameMap.map.hero.duration} premountFor={premount}>
+        <SceneHero />
+      </Sequence>
+      <Sequence from={frameMap.map.features.start} durationInFrames={frameMap.map.features.duration} premountFor={premount}>
+        <SceneFeatures />
+      </Sequence>
+      <Sequence from={frameMap.map.differentiation.start} durationInFrames={frameMap.map.differentiation.duration} premountFor={premount}>
+        <SceneDifferentiation />
+      </Sequence>
+      <Sequence from={frameMap.map.cta.start} durationInFrames={frameMap.map.cta.duration} premountFor={premount}>
+        <SceneCTA />
+      </Sequence>
+    </AbsoluteFill>
+  );
+};

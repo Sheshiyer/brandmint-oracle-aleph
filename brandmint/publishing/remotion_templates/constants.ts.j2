@@ -1,0 +1,45 @@
+// Brandmint auto-generated Remotion constants
+// Brand: {{ brand_name }}
+
+export const COLORS = {
+  primary: '{{ colors.primary }}',
+  secondary: '{{ colors.secondary }}',
+  accent: '{{ colors.accent }}',
+  support: '{{ colors.support | default("#7B8794") }}',
+  signal: '{{ colors.signal | default("#22C55E") }}',
+  bg: '#0a0a0a',
+  text: '#ffffff',
+  textMuted: 'rgba(255, 255, 255, 0.7)',
+};
+
+export const FONTS = {
+  header: '"{{ fonts.header }}", system-ui, sans-serif',
+  body: '"{{ fonts.body }}", system-ui, sans-serif',
+};
+
+export const VIDEO = {
+  fps: 30,
+  width: 1920,
+  height: 1080,
+};
+
+export const BRAND = {
+  name: '{{ brand_name }}',
+  tagline: '{{ tagline }}',
+};
+
+export type SceneDef = { id: string; seconds: number };
+
+export const sceneToFrames = (seconds: number) => seconds * VIDEO.fps;
+
+export const buildFrameMap = (scenes: SceneDef[]) =>
+  scenes.reduce(
+    (acc, scene) => {
+      const duration = sceneToFrames(scene.seconds);
+      const start = acc.total;
+      acc.total += duration;
+      acc.map[scene.id] = { start, duration };
+      return acc;
+    },
+    { total: 0, map: {} as Record<string, { start: number; duration: number }> },
+  );

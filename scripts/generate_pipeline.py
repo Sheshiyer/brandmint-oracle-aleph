@@ -26,6 +26,71 @@ except ImportError:
 
 
 # =====================================================================
+# REFERENCE MAP LOADING
+# =====================================================================
+
+# Hardcoded fallback when reference-map.json is not available
+_DEFAULT_REF_IMAGES = {
+    "2A": "ref-2A-bento-grid.jpg",
+    "2B": "ref-2B-brand-seal.jpg",
+    "2C": "ref-2C-logo-emboss.jpg",
+    "3A": "ref-3A-capsule-collection.jpg",
+    "3B": "ref-3B-hero-product.jpg",
+    "3C": "ref-3C-essence-vial.jpg",
+    "4A": "ref-4A-catalog-layout.jpg",
+    "4B": "ref-4B-flatlay.jpg",
+    "5A": "ref-5A-heritage-engraving.jpg",
+    "5B": "ref-5B-campaign-grid.jpg",
+    "5D": "ref-5D-engine-icons.jpg",
+    "7A": "ref-7A-contact-sheet.jpg",
+    "8A": "ref-8A-seeker-poster.jpg",
+    "9A": "ref-9A-engine-poster.jpg",
+    "10A": "ref-7A-contact-sheet.jpg",
+}
+
+
+def load_ref_map(ref_map_path):
+    """Load reference-map.json and return a REF_IMAGES dict.
+
+    Returns dict mapping prompt_id -> filename.
+    Falls back to _DEFAULT_REF_IMAGES if file not found.
+    """
+    if not os.path.exists(ref_map_path):
+        return dict(_DEFAULT_REF_IMAGES)
+
+    with open(ref_map_path) as f:
+        data = json.load(f)
+
+    result = {}
+    for pid, entry in data.get("primary", {}).items():
+        result[pid] = entry["file"]
+    for pid, entry in data.get("reuses", {}).items():
+        result[pid] = entry["file"]
+    return result
+
+
+def build_ref_images_block(ref_images_dict):
+    """Build the REF_IMAGES block for embedding in generated scripts.
+
+    Returns a template-escaped string ({{ for literal braces) suitable
+    for inclusion in SCRIPT_HEADER before .format_map() rendering.
+    """
+    lines = ["REF_IMAGES = {{"]
+    for pid in sorted(ref_images_dict.keys(), key=_sort_pid):
+        lines.append(f'    "{pid}": "{ref_images_dict[pid]}",')
+    lines.append("}}")
+    return "\n".join(lines)
+
+
+def _sort_pid(pid):
+    """Sort prompt IDs numerically: 2A, 2B, ..., 10A, 10B, 10C."""
+    m = re.match(r"(\d+)([A-Z]?)", pid)
+    if m:
+        return (int(m.group(1)), m.group(2))
+    return (50, pid)
+
+
+# =====================================================================
 # CONFIG LOADING
 # =====================================================================
 
@@ -466,23 +531,7 @@ def get_product_ref_urls():
 
 
 # Reference image mapping: prompt ID -> composition reference filename
-REF_IMAGES = {{
-    "2A": "ref-2A-bento-grid.jpg",
-    "2B": "ref-2B-brand-seal.jpg",
-    "2C": "ref-2C-logo-emboss.jpg",
-    "3A": "ref-3A-capsule-collection.jpg",
-    "3B": "ref-3B-hero-product.jpg",
-    "3C": "ref-3C-essence-vial.jpg",
-    "4A": "ref-4A-catalog-layout.jpg",
-    "4B": "ref-4B-flatlay.jpg",
-    "5A": "ref-5A-heritage-engraving.jpg",
-    "5B": "ref-5B-campaign-grid.jpg",
-    "5D": "ref-5D-engine-icons.jpg",
-    "7A": "ref-7A-contact-sheet.jpg",
-    "8A": "ref-8A-seeker-poster.jpg",
-    "9A": "ref-9A-engine-poster.jpg",
-    "10A": "ref-7A-contact-sheet.jpg",  # reuses 7A grid layout
-}}
+{ref_images_block}
 
 # Config-driven reference image overrides
 REF_OVERRIDES = {ref_overrides_literal}
@@ -2003,6 +2052,8 @@ def main():
     )
     parser.add_argument("config", help="Path to brand-config.yaml")
     parser.add_argument("--output-dir", help="Output directory (default: derived from brand name)")
+    parser.add_argument("--refresh-refs", action="store_true",
+                        help="Re-scan references/images/ and regenerate reference-map.json before generating pipeline")
     args = parser.parse_args()
 
     print("=" * 60)
@@ -2015,6 +2066,33 @@ def main():
     cfg = load_config(config_path)
     exec_ctx = load_execution_context(config_path, cfg)
     v = build_vars(cfg, exec_ctx, config_path=config_path)
+
+    # ── Reference map: load from JSON or use hardcoded fallback ──
+    ref_map_path = os.path.join(os.path.dirname(config_path), "..", "references", "reference-map.json")
+    if not os.path.exists(ref_map_path):
+        # Try relative to script location (brandmint repo root)
+        ref_map_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "reference-map.json")
+
+    if args.refresh_refs:
+        images_dir = os.path.join(os.path.dirname(ref_map_path), "images")
+        if os.path.isdir(images_dir):
+            import subprocess
+            mapper_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_references.py")
+            if os.path.exists(mapper_script):
+                print("\n  Refreshing reference map...")
+                subprocess.run([sys.executable, mapper_script, images_dir, "--json-only"], check=True)
+                print("  Reference map refreshed.")
+            else:
+                print(f"  WARNING: map_references.py not found at {mapper_script}")
+        else:
+            print(f"  WARNING: references/images/ not found at {images_dir}")
+
+    ref_images = load_ref_map(ref_map_path)
+    if os.path.exists(ref_map_path):
+        print(f"  Refs: Loaded {len(ref_images)} mappings from reference-map.json")
+    else:
+        print(f"  Refs: Using {len(ref_images)} hardcoded defaults (no reference-map.json found)")
+    v["ref_images_block"] = build_ref_images_block(ref_images)
 
     # Build ref overrides literal for generated scripts
     ref_dict = cfg.get("generation", {}).get("reference_overrides", {})

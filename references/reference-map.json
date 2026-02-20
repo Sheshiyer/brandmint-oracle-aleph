@@ -1,0 +1,327 @@
+{
+  "generated_at": "2026-02-19T21:59:30.986505+00:00",
+  "total_refs": 49,
+  "primary": {
+    "2A": {
+      "file": "ref-2A-bento-grid.jpg",
+      "name": "Bento Grid",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "16:9",
+      "description": "6-module bento grid layout structure (style anchor)",
+      "prompt_id": "2A"
+    },
+    "2B": {
+      "file": "ref-2B-brand-seal.jpg",
+      "name": "Brand Seal",
+      "model": "flux-2-pro",
+      "supports_image_urls": false,
+      "aspect": "1:1",
+      "description": "Wax seal / emblem composition",
+      "prompt_id": "2B"
+    },
+    "2C": {
+      "file": "ref-2C-logo-emboss.jpg",
+      "name": "Logo Emboss",
+      "model": "flux-2-pro",
+      "supports_image_urls": false,
+      "aspect": "16:9",
+      "description": "Frosted glass logo emboss style",
+      "prompt_id": "2C"
+    },
+    "3A": {
+      "file": "ref-3A-capsule-collection.jpg",
+      "name": "Capsule Collection",
+      "model": "flux-2-pro",
+      "supports_image_urls": false,
+      "aspect": "4:3",
+      "description": "Product lineup / flatlay composition",
+      "prompt_id": "3A"
+    },
+    "3B": {
+      "file": "ref-3B-hero-product.jpg",
+      "name": "Hero Product",
+      "model": "flux-2-pro",
+      "supports_image_urls": false,
+      "aspect": "1:1",
+      "description": "Individual branded product shots",
+      "prompt_id": "3B"
+    },
+    "3C": {
+      "file": "ref-3C-essence-vial.jpg",
+      "name": "Essence Vial",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "1:1",
+      "description": "Branded vessel / vial product shots",
+      "prompt_id": "3C"
+    },
+    "4A": {
+      "file": "ref-4A-catalog-layout.jpg",
+      "name": "Catalog Layout",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "3:4",
+      "description": "Product catalog with spec callouts",
+      "prompt_id": "4A"
+    },
+    "4B": {
+      "file": "ref-4B-flatlay.jpg",
+      "name": "Flatlay",
+      "model": "flux-2-pro",
+      "supports_image_urls": false,
+      "aspect": "1:1",
+      "description": "Minimal white product photography",
+      "prompt_id": "4B"
+    },
+    "5A": {
+      "file": "ref-5A-heritage-engraving.jpg",
+      "name": "Heritage Engraving",
+      "model": "recraft-v3",
+      "supports_image_urls": false,
+      "aspect": "1:1",
+      "style": "digital_illustration",
+      "description": "Fine-line botanical heritage engraving",
+      "prompt_id": "5A"
+    },
+    "5B": {
+      "file": "ref-5B-campaign-grid.jpg",
+      "name": "Campaign Grid",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "3:4",
+      "description": "2-column asymmetric campaign grid",
+      "prompt_id": "5B"
+    },
+    "5D": {
+      "file": "ref-5D-engine-icons.jpg",
+      "name": "Engine Icons",
+      "model": "recraft-v3",
+      "supports_image_urls": false,
+      "aspect": "1:1",
+      "style": "vector_illustration/line_circuit",
+      "description": "Minimal icon set on solid background",
+      "prompt_id": "5D"
+    },
+    "7A": {
+      "file": "ref-7A-contact-sheet.jpg",
+      "name": "Contact Sheet",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "1:1",
+      "description": "3x3 grid-tiled photo composition",
+      "prompt_id": "7A"
+    },
+    "8A": {
+      "file": "ref-8A-seeker-poster.jpg",
+      "name": "Seeker Poster",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "3:4",
+      "description": "Brand presentation poster layout",
+      "prompt_id": "8A"
+    },
+    "9A": {
+      "file": "ref-9A-engine-poster.jpg",
+      "name": "Engine Poster",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "3:4",
+      "description": "Detailed single-object poster with labels",
+      "prompt_id": "9A"
+    }
+  },
+  "reuses": {
+    "10A": {
+      "file": "ref-7A-contact-sheet.jpg",
+      "reuses": "7A",
+      "prompt_id": "10A",
+      "name": "Reuses 7A",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "1:1",
+      "description": "Reuses 7A (Contact Sheet) grid layout"
+    },
+    "10B": {
+      "file": "ref-7A-contact-sheet.jpg",
+      "reuses": "7A",
+      "prompt_id": "10B",
+      "name": "Reuses 7A",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "1:1",
+      "description": "Reuses 7A (Contact Sheet) grid layout"
+    },
+    "10C": {
+      "file": "ref-7A-contact-sheet.jpg",
+      "reuses": "7A",
+      "prompt_id": "10C",
+      "name": "Reuses 7A",
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
+      "aspect": "1:1",
+      "description": "Reuses 7A (Contact Sheet) grid layout"
+    }
+  },
+  "alternatives": {
+    "2B": [
+      {
+        "file": "ref-alt-3d-sticker-logos.jpg",
+        "description": "3D tactile logo artifacts"
+      },
+      {
+        "file": "ref-alt-chrome-logos.jpg",
+        "description": "Polished 3D chrome logo renders"
+      },
+      {
+        "file": "ref-alt-minimal-logos.jpg",
+        "description": "Clean metallic minimal logo reimaginings"
+      }
+    ],
+    "3C": [
+      {
+        "file": "ref-alt-beverage-bottles.jpg",
+        "description": "Branded bottles on colored backgrounds"
+      }
+    ],
+    "3B": [
+      {
+        "file": "ref-alt-boxing-gloves.jpg",
+        "description": "Luxury branded product concept"
+      },
+      {
+        "file": "ref-alt-passport-covers.jpg",
+        "description": "Branded accessory product shots"
+      }
+    ],
+    "3A": [
+      {
+        "file": "ref-alt-branded-shoes.jpg",
+        "description": "Cross-brand product design collabs"
+      },
+      {
+        "file": "ref-alt-embossed-tshirts.jpg",
+        "description": "Material texture detail in branded apparel"
+      },
+      {
+        "file": "ref-alt-leather-bags.jpg",
+        "description": "Branded leather bag product shots"
+      },
+      {
+        "file": "ref-alt-leather-duffles.jpg",
+        "description": "Branded luxury duffle bag lineup"
+      },
+      {
+        "file": "ref-alt-varsity-jackets.jpg",
+        "description": "Branded apparel in environmental setting"
+      }
+    ],
+    "5A": [
+      {
+        "file": "ref-alt-calligraphic-initials.jpg",
+        "description": "Ornate typography / letterform style"
+      }
+    ],
+    "misc": [
+      {
+        "file": "ref-alt-dieline-to-3d.jpg",
+        "description": "Packaging design dieline-to-3D workflow"
+      },
+      {
+        "file": "ref-alt-foil-stickers.jpg",
+        "description": "Crinkled foil / balloon textured brand stickers"
+      },
+      {
+        "file": "ref-alt-organic-logo.jpg",
+        "description": "Logo-as-organic-material concept"
+      },
+      {
+        "file": "ref-alt-product-branding-workflow.jpg",
+        "description": "Product branding workflow diagram"
+      },
+      {
+        "file": "ref-alt-sneaker-collabs.jpg",
+        "description": "Cross-brand sneaker collab product design"
+      }
+    ],
+    "2C": [
+      {
+        "file": "ref-alt-emboss-monochrome.jpg",
+        "description": "Monochrome glossy emboss on colored surfaces"
+      },
+      {
+        "file": "ref-alt-glass-editorial.jpg",
+        "description": "Frosted glass editorial layouts"
+      }
+    ]
+  },
+  "styles": [
+    {
+      "file": "ref-style-bold-portrait-grid.jpg",
+      "description": "Celebrity portraits with bold color blocks"
+    },
+    {
+      "file": "ref-style-cartoon-caricatures.jpg",
+      "description": "Colored cartoon caricatures"
+    },
+    {
+      "file": "ref-style-collage-portraits.jpg",
+      "description": "Collage/glitch torn-paper portrait effect"
+    },
+    {
+      "file": "ref-style-duotone-faces.jpg",
+      "description": "Minimalist duotone flat vector face illustrations"
+    },
+    {
+      "file": "ref-style-fashion-prompt.jpg",
+      "description": "Fashion prompt with outfit changes"
+    },
+    {
+      "file": "ref-style-fashion-tutorial.jpg",
+      "description": "Fashion prompt tutorial (3 person photos)"
+    },
+    {
+      "file": "ref-style-graffiti-overlay.jpg",
+      "description": "Graffiti/crackle face overlays with doodles"
+    },
+    {
+      "file": "ref-style-halftone-portraits.jpg",
+      "description": "Halftone dot comic-style portraits"
+    },
+    {
+      "file": "ref-style-line-portraits.jpg",
+      "description": "B&W minimal line-art portrait icons"
+    },
+    {
+      "file": "ref-style-line-sketches.jpg",
+      "description": "Line-art character sketches"
+    },
+    {
+      "file": "ref-style-retro-typography.jpg",
+      "description": "Retro baseball-style brand typography"
+    }
+  ],
+  "demos": [
+    {
+      "file": "ref-demo-aerial-logo.jpg",
+      "description": "Logo made of aerial people (creative concept)"
+    },
+    {
+      "file": "ref-demo-box-christmas-trees.jpg",
+      "description": "Christmas trees made of brand boxes"
+    },
+    {
+      "file": "ref-demo-metal-grillz.jpg",
+      "description": "Metal grillz/jewelry with brand names"
+    },
+    {
+      "file": "ref-demo-product-design-tutorial.jpg",
+      "description": "Creative product design tutorial slide"
+    },
+    {
+      "file": "ref-demo-superhero-composite.jpg",
+      "description": "Superhero characters composite"
+    }
+  ],
+  "unmapped": []
+}

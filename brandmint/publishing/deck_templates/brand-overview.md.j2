@@ -1,0 +1,143 @@
+---
+marp: true
+theme: brand
+paginate: true
+footer: "{{ brand_name }} | Brand Overview"
+---
+
+<!-- _class: lead -->
+
+# {{ brand_name }}
+
+{{ tagline }}
+
+---
+
+## The Problem
+
+{{ market_problem | default("A gap exists in the market that demands a new approach.", true) }}
+
+{% if pain_points %}
+{% for point in pain_points %}
+- {{ point }}
+{% endfor %}
+{% endif %}
+
+---
+
+## The Solution
+
+{{ value_proposition | default("A differentiated approach that addresses unmet needs.", true) }}
+
+{% if key_differentiators %}
+### Key Differentiators
+{% for diff in key_differentiators %}
+- **{{ diff }}**
+{% endfor %}
+{% endif %}
+
+---
+
+## Target Audience
+
+{% if persona_name %}
+### {{ persona_name }}
+{% endif %}
+
+{{ persona_summary | default("Our ideal customer is looking for a better way.", true) }}
+
+{% if persona_motivations %}
+### Motivations
+{% for m in persona_motivations %}
+- {{ m }}
+{% endfor %}
+{% endif %}
+
+---
+
+## Product Details
+
+{{ product_description | default("A compelling product that delivers on its promise.", true) }}
+
+{% if features %}
+### Features
+{% for f in features %}
+- **{{ f.name | default(f, true) }}**{% if f.benefit is defined %} — {{ f.benefit }}{% endif %}
+
+{% endfor %}
+{% endif %}
+
+---
+
+## Market Opportunity
+
+{{ market_opportunity | default("The market is large and growing.", true) }}
+
+{% if competitors %}
+### Competitive Landscape
+
+| Competitor | Positioning |
+|-----------|-------------|
+{% for c in competitors %}
+| {{ c.name | default(c, true) }} | {{ c.positioning | default("N/A", true) }} |
+{% endfor %}
+{% endif %}
+
+---
+
+## Business Model
+
+{{ business_model | default("A sustainable revenue model built for growth.", true) }}
+
+{% if revenue_streams %}
+### Revenue Streams
+{% for r in revenue_streams %}
+- {{ r }}
+{% endfor %}
+{% endif %}
+
+---
+
+## Traction & Roadmap
+
+{% if milestones %}
+### Milestones
+{% for m in milestones %}
+- {{ m }}
+{% endfor %}
+{% endif %}
+
+{% if roadmap %}
+### What's Next
+{% for r in roadmap %}
+- {{ r }}
+{% endfor %}
+{% endif %}
+
+---
+
+## Brand Identity
+
+{% if voice_tone %}
+> {{ voice_tone }}
+{% endif %}
+
+{% if palette_summary %}
+**Visual System:** {{ palette_summary }}
+{% endif %}
+
+{% if archetype %}
+**Brand Archetype:** {{ archetype }}
+{% endif %}
+
+---
+
+<!-- _class: lead -->
+
+## Ready to Connect?
+
+{{ cta | default("Let's build something remarkable together.", true) }}
+
+{% if contact %}
+**{{ contact }}**
+{% endif %}

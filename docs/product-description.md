@@ -18,6 +18,8 @@ Brandmint is an end-to-end brand identity orchestration system that transforms a
 - **Hydrator Pattern** — Automatically injects text skill outputs (buyer-persona, voice-and-tone, positioning) back into brand-config.yaml — enables downstream skills to use strategy data without manual copy-paste
 - **Scenario System** — Pre-built execution profiles (crowdfunding-lean, enterprise-gtm, bootstrapped-dtc) filter skills and set context — reduces decision fatigue and optimizes for specific launch types
 - **Domain-Aware Asset Selection** — Assets auto-filter based on brand.domain_tags (dtc, saas, app, crowdfunding) — generates only relevant assets, saving cost and time
+- **Programmatic Video Generation** — Remotion-based video pipeline (Wave 7F) scaffolds a React project per brand, injects data as props, and renders 3 MP4 videos (sizzle reel, product showcase, audio+slides) — professional video deliverables without manual editing
+- **Full Publishing Pipeline** — Wave 7 produces 6 deliverable types: brand themes (CSS/Typst/JSON), NotebookLM notebooks, slide decks (Marp), reports (Typst), diagrams (Markmap/Mermaid), and videos (Remotion)
 
 ## How To Use
 1. **Install**: Run `curl -sSL https://raw.githubusercontent.com/brandmint/brandmint/main/install.sh | bash` or clone and run `uv pip install -e ".[dev]"`
@@ -39,6 +41,8 @@ Brandmint eliminates the chaos of brand launches by providing a unified orchestr
     "runtime": "Python 3.10+",
     "ai_models": "Nano Banana Pro ($0.08), Flux 2 Pro ($0.05), Recraft V3 ($0.04)",
     "visual_assets": "19+ per brand run",
+    "video_deliverables": "3 MP4 videos (brand sizzle, product showcase, audio+slides)",
+    "publishing_deliverables": "6 types (themes, NotebookLM, decks, reports, diagrams, videos)",
     "scenarios": "6 pre-built (brand-genesis, crowdfunding-lean, crowdfunding-full, bootstrapped-dtc, enterprise-gtm, custom-hybrid)"
   }
 }

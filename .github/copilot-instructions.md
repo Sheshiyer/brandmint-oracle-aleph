@@ -1,6 +1,6 @@
 # Brandmint Development Guide
 
-Brand identity orchestration system that transforms `brand-config.yaml` into marketing outputs: text strategies, AI-generated visual assets (via FAL.AI), and campaign copy.
+Brand identity orchestration system that transforms `brand-config.yaml` into marketing outputs: text strategies, AI-generated visual assets (via FAL.AI), campaign copy, and video deliverables (via Remotion).
 
 ## Build & Test
 
@@ -52,7 +52,7 @@ bm registry list     # List all 44 skills
 
 ### Wave-Based Execution
 
-Skills execute in dependency-ordered waves (1→6). Use `depth` to control how many waves run:
+Skills execute in dependency-ordered waves (1→7). Use `depth` to control how many waves run:
 
 | Depth | Waves | Use Case |
 |-------|-------|----------|
@@ -69,6 +69,7 @@ Skills execute in dependency-ordered waves (1→6). Use `depth` to control how m
 | 4 | Products & Content | campaign-page-copy + assets 3A/3B/4A |
 | 5 | Campaign Assets | email sequences + assets 5A/7A/8A |
 | 6 | Distribution | ads, press, social |
+| 7 | Publishing | theme, NotebookLM, decks, reports, diagrams, video |
 
 ### Scenarios
 
@@ -179,18 +180,24 @@ load_dotenv(os.path.expanduser("~/.claude/.env"))
 
 Use specific placeholder `{product_hero_physical}` not generic descriptors — ensures product identity carries through all assets.
 
-### Publishing Pipeline
+### Publishing Pipeline (Wave 7)
 
-Transforms brand outputs into documentation sites (requires Bun):
+Wave 7 generates 6 deliverable types via `bm publish`:
 
 ```bash
-# 1. Generate wiki markdown from brand outputs (wiki-doc-generator skill)
+bm publish notebooklm --config brand-config.yaml    # 7B: NotebookLM notebook + audio
+bm publish decks --config brand-config.yaml          # 7C: Slide decks (Marp → PDF)
+bm publish reports --config brand-config.yaml        # 7D: Reports (Typst → PDF)
+bm publish diagrams --config brand-config.yaml       # 7E: Mind maps & diagrams
+bm publish video --config brand-config.yaml          # 7F: Videos (Remotion → MP4)
 
-# 2. Build Astro site with iOS26 glassmorphism design
+# Wiki documentation site (requires Bun)
 ./skills/publishing/markdown-to-astro-wiki/scripts/init-astro-wiki.sh my-wiki
 ./skills/publishing/markdown-to-astro-wiki/scripts/process-markdown.sh ./docs ./my-wiki/src/content/docs
 cd my-wiki && bun run build
 ```
+
+Video generation requires Node.js >= 18. Install video deps: `pip install 'brandmint[video]'`
 
 ### Brand Config Schema
 
@@ -212,6 +219,7 @@ brandmint/
 │   └── scenario_recommender.py
 ├── models/        # Pydantic models
 ├── pipeline/      # Pipeline executor
+├── publishing/    # Wave 7 generators (NotebookLM, Marp, Typst, Diagrams, Remotion)
 └── installer/     # Symlink management
 scripts/           # Standalone pipeline scripts
 skills/            # 44 skills across 9 categories

@@ -1,0 +1,198 @@
+import {AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig, interpolate, spring} from 'remotion';
+import {COLORS, FONTS, BRAND, buildFrameMap, type SceneDef} from '../constants';
+import {BRAND_DATA} from '../brand-data';
+import {Background} from '../components/background';
+import {TextBlock} from '../components/text-block';
+
+export const SIZZLE_SCENES: SceneDef[] = [
+  {id: 'hook', seconds: 12},
+  {id: 'problem', seconds: 15},
+  {id: 'solution', seconds: 15},
+  {id: 'proof', seconds: 12},
+  {id: 'offer', seconds: 10},
+  {id: 'cta', seconds: 10},
+];
+
+const frameMap = buildFrameMap(SIZZLE_SCENES);
+
+/* ── Scene: Hook ── */
+const SceneHook = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const opacity = interpolate(frame, [0, fps], [0, 1], {extrapolateRight: 'clamp'});
+  const taglineOpacity = interpolate(frame, [fps * 0.8, fps * 1.8], [0, 1], {extrapolateRight: 'clamp'});
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 120, opacity}}{% endraw %}>
+        <div style={% raw %}{{fontSize: 96, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text, textAlign: 'center', lineHeight: 1.1}}{% endraw %}>
+          {BRAND.name}
+        </div>
+        <div style={% raw %}{{marginTop: 24, fontSize: 36, fontFamily: FONTS.body, color: COLORS.accent, textAlign: 'center', opacity: taglineOpacity}}{% endraw %}>
+          {BRAND.tagline}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: Problem ── */
+const SceneProblem = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const overlay = interpolate(frame, [0, 0.6 * fps], [0, 0.7], {extrapolateRight: 'clamp'});
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{padding: '120px 140px', justifyContent: 'center', backgroundColor: `rgba(0,0,0,${overlay})`}}{% endraw %}>
+        <div style={% raw %}{{display: 'inline-flex', alignItems: 'center', padding: '10px 18px', borderRadius: 999, border: `1px solid ${COLORS.accent}`, color: COLORS.accent, textTransform: 'uppercase', letterSpacing: 2, fontSize: 14, fontFamily: FONTS.body, marginBottom: 40}}{% endraw %}>
+          The Problem
+        </div>
+        <TextBlock
+          title={BRAND_DATA.marketProblem || 'A market waiting for change'}
+          subtitle={BRAND_DATA.painPoints?.slice(0, 2).join(' \u2022 ') || ''}
+        />
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: Solution ── */
+const SceneSolution = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const reveal = spring({frame, fps, config: {damping: 200, stiffness: 100}});
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{padding: '120px 140px', justifyContent: 'center', opacity: reveal}}{% endraw %}>
+        <TextBlock
+          title={BRAND_DATA.positioningStatement || BRAND_DATA.valueProp || BRAND.name}
+          subtitle={BRAND_DATA.heroHeadline || BRAND_DATA.differentiation || ''}
+        />
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: Proof ── */
+const SceneProof = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const opacity = interpolate(frame, [0, 0.6 * fps], [0, 1], {extrapolateRight: 'clamp'});
+
+  const pillars = BRAND_DATA.identityPillars || [];
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{padding: '120px 140px', justifyContent: 'center', opacity}}{% endraw %}>
+        <div style={% raw %}{{fontSize: 48, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text, marginBottom: 48}}{% endraw %}>
+          Why {BRAND.name}
+        </div>
+        <div style={% raw %}{{display: 'flex', gap: 32, flexWrap: 'wrap'}}{% endraw %}>
+          {pillars.slice(0, 4).map((pillar: string, i: number) => (
+            <div
+              key={i}
+              style={% raw %}{{
+                flex: '1 1 280px',
+                padding: '28px 32px',
+                background: `${COLORS.primary}cc`,
+                borderRadius: 12,
+                borderLeft: `4px solid ${COLORS.accent}`,
+              }}{% endraw %}
+            >
+              <div style={% raw %}{{fontSize: 24, fontFamily: FONTS.body, color: COLORS.text, lineHeight: 1.4}}{% endraw %}>
+                {typeof pillar === 'string' ? pillar : (pillar as any)?.name || String(pillar)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: Offer ── */
+const SceneOffer = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const opacity = interpolate(frame, [0, 0.5 * fps], [0, 1], {extrapolateRight: 'clamp'});
+
+  const features = BRAND_DATA.features || [];
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{padding: '100px 140px', justifyContent: 'center', opacity}}{% endraw %}>
+        <div style={% raw %}{{fontSize: 48, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text, marginBottom: 40}}{% endraw %}>
+          What You Get
+        </div>
+        <div style={% raw %}{{display: 'flex', flexDirection: 'column', gap: 20}}{% endraw %}>
+          {features.slice(0, 4).map((feat: any, i: number) => (
+            <div key={i} style={% raw %}{{display: 'flex', alignItems: 'center', gap: 16}}{% endraw %}>
+              <div style={% raw %}{{width: 8, height: 8, borderRadius: 4, backgroundColor: COLORS.accent, flexShrink: 0}}{% endraw %} />
+              <div style={% raw %}{{fontSize: 28, fontFamily: FONTS.body, color: COLORS.text}}{% endraw %}>
+                {typeof feat === 'string' ? feat : feat?.name || feat?.title || String(feat)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Scene: CTA ── */
+const SceneCTA = () => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const scale = spring({frame, fps, config: {damping: 100, stiffness: 80, mass: 0.6}});
+  const taglineOpacity = interpolate(frame, [fps * 0.5, fps * 1.2], [0, 1], {extrapolateRight: 'clamp'});
+
+  return (
+    <AbsoluteFill>
+      <Background />
+      <AbsoluteFill style={% raw %}{{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}{% endraw %}>
+        <div style={% raw %}{{transform: `scale(${scale})`, fontSize: 80, fontWeight: 700, fontFamily: FONTS.header, color: COLORS.text, textAlign: 'center'}}{% endraw %}>
+          {BRAND.name}
+        </div>
+        <div style={% raw %}{{marginTop: 24, fontSize: 32, fontFamily: FONTS.body, color: COLORS.accent, opacity: taglineOpacity, textAlign: 'center'}}{% endraw %}>
+          {BRAND_DATA.cta || BRAND.tagline}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+/* ── Main Composition ── */
+export const BrandSizzle = () => {
+  const {fps} = useVideoConfig();
+  const premount = 1 * fps;
+
+  return (
+    <AbsoluteFill>
+      <Sequence from={frameMap.map.hook.start} durationInFrames={frameMap.map.hook.duration} premountFor={premount}>
+        <SceneHook />
+      </Sequence>
+      <Sequence from={frameMap.map.problem.start} durationInFrames={frameMap.map.problem.duration} premountFor={premount}>
+        <SceneProblem />
+      </Sequence>
+      <Sequence from={frameMap.map.solution.start} durationInFrames={frameMap.map.solution.duration} premountFor={premount}>
+        <SceneSolution />
+      </Sequence>
+      <Sequence from={frameMap.map.proof.start} durationInFrames={frameMap.map.proof.duration} premountFor={premount}>
+        <SceneProof />
+      </Sequence>
+      <Sequence from={frameMap.map.offer.start} durationInFrames={frameMap.map.offer.duration} premountFor={premount}>
+        <SceneOffer />
+      </Sequence>
+      <Sequence from={frameMap.map.cta.start} durationInFrames={frameMap.map.cta.duration} premountFor={premount}>
+        <SceneCTA />
+      </Sequence>
+    </AbsoluteFill>
+  );
+};

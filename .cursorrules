@@ -1,6 +1,6 @@
 # Brandmint - Cursor IDE Rules
 
-Brand identity orchestration system. Transforms `brand-config.yaml` into marketing outputs via 44 skills across 9 categories.
+Brand identity orchestration system. Transforms `brand-config.yaml` into marketing outputs via 44 skills across 9 categories, including programmatic video generation via Remotion.
 
 ## Build & Test
 
@@ -18,12 +18,13 @@ bm launch --config brand-config.yaml --scenario crowdfunding-lean
 bm visual generate --config brand-config.yaml
 bm visual execute --config brand-config.yaml --batch anchor  # MUST run first
 bm visual execute --config brand-config.yaml --batch all
+bm publish video --config brand-config.yaml  # Remotion → MP4
 ```
 
 ## Architecture
 
-### Wave Execution (1→6)
-Skills run in dependency order. Wave 1 (foundation) → Wave 6 (distribution).
+### Wave Execution (1→7)
+Skills run in dependency order. Wave 1 (foundation) → Wave 6 (distribution) → Wave 7 (publishing: theme, NotebookLM, decks, reports, diagrams, video).
 
 ### Style Anchor Cascade
 **CRITICAL**: 2A Bento Grid MUST generate before all other visual assets. It's the style reference for Nano Banana Pro calls.
@@ -58,6 +59,7 @@ brandmint/
 ├── core/          # wave_planner, hydrator, skills_registry, scenario_recommender
 ├── models/        # Pydantic models
 ├── pipeline/      # Executor
+├── publishing/    # Wave 7 generators (NotebookLM, Marp, Typst, Diagrams, Remotion)
 └── installer/     # Symlink management
 scripts/           # Standalone pipeline scripts
 skills/            # 44 skills (9 categories)

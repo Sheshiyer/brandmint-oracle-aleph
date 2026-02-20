@@ -46,12 +46,14 @@ visual_app = typer.Typer(help="Visual asset pipeline (generate, execute, preview
 registry_app = typer.Typer(help="Unified skill registry management", no_args_is_help=True)
 install_app = typer.Typer(help="Installation and setup utilities", no_args_is_help=True)
 cache_app = typer.Typer(help="Prompt and asset cache management", no_args_is_help=True)
+publish_app = typer.Typer(help="Post-pipeline publishing (NotebookLM, decks, reports, diagrams, videos)", no_args_is_help=True)
 
 app.add_typer(plan_app, name="plan")
 app.add_typer(visual_app, name="visual")
 app.add_typer(registry_app, name="registry")
 app.add_typer(install_app, name="install")
 app.add_typer(cache_app, name="cache")
+app.add_typer(publish_app, name="publish")
 
 
 # ━━━ Top-level commands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -315,6 +317,65 @@ def cache_clear(
         
         cache.clear_all()
         console.print(f"[green]Cache cleared. Removed {stats['total_entries']} entries.[/green]")
+
+
+# ━━━ Publish subcommands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+@publish_app.command("notebooklm")
+def publish_notebooklm(
+    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
+    artifacts: Optional[str] = typer.Option(None, "--artifacts", "-a", help="Comma-separated artifact IDs (default: all)"),
+    force: bool = typer.Option(False, "--force", "-f", help="Recreate notebook from scratch"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show plan without executing"),
+    max_sources: int = typer.Option(50, "--max-sources", "-m", help="Max sources to upload (default: 50, NotebookLM Standard plan limit)"),
+):
+    """Publish brand intelligence to NotebookLM and generate artifacts."""
+    from .publish import run_notebooklm_publish
+    run_notebooklm_publish(config, artifacts=artifacts, force=force, dry_run=dry_run, max_sources=max_sources)
+
+
+@publish_app.command("decks")
+def publish_decks(
+    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
+    decks: Optional[str] = typer.Option(None, "--decks", "-d", help="Comma-separated deck IDs (default: all)"),
+    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all decks"),
+):
+    """Generate branded PDF slide decks using Marp CLI."""
+    from .publish import run_decks_publish
+    run_decks_publish(config, decks=decks, force=force)
+
+
+@publish_app.command("reports")
+def publish_reports(
+    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
+    reports: Optional[str] = typer.Option(None, "--reports", "-r", help="Comma-separated report IDs (default: all)"),
+    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all reports"),
+):
+    """Generate branded PDF reports using Typst."""
+    from .publish import run_reports_publish
+    run_reports_publish(config, reports=reports, force=force)
+
+
+@publish_app.command("diagrams")
+def publish_diagrams(
+    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
+    diagrams: Optional[str] = typer.Option(None, "--diagrams", "-d", help="Comma-separated diagram IDs (default: all)"),
+    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all diagrams"),
+):
+    """Generate mind maps and diagrams using Markmap and Mermaid CLI."""
+    from .publish import run_diagrams_publish
+    run_diagrams_publish(config, diagrams=diagrams, force=force)
+
+
+@publish_app.command("video")
+def publish_video(
+    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
+    videos: Optional[str] = typer.Option(None, "--videos", "-v", help="Comma-separated video IDs (default: all)"),
+    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all videos"),
+):
+    """Generate branded MP4 videos using Remotion."""
+    from .publish import run_video_publish
+    run_video_publish(config, videos=videos, force=force)
 
 
 def main():
