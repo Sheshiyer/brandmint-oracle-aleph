@@ -394,11 +394,11 @@ class RemotionVideoGenerator:
         # Copy audio to public/ if available
         if has_audio:
             audio_dest = public_dir / "audio-overview.mp3"
-            if not audio_dest.exists():
-                try:
-                    audio_dest.symlink_to(self.audio_path.resolve())
-                except OSError:
-                    shutil.copy2(self.audio_path, audio_dest)
+            if audio_dest.exists() or audio_dest.is_symlink():
+                audio_dest.unlink()
+            # Use physical copy (not symlink): Remotion static server can
+            # return 404 for symlinked public assets in some environments.
+            shutil.copy2(self.audio_path, audio_dest)
 
     def _get_audio_duration(self) -> float:
         """Get audio duration in seconds using ffprobe or fallback."""
@@ -503,6 +503,12 @@ class RemotionVideoGenerator:
             video_def["composition_id"],
             str(output_mp4),
         ]
+        render_timeout = int(
+            self.config.get("generation", {}).get("video_render_timeout_seconds", 900)
+        )
+        if video_id == "audio-slides":
+            # Audio-synced video duration can be much longer.
+            render_timeout = max(render_timeout, 1800)
 
         try:
             result = subprocess.run(
@@ -510,7 +516,7 @@ class RemotionVideoGenerator:
                 cwd=str(self.workspace),
                 capture_output=True,
                 text=True,
-                timeout=300,
+                timeout=render_timeout,
                 env={**os.environ, "NODE_OPTIONS": "--max-old-space-size=4096"},
             )
             if result.returncode == 0 and output_mp4.exists():
@@ -533,9 +539,14 @@ class RemotionVideoGenerator:
                 self.console.print(f"  [red]\u2717 {video_id} failed: {error[:200]}[/red]")
                 return False
         except subprocess.TimeoutExpired:
-            self.state[video_id] = {"status": "failed", "error": "Timeout (300s)"}
+            self.state[video_id] = {
+                "status": "failed",
+                "error": f"Timeout ({render_timeout}s)",
+            }
             _save_state(self.state, self.state_path)
-            self.console.print(f"  [red]\u2717 {video_id} timed out (300s)[/red]")
+            self.console.print(
+                f"  [red]\u2717 {video_id} timed out ({render_timeout}s)[/red]"
+            )
             return False
         except Exception as e:
             self.state[video_id] = {"status": "failed", "error": str(e)[:300]}

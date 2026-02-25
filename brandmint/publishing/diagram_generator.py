@@ -411,14 +411,9 @@ class DiagramGenerator:
         md_path = self.deliverables_dir / f"{diag_id}.md"
         md_path.write_text(md_content)
 
-        # Load markmap options for brand colors
-        options_path = self.theme_dir / "markmap-options.json"
-
         # Generate HTML
         html_output = self.deliverables_dir / diagram_def["output_files"][0]
         cmd = ["markmap", str(md_path), "-o", str(html_output), "--no-open"]
-        if options_path.exists():
-            cmd.extend(["--options", str(options_path)])
 
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
@@ -438,8 +433,6 @@ class DiagramGenerator:
         if len(diagram_def["output_files"]) > 1:
             svg_output = self.deliverables_dir / diagram_def["output_files"][1]
             svg_cmd = ["markmap", str(md_path), "-o", str(svg_output), "--no-open"]
-            if options_path.exists():
-                svg_cmd.extend(["--options", str(options_path)])
             try:
                 subprocess.run(svg_cmd, capture_output=True, text=True, timeout=30)
             except Exception:

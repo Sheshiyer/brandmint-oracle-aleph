@@ -80,7 +80,16 @@ class NotebookLMClient:
         r = self._run_json(["notebooklm", "create", title, "--json"])
         if not r.success:
             raise RuntimeError(f"Failed to create notebook: {r.stderr}")
-        return r.data.get("id") or r.data.get("notebook_id", "")
+        notebook_id = (
+            r.data.get("id")
+            or r.data.get("notebook_id")
+            or r.data.get("notebook", {}).get("id")
+        )
+        if not notebook_id:
+            raise RuntimeError(
+                f"Notebook created but no ID returned. Response keys: {list(r.data.keys())}"
+            )
+        return notebook_id
 
     def list_notebooks(self) -> List[Dict[str, Any]]:
         """List all notebooks."""
@@ -99,17 +108,26 @@ class NotebookLMClient:
         ])
         if not r.success:
             raise RuntimeError(f"Failed to add source {file_path}: {r.stderr}")
-        return r.data.get("source_id", "")
+        source_id = r.data.get("source_id") or r.data.get("source", {}).get("id")
+        if not source_id:
+            raise RuntimeError(
+                f"Source added but no source_id returned for {file_path}. "
+                f"Response keys: {list(r.data.keys())}"
+            )
+        return source_id
 
     def wait_for_source(
         self, source_id: str, notebook_id: str, timeout: int = TIMEOUT_SOURCE,
     ) -> bool:
         """Wait for a source to finish indexing. Returns True on success."""
-        r = self._run([
+        r = self._run_json([
             "notebooklm", "source", "wait", source_id,
-            "-n", notebook_id, "--timeout", str(timeout),
+            "-n", notebook_id, "--timeout", str(timeout), "--json",
         ], timeout=timeout + 30)
-        return r.success
+        if not r.success:
+            return False
+        status = (r.data.get("status") or "").lower()
+        return status in {"ready", "indexed", "completed"}
 
     def list_sources(self, notebook_id: str) -> List[Dict[str, Any]]:
         """List sources in a notebook."""
@@ -147,17 +165,34 @@ class NotebookLMClient:
             r.data.get("artifact_id")
             or r.data.get("task_id")
             or r.data.get("id", "")
+            or r.data.get("note_id")
+            or r.data.get("artifact", {}).get("id")
         )
+
+    def generate_mind_map(self, notebook_id: str) -> Dict[str, Any]:
+        """Generate mind map and return JSON payload (note_id + map data)."""
+        r = self._run_json([
+            "notebooklm", "generate", "mind-map",
+            "-n", notebook_id, "--json",
+        ], retries=MAX_RETRIES)
+        if not r.success:
+            raise RuntimeError(f"Failed to generate mind-map: {r.stderr}")
+        if not r.data:
+            raise RuntimeError("Mind-map generation returned empty JSON response.")
+        return r.data
 
     def wait_for_artifact(
         self, artifact_id: str, notebook_id: str, timeout: int = TIMEOUT_ARTIFACT,
     ) -> bool:
         """Wait for artifact generation to complete."""
-        r = self._run([
+        r = self._run_json([
             "notebooklm", "artifact", "wait", artifact_id,
-            "-n", notebook_id, "--timeout", str(timeout),
+            "-n", notebook_id, "--timeout", str(timeout), "--json",
         ], timeout=timeout + 30)
-        return r.success
+        if not r.success:
+            return False
+        status = (r.data.get("status") or "").lower()
+        return status in {"completed", "ready"}
 
     def list_artifacts(self, notebook_id: str) -> List[Dict[str, Any]]:
         """List artifacts in a notebook."""

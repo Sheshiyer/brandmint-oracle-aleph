@@ -427,6 +427,32 @@ class NotebookLMPublisher:
         if adef["instructions_fn"]:
             instructions = adef["instructions_fn"](self.config)
 
+        # Mind-map is returned inline by notebooklm CLI (not as async artifact).
+        if adef["type"] == "mind-map":
+            self.console.print(f"  ⏳ Generating {aid} ({adef['type']})...")
+            try:
+                payload = self.client.generate_mind_map(notebook_id)
+                self.artifacts_dir.mkdir(parents=True, exist_ok=True)
+                out_path = self.artifacts_dir / adef["output_filename"]
+                out_path.write_text(json.dumps(payload, indent=2))
+                artifacts_state[aid] = {
+                    "artifact_id": payload.get("note_id", ""),
+                    "status": "completed",
+                    "type": adef["type"],
+                    "started_at": datetime.now().isoformat(),
+                    "downloaded": True,
+                    "path": str(out_path),
+                }
+                _save_state(self.state, self.state_path)
+                size_kb = out_path.stat().st_size / 1024
+                self.console.print(
+                    f"  [green]✓[/green] {aid} generated ({size_kb:.1f} KB)"
+                )
+            except RuntimeError as e:
+                artifacts_state[aid] = {"status": "failed", "error": str(e)}
+                self.console.print(f"  [red]✗ {aid} failed: {e}[/red]")
+            return
+
         self.console.print(
             f"  ⏳ Generating {aid} ({adef['type']})..."
         )

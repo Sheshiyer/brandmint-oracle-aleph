@@ -239,9 +239,7 @@ def generate_typst_template(config: dict) -> str:
   paper: "a4",
   margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
   header: align(right, text(size: 8pt, fill: brand-support)[{brand['name']}]),
-  footer: align(center, text(size: 8pt, fill: brand-support)[
-    #counter(page).display("1 / 1", both: true)
-  ]),
+  footer: align(center, text(size: 8pt, fill: brand-support)[{brand['name']}]),
 )
 
 // --- Typography ---

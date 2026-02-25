@@ -158,7 +158,7 @@ The brand occupies a distinctive position in its market.
   inset: 10pt,
   [*Role*], [*Hex*], [*Name*],
   {% for role, color in palette.items() %}
-  [{{ role }}], [{{ color.hex | default(color, true) }}], [{{ color.name | default("", true) }}],
+  [{{ role }}], [`{{ color.hex | default(color, true) }}`], [{{ color.name | default("", true) }}],
   {% endfor %}
 )
 {% endif %}
