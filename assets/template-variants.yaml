@@ -1,0 +1,829 @@
+# Brandmint — Template Variant Registry
+# Dynamic template structure selection based on brand aesthetic profile.
+#
+# Each asset has:
+#   default:   variant_id to use when classifier is absent or ambiguous
+#   variants:  dict of variant_id → definition
+#
+# Variant definition:
+#   description:      human-readable summary
+#   aesthetic_tags:   dimensions used by TemplateMatcher for scoring
+#     composition_density:   [sparse|moderate|dense|ornate]
+#     temporal_register:     [speculative|contemporary|heritage|ancestral]
+#     material_richness:     [synthetic|minimal|natural|craft]
+#     visual_boldness:       [subtle|refined|balanced|bold|architectural]
+#     editorial_vs_commercial: [editorial|balanced|commercial]
+#   template_variables: injected into v dict as {asset_id_varname}
+#                       can contain {brand_variable} references (resolved by render())
+#
+# Phase A: each asset has one default variant with empty template_variables.
+# Phase B: classifier weight tables calibrated to known brands.
+# Phase C: 2A gains 4 real structural variants with ~12 template_variables each.
+# Phase D: all 13 assets gain full variant coverage.
+
+variants:
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # IDENTITY ASSETS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  2A:
+    name: "Brand Kit Bento Grid"
+    default: standard_bento
+    variants:
+
+      standard_bento:
+        description: "6-module structured grid — hero, social, palette, type, sigil, brand DNA"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [moderate]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          layout_format: "Bento-Grid Layout"
+          module_count: "6 distinct modules"
+          typography_treatment: "{header_font} (headers, {header_display_weight}/{header_emphasis_weight}, {header_case}). {body_font} (body)."
+          layout_blocks: |
+            Block 1 (The Hero): High-contrast photograph of a {product_hero_physical} resting on
+            {hero_surface} inside {photo_environment}. Warm {accent_name} light.
+            Materials: {materials_list}. Overlay "{brand_name}" wordmark in
+            {secondary_name} ({secondary_hex}), {header_font} {header_display_weight}, {header_case}.
+            Block 2 (Social Media): Instagram Post mockup -- {primary_name} ({primary_hex})
+            background with subtle pattern overlay at 5% opacity, centered text in {header_font}:
+            "{hero_headline}" {accent_name} accent line below.
+            Block 3 (The Palette): 5 Vertical Color Swatches -- {primary_hex}, {secondary_hex},
+            {accent_hex}, {support_hex}, {signal_hex}. Simulated HEX codes.
+            Block 4 (Typography Spec): "{header_font}" displayed prominently. Tiny "Primary
+            Typeface" subtext in {body_font}.
+            Block 5 (The Sigil): {sigil_description}. {sigil_components}.
+            Block 6 (Brand DNA): Manifesto Card -- ARCHETYPE: "{archetype}."
+            VOICE: "{voice}." POSITIONING: "{positioning_statement}."
+            PILLARS: {identity_pillars}. VISUALS: "{theme_description}."
+          lighting: "Soft studio lighting with {accent_name} rim accent"
+          shadow_quality: "soft graduated shadows, no harsh edges"
+          surface_texture: "polished surface, material grain subtly visible"
+          spatial_instruction: "Sharp edges, 1px {support_name} borders. Generous white space."
+          color_application: "{primary_name} dominant backgrounds, {accent_name} highlights at 10%"
+          atmosphere: "{quality_reference}"
+
+      minimal_zen:
+        description: "3-module sparse layout — dominant negative space, single object, typographic essence"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary, heritage]
+          material_richness: [natural, minimal]
+          visual_boldness: [subtle, refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          layout_format: "Sparse Editorial Layout"
+          module_count: "3 spacious modules with dominant negative space"
+          typography_treatment: "{body_font} Light, generous leading, wide letter-spacing. No heavy weights."
+          layout_blocks: |
+            Block 1 (The One Object): Single {product_hero_physical} floating in a vast field of
+            {primary_name} ({primary_hex}). Centered. No surface visible. No environment context.
+            Breathing room on all four sides equal to the object's width. Diffuse overhead light only.
+            No cast shadows. No reflections. The object simply exists.
+            Overlay "{brand_name}" wordmark, {body_font} Light, {header_case}, {secondary_name},
+            placed at bottom-left in small point size. Nothing else in this module.
+            Block 2 (The Word): "{brand_tagline}" typeset alone in {body_font} Light,
+            {header_case}, {secondary_name} ({secondary_hex}) on {primary_name} ({primary_hex}) field.
+            Type centered vertically and horizontally. Point size at approximately 60% of module width.
+            Vast negative space above and below. No decorative elements. No borders.
+            Block 3 (The Mark): {sigil_description} alone on {secondary_name} ({secondary_hex}) field.
+            The mark at 40% of module size, centered. No label. No supporting text. No context.
+            {accent_name} ({accent_hex}) as a single line of 1px below the mark, 30% module width.
+          lighting: "Diffuse overhead light, no directional source, no shadows"
+          shadow_quality: "no shadows, objects appear to float without weight"
+          surface_texture: "seamless color field, no visible texture or grain"
+          spatial_instruction: "No borders. No grid lines. Vast negative space. Each object breathes."
+          color_application: "monochromatic primary field, single {accent_name} touch per module maximum"
+          atmosphere: "Kinfolk / Cereal magazine editorial clarity"
+
+      maximal_heritage:
+        description: "8-module ornamental grid — dense craft detail, material textures, heritage typography"
+        aesthetic_tags:
+          composition_density: [dense, ornate]
+          temporal_register: [heritage, ancestral]
+          material_richness: [craft]
+          visual_boldness: [bold, rich]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          layout_format: "Heritage Mosaic Layout"
+          module_count: "8 layered modules with ornamental dividers and pattern overlays"
+          typography_treatment: "{header_font} {header_display_weight} mixed with {body_font} Light. Pattern at 8% behind display type. Mixed weights throughout."
+          layout_blocks: |
+            Block 1 (The Ceremony): {product_hero_physical} arranged with {materials_list} visible
+            around it on {hero_surface}. Warm raking {accent_name} light from upper left.
+            Deep cast shadows. "{brand_name}" wordmark in {header_font} {header_display_weight},
+            {header_case}, layered over subtle {primary_name} pattern at 12% opacity.
+            Block 2 (The Craft Detail): Three tight macro shots in a horizontal strip —
+            surface material texture, craft technique in progress, {accent_name} ({accent_hex}) tone.
+            Each shot shows the hand of the maker, the grain of the material.
+            Block 3 (The Color As Material): 5 color swatches rendered as physical material samples —
+            {primary_hex} in terracotta grain, {secondary_hex} in ivory linen, {accent_hex} in metallic foil,
+            {support_hex} in aged paper, {signal_hex} in living moss. Each labeled in {data_font}.
+            Block 4 (The Heritage Type): "{header_font}" at large display size.
+            Pattern of {theme_metaphor} at 8% opacity behind letterforms. Historical typography energy.
+            Block 5 (The Sigil Origin): {sigil_description}. {sigil_components}.
+            Rendered as engraving on {hero_surface} — deep relief, {accent_name} patina.
+            Block 6 (The Chronicle): "{brand_name}" | EST. MMXXVI | "{archetype}" | {voice}.
+            Dense manifesto text at small scale. {primary_name} background, {secondary_name} type.
+            Block 7 (The Territory): Visual positioning — "{occupy_territory}".
+            {theme_description} rendered as a conceptual diagram with {data_font} annotations.
+            Block 8 (The Material Archive): {materials_list} — each material photographed in macro
+            against {secondary_name} background with {accent_name} ({accent_hex}) side-light.
+          lighting: "Warm raking light from upper left, deep cast shadows, {accent_name} temperature"
+          shadow_quality: "deep warm cast shadows, high contrast, tonal richness"
+          surface_texture: "visible material grain, tactile surfaces, paper texture on all panels"
+          spatial_instruction: "Ornamental dividers between modules. Pattern at 8% opacity on all panels. Dense, layered. Every edge carries intention."
+          color_application: "rich saturation throughout, {accent_name} on every panel, {primary_name} as deep anchoring ground"
+          atmosphere: "Vogue India / Architectural Digest heritage editorial gravitas"
+
+      futuristic_editorial:
+        description: "4-module asymmetric dramatic — full-bleed, technical overlays, cold precision"
+        aesthetic_tags:
+          composition_density: [moderate, dense]
+          temporal_register: [speculative, futuristic]
+          material_richness: [synthetic, minimal]
+          visual_boldness: [bold, architectural]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          layout_format: "Technical Editorial Layout"
+          module_count: "4 asymmetric modules, 2 full-bleed, maximum contrast"
+          typography_treatment: "{data_font} for all technical annotations and callouts. {header_font} {header_display_weight} at maximum scale for headlines only. No decorative type."
+          layout_blocks: |
+            Block 1 (The System): Full-bleed dramatic overhead photograph of {product_hero_physical}
+            against {primary_name} ({primary_hex}) ground. Cold single directional light, hard shadows.
+            Technical annotation lines in {data_font} at {signal_name} ({signal_hex}) — callouts
+            pointing to material details, measurements, structural notes. No warmth. Pure precision.
+            "{brand_name}" in {data_font} at small scale, upper-left corner only.
+            Block 2 (The Signal): "{hero_headline}" in {header_font} {header_display_weight}
+            at maximum typographic scale. {signal_name} ({signal_hex}) on {primary_name} ({primary_hex}).
+            No pattern. No texture. No image. The headline IS the design.
+            Single 1px {signal_name} rule at bottom, full width.
+            Block 3 (The Architecture): {identity_pillars} rendered as connected node diagram.
+            {data_font} labels. {signal_name} ({signal_hex}) connecting lines on {primary_name}.
+            Engineering-drawing precision. No decorative elements. No color beyond signal.
+            Block 4 (The Spectrum): 5 color columns at full module height.
+            {primary_hex} | {secondary_hex} | {accent_hex} | {support_hex} | {signal_hex}.
+            HEX code in {data_font} at bottom of each column. Digital precision, no material texture.
+          lighting: "Single cold directional light source, hard edge shadows, {signal_name} ambient glow"
+          shadow_quality: "hard geometric shadows, cold tonal range, no gradients"
+          surface_texture: "seamless surfaces, no material grain, reflective or matte only"
+          spatial_instruction: "Zero wasted space. Every edge is intentional. No decorative elements whatsoever."
+          color_application: "high contrast — deep {primary_name} fields, {signal_name} glow accents, nothing in between"
+          atmosphere: "Wired / Fast Company digital precision editorial"
+
+  2B:
+    name: "Brand Seal"
+    default: oxidized_seal
+    variants:
+      oxidized_seal:
+        description: "Oxidized copper circular seal with Art Deco precision — current default"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables: {}
+
+      minimal_wordmark:
+        description: "Ultra-minimal typographic badge — wordmark only, zero ornament, vast breathing room"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [minimal]
+          visual_boldness: [subtle, refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_style: "Ultra-minimal typographic badge — wordmark only, no sigil, no ornament. "
+          finish_approach: "Absolute restraint. Nothing beyond the wordmark. Vast margin of pure color field. "
+          atmosphere: "Atmosphere: Aesop / Muji typographic precision restraint."
+
+      ornate_crest:
+        description: "Heraldic coat-of-arms with scrollwork, ornamental shields, and laurel crowns"
+        aesthetic_tags:
+          composition_density: [dense, ornate]
+          temporal_register: [heritage, ancestral]
+          material_richness: [craft]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_style: "Heraldic coat-of-arms crest with scrollwork, ornamental shields, and laurel crown surround. "
+          finish_approach: "Dense heraldic geometry fills every corner. Every edge carries ornament. Embossed letterpress depth. "
+          atmosphere: "Atmosphere: Royal warrant heritage gravitas, centuries of institutional authority."
+
+      geometric_mark:
+        description: "Precision-engineered geometric mark — hexagonal inner ring, perfect concentric circles"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [speculative]
+          material_richness: [synthetic]
+          visual_boldness: [architectural]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_style: "Precision-engineered geometric mark — hexagonal inner ring, perfect concentric circles outer. "
+          finish_approach: "1px precision lines. Zero decoration beyond pure geometry. Cold digital-physical accuracy. "
+          atmosphere: "Atmosphere: Braun / Apple hardware engineering precision."
+
+  2C:
+    name: "Logo Emboss"
+    default: stained_glass_emboss
+    variants:
+      stained_glass_emboss:
+        description: "Stained-glass window panel treatment — current default"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables: {}
+
+      relief_emboss:
+        description: "Deep-carved stone relief — raking light, deep groove shadows, ancient masonry"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage, ancestral]
+          material_richness: [craft]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          render_approach: "Deep-carved stone relief — hand-carved marble block, raking natural light from upper left exposing deep groove shadows and raised surface highlights. "
+          atmosphere: "Ancient masonry, permanent authority, museum-grade craft weight."
+
+      flat_modern:
+        description: "Zero-depth flat vector graphic on solid color field — Swiss design precision"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [synthetic, minimal]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          render_approach: "Flat vector graphic — zero dimensional illusion, pure graphic form, no shadows, no depth, no material simulation. "
+          atmosphere: "Swiss international graphic design precision, clean signal clarity."
+
+      inlaid_craft:
+        description: "Artisanal inlaid marquetry — hand-inlaid materials mosaic, warm directional light"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [heritage]
+          material_richness: [craft]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          render_approach: "Artisanal inlaid marquetry — hand-inlaid {materials_list} mosaic in aged walnut frame, warm 45-degree directional light revealing material grain in each inlaid piece. "
+          atmosphere: "Arts & Crafts movement mastery, maker's pride in process and material."
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # PRODUCT ASSETS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  3A:
+    name: "Capsule Collection"
+    default: architectural_lineup
+    variants:
+      architectural_lineup:
+        description: "Three products in precise architectural spacing on hero surface"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [commercial]
+        template_variables: {}
+
+      earth_abundance:
+        description: "Products half-submerged in source materials — abundant, generous, overflowing"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage]
+          material_richness: [craft, natural]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          composition_approach: "Products half-buried in their source materials — {materials_list} spilling abundantly around each piece on {hero_surface}. Generous, overflowing, earth-born. "
+          lighting_note: "Warm raking light from upper left, deep shadows in material folds, {accent_name} rim. "
+          atmosphere: "Earth-born abundance, ancestral craft generosity."
+
+      clinical_precision:
+        description: "Clinical white environment — equidistant technical spacing, laboratory precision"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [synthetic, minimal]
+          visual_boldness: [architectural]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          composition_approach: "Three products on pure white surface, equidistant technical spacing, millimeter-perfect alignment. Clinical precision as laboratory specimens. "
+          lighting_note: "Cold even overhead lighting, no directional source, minimal cast shadows. "
+          atmosphere: "Product engineering precision, clinical authority."
+
+      festive_tableau:
+        description: "Celebratory arrangement with supporting props, scattered florals, warm golden light"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          composition_approach: "Celebratory arrangement with seasonal props, florals, and supporting objects surrounding the products on {hero_surface}. Festive, warm, inviting. "
+          lighting_note: "Warm golden-hour light, soft dappled shadows, joyful ambient quality. "
+          atmosphere: "Joyful abundance, celebration of craft and making."
+
+  3B:
+    name: "Hero Product"
+    default: contextual_hero
+    variants:
+      contextual_hero:
+        description: "Single hero product in environment with photorealistic detail"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [commercial]
+        template_variables: {}
+
+      floating_hero:
+        description: "Product levitating in pure mid-air — no surface, no environment, pure presence"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [minimal]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          composition_style: "Product levitating in pure mid-air against {primary_name} ({primary_hex}) seamless backdrop. No surface visible. No environment. Pure object presence. "
+          lighting_note: "Single dramatic directional light from 30 degrees above, hard shadow definition below. "
+          atmosphere: "Pure object authority, design icon presence."
+
+      technical_flatlay:
+        description: "Overhead precision flatlay with technical annotation lines — engineering energy"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [synthetic]
+          visual_boldness: [architectural]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          composition_style: "Overhead precision flatlay — {product_hero_physical} on pure {secondary_name} ({secondary_hex}) surface. Technical annotation lines in {data_font} pointing to material details. "
+          lighting_note: "Overhead diffuse even studio light, no directional shadows, maximum material detail clarity. "
+          atmosphere: "Product engineering documentation, technical authority."
+
+      atmospheric_still:
+        description: "Deeply immersive environment — natural available light, environment tells the story"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage]
+          material_richness: [natural, craft]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_style: "{product_hero_physical} in deeply immersive environment — textures visible everywhere, environment context tells the brand story. "
+          lighting_note: "Natural available light, golden hour warmth, soft graduated shadows, no studio artificiality. "
+          atmosphere: "Living editorial stillness, the artisan's world made visible."
+
+  3C:
+    name: "Essence Vial"
+    default: apothecary_vial
+    variants:
+      apothecary_vial:
+        description: "Clean product on solid primary background with precise lighting"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [commercial]
+        template_variables: {}
+
+      ceremony_vessel:
+        description: "Vessel in ritual context — hands visible, surface and environment, sacred ceremony"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [heritage]
+          material_richness: [natural, craft]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_style: "Vessel in ritual context — hands visible cradling the container on {hero_surface}, {photo_environment} background. Container within its ceremony. "
+          lighting_approach: "Warm candle-temperature directional light, soft shadows, {accent_name} ({accent_hex}) highlights on container surface. "
+          atmosphere: "Sacred ceremony, daily ritual elevated to the extraordinary."
+
+      lab_specimen:
+        description: "Clinical white environment — pure surface, technical precision, pharmaceutical authority"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [synthetic]
+          visual_boldness: [architectural]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          composition_style: "Clinical white environment — container on pure white {secondary_name} ({secondary_hex}) surface, 1cm measured spacing from edges. Technical specimen clarity. "
+          lighting_approach: "Cold overhead diffuse studio light, clean reflections, precise highlights on label surface. "
+          atmosphere: "Scientific precision, pharmaceutical authority, zero embellishment."
+
+      craft_container:
+        description: "Container surrounded by source materials — material provenance visible, raw workshop"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage]
+          material_richness: [craft]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_style: "Container surrounded by its source materials — {materials_list} arranged naturally around the vessel on {hero_surface}. Material provenance fully visible. "
+          lighting_approach: "Warm raking light from upper left, material textures fully rendered, deep shadows in material folds. "
+          atmosphere: "Raw material provenance, artisan's workshop, the maker's process made visible."
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # PHOTOGRAPHY ASSETS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  4A:
+    name: "Catalog Layout"
+    default: technical_catalog
+    variants:
+      technical_catalog:
+        description: "Product over environment + technical spec panel with line drawings"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [commercial]
+        template_variables: {}
+
+      editorial_spread:
+        description: "Magazine editorial spread — full-bleed lifestyle image, generous white space, floating type"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          layout_approach: "Magazine editorial spread format — full-bleed lifestyle photography top half, generous white space below. Like Kinfolk or Apartamento magazine. "
+          panel_note: "Editorial typography in {header_font}, spacious line height, pull quotes in {body_font} italic. No technical lines. No spec panels. "
+          atmosphere: "Independent magazine editorial, thoughtful slow design."
+
+      artisanal_reference:
+        description: "Craft archive format — material close-ups triptych, hand-drawn annotations, provenance"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage]
+          material_richness: [craft]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          layout_approach: "Craft archive reference format — product image with material close-up triptych strip below, dense but purposeful like a craftsperson's reference archive. "
+          panel_note: "Hand-drawn material detail annotations in {data_font}, artisan process notes, material provenance labels. Paper texture visible throughout. "
+          atmosphere: "Craft archive permanence, generations of tacit knowledge made visible."
+
+      minimal_product:
+        description: "Museum object card — single centered product, maximum breathing room, one line of text"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [minimal]
+          visual_boldness: [subtle]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          layout_approach: "Minimal museum object card format — single centered product with maximum breathing room. Presence through absence. "
+          panel_note: "Single line of {data_font} text: product name only. Vast white space below. Nothing else. "
+          atmosphere: "Museum object precision, supreme confidence through restraint."
+
+  4B:
+    name: "Flatlay"
+    default: precision_knolling
+    variants:
+      precision_knolling:
+        description: "Objects in precise architectural spacing, single sharp shadow per object"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [commercial]
+        template_variables: {}
+
+      abundant_arrangement:
+        description: "Generous organic abundance — rich overlapping grouping, warm golden raking light"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage]
+          material_richness: [craft, natural]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          arrangement_style: "in generous organic abundance — objects overlapping and touching, richly layered, "
+          lighting_approach: "Warm golden raking light from upper left, deep shadows between objects emphasizing textural richness. "
+          atmosphere: "Earth abundance, generous artisan welcome, the pleasure of accumulation."
+
+      ceremonial_layout:
+        description: "Deliberate ceremonial symmetry — central focal object, ritual placement, even warm light"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [heritage]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          arrangement_style: "in deliberate ceremonial symmetry around a central focal object — "
+          lighting_approach: "Even warm overhead light, soft graduated shadows, ceremonial clarity and stillness. "
+          atmosphere: "Intentional ritual arrangement, sacred daily practice."
+
+      natural_scatter:
+        description: "Casual organic scatter — as if naturally found, soft diffuse light, effortless naturalism"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          arrangement_style: "scattered in casual organic placement as if naturally found — "
+          lighting_approach: "Soft diffuse natural window light from the side, gentle dappled quality, no harsh shadows. "
+          atmosphere: "Effortless naturalism, casually discovered beauty."
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # ILLUSTRATION ASSETS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  5A:
+    name: "Heritage Engraving"
+    default: botanical_scientific
+    variants:
+      botanical_scientific:
+        description: "Delicate hairlines, botanical-scientific diagram style — current default"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [heritage]
+          material_richness: [natural]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [editorial]
+        template_variables: {}
+
+      block_print_heritage:
+        description: "Bold woodblock print style — thick carved lines, stamp texture, handmade imprecision"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage, ancestral]
+          material_richness: [craft]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          illustration_approach: "Bold woodblock print style — thick carved lines, pronounced black-and-white contrast, stamp texture visible, handmade imprecision celebrated. "
+          rendering_style: "Heritage woodblock — rough edges intentional, organic press variation, grain of the wood visible in lighter areas. "
+          atmosphere: "Japanese woodblock tradition, Korean minhwa boldness, artisan print culture."
+
+      circuit_filigree:
+        description: "Technical circuit-board filigree — sigil as PCB trace diagram, node-and-trace geometry"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [speculative]
+          material_richness: [synthetic]
+          visual_boldness: [architectural]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          illustration_approach: "Technical circuit-board filigree style — sigil rendered as PCB trace diagram, organic botanical forms replaced by precise node-and-trace geometry. "
+          rendering_style: "Digital precision engraving — hairline circuit traces, component nodes at structural points, {signal_name} ({signal_hex}) accent on active nodes. "
+          atmosphere: "Digital-organic synthesis, bio-circuit aesthetic."
+
+      calligraphic_line:
+        description: "Single continuous calligraphic brushstroke — Eastern ink tradition, pressure-sensitive"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [heritage]
+          material_richness: [natural]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          illustration_approach: "Calligraphic brushwork style — single continuous flowing line traces the entire sigil form, pressure-sensitive stroke variation throughout, Eastern ink tradition. "
+          rendering_style: "Brush and ink — spontaneous controlled pressure, wet-to-dry stroke variation visible, empty space given equal weight to filled form. "
+          atmosphere: "East Asian ink tradition, wabi-sabi mastery, practiced spontaneity."
+
+  5B:
+    name: "Campaign Grid"
+    default: duotone_campaign
+    variants:
+      duotone_campaign:
+        description: "2-column asymmetric grid, TYPE A/B/C panels, duotone photos"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [commercial]
+        template_variables: {}
+
+      pattern_mosaic:
+        description: "Heritage pattern tiles dominant — product details emerging through cultural textile archive"
+        aesthetic_tags:
+          composition_density: [dense, ornate]
+          temporal_register: [heritage, ancestral]
+          material_richness: [craft]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          grid_approach: "Pattern-dominant mosaic grid — traditional {theme_metaphor} pattern tiles fill every panel, product details emerge through the pattern field. "
+          type_c_style: "TYPE C OVERRIDE: Dense {theme_metaphor} pattern at 90% opacity filling the full tile, product silhouette barely emerging through it. Heritage textile energy. "
+          atmosphere: "Cultural textile archive, pattern as primary visual language."
+
+      type_dominant:
+        description: "Typography-led grid — type as primary visual, images reduced to supporting details"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [synthetic, minimal]
+          visual_boldness: [architectural]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          grid_approach: "Typography-dominant grid — type as primary visual element, all photography reduced to supporting thumbnail details. "
+          type_c_style: "TYPE C OVERRIDE: Single word at 400% scale in {header_font} {header_display_weight}, {primary_name} ({primary_hex}) on {secondary_name} field. No photography in this panel. "
+          atmosphere: "Swiss typography supremacy, type as pure image."
+
+      photograph_led:
+        description: "Full-bleed photography dominant — lifestyle images with minimal text overlays only"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          grid_approach: "Photography-dominant editorial grid — full-bleed lifestyle images as primary elements, minimal text overlays only where absolutely necessary. "
+          type_c_style: "TYPE C OVERRIDE: Full-bleed lifestyle photograph, only small {brand_name} wordmark in lower corner, zero other text elements. Photography speaks alone. "
+          atmosphere: "Editorial photography authority, lifestyle brand confidence."
+
+  5C:
+    name: "Art Panel"
+    default: illustrative_scene
+    variants:
+      illustrative_scene:
+        description: "Conceptual illustration with organic flowing lines and flat color planes"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables: {}
+
+      abstract_geometry:
+        description: "Bold geometric abstraction — pure shapes, flat color planes, no figurative elements"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [speculative]
+          material_richness: [synthetic, minimal]
+          visual_boldness: [bold, architectural]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_approach: "Bold geometric abstraction — theme rendered through pure geometric shapes only, no figurative elements, flat color planes create spatial depth through overlap. "
+          color_treatment: "High contrast geometric color blocks: {primary_hex} dominant planes, {accent_hex} accent shapes, {secondary_hex} negative space lines between forms. "
+          atmosphere: "Bauhaus geometric precision, constructivist visual energy."
+
+      narrative_panel:
+        description: "Sequential narrative — three-act story arc across the panel, left-to-right progression"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_approach: "Sequential narrative composition — three-act story arc flows left to right across the full panel, each third representing a stage of the {theme_metaphor} journey. "
+          color_treatment: "Warm narrative palette: {primary_name} ({primary_hex}) grounding tones throughout, {accent_name} ({accent_hex}) for narrative turning-point moments, {secondary_name} ({secondary_hex}) for resolution spaces. "
+          atmosphere: "Storyboard warmth, graphic novel intimacy, narrative made visible."
+
+      symbolic_field:
+        description: "Archetypally significant objects floating in primary color field — Jungian resonance"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [heritage]
+          material_richness: [natural]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_approach: "Symbolic field composition — archetypally significant objects related to {archetype} identity floating at rest in a field of {primary_name} ({primary_hex}). Each object has symbolic weight. "
+          color_treatment: "Restrained symbolic palette: {primary_hex} field dominates, {secondary_hex} symbolic elements, a single {accent_hex} accent on the most symbolically significant object only. "
+          atmosphere: "Jungian symbolic resonance, archetype made visible through material metaphor."
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # NARRATIVE ASSETS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  7A:
+    name: "Contact Sheet"
+    default: ritual_hands
+    variants:
+      ritual_hands:
+        description: "3x3 editorial contact sheet, hands-only lifestyle photography"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [editorial]
+        template_variables: {}
+
+      craft_process:
+        description: "9-panel sequential craft documentation — raw material to finished form"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage]
+          material_richness: [craft, natural]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          grid_approach: "9-panel sequential craft process documentation grid — "
+          moment_style: "Panels show the full making sequence: raw materials laid out, preparation gestures, first contact, forming, shaping, refining, finishing touch, presenting complete work, resting. "
+          atmosphere: "Master craftsperson's process, tacit knowledge made visible through sequence."
+
+      usage_moments:
+        description: "9-panel lifestyle usage grid — product integrated across varied daily life contexts"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [balanced]
+          editorial_vs_commercial: [commercial]
+        template_variables:
+          grid_approach: "9-panel lifestyle usage grid across different moments — "
+          moment_style: "Panels show product in varied daily contexts: morning ritual, commute, workspace, pause moment, outdoor, conversation, creative act, evening, rest. Product always present. "
+          atmosphere: "Brand embedded in daily life, effortless integration, product as companion."
+
+      seasonal_sequence:
+        description: "9-panel light-quality progression — pre-dawn through night, brand objects as constants"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [natural]
+          visual_boldness: [refined]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          grid_approach: "9-panel temporal light progression grid — "
+          moment_style: "Panels move through light quality arc: pre-dawn stillness, dawn gold edge, morning clarity, midday brightness, afternoon warmth, dusk transition, soft evening, night quiet, midnight return. Brand objects as fixed constants across changing light. "
+          atmosphere: "Time as brand narrative, light quality as emotional register."
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # POSTER ASSETS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  8A:
+    name: "Seeker Poster"
+    default: seeker_split
+    variants:
+      seeker_split:
+        description: "Split-composition portrait: photorealistic left, blueprint right"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [contemporary]
+          material_richness: [moderate]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables: {}
+
+      cosmic_figure:
+        description: "Figure at edge of cosmic landscape — brand materials as floating celestial objects"
+        aesthetic_tags:
+          composition_density: [moderate]
+          temporal_register: [speculative]
+          material_richness: [synthetic]
+          visual_boldness: [bold, architectural]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_approach: "Figure standing at the edge of a vast cosmic landscape — stars and nebula visible beyond frame, brand materials float as celestial objects around them. "
+          split_style: "COMPOSITION OVERRIDE — No physical split: unified frame, entire background opens to impossible cosmic scale. The figure is the only human-scale element. "
+          atmosphere: "Cosmic scale and human courage, brand as compass in vastness."
+
+      material_presence:
+        description: "Figure surrounded by brand materials — craft materials drawn by gravity, maker's presence"
+        aesthetic_tags:
+          composition_density: [dense]
+          temporal_register: [heritage]
+          material_richness: [craft, natural]
+          visual_boldness: [bold]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_approach: "Figure surrounded by brand materials — {materials_list} arranged around them as if drawn by gravity. The seeker is of this material world, inseparable from it. "
+          split_style: "SPLIT OVERRIDE: LEFT HALF figure in material abundance — all textures visible, craft materials touching the figure. RIGHT HALF the materials' invisible life — their origin stories as flowing organic forms. "
+          atmosphere: "Material ancestry, seeker as keeper of craft wisdom across generations."
+
+      shadow_silhouette:
+        description: "Pure silhouette — exterior simplicity, interior filled with brand visual vocabulary"
+        aesthetic_tags:
+          composition_density: [sparse]
+          temporal_register: [contemporary]
+          material_richness: [minimal]
+          visual_boldness: [architectural]
+          editorial_vs_commercial: [editorial]
+        template_variables:
+          composition_approach: "Silhouette-based composition — figure rendered as pure {primary_name} ({primary_hex}) shadow against {secondary_name} ({secondary_hex}) field. Only outline, no interior detail visible from outside. "
+          split_style: "SPLIT OVERRIDE: LEFT HALF pure silhouette exterior — graphic, clean, mysterious. RIGHT HALF the silhouette filled with {brand_name}'s visual vocabulary — palette, pattern, symbol — as if the brand lives inside the figure. "
+          atmosphere: "Brand identity as inner self, exterior simplicity reveals interior richness."

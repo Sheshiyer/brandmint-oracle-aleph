@@ -50,22 +50,192 @@ _DEFAULT_REF_IMAGES = {
 
 
 def load_ref_map(ref_map_path):
-    """Load reference-map.json and return a REF_IMAGES dict.
+    """Load reference-map.json and return (ref_images, full_catalog).
 
-    Returns dict mapping prompt_id -> filename.
-    Falls back to _DEFAULT_REF_IMAGES if file not found.
+    Returns:
+        ref_images: dict mapping prompt_id -> filename (primary + reuses only)
+        full_catalog: list of {"file": str, "tags": list, "description": str, "type": str}
     """
     if not os.path.exists(ref_map_path):
-        return dict(_DEFAULT_REF_IMAGES)
+        return dict(_DEFAULT_REF_IMAGES), []
 
     with open(ref_map_path) as f:
         data = json.load(f)
 
+    # Primary + reuses → REF_IMAGES (unchanged behavior)
     result = {}
     for pid, entry in data.get("primary", {}).items():
         result[pid] = entry["file"]
     for pid, entry in data.get("reuses", {}).items():
         result[pid] = entry["file"]
+
+    # Full catalog: alternatives, styles, demos, twitter
+    catalog = []
+    for pid, alts in data.get("alternatives", {}).items():
+        for alt in alts:
+            catalog.append({
+                "file": alt["file"],
+                "description": alt.get("description", ""),
+                "tags": _extract_tags_from_filename(alt["file"]),
+                "type": "alternative",
+                "related_pid": pid,
+            })
+    for style in data.get("styles", []):
+        catalog.append({
+            "file": style["file"],
+            "description": style.get("description", ""),
+            "tags": _extract_tags_from_filename(style["file"]),
+            "type": "style",
+        })
+    for demo in data.get("demos", []):
+        catalog.append({
+            "file": demo["file"],
+            "description": demo.get("description", ""),
+            "tags": _extract_tags_from_filename(demo["file"]),
+            "type": "demo",
+        })
+    for tw in data.get("twitter", []):
+        catalog.append({
+            "file": tw["images"][0]["file"] if tw.get("images") else "",
+            "description": tw.get("prompt_text", "")[:200],
+            "tags": tw.get("tags", []),
+            "type": "twitter",
+        })
+
+    return result, catalog
+
+
+def _extract_tags_from_filename(filename):
+    """Extract tags from reference filename by splitting on hyphens."""
+    base = os.path.splitext(filename)[0]
+    # Strip prefix patterns: ref-alt-, ref-style-, ref-demo-, ref-tw-NNN-author-
+    base = re.sub(r"^ref-(alt|style|demo|tw-\d+-[^-]+)-", "", base)
+    return [t for t in base.split("-") if len(t) > 2]
+
+
+# Prompt IDs that use Nano Banana Pro (support image_url references)
+_NANO_BANANA_PIDS = ["2A", "3C", "4A", "5B", "7A", "8A", "9A", "10A"]
+
+# Fallback keyword context (used when reference-catalog.yaml is unavailable)
+_PID_CONTEXT = {
+    "2A": ["bento", "grid", "layout", "brand-kit", "composition", "modular"],
+    "4A": ["catalog", "layout", "product", "spec", "detail", "grid"],
+    "5B": ["campaign", "grid", "poster", "marketing", "ad", "promotion"],
+    "7A": ["contact", "sheet", "proof", "collection", "overview"],
+    "8A": ["seeker", "poster", "persona", "portrait", "character"],
+    "9A": ["engine", "poster", "system", "process", "mechanism"],
+    "10A": ["contact", "sheet", "proof", "collection", "social"],
+}
+
+
+def _aesthetic_distance(profile_a, profile_b):
+    """Euclidean distance between two 5-axis aesthetic profiles."""
+    axes = [
+        "composition_density", "temporal_register",
+        "material_richness", "visual_boldness",
+        "editorial_vs_commercial",
+    ]
+    return sum(
+        (profile_a.get(ax, 0.5) - profile_b.get(ax, 0.5)) ** 2
+        for ax in axes
+    ) ** 0.5
+
+
+def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None):
+    """Select supplementary refs using aesthetic distance from YAML catalog.
+
+    If catalog_yaml_path is available, uses aesthetic-distance scoring:
+      1. Load primary ref aesthetic profile for each PID
+      2. Find all entries with this PID in asset_compatibility
+      3. Score by aesthetic distance (closer = better style match)
+      4. Return top N closest matches
+
+    Falls back to keyword-overlap scoring if catalog YAML is not available.
+
+    Args:
+        catalog: list of catalog entries from load_ref_map() (fallback)
+        brand_tags: list of brand-relevant keywords (fallback)
+        max_per_pid: max supplementary refs per prompt ID
+        catalog_yaml_path: path to reference-catalog.yaml (preferred)
+
+    Returns:
+        dict mapping pid -> [{"file": str, "score": float}, ...]
+    """
+    # Try aesthetic-distance scoring from YAML catalog
+    if catalog_yaml_path and os.path.exists(catalog_yaml_path):
+        try:
+            with open(catalog_yaml_path) as f:
+                yaml_catalog = yaml.safe_load(f)
+            return _select_supp_refs_aesthetic(yaml_catalog, max_per_pid)
+        except Exception:
+            pass  # Fall through to keyword-based scoring
+
+    # Fallback: keyword-overlap scoring (original behavior)
+    return _select_supp_refs_keyword(catalog, brand_tags, max_per_pid)
+
+
+def _select_supp_refs_aesthetic(yaml_catalog, max_per_pid=3):
+    """Select supplementary refs using aesthetic distance from catalog."""
+    entries = yaml_catalog.get("entries", {})
+
+    # Build primary ref profiles for comparison
+    primary_profiles = {}
+    for entry_id, entry in entries.items():
+        if entry.get("type") == "primary" and entry.get("prompt_id"):
+            primary_profiles[entry["prompt_id"]] = entry.get("aesthetic", {})
+
+    result = {}
+    for pid in _NANO_BANANA_PIDS:
+        target_profile = primary_profiles.get(pid)
+        if not target_profile:
+            continue
+
+        candidates = []
+        for entry_id, entry in entries.items():
+            if entry.get("type") == "primary":
+                continue  # Skip primary refs themselves
+            if pid not in entry.get("asset_compatibility", []):
+                continue  # Not compatible with this prompt ID
+
+            entry_profile = entry.get("aesthetic", {})
+            dist = _aesthetic_distance(target_profile, entry_profile)
+            similarity = round(1.0 / (1.0 + dist), 3)
+            candidates.append({
+                "file": entry.get("file", ""),
+                "score": similarity,
+            })
+
+        # Sort by score descending (most similar first)
+        candidates.sort(key=lambda x: -x["score"])
+        if candidates:
+            result[pid] = candidates[:max_per_pid]
+
+    return result
+
+
+def _select_supp_refs_keyword(catalog, brand_tags, max_per_pid=3):
+    """Fallback: score catalog entries via keyword overlap."""
+    result = {}
+    for pid, context_tags in _PID_CONTEXT.items():
+        scored = []
+        search_terms = set(t.lower() for t in context_tags + brand_tags if t)
+        for entry in catalog:
+            if not entry.get("file"):
+                continue
+            score = 0.0
+            entry_text = " ".join(entry.get("tags", []) + [entry.get("description", ""), entry["file"]]).lower()
+            for term in search_terms:
+                if term in entry_text:
+                    score += 1.0
+            if entry.get("related_pid") == pid:
+                score += 2.0
+            if entry.get("type") == "style":
+                score += 0.5
+            if score > 0:
+                scored.append({"file": entry["file"], "score": score})
+        scored.sort(key=lambda x: -x["score"])
+        if scored:
+            result[pid] = scored[:max_per_pid]
     return result
 
 
@@ -78,6 +248,19 @@ def build_ref_images_block(ref_images_dict):
     lines = ["REF_IMAGES = {{"]
     for pid in sorted(ref_images_dict.keys(), key=_sort_pid):
         lines.append(f'    "{pid}": "{ref_images_dict[pid]}",')
+    lines.append("}}")
+    return "\n".join(lines)
+
+
+def build_supp_refs_block(supp_refs_dict):
+    """Build the SUPP_REFS block for embedding in generated scripts.
+
+    Returns a template-escaped string suitable for SCRIPT_HEADER.
+    """
+    lines = ["SUPP_REFS = {{"]
+    for pid in sorted(supp_refs_dict.keys(), key=_sort_pid):
+        files = [e["file"] for e in supp_refs_dict[pid]]
+        lines.append(f'    "{pid}": {files!r},')
     lines.append("}}")
     return "\n".join(lines)
 
@@ -376,6 +559,25 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["sequence_type"] = aes.get("sequence_type", "sequential practice narrative")
     v["sequence_constraint"] = aes.get("sequence_constraint", "hands-only")
 
+    # ── Aesthetic variant structural holes (Phase D) ──
+    # All default to "" — overridden by aesthetic engine with variant-specific text.
+    # Purely additive: empty string = current prompt unchanged = zero regression.
+    for _k in [
+        "2b_composition_style", "2b_finish_approach", "2b_atmosphere",
+        "2c_render_approach", "2c_atmosphere",
+        "3a_composition_approach", "3a_lighting_note", "3a_atmosphere",
+        "3b_composition_style", "3b_lighting_note", "3b_atmosphere",
+        "3c_composition_style", "3c_lighting_approach", "3c_atmosphere",
+        "4a_layout_approach", "4a_panel_note", "4a_atmosphere",
+        "4b_arrangement_style", "4b_lighting_approach", "4b_atmosphere",
+        "5a_illustration_approach", "5a_rendering_style", "5a_atmosphere",
+        "5b_grid_approach", "5b_type_c_style", "5b_atmosphere",
+        "5c_composition_approach", "5c_color_treatment", "5c_atmosphere",
+        "7a_grid_approach", "7a_moment_style", "7a_atmosphere",
+        "8a_composition_approach", "8a_split_style", "8a_atmosphere",
+    ]:
+        v[_k] = ""
+
     # ── Logo file paths (Phase 2) ──
     logo_cfg = cfg.get("logo_files", {})
     config_dir = config_path if config_path else ""
@@ -546,6 +748,31 @@ def get_ref_image(pid):
         if os.path.exists(path):
             return path
     return None
+
+
+# Supplementary composition references (dynamically selected from full catalog)
+{supp_refs_block}
+
+_supp_ref_url_cache = {{}}
+def get_supp_ref_images(pid, limit=3):
+    """Get supplementary composition reference URLs for a prompt ID.
+
+    Uploads images on first call, caches for reuse.
+    Returns list of uploaded URLs (may be empty).
+    """
+    if pid in _supp_ref_url_cache:
+        return _supp_ref_url_cache[pid]
+    urls = []
+    for fname in SUPP_REFS.get(pid, [])[:limit]:
+        path = os.path.join(SKILL_REF_DIR, fname)
+        if os.path.exists(path):
+            print(f"  Uploading supp ref: {{os.path.basename(path)}}")
+            if PROVIDER == "fal":
+                urls.append(fal_client.upload_file(path))
+            else:
+                urls.append(path)
+    _supp_ref_url_cache[pid] = urls
+    return urls
 
 
 def download_image(url, filepath):
@@ -821,10 +1048,10 @@ def gen_recraft(pid, slug, prompt, style, colors, size, seeds=({seed_a}, {seed_b
 # =====================================================================
 
 PROMPT_2A_BENTO = """{brand_name} ({domain}).
-{tone_preamble} "Brand Identity System" presentation (Bento-Grid Layout).
+{tone_preamble} "Brand Identity System" presentation ({2a_layout_format}).
 Core metaphor: {theme_metaphor}. Mood: {mood_keywords}.
 
-Generate a single high-resolution bento-grid board containing 6 distinct modules:
+Generate a single high-resolution {2a_layout_format} board containing {2a_module_count}:
 
 PHASE 1: VISUAL STRATEGY
 1. Analyze the Brand: Archetype = "{archetype}" -- {voice}.
@@ -833,106 +1060,100 @@ PHASE 1: VISUAL STRATEGY
 2. Define the Palette: {color_directive}
    {primary_name} {primary_hex}, {secondary_name} {secondary_hex},
    {accent_name} {accent_hex}, {support_name} {support_hex}.
-3. Select Typography: {header_font} (headers, {header_display_weight}/{header_emphasis_weight}, {header_case}). {body_font} (body).
+3. Select Typography: {2a_typography_treatment}
 
-PHASE 2: THE LAYOUT (6-MODULE GRID)
-Block 1 (The Hero): High-contrast photograph of a {product_hero_physical} resting on
-{hero_surface} inside {photo_environment}. Warm {accent_name} light.
-Materials: {materials_list}. Overlay "{brand_name}" wordmark in
-{secondary_name} ({secondary_hex}), {header_font} {header_display_weight}, {header_case}.
-Block 2 (Social Media): Instagram Post mockup -- {primary_name} ({primary_hex})
-background with subtle pattern overlay at 5% opacity, centered text in {header_font}:
-"{hero_headline}" {accent_name} accent line below.
-Block 3 (The Palette): 5 Vertical Color Swatches -- {primary_hex}, {secondary_hex},
-{accent_hex}, {support_hex}, {signal_hex}. Simulated HEX codes.
-Block 4 (Typography Spec): "{header_font}" displayed prominently. Tiny "Primary
-Typeface" subtext in {body_font}.
-Block 5 (The Sigil): {sigil_description}. {sigil_components}.
-Block 6 (Brand DNA): Manifesto Card -- ARCHETYPE: "{archetype}."
-VOICE: "{voice}." POSITIONING: "{positioning_statement}."
-PILLARS: {identity_pillars}. VISUALS: "{theme_description}."
+PHASE 2: THE LAYOUT
+{2a_layout_blocks}
 
 PHASE 3: AESTHETIC & FINISH
-Style: {quality_reference}. Quality: {quality}. {detail_suffix}
-Soft studio lighting with {accent_name} rim accent. Sharp edges, 1px {support_name}
-borders. Generous white space. {platform_note}"""
+{2a_lighting}. {2a_shadow_quality}. Quality: {quality}. {detail_suffix}
+{2a_spatial_instruction} {platform_note}
+Atmosphere: {2a_atmosphere}."""
 
-PROMPT_2B_SEAL = """{brand_name} brand seal emblem. {seal_material} circular seal
+PROMPT_2B_SEAL = """{brand_name} brand seal emblem. {2b_composition_style}{seal_material} circular seal
 with {seal_geometry}. Central sigil: {sigil_description}.
 Typography: "{brand_name}" around perimeter in {header_font} {header_display_weight}, {header_case}.
 Below sigil: "{brand_tagline}" in {body_font}. Material: {seal_material} with
 {accent_name} ({accent_hex}) patina highlights. Background: solid {primary_name}
-({primary_hex}). {color_directive} Clean, architectural, precision-engineered. {quality} detail.{detail_suffix}"""
+({primary_hex}). {color_directive} {2b_finish_approach}Clean, architectural, precision-engineered. {quality} detail.
+{2b_atmosphere}{detail_suffix}"""
 
-PROMPT_2C_LOGO = """{brand_name} {logo_treatment} logo emboss. The brand sigil
+PROMPT_2C_LOGO = """{brand_name} {logo_treatment} logo emboss. {2c_render_approach}The brand sigil
 ({sigil_description}) rendered as a {logo_substrate} with
 {accent_name} ({accent_hex}) leading between colored glass segments.
 Colors: {primary_hex}, {accent_hex}, {signal_hex}. Backlit with warm diffused
 light creating colored shadows on {secondary_name} ({secondary_hex}) surface below.
-"{brand_name}" wordmark in {header_font} SemiBold below. 8K detail."""
+"{brand_name}" wordmark in {header_font} SemiBold below. {2c_atmosphere}8K detail."""
 
 PROMPT_3A_CAPSULE = """{brand_name} capsule collection product lineup.
 Three products in a row on {hero_surface}: {product_capsule_1},
 {product_capsule_2}, and {product_capsule_3}.
+{3a_composition_approach}
 Materials: {materials_list}. Environment: {photo_environment}.
-{photo_style}. {photo_constraint}. Camera: {photo_camera}. {quality} detail.
+{photo_style}. {3a_lighting_note}{photo_constraint}. Camera: {photo_camera}. {quality} detail.
 Color palette: {color_directive} {primary_hex} deep shadows, {secondary_hex} highlights,
 {accent_hex} reflections, {signal_hex} living accents.
-Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.{detail_suffix}"""
+Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.
+{3a_atmosphere}{detail_suffix}"""
 
 PROMPT_3B_BOOK = """{brand_name} hero product shot. {product_hero_physical}.
-Sitting on {hero_surface}. {photo_style}. Environment: {photo_environment}.
-{photo_constraint}. Camera: {photo_camera}. Materials: {materials_list}. 8K."""
+{3b_composition_style}Sitting on {hero_surface}. {photo_style}. Environment: {photo_environment}.
+{3b_lighting_note}{photo_constraint}. Camera: {photo_camera}. Materials: {materials_list}.
+{3b_atmosphere}8K."""
 
 PROMPT_3C_VIAL = """{brand_name} {product_essence_name} product shot. {product_essence_container}
-({product_essence_size}). Etched label directly into surface in {data_font}.
+({product_essence_size}). {3c_composition_style}Etched label directly into surface in {data_font}.
 Brand name "{brand_name}" etched dominant. Minimal sigil below. Pure solid
-{primary_name} ({primary_hex}) background. Sharp high-contrast lighting from above.
+{primary_name} ({primary_hex}) background. {3c_lighting_approach}Sharp high-contrast lighting from above.
 {accent_name} highlight, {secondary_name} edge-glow.
-{photo_constraint}. 8K."""
+{3c_atmosphere}{photo_constraint}. 8K."""
 
-PROMPT_4A_CATALOG = """{brand_name} product design catalog page. Top section:
+PROMPT_4A_CATALOG = """{brand_name} product design catalog page. {4a_layout_approach}Top section:
 {product_category} image inside {photo_environment}. {accent_name} ({accent_hex})
-light filtering through. Bottom section: technical specification panel with
+light filtering through. Bottom section: {4a_panel_note}technical specification panel with
 architectural line drawings in {accent_name} on {primary_name} background.
 Fine hairline technical lines with measurement callouts in {data_font}.
 Material swatches panel: {materials_list}. {photo_style}. {color_directive}
-Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}. {quality}.{detail_suffix}"""
+Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.
+{4a_atmosphere}{quality}.{detail_suffix}"""
 
 PROMPT_4B_FLATLAY = """{brand_name} product collection flat-lay. {product_flatlay_count} objects
-arranged on {hero_surface} in precise architectural spacing: {product_flatlay_description}. Materials:
+{4b_arrangement_style}arranged on {hero_surface} in precise architectural spacing: {product_flatlay_description}. Materials:
 {materials_list}. Overhead composition. Each object casting a single sharp shadow.
-Lighting: directional from upper left with warm {accent_name} ({accent_hex})
+{4b_lighting_approach}Lighting: directional from upper left with warm {accent_name} ({accent_hex})
 temperature. Cool {secondary_name} ({secondary_hex}) fill from below.
 {photo_constraint}. {photo_style}. {color_directive}
-Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}. {quality} quality.{detail_suffix}"""
+Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.
+{4b_atmosphere}{quality} quality.{detail_suffix}"""
 
 PROMPT_5A_HERITAGE = """{brand_name} {engraving_style} logomark. {illus_style}.
-Thin delicate hairlines in organic curves. Airy, precise, no heavy borders.
-Central sigil: {sigil_description}. {sigil_components}. Rendered as
+{5a_illustration_approach}Thin delicate hairlines in organic curves. Airy, precise, no heavy borders.
+Central sigil: {sigil_description}. {sigil_components}. {5a_rendering_style}Rendered as
 botanical-scientific diagram. "{brand_name}" in geometric serif ({header_font}
 style), wide spacing. Below: "EST. MMXXVI" lighter weight. {secondary_name}
 ({secondary_hex}) paper. {primary_name} ({primary_hex}) lines. {accent_name}
-({accent_hex}) accent on borders."""
+({accent_hex}) accent on borders. {5a_atmosphere}"""
 
-PROMPT_5B_CAMPAIGN = """{brand_name} Campaign Visual Identity Grid. 2-column
+PROMPT_5B_CAMPAIGN = """{brand_name} Campaign Visual Identity Grid. {5b_grid_approach}2-column
 asymmetrical layout. Full bleed, zero spacing between tiles.
 Core metaphor: {theme_metaphor}. Visual territory: {occupy_territory}.
 TYPE A: Solid {primary_name} ({primary_hex}) background with pattern at 5% opacity,
 centered sigil in {secondary_name} ({secondary_hex}).
 TYPE B: {accent_name} ({accent_hex}) background, "{brand_tagline}" in {header_font}
 {header_emphasis_weight}, {secondary_name} text.
-TYPE C: High-contrast duotone photographs using {primary_hex} + {accent_hex}.
+{5b_type_c_style}TYPE C: High-contrast duotone photographs using {primary_hex} + {accent_hex}.
 Materials: {materials_list}. {photo_constraint}. Typography: {header_font} ONLY.
-{color_directive} Every photo unique. {illus_style}.{detail_suffix}"""
+{color_directive} Every photo unique. {illus_style}.
+{5b_atmosphere}{detail_suffix}"""
 
 PROMPT_5C_PANEL = """{brand_name} conceptual panel illustration. {illus_style}.
-{illus_references}. Core metaphor: {theme_metaphor}. Mood: {mood_keywords}.
-Flowing organic lines, flat color planes in {primary_name}
+{5c_composition_approach}{illus_references}. Core metaphor: {theme_metaphor}. Mood: {mood_keywords}.
+{5c_color_treatment}Flowing organic lines, flat color planes in {primary_name}
 ({primary_hex}), {accent_name} ({accent_hex}), and {signal_name} ({signal_hex}).
 {color_directive} Decorative border of flowing curves and organic tendrils. Grounded figure on
 {hero_surface}. {panel_structure}
-glowing {secondary_name}. No mystical imagery. Paper texture: warm, fibrous."""
+glowing {secondary_name}. No mystical imagery. Paper texture: warm, fibrous.
+{5c_atmosphere}"""
 
 PROMPT_5D_ICONS = """{count} minimalist styled flat vector icons for {brand_name}
 "{group_name}" in {layout} layout. {icon_line_style}. Only {primary_name} ({primary_hex}) and {secondary_name} ({secondary_hex}).
@@ -947,19 +1168,20 @@ Primary: {primary_name} ({primary_hex}). Accent: {accent_name} ({accent_hex}).
 No text labels. No newspaper or stamp aesthetic. Clean minimalist precision.
 Icons: {icon_list}. {quality}."""
 
-PROMPT_7A_CONTACT = """{brand_name} editorial contact sheet. 3x3 grid, 9 panels,
+PROMPT_7A_CONTACT = """{brand_name} editorial contact sheet. {7a_grid_approach}3x3 grid, 9 panels,
 hands-only lifestyle photography inside {photo_environment}. No face -- only hands
-and forearms. Same hands all panels. 9 panels showing different moments of a
+and forearms. Same hands all panels. {7a_moment_style}9 panels showing different moments of a
 practice ritual with brand objects. Materials: {materials_list}.
 Camera: {photo_camera}. {photo_environment} light. {accent_name} ({accent_hex})
 highlights. 2px {support_name} ({support_hex}) borders. {quality} detail.
-Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.{detail_suffix}"""
+Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.
+{7a_atmosphere}{detail_suffix}"""
 
 PROMPT_8A_SEEKER = """{brand_name} "The Seeker" conceptual portrait poster.
 Core metaphor: {theme_metaphor}.
-A solitary figure seen from behind -- standing still, contemplative posture.
+{8a_composition_approach}A solitary figure seen from behind -- standing still, contemplative posture.
 No face visible. Full body, centered in frame.
-SPLIT COMPOSITION: LEFT HALF shows material reality -- ultra-photorealistic detail:
+{8a_split_style}SPLIT COMPOSITION: LEFT HALF shows material reality -- ultra-photorealistic detail:
 hand texture, fabric weave, polished floor, {photo_environment} visible behind.
 RIGHT HALF shows inner architecture -- translucent technical blueprint revealing:
 {seeker_inner_detail} glowing {secondary_name} ({secondary_hex}),
@@ -968,7 +1190,8 @@ The split line glows {accent_name} ({accent_hex}).
 COLOR: {color_directive} {primary_name} dominant, {accent_name} highlights, {secondary_name} inner glow,
 {signal_name} ({signal_hex}) for living elements. Film grain.
 Typography: "THE SEEKER" in {header_font} {header_display_weight}, {support_name} ({support_hex}).
-Audience aesthetic: {audience_aesthetic}. Emotional register: {emotional_register}.{detail_suffix}"""
+Audience aesthetic: {audience_aesthetic}. Emotional register: {emotional_register}.
+{8a_atmosphere}{detail_suffix}"""
 
 PROMPT_9A_ENGINE = """{brand_name} campaign poster. Single {{object}} centered on
 {{bg_color}} ({{bg_hex}}) background. The object rendered as physical {poster_artifact}
@@ -1116,6 +1339,9 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         image_urls.append(logo_url)
+
+    # Add supplementary composition references
+    image_urls.extend(get_supp_ref_images("2A"))
 
     print("\\n--- 2A: Brand Kit Bento Grid ---")
     gen_nano_banana("2A", "brand-kit-bento", PROMPT_2A, "16:9", image_urls)
@@ -1368,6 +1594,7 @@ def gen_photography_script(scripts_dir, v, cfg, asset_groups=None):
     if ref_4a:
         print(f"  Adding composition ref: {os.path.basename(ref_4a)}")
         urls_4a.append(fal_client.upload_file(ref_4a))
+    urls_4a.extend(get_supp_ref_images("4A"))
     gen_nano_banana("4A", "catalog-layout", PROMPT_4A, "3:4", urls_4a)
 ''' if "4A" in asset_ids else ""
 
@@ -1569,6 +1796,7 @@ def main():
     if ref_5b:
         print(f"  Adding composition ref: {{os.path.basename(ref_5b)}}")
         anchor_urls.append(fal_client.upload_file(ref_5b))
+    anchor_urls.extend(get_supp_ref_images("5B"))
     gen_nano_banana("5B", "campaign-grid", PROMPT_5B, "3:4", anchor_urls)
 
     # 5C: Art Panel (Recraft digital_illustration)
@@ -1634,6 +1862,7 @@ def gen_narrative_script(scripts_dir, v, cfg, asset_groups=None):
         print(f"  Adding composition ref: {os.path.basename(ref_7a)}")
         comp_url = fal_client.upload_file(ref_7a)
         image_urls.append(comp_url)
+    image_urls.extend(get_supp_ref_images("7A"))
 
     gen_nano_banana("7A", "contact-sheet", PROMPT_7A, "1:1", image_urls)
 ''' if "7A" in asset_ids else ""
@@ -1760,6 +1989,7 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
     if ref_8a:
         print(f"  Adding composition ref: {{os.path.basename(ref_8a)}}")
         urls_8a.append(fal_client.upload_file(ref_8a))
+    urls_8a.extend(get_supp_ref_images("8A"))
     gen_nano_banana("8A", "seeker-poster", PROMPT_8A, "3:4", urls_8a,
                     seeds=({seeds[0]}, {seeds[1]}, 256))
 ''' if "8A" in asset_ids else ""
@@ -1805,6 +2035,7 @@ def main():
         if ref_9a:
             print(f"  Adding composition ref: {{os.path.basename(ref_9a)}}")
             urls_9a.append(fal_client.upload_file(ref_9a))
+        urls_9a.extend(get_supp_ref_images("9A"))
         for eid, edata in ENGINES.items():
             prompt = PROMPT_9A_BASE.format(**edata)
             slug = edata["name"].lower().replace(" ", "-").replace("&", "and")
@@ -1820,6 +2051,7 @@ def main():
         if ref_10:
             print(f"  Adding grid composition ref: {{os.path.basename(ref_10)}}")
             urls_10.append(fal_client.upload_file(ref_10))
+        urls_10.extend(get_supp_ref_images("10A"))
         for skey, sdata in SEQUENCES.items():
             sid = sdata["id"]
             prompt = PROMPT_10_BASE.format(
@@ -1871,11 +2103,100 @@ def gen_cookbook(out_dir, v, cfg):
         f"| Body Font | {v['body_font']} |",
         f"| Materials | {v['materials_list']} |",
         "",
+    ]
+
+    # ── Aesthetic Intelligence section (only when engine ran) ──────────────
+    aes = v.get("aesthetic_profile_summary")
+    if aes:
+        # Score bar helper: 0.0-1.0 → visual bar of 10 chars
+        def _bar(score):
+            filled = round(score * 10)
+            return "█" * filled + "░" * (10 - filled)
+
+        # Map of asset_prefix → display name for rationale table
+        asset_display = {
+            "2a": "2A Brand Kit Bento Grid", "2b": "2B Brand Seal",
+            "2c": "2C Logo Emboss",          "3a": "3A Capsule Collection",
+            "3b": "3B Hero Product",          "3c": "3C Essence Vial",
+            "4a": "4A Catalog Layout",        "4b": "4B Flatlay",
+            "5a": "5A Heritage Engraving",    "5b": "5B Campaign Grid",
+            "5c": "5C Art Panel",             "7a": "7A Contact Sheet",
+            "8a": "8A Seeker Poster",
+        }
+
+        # Register → human-readable description
+        register_desc = {
+            "heritage-craft":      "Dense craft detail, material textures, ancestral temporal register",
+            "minimal-zen":         "Sparse negative space, restrained palette, refined visual boldness",
+            "futuristic-editorial":"Cold precision, technical overlays, speculative temporal register",
+            "bold-commercial":     "High contrast, strong calls-to-action, conversion-optimised framing",
+            "natural-editorial":   "Organic materials, editorial pacing, natural-contemporary register",
+            "ornate-traditional":  "Rich ornamentation, high density, heritage-adjacent visual grammar",
+            "minimal-futuristic":  "Clean lines, low density, forward-looking minimal aesthetic",
+            "rich-editorial":      "Dense editorial layering, high material richness, contemporary depth",
+            "balanced-contemporary":"Moderate across all axes — versatile contemporary aesthetic",
+        }
+        reg = aes["register"]
+        reg_note = register_desc.get(reg, "Balanced multi-axis profile")
+        conf_pct = int(aes["confidence"] * 100)
+
+        lines.extend([
+            "---",
+            "",
+            "## Aesthetic Intelligence",
+            "",
+            f"> **Register:** `{reg}` ({conf_pct}% confidence) — {reg_note}",
+            "",
+            "### Axis Scores",
+            "",
+            "| Axis | Score | Visualisation |",
+            "|------|------:|--------------|",
+            f"| Composition Density     | {aes['density']:.2f} | `{_bar(aes['density'])}` |",
+            f"| Temporal Register       | {aes['temporal']:.2f} | `{_bar(aes['temporal'])}` |",
+            f"| Material Richness       | {aes['material']:.2f} | `{_bar(aes['material'])}` |",
+            f"| Visual Boldness         | {aes['boldness']:.2f} | `{_bar(aes['boldness'])}` |",
+            f"| Editorial vs Commercial | {aes['commercial']:.2f} | `{_bar(aes['commercial'])}` |",
+            "",
+        ])
+
+        if aes.get("signals"):
+            lines.extend([
+                "### Classification Signals",
+                "",
+                "| Source | Signal |",
+                "|--------|--------|",
+            ])
+            for sig in aes["signals"]:
+                # signals are "source:value" strings (e.g. "archetype:cultural guardian")
+                if isinstance(sig, dict):
+                    src = sig.get("source", "—"); val = sig.get("value", "—")
+                elif ":" in str(sig):
+                    src, _, val = str(sig).partition(":")
+                else:
+                    src = "signal"; val = str(sig)
+                lines.append(f"| `{src}` | {val} |")
+            lines.append("")
+
+        # Per-asset variant selection rationale
+        lines.extend([
+            "### Template Variant Selection",
+            "",
+            "| Asset | Variant | Rationale |",
+            "|-------|---------|-----------|",
+        ])
+        for prefix, display in asset_display.items():
+            variant_id  = v.get(f"variant_selection_{prefix}", "—")
+            description = v.get(f"variant_description_{prefix}", "")
+            if variant_id != "—":
+                lines.append(f"| {display} | `{variant_id}` | {description} |")
+        lines.append("")
+
+    lines.extend([
         "---",
         "",
         "## Prompts",
         "",
-    ]
+    ])
 
     prompt_entries = [
         ("2A", "Brand Kit Bento Grid", "fal-ai/nano-banana-pro", "16:9", PROMPT_2A_BENTO),
@@ -1918,6 +2239,53 @@ def gen_cookbook(out_dir, v, cfg):
         "```",
         "",
     ])
+
+    # ── Supplementary Composition References section ──
+    supp_refs = v.get("_supp_refs_summary", {})
+    if supp_refs:
+        lines.extend([
+            "---", "",
+            "## Supplementary Composition References", "",
+            "> Dynamically selected from the full reference catalog based on brand context.", "",
+        ])
+        for pid in sorted(supp_refs.keys(), key=_sort_pid):
+            refs = supp_refs[pid]
+            lines.append(f"### {pid}")
+            for ref in refs:
+                lines.append(f"- `{ref['file']}` (score: {ref['score']:.1f})")
+            lines.append("")
+
+    # ── Community Prompts section (from Twitter sync) ──
+    twitter_refs = v.get("_twitter_refs", [])
+    if twitter_refs:
+        lines.extend([
+            "---",
+            "",
+            "## Community Prompts (Twitter Sync)",
+            "",
+            f"> {len(twitter_refs)} prompts sourced from high-signal tweets.",
+            "",
+        ])
+        for tw in twitter_refs:
+            tags_str = ", ".join(tw.get("tags", [])) or "untagged"
+            img_count = len(tw.get("images", []))
+            lines.extend([
+                f"### @{tw['author']} — {tw['slug']}",
+                "",
+                f"- **Likes**: {tw.get('likes', 0)} | **Score**: {tw.get('relevance_score', 0):.2f}",
+                f"- **Tags**: {tags_str}",
+                f"- **Images**: {img_count}",
+                "",
+            ])
+            prompt_text = tw.get("prompt_text", "")
+            if prompt_text:
+                lines.extend([
+                    "```",
+                    prompt_text[:2000],  # Cap at 2000 chars
+                    "```",
+                    "",
+                ])
+        lines.append("")
 
     cookbook_path = os.path.join(out_dir, "prompt-cookbook.md")
     with open(cookbook_path, "w") as f:
@@ -2067,6 +2435,39 @@ def main():
     exec_ctx = load_execution_context(config_path, cfg)
     v = build_vars(cfg, exec_ctx, config_path=config_path)
 
+    # ── Aesthetic Engine: dynamic template variant selection ──────────────
+    # Maps brand archetype/mood/materials → AestheticProfile → variant per asset.
+    # Runs in try/except: pipeline falls back to legacy behavior on any error.
+    try:
+        _ae_dir = os.path.dirname(os.path.abspath(__file__))
+        import sys as _sys
+        if _ae_dir not in _sys.path:
+            _sys.path.insert(0, _ae_dir)
+        from aesthetic_engine import (
+            AestheticClassifier, TemplateMatcher, inject_variant_vars,
+            load_template_variants, load_upstream_data, write_aesthetic_sidecar,
+        )
+        _variants_path = os.path.join(_ae_dir, "..", "assets", "template-variants.yaml")
+        _registry = load_template_variants(os.path.abspath(_variants_path))
+        if _registry:
+            _upstream = load_upstream_data(config_path)
+            _classifier = AestheticClassifier()
+            _matcher = TemplateMatcher()
+            _profile = _classifier.classify(v, _upstream)
+            _aesthetic_overrides = cfg.get("aesthetic", {})
+            _selections = _matcher.select_variants(_profile, _registry, _aesthetic_overrides)
+            v = inject_variant_vars(v, _selections, _registry, _profile)
+            write_aesthetic_sidecar(config_path, _profile, _selections)
+            print(f"  Aesthetic: {_profile.dominant_register} "
+                  f"(density={_profile.composition_density:.2f}, "
+                  f"temporal={_profile.temporal_register:.2f}, "
+                  f"confidence={_profile.confidence:.2f})")
+            print(f"  Variants:  " + ", ".join(f"{k}={s}" for k, s in sorted(_selections.items())))
+        else:
+            print("  Aesthetic: template-variants.yaml not found — using legacy prompts")
+    except Exception as _ae_err:
+        print(f"  Aesthetic: engine error ({_ae_err}) — using legacy prompts")
+
     # ── Reference map: load from JSON or use hardcoded fallback ──
     ref_map_path = os.path.join(os.path.dirname(config_path), "..", "references", "reference-map.json")
     if not os.path.exists(ref_map_path):
@@ -2080,19 +2481,53 @@ def main():
             mapper_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_references.py")
             if os.path.exists(mapper_script):
                 print("\n  Refreshing reference map...")
-                subprocess.run([sys.executable, mapper_script, images_dir, "--json-only"], check=True)
+                cmd = [sys.executable, mapper_script, images_dir, "--json-only"]
+                # Auto-pass twitter assets dir if it exists
+                twitter_dir = os.path.join(os.path.dirname(ref_map_path), "twitter-sync", "assets")
+                if os.path.isdir(twitter_dir):
+                    cmd.extend(["--twitter-dir", twitter_dir])
+                subprocess.run(cmd, check=True)
                 print("  Reference map refreshed.")
             else:
                 print(f"  WARNING: map_references.py not found at {mapper_script}")
         else:
             print(f"  WARNING: references/images/ not found at {images_dir}")
 
-    ref_images = load_ref_map(ref_map_path)
+    ref_images, full_catalog = load_ref_map(ref_map_path)
     if os.path.exists(ref_map_path):
         print(f"  Refs: Loaded {len(ref_images)} mappings from reference-map.json")
+        if full_catalog:
+            print(f"  Catalog: {len(full_catalog)} supplementary refs available")
+        # Load twitter community refs for cookbook
+        try:
+            with open(ref_map_path) as _rmf:
+                _ref_data = json.load(_rmf)
+            twitter_refs = _ref_data.get("twitter", [])
+            if twitter_refs:
+                v["_twitter_refs"] = twitter_refs
+                print(f"  Twitter: {len(twitter_refs)} community prompts available for cookbook")
+        except (json.JSONDecodeError, OSError):
+            pass
     else:
         print(f"  Refs: Using {len(ref_images)} hardcoded defaults (no reference-map.json found)")
     v["ref_images_block"] = build_ref_images_block(ref_images)
+
+    # Select supplementary refs based on brand context
+    brand_tags = [
+        v.get("domain", ""),
+        v.get("archetype", ""),
+        *[t.strip() for t in v.get("mood_keywords", "").split(",") if t.strip()],
+    ]
+    catalog_yaml_path = os.path.join(os.path.dirname(ref_map_path), "reference-catalog.yaml")
+    supp_refs = select_supp_refs(
+        full_catalog, brand_tags,
+        catalog_yaml_path=catalog_yaml_path,
+    ) if full_catalog or os.path.exists(catalog_yaml_path) else {}
+    if supp_refs:
+        total_supp = sum(len(refs) for refs in supp_refs.values())
+        print(f"  Supp refs: {total_supp} supplementary refs selected across {len(supp_refs)} prompts")
+    v["supp_refs_block"] = build_supp_refs_block(supp_refs)
+    v["_supp_refs_summary"] = supp_refs
 
     # Build ref overrides literal for generated scripts
     ref_dict = cfg.get("generation", {}).get("reference_overrides", {})

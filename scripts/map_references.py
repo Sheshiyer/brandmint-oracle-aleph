@@ -262,6 +262,7 @@ RE_PRIMARY = re.compile(r"^ref-(\d+[A-Z])-(.+)\.(jpg|jpeg|png|webp)$")
 RE_ALT = re.compile(r"^ref-alt-(.+)\.(jpg|jpeg|png|webp)$")
 RE_STYLE = re.compile(r"^ref-style-(.+)\.(jpg|jpeg|png|webp)$")
 RE_DEMO = re.compile(r"^ref-demo-(.+)\.(jpg|jpeg|png|webp)$")
+RE_TWITTER = re.compile(r"^ref-tw-(\d+)-([^.]+)\.(jpg|jpeg|png|webp)$")
 
 
 def parse_filename(filename):
@@ -302,6 +303,15 @@ def parse_filename(filename):
             "filename": filename,
         }
 
+    m = RE_TWITTER.match(filename)
+    if m:
+        return {
+            "type": "twitter",
+            "seq": int(m.group(1)),
+            "slug": m.group(2),
+            "filename": filename,
+        }
+
     return {
         "type": "unknown",
         "slug": os.path.splitext(filename)[0],
@@ -336,7 +346,52 @@ def scan_images(images_dir):
 # MAPPER
 # =====================================================================
 
-def build_reference_map(parsed_refs):
+def load_twitter_manifest(twitter_dir):
+    """Load Twitter sync manifest.json and return enriched entries.
+
+    Returns list of dicts with: file, seq, author, slug, prompt_text, tags, likes,
+    relevance_score, source_url, images[].
+    """
+    manifest_path = os.path.join(twitter_dir, "manifest.json")
+    if not os.path.exists(manifest_path):
+        return []
+
+    with open(manifest_path) as f:
+        manifest = json.load(f)
+
+    entries = []
+    for entry in manifest.get("entries", []):
+        # Read the paired .prompt.md for full tweet text
+        prompt_file = entry.get("prompt_file", "")
+        prompt_text = ""
+        if prompt_file:
+            prompt_path = os.path.join(twitter_dir, prompt_file)
+            if os.path.exists(prompt_path):
+                with open(prompt_path) as pf:
+                    content = pf.read()
+                # Extract text between "## Prompt" and next "##" or end
+                import re as _re
+                m = _re.search(r"## Prompt\n\n(.+?)(?:\n## |\Z)", content, _re.DOTALL)
+                if m:
+                    prompt_text = m.group(1).strip()
+
+        entries.append({
+            "seq": entry.get("seq", 0),
+            "author": entry.get("author", "unknown"),
+            "slug": entry.get("slug", ""),
+            "tweet_id": entry.get("tweet_id", ""),
+            "prompt_text": prompt_text,
+            "prompt_file": prompt_file,
+            "tags": entry.get("tags", []),
+            "likes": entry.get("likes", 0),
+            "relevance_score": entry.get("relevance_score", 0),
+            "images": entry.get("images", []),
+        })
+
+    return entries
+
+
+def build_reference_map(parsed_refs, twitter_dir=None):
     """Build the structured reference map from parsed filenames."""
     primary = {}
     alternatives = {}  # template_id -> list of alt refs
@@ -409,6 +464,9 @@ def build_reference_map(parsed_refs):
                     "reason": "Not in known demo registry",
                 })
 
+        elif ref["type"] == "twitter":
+            pass  # Counted by scan; enriched from manifest below
+
         else:
             unmapped.append({
                 "file": fname,
@@ -431,6 +489,20 @@ def build_reference_map(parsed_refs):
                 "description": f"Reuses {source_pid} ({primary[source_pid]['name']}) grid layout",
             }
 
+    # Load Twitter community refs from manifest (enriches with prompt text, tags, etc.)
+    # Auto-discover twitter-sync/assets/ relative to images_dir if twitter_dir not given
+    twitter = []
+    if twitter_dir:
+        twitter = load_twitter_manifest(twitter_dir)
+    elif parsed_refs:
+        # Auto-discover: images_dir/../twitter-sync/assets/
+        first_path = parsed_refs[0].get("path", "")
+        if first_path:
+            images_parent = os.path.dirname(os.path.dirname(first_path))
+            candidate = os.path.join(images_parent, "twitter-sync", "assets")
+            if os.path.isdir(candidate):
+                twitter = load_twitter_manifest(candidate)
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "total_refs": sum(1 for r in parsed_refs if r["type"] != "unknown"),
@@ -439,6 +511,7 @@ def build_reference_map(parsed_refs):
         "alternatives": alternatives,
         "styles": styles,
         "demos": demos,
+        "twitter": twitter,
         "unmapped": unmapped,
     }
 
@@ -499,11 +572,13 @@ def print_summary(ref_map, check_new_only=False):
     n_alt = sum(len(v) for v in ref_map["alternatives"].values())
     n_style = len(ref_map["styles"])
     n_demo = len(ref_map["demos"])
+    n_twitter = len(ref_map.get("twitter", []))
     n_unmapped = len(ref_map["unmapped"])
     n_reuse = len(ref_map["reuses"])
 
-    print(f"  Found: {total} reference images")
-    print(f"  Primary: {n_primary} | Reuses: {n_reuse} | Alt: {n_alt} | Style: {n_style} | Demo: {n_demo}")
+    print(f"  Found: {total} reference images" + (f" + {n_twitter} community (Twitter)" if n_twitter else ""))
+    print(f"  Primary: {n_primary} | Reuses: {n_reuse} | Alt: {n_alt} | Style: {n_style} | Demo: {n_demo}" +
+          (f" | Twitter: {n_twitter}" if n_twitter else ""))
     if n_unmapped:
         print(f"  UNMAPPED: {n_unmapped}")
     print()
@@ -561,6 +636,16 @@ def print_summary(ref_map, check_new_only=False):
         print(f"DEMOS ({n_demo}):")
         for d in ref_map["demos"]:
             print(f"  {d['file']:<45s}  → \"{d['description']}\"")
+        print()
+
+    if n_twitter:
+        print(f"TWITTER / COMMUNITY ({n_twitter}):")
+        for t in ref_map["twitter"][:10]:  # Show first 10
+            img_count = len(t.get("images", []))
+            tags_str = ", ".join(t.get("tags", [])[:3]) or "untagged"
+            print(f"  [{t['seq']:03d}] @{t['author']:<20s}  {img_count} img  {t['likes']:>5d} likes  [{tags_str}]")
+        if n_twitter > 10:
+            print(f"  ... and {n_twitter - 10} more")
         print()
 
     if n_unmapped:
@@ -622,15 +707,34 @@ def main():
         action="store_true",
         help="Only write JSON, skip console summary",
     )
+    parser.add_argument(
+        "--twitter-dir",
+        help="Path to twitter-sync assets dir (default: auto-discover from images_dir/../twitter-sync/assets/)",
+    )
+    parser.add_argument(
+        "--rebuild-catalog",
+        action="store_true",
+        help="After building reference-map.json, regenerate reference-catalog.yaml via classify_references.py",
+    )
     args = parser.parse_args()
 
     images_dir = os.path.abspath(args.images_dir)
+
+    # Auto-discover twitter assets dir
+    twitter_dir = None
+    if args.twitter_dir:
+        twitter_dir = os.path.abspath(args.twitter_dir)
+    else:
+        # Try to find it relative to images_dir (references/images/ -> references/twitter-sync/assets/)
+        candidate = os.path.join(os.path.dirname(images_dir), "twitter-sync", "assets")
+        if os.path.isdir(candidate):
+            twitter_dir = candidate
 
     # Scan
     parsed = scan_images(images_dir)
 
     # Map
-    ref_map = build_reference_map(parsed)
+    ref_map = build_reference_map(parsed, twitter_dir=twitter_dir)
 
     # Console output
     if not args.json_only:
@@ -643,6 +747,26 @@ def main():
         output_path = os.path.join(os.path.dirname(images_dir), "reference-map.json")
 
     write_json(ref_map, output_path)
+
+    # Rebuild aesthetic catalog
+    if args.rebuild_catalog:
+        try:
+            from classify_references import build_catalog, write_catalog
+        except ImportError:
+            # Try relative import from same directory
+            scripts_dir = os.path.dirname(os.path.abspath(__file__))
+            sys.path.insert(0, scripts_dir)
+            from classify_references import build_catalog, write_catalog
+
+        catalog_path = os.path.join(os.path.dirname(images_dir), "reference-catalog.yaml")
+        print()
+        print("  Rebuilding reference-catalog.yaml...")
+        catalog = build_catalog(
+            output_path, images_dir,
+            twitter_dir=twitter_dir,
+            merge_path=catalog_path if os.path.exists(catalog_path) else None,
+        )
+        write_catalog(catalog, catalog_path)
 
     # Python dict output
     if args.print_dict:

@@ -137,6 +137,27 @@ products:
 # ─── AESTHETIC LANGUAGE OVERRIDES ────────────────────────
 # Optional. Override hardcoded aesthetic phrases to differentiate brand identity.
 # If omitted, backward-compatible defaults match the original Noesis/bioluminescent aesthetic.
+#
+# ── STRUCTURAL TEMPLATE VARIANT OVERRIDES (Phase D) ───────
+# Optional. Bypass the aesthetic classifier for specific assets by naming a variant directly.
+# When set, the named variant is used regardless of the AestheticClassifier's score.
+# Format: template_variant_{asset_id_lowercase} — e.g. "template_variant_2a"
+# Valid asset IDs: 2a, 2b, 2c, 3a, 3b, 3c, 4a, 4b, 5a, 5b, 5c, 7a, 8a
+#
+# Available variants per asset:
+#   2a: standard_bento | minimal_zen | maximal_heritage | futuristic_editorial
+#   2b: oxidized_seal | minimal_wordmark | ornate_crest | geometric_mark
+#   2c: stained_glass_emboss | relief_emboss | flat_modern | inlaid_craft
+#   3a: architectural_lineup | earth_abundance | clinical_precision | festive_tableau
+#   3b: contextual_hero | floating_hero | technical_flatlay | atmospheric_still
+#   3c: apothecary_vial | ceremony_vessel | lab_specimen | craft_container
+#   4a: technical_catalog | editorial_spread | artisanal_reference | minimal_product
+#   4b: scattered_flatlay | abundant_arrangement | ceremonial_layout | natural_scatter
+#   5a: botanical_scientific | block_print_heritage | circuit_filigree | calligraphic_line
+#   5b: duotone_campaign | pattern_mosaic | type_dominant | photograph_led
+#   5c: abstract_geometry | narrative_panel | symbolic_field
+#   7a: archival_contact | craft_process | usage_moments | seasonal_sequence
+#   8a: seeker_split | cosmic_figure | material_presence | shadow_silhouette
 aesthetic:
   hero_object_type: ""        # Default: "bio-digital object" — 2A hero block
   hero_surface: ""            # Default: "polished surface" — 2A, 3A, 3B, 4B, 5C
@@ -177,6 +198,10 @@ generation:
   output_format: "png"        # Primary output format
   env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
   reference_overrides: {}     # Override default ref images: {"2B": "ref-alt-chrome-logos.jpg"}
+  supplementary_refs:           # Dynamic supplementary composition reference settings
+    max_per_prompt: 3           # Max supp refs per Nano Banana call (default 3)
+    boost_types: ["style"]      # Ref types to boost in scoring
+    exclude_types: []           # Ref types to exclude entirely
 
 # ─── PROMPT CATEGORIES ───────────────────────────────────
 # Enable/disable which asset types to generate
