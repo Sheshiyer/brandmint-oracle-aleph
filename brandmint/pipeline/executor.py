@@ -93,9 +93,9 @@ class WaveExecutor:
         "APP-SCREENSHOT": "products",
         "4A": "photography",
         "4B": "photography",
-        "5A": "illustrations",
-        "5B": "illustrations",
-        "5C": "illustrations",
+        "5A": "illustration",
+        "5B": "illustration",
+        "5C": "illustration",
         "7A": "narrative",
         "8A": "posters",
         "IG-STORY": "posters",
@@ -698,12 +698,17 @@ class WaveExecutor:
             batch_name,
         ]
 
+        timeout_seconds = int(
+            self.config.get("generation", {}).get("batch_timeout_seconds", 1200)
+        )
+        timeout_seconds = max(60, timeout_seconds)
+
         try:
             result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=600,
+                timeout=timeout_seconds,
             )
             duration = round(time.monotonic() - start_ts, 1)
 
@@ -769,13 +774,13 @@ class WaveExecutor:
                     aid,
                     "visual_assets",
                     "failed",
-                    error="Subprocess timed out after 600s",
+                    error=f"Subprocess timed out after {timeout_seconds}s",
                 )
                 self._report.assets.append(AssetExecution(
                     asset_id=aid,
                     batch=batch_name,
                     status="failed",
-                    error="Timeout",
+                    error=f"Timeout after {timeout_seconds}s",
                 ))
             self.console.print(
                 f"  [red]Batch '{batch_name}' timed out.[/red]"
