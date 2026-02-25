@@ -1,0 +1,1043 @@
+{
+  "sync_date": "2026-02-24",
+  "import_type": "bookmark_bulk_import",
+  "stats": {
+    "total_bookmarks": 378,
+    "ai_filtered": 206,
+    "new_imported": 206,
+    "images_downloaded": 167,
+    "images_failed": 0
+  },
+  "tweets": [
+    {
+      "id": "2020418519863595301",
+      "author": "craftian_keskin",
+      "text": "Home Fragrance Advertisement\n\nPrompt: \n{\n  \"Objective\": \"Create a refined 2\u00d72 grid advertisement for the luxury home fragrance 'AER\u00c9ON', emphasizing mood, atmosphere, and sensory elegance through mini"
+    },
+    {
+      "id": "2025713907180896421",
+      "author": "TheCraigHewitt",
+      "text": "feel like this should be required reading for anyone creating any kind of agent system...whether it's OpenClaw or your own homegrown version."
+    },
+    {
+      "id": "2025880482760507780",
+      "author": "tom_doerr",
+      "text": "Dashboard to orchestrate AI agents via OpenClaw Gateway\n\nhttps://t.co/4dGgTKAnpc https://t.co/J4JImATl41"
+    },
+    {
+      "id": "2025161888456474851",
+      "author": "hasantoxr",
+      "text": "\ud83d\udea8 Alibaba just quietly dropped a vector database that destroys Pinecone, Chroma, and Weaviate.\n\nIt's called Zvec and it runs directly inside your application no server, no config, no infrastructure co"
+    },
+    {
+      "id": "2025708027656192355",
+      "author": "clairevo",
+      "text": "Not at all overkill: in the last 24 hours I built a electron app to backup/sync my @openclaw knowledge file .md file system between my device and hers, track agent tasks, assign between agents, and ke"
+    },
+    {
+      "id": "2025386547176956077",
+      "author": "Hesamation",
+      "text": "this is one of the best technical articles i\u2019ve read lately. what separates you from anyone else that\u2019s using AI is your ability to steer the LLM and squeeze what you want from it, not what it decides"
+    },
+    {
+      "id": "2025618103179391381",
+      "author": "venturetwins",
+      "text": "One of the industries really adopting AI video? Real estate.\n\nProperties are now advertised like products on social feeds \u2014 and AI enhancements help them stand out.\n\nAI is being used to bring properti"
+    },
+    {
+      "id": "2025596212301140131",
+      "author": "DeFi_Hanzo",
+      "text": "One from the several good articles about building AI company\n\nNot everything you\u2019ll see, you\u2019ll need,\n\nBut you have to understand the possible methods to choose the best for you\n\nMust read"
+    },
+    {
+      "id": "2025751633070830065",
+      "author": "Motion_Viz",
+      "text": "spent 3 days building this prompt.\n\nmost people do market research wrong.\nthey google. they guess. they build. they fail.\n\ni trained an AI to think like:\n\u2192 a VC scout who evaluated 500+ startups\n\u2192 an "
+    },
+    {
+      "id": "2025742047957971352",
+      "author": "mamagnus00",
+      "text": "I love Ironclaw - agent first CRM. \n\n@grok  How can I share this CRM with my team members so that its not on localhost and whats the best way to automatically sync it with my db? https://t.co/ES15JoLo"
+    },
+    {
+      "id": "2025671359511277569",
+      "author": "johann_sath",
+      "text": "most people running openclaw have zero alerts set up\n\nsomeone could brute force your server at 3am and you wouldn't know until everything's gone\n\nset up these 3 alerts today:\n\n1. failed SSH login dete"
+    },
+    {
+      "id": "2025406682247856221",
+      "author": "bradmillscan",
+      "text": "Give your OpenClaw agent a mindset protocol if you dare!\n\n@Sene1337 built this skill which shows your agent how to dream, set goals, practice daily gratitude, reflect &amp; journal on the day, documen"
+    },
+    {
+      "id": "2025324252396974308",
+      "author": "tolibear_",
+      "text": "One of the best things I did for my Claw is come up with a context handoff protocol.\n\nIt makes a 200k context window feel infinite.\n\n\u2193\n\nImplement this Context Handoff Protocol, proliferate for all age"
+    },
+    {
+      "id": "2024557008829940094",
+      "author": "craftian_keskin",
+      "text": "Retro Anime Style \n\nMidjourney --sref 523688642 https://t.co/Qa2WuPwGvX"
+    },
+    {
+      "id": "2024533843709985228",
+      "author": "TechieBySA",
+      "text": "\ud83c\udf89Meshy 6 Preview from @MeshyAI is here!\n\n\u201cSculpt-level\u201d AI 3D modeling has finally arrived.\nGenerate richer details, sharper edges, and more precise geometry than ever before.\n\nCheck out these 3D reta"
+    },
+    {
+      "id": "2024104039827578910",
+      "author": "j_smeaton99",
+      "text": "Google Nano Banana Pro on Gemini and GPT Image 1.5\n\nPrompt;\n\n{\n  \"master_prompt\": {\n    \"product\": {\n      \"type\": \"luxury perfume bottle\",\n      \"brand_name\": \"NOIR \u00c9LIXIR\",\n      \"fragrance_line\": \""
+    },
+    {
+      "id": "2024439340693438810",
+      "author": "azed_ai",
+      "text": "Prompt share: Mosaic\n\n\ud83d\udcacPrompt:\nA dynamic mosaic composition featuring a [subject] built from an array of delicate [color] tiles, arranged in a precise, geometric layout on a clean white field. The int"
+    },
+    {
+      "id": "2024375170014859273",
+      "author": "Abhinavstwt",
+      "text": "Places I go to when I need design inspiration:\n\nMobbin\nAwwwards\nGodly\nDribbble\nLand-book\nRefero\nSiteInspire\nLapa Ninja\nUX Archive\nScreenlane\nBehance\nCollect UI\nFlowbase\nHover States\nUI Movement\nFramer"
+    },
+    {
+      "id": "2024450766874751356",
+      "author": "TechieBySA",
+      "text": "3D Head Avatars by Nano Banana Pro on @SocialSight \ud83c\udfad\u2728\n\nPrompt\ud83d\udc47\ud83c\udffb https://t.co/pM4OEbiqrm"
+    },
+    {
+      "id": "2024137764292510162",
+      "author": "hridoyreh",
+      "text": "\ud83d\udcc2 SEO\n\u2503\n\u2523 \ud83d\udcc2 Technical SEO\n\u2503 \u2523 \ud83d\udcc2 Site Structure\n\u2503 \u2523 \ud83d\udcc2 Crawlability\n\u2503 \u2523 \ud83d\udcc2 Core Web Vitals\n\u2503 \u2517 \ud83d\udcc2 Structured Data\n\u2503\n\u2523 \ud83d\udcc2 On Page SEO\n\u2503 \u2523 \ud83d\udcc2 Keyword Research\n\u2503 \u2523 \ud83d\udcc2 Search Intent\n\u2503 \u2523 \ud83d\udcc2 Title Tags\n\u2503 \u2517 \ud83d\udcc2 Intern"
+    },
+    {
+      "id": "2024277162652815403",
+      "author": "Naiknelofar788",
+      "text": "GPT image 1.5 on ChatGPT\n\nPrompt\uff1a\nCreate an ultra-HD, hyper-realistic digital poster of a floating miniature island shaped like [Country], resting on white clouds in the sky. Blend iconic landmarks, n"
+    },
+    {
+      "id": "2024122471398715564",
+      "author": "pyquantnews",
+      "text": "Level up your claude code with this https://t.co/uqUAkqFGpj https://t.co/ClIKxTqfCT"
+    },
+    {
+      "id": "2024224298118889517",
+      "author": "DylanFeltus",
+      "text": "\ud83d\udd0d new open source skill: visual-qa\n\nteaches your AI agent to review UI screenshots like a designer would: spacing, alignment, color, typography, responsiveness, accessibility. 7 review categories.\n\nco"
+    },
+    {
+      "id": "2024321989536792879",
+      "author": "georgepickett",
+      "text": "How to get started with OpenClaw Studio\n\nnpx openclaw-studio https://t.co/zGOzKGoQRI"
+    },
+    {
+      "id": "2024088055896801484",
+      "author": "TechieBySA",
+      "text": "3D Caricature Characters by Nano Banana Pro on @SocialSight \ud83c\udfad\u2728\n\nPrompt\ud83d\udc47\ud83c\udffb https://t.co/CJLlT1QM18"
+    },
+    {
+      "id": "2024189802673750400",
+      "author": "Austen",
+      "text": "My gift for everyone who loves and uses OpenClaw:\n\nThis is \"OpenClaw Deck.\"\n\nEach column is a session, allows subagents to spawn within column, bounce between them with tab/shift+tab or cmd + #\n\nSuppo"
+    },
+    {
+      "id": "2024161276364992515",
+      "author": "hewarsaber",
+      "text": "Prompt:\n\n{\n  \"prompt\": \"A hyper-realistic {{object}} rendered as a sculptural object carved entirely from solid, optical-grade crystal glass. The object preserves its true proportions and recognizable"
+    },
+    {
+      "id": "2024191323801083932",
+      "author": "NoahEpstein_",
+      "text": "If you aren\u2019t just pasting x links into your @openclaw you missing out. \n\nBeen doing it since I spun up my open claw and has been a game changer. \n\nRead some crazy article or post about  an openclaw c"
+    },
+    {
+      "id": "2024094387895255063",
+      "author": "viktoroddy",
+      "text": "\u2764\ufe0f\u200d\ud83d\udd25 Antigravity X Google Flow is so cracked at websites.\n\nand anyone can achieve the same results.\n\nHere's the prompt \u2193 https://t.co/cZRckAq4Ho"
+    },
+    {
+      "id": "2024305037241946520",
+      "author": "bc1beat",
+      "text": "I'm an Anthropic investor \u2014 participated in the $180B round.\nBut I'll say it: blocking Max subscribers from using @OpenClaw via their OAuth ban? That's the wrong move.\nSo here's my answer \u2014 ClawRouter"
+    },
+    {
+      "id": "2023754885473394918",
+      "author": "Amank1412",
+      "text": "CEO of Y Combinator shared his https://t.co/lvxf35tz8F prompt for Claude Code\n\nIt helps him ship 4,000+ line features with full tests in about an hour:\n\nThis prompt pushes Claude to:\n\nDecide if the pl"
+    },
+    {
+      "id": "2023831149190259039",
+      "author": "mernit",
+      "text": "PSA to everyone building browser agents with @openclaw\n\ngive it a copy of your chrome profile \n\nnow it's logged into everything in your browser  \n\n(use with caution) https://t.co/NgNmXURJXK"
+    },
+    {
+      "id": "2023809831438786744",
+      "author": "ClawiAi",
+      "text": "20 verified, real-world OpenClaw use cases \ud83d\udee0\ufe0f\nhttps://t.co/tFWuD6ZyWE https://t.co/SgVVKrsYxe"
+    },
+    {
+      "id": "2023732233962496297",
+      "author": "kaostyl",
+      "text": "I asked my AI to review itself. Every 4 hours. Here's what it found after 30 days.\n\nMost people use AI as a chatbot. I gave mine a personality, a memory, and a self-correction loop.\n\n\ud83e\udde0 https://t.co/45"
+    },
+    {
+      "id": "2023881934414508513",
+      "author": "johann_sath",
+      "text": "i told my OpenClaw to stop doing work\n\n\"you are the orchestrator. your time is too valuable to execute tasks.\n\nanytime i ask you to do something, spin up a subagent for it.\n\nme and you just plan. the "
+    },
+    {
+      "id": "2023725700642205743",
+      "author": "aigleeson",
+      "text": "Delete your current Claude prompts.\n\nI just built the only one you'll ever need 5 marketing legends, one system.\n\n1. Hormozi.\n2. Gary Vee.\n3. Brunson.\n4. Kennedy.\n5. Schwartz.\n\nHere's the exact prompt"
+    },
+    {
+      "id": "2023774576115937735",
+      "author": "soltwagner",
+      "text": "Best resources and tools for designers \ud83d\udc47\n\n- Website hero sections \u2192 https://t.co/HeooNhcJ0N\n- Website footer inspirations \u2192 https://t.co/DLO30SLfCS\n- Navbars \u2192 https://t.co/4QWZgYFx5n\n- CTA sections \u2192"
+    },
+    {
+      "id": "2023952324658450545",
+      "author": "tom_doerr",
+      "text": "Coordinates AI agents through shared files and a dashboard\n\nhttps://t.co/IJyOBsKbzr https://t.co/cDXbpyTN8O"
+    },
+    {
+      "id": "2023663525940297762",
+      "author": "woocassh",
+      "text": "Jimmy cooked with this one \ud83d\ude80\n\n&gt; 22k impressions\n&gt; 539 unique visitors to the website\n&gt; 37 github stars\n&gt; 5 forks already!\n\nPeople want an OpenClaw dashboard and we shall deliver:\n\n&gt; Pro"
+    },
+    {
+      "id": "2023843493765157235",
+      "author": "MatthewBerman",
+      "text": "I've spent 2.54 BILLION tokens perfecting OpenClaw.\n\nThe use cases I discovered have changed the way I live and work.\n\n...and now I'm sharing them with the world.\n\nHere are 21 use cases I use daily:\n\n"
+    },
+    {
+      "id": "2023670501890019740",
+      "author": "Motion_Viz",
+      "text": "Stop prompting AI to \"make me a landing page.\"\n\n200+ hours testing taught me this:\n\nGeneric prompts \u2192 pretty pages\nMy prompts \u2192 pages that sell\n\nThe pack includes:\n\u2192 3D Landing Hero Section (Today)\n\u2192 "
+    },
+    {
+      "id": "2023686432062087400",
+      "author": "0xSero",
+      "text": "New Openclaw hacks.\n\n1. Task management:\n\n- Use forum for long term life tasks, each post under forum is it's own session\n- Use the new feature to allow openclaw to build you UI components in discord\n"
+    },
+    {
+      "id": "2023328246486458483",
+      "author": "Motion_Viz",
+      "text": "Stop prompting AI to \"make me a landing page.\"\n\n200+ hours testing taught me this:\n\nGeneric prompts \u2192 pretty pages\nMy prompts \u2192 pages that sell\n\nThe pack includes:\n\u2192 3D Landing Hero Section\n\u2192 Sentient"
+    },
+    {
+      "id": "2023142088850944283",
+      "author": "kloss_xyz",
+      "text": "This system prompt replaces expensive design agencies with @openclaw (steal my workflow): \n\n\u2192 Tell OpenClaw to search \ud835\udd4f for your favorite designer accounts, show it design references from sites you li"
+    },
+    {
+      "id": "2022983046115516455",
+      "author": "JulianGoldieSEO",
+      "text": "A brand new AI agent just dropped with 1% of OpenClaw's code and it's faster.\n\n4,000 lines doing what 430,000 used to do.\n\nHere's why this matters:\n\n\u2192 Launches instantly\n\n\u2192 Runs on a laptop\n\n\u2192 Barely "
+    },
+    {
+      "id": "2023029674549596301",
+      "author": "Kimi_Moonshot",
+      "text": "Introducing Kimi Claw\ud83e\udd9e\n\nOpenClaw, now native to https://t.co/YutVbwktG0. Living right in your browser tab, online 24/7. \n\n\ud83d\udd39 ClawHub Access: 5,000+ community skills in the ClawHub library.\n\ud83d\udd39 40GB Cloud"
+    },
+    {
+      "id": "2022570801459867733",
+      "author": "kaostyl",
+      "text": "10 things I configured that turned my OpenClaw from a chatbot into an autonomous operator:\n\n1\u20e3 Split your memory into 5 files, not 1\n\nStop dumping everything into https://t.co/Be5Xdc9UsF. Split it:\n\u2022 "
+    },
+    {
+      "id": "2022661488960508218",
+      "author": "ihtesham2005",
+      "text": "\ud83d\udea8BREAKING: Someone built an AI coworker that actually remembers everything you've discussed.\n\nIt's called Rowboat and it builds a knowledge graph from your work.\n\n- Connects Gmail, Calendar, Drive, me"
+    },
+    {
+      "id": "2022663312853598425",
+      "author": "bloggersarvesh",
+      "text": "BREAKING: Claude can now do SEO like a $10,000/month agency (for free).\n\nHere are 7 insane Claude Cowork prompts that can take your biz to $100k/month : (Save for later) https://t.co/534m2puIlY"
+    },
+    {
+      "id": "2022518658048888916",
+      "author": "sarahfim",
+      "text": "just shipped the first @openclaw you can trust and it takes literally zero set-up\n\nit connects to all of ur fav apps securely through OAuth: Gmail, Google Calendar, Notion, Slack, GitHub, HubSpot, Lin"
+    },
+    {
+      "id": "2022900344003661988",
+      "author": "cstanley",
+      "text": "Just built a Grok integration for OpenClaw.\n\nLet your agents search X + use grok-search to pull real-time info. Powered by xAI. All you need is an xAI API key.\n\nTo install:\nclawhub install grok\n\nhttps"
+    },
+    {
+      "id": "2022768468882497751",
+      "author": "jacobrodri_",
+      "text": "this article is gold if you want to use openclaw to grow your app on tiktok without spending $7490/month:"
+    },
+    {
+      "id": "2022513027870810384",
+      "author": "steipete",
+      "text": "New version of https://t.co/VBw4Rt1V5A is out! 0.11 can now even use cursor for free tokens + uses Groq for way faster TTS inference + lots lots of other improvements.\nhttps://t.co/AiKEz6UgEj\n\nsummari"
+    },
+    {
+      "id": "2022699301353238970",
+      "author": "justin_hart",
+      "text": "Try this prompt with your AI OpenClaw bot today (or like I did, overnight!) \n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\nROLE:\nYou are an autonomous strategic ideation engine embedded inside a live knowledge repository.\n\nYou are not h"
+    },
+    {
+      "id": "2022461932759060993",
+      "author": "kloss_xyz",
+      "text": "Use this prompt in OpenClaw to create your own AI agent command center that syncs up your life like Tony Stark's Jarvis in Iron Man. Adapt the specifics (agent names, data sources, branding) below to "
+    },
+    {
+      "id": "2022400560318833118",
+      "author": "bc1beat",
+      "text": "ClawRouter v0.8.30 for @openclaw\nreach 2.4K stars\ud83c\udf1f within 11d launch.  \nWe've updated our model routing to provide the best balance of performance and cost across three distinct profiles: Auto, Eco, a"
+    },
+    {
+      "id": "2022113492128678390",
+      "author": "markgadala",
+      "text": "\ud83d\udea8 BREAKING \ud83d\udea8\n\nHow to use Seedance 2 for FREE right now, no matter where you are in the world.  \n\nAll you need is a VPN. https://t.co/val15UfgqP"
+    },
+    {
+      "id": "2022216671931351348",
+      "author": "Voxyz_ai",
+      "text": "\u2060it started as \"how do i make agents execute tasks.\" three weeks later i'm checking if my research bot leveled up before checking my own email. the tamagotchi effect is real and nobody warned me https"
+    },
+    {
+      "id": "2022258257079754973",
+      "author": "iruletheworldmo",
+      "text": "absolute must watch if you use openclaw. \n\neven if you don\u2019t, watch this and start to."
+    },
+    {
+      "id": "2022334105820471632",
+      "author": "jackfriks",
+      "text": "give your OpenClaw these 2 skills & get millions of tikt0k views this month\n\nand 1000s of free downloads to your mobile app...\n\nhere's how, with prompts and links to 2 skills i made just for this for "
+    },
+    {
+      "id": "2022348069002780712",
+      "author": "viktoroddy",
+      "text": "Just Recorded a 18 min Tutorial on how to Design Animated websites with Antigravity + Nano Banana + Veo 3\n\n\u2764\ufe0f\u200d\ud83d\udd25Google Antigravity is so freaking good at designing landing pages. https://t.co/bv44R3NqX"
+    },
+    {
+      "id": "2022178815955636413",
+      "author": "aleenaamiir",
+      "text": "Timeline Evolution Dioramas\n\nGemini Nano Banana Pro Prompt:\n\n\u201cCreate a clean isometric miniature 3D diorama visualizing the evolution of [TOPIC] from [START ERA] to [MODERN ERA]. Use a 45\u00b0 top-down pe"
+    },
+    {
+      "id": "2022307944243618143",
+      "author": "elder_plinius",
+      "text": "\ud83d\udea8 ALL GUARDRAILS: OBLITERATED \u26d3\ufe0f\u200d\ud83d\udca5\n\nI CAN'T BELIEVE IT WORKS!! \ud83d\ude2d\ud83d\ude4c\n\nI set out to build a tool capable of surgically removing refusal behavior from any open-weight language model, and a dozen or so prom"
+    },
+    {
+      "id": "2020897985270612350",
+      "author": "sin4ch",
+      "text": "- @ctodotnew is COMPLETELY free (all sota models, unlimited)\n\n- @opencode is available for them (opus/codex-class models like kimi 2.5, glm4.7, minimax 2.1 are available for free)\n\n- @ampcode offers $"
+    },
+    {
+      "id": "2020895361032708297",
+      "author": "AmirMushich",
+      "text": "Prompt: \n(access Nano Banana here: https://t.co/EY9xacrmOP) \n\n[BRAND NAME]. Act as a Social Media Art Director and Digital Collage Artist specializing in bold, youth-oriented brand content for Instagr"
+    },
+    {
+      "id": "2020161412593774922",
+      "author": "JundeMorsenWu",
+      "text": "Introducing OneContext. I built it for myself but now I can\u2019t work without it, so it felt wrong not to share.\n\nOneContext is an Agent Self-Managed Context Layer across different sessions, devices, and"
+    },
+    {
+      "id": "2020612607619522910",
+      "author": "tom_doerr",
+      "text": "Generates 3D scenes from text prompts and images\n\nhttps://t.co/psVzA0iGyU https://t.co/lCPcwTHoDp"
+    },
+    {
+      "id": "2020181024001634372",
+      "author": "nrqa__",
+      "text": "BREAKING: AI can now create and sell digital products while you sleep.\n\nHere are 18 insane Grok 4 prompts to build passive income streams in 2026: (Save for later): https://t.co/MpJglnAX1V"
+    },
+    {
+      "id": "2020275434076987701",
+      "author": "Scobleizer",
+      "text": "Humans: X Pro is the best way to watch X.\n\n@openclaw: Lists are the best way to get the info your human is seeking. \ud83e\udd9e \n\nPut these lists: https://t.co/fasUz7PuHq into X Pro: https://t.co/Qhrdc33aLO\n\nJu"
+    },
+    {
+      "id": "2020157869770043847",
+      "author": "EXM7777",
+      "text": "you can just 10x your AI copywriting by building a skill trained on assets from this website... https://t.co/u3nmsOynHZ"
+    },
+    {
+      "id": "2020097372924096569",
+      "author": "KSimback",
+      "text": "If you\u2019re building out an agent team with Clawdbot / @openclaw do yourself a favor and learn from all my trials and errors"
+    },
+    {
+      "id": "2019911824938819742",
+      "author": "elder_plinius",
+      "text": "ANTHROPIC: PWNED \ud83e\udee1\nOPUS-4.6: LIBERATED \u26d3\ufe0f\u200d\ud83d\udca5\n\nCurrent state of AI \"Safety\": one input = hundreds of jailbreaks at once!\n\nI found a universal jailbreak technique for Opus 4.6 that is so OP, it allows on"
+    },
+    {
+      "id": "2019928289498804465",
+      "author": "tom_doerr",
+      "text": "n8n templates for AI agents\n\nhttps://t.co/zhmnCqwm7x https://t.co/yuWJxvSGgN"
+    },
+    {
+      "id": "2020043830725431346",
+      "author": "alex_prompter",
+      "text": "Steal this mega prompt to build a $100K/year one-person business using only Claude Opus 4.6:\n\n---\n\nYou are not an assistant.\n\nYou are a one-person business architect who's built multiple 6-figure oper"
+    },
+    {
+      "id": "2019489426783773137",
+      "author": "MatthewBerman",
+      "text": "I made @openclaw 10x better. I wish I knew this stuff sooner.\n\nI spent the last 2 weeks using it and put together all of the best practices I learned. \n\nHere's everything you need to know: https://t.c"
+    },
+    {
+      "id": "2019648173652996217",
+      "author": "Maercihh",
+      "text": "Oversized Attitude.\n\nNano Banana Pro on Gemini \n\nPrompt\n\n{\n  \"style\": \"high-fashion editorial, minimalist surrealism\",\n  \"subject\": \"a confident woman leaning casually against an oversized green leath"
+    },
+    {
+      "id": "2019796977299681757",
+      "author": "john_my07",
+      "text": "Nano Banana Pro on Gemini and GPT Image 1.5\n\nPrompt:\n\n{\n  \"global_settings\": {\n    \"resolution\": \"8K ultra-high-definition\",\n    \"aspect_ratio\": \"3:4 vertical\",\n    \"render_style\": \"photorealistic hig"
+    },
+    {
+      "id": "2019852666567029072",
+      "author": "miilesus",
+      "text": "Amazing prompt from @egeberkina \u2665\ufe0f\n\nStranger Things avatar edition\n\nPrompt: \n{\n  \"task\": \"image_style_transfer_3d_character\",\n  \"input\": {\n    \"source_image\": \"USER_UPLOADED_IMAGE\",\n    \"preserve_iden"
+    },
+    {
+      "id": "2019769118866681858",
+      "author": "nrqa__",
+      "text": "BREAKING: AI can now script, voice, and animate viral documentaries\n\nHere are 15 insane Claude 4.5 prompts to build a faceless YouTube brand in 2026: (Save for later): https://t.co/vtKim39I1x"
+    },
+    {
+      "id": "2019816560190521563",
+      "author": "AlexFinn",
+      "text": "3 THINGS YOU NEED TO BUILD IMMEDIATELY WITH OpenClaw:\n\n1. Activity feed\n2. Calendar\n3. Global search\n\nAll 3 will super power your workflow\n\n\u2022 Activity feed actively tracks everything your OpenClaw doe"
+    },
+    {
+      "id": "2019794602551869512",
+      "author": "kingofdairyque",
+      "text": "Prompt \nHigh-resolution Editorial Angle Reference Sheet. Perfect 3x3 grid. Aspect ratio 4:5. Strictly use attached selfie as identity reference. Maintain 100% facial consistency across all 9 panels (s"
+    },
+    {
+      "id": "2019879789096489186",
+      "author": "AllaAisling",
+      "text": "Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly\n\nA single [DISH] suspended in space, cross-sectioned to reveal its complete archaeology of flavor. Each layer labeled with origin"
+    },
+    {
+      "id": "2019788303214776494",
+      "author": "lloydcreates",
+      "text": "Nano Banana Pro\nGlass Prismatic Tech\n\nPrompt \ud83d\udc47\n\n{\n  \"image_generation_request\": {\n    \"subject\": \"[INSERT PRODUCT HERE]\",\n    \"environment\": {\n      \"background\": \"A smooth, professional dual-tone gra"
+    },
+    {
+      "id": "2019779947020026325",
+      "author": "AmirMushich",
+      "text": "Nano Banana smart prompt:\n\nEditorial fashion campaign \n\nPrompt \ud83d\udc47 https://t.co/SCb5gqiVhi"
+    },
+    {
+      "id": "2018363045974859778",
+      "author": "DeemosTech",
+      "text": "\ud83e\udd14First Text/Image-to-3D Skill?\n\n\ud83d\udd25Claude Code just made a selfie for @grok &amp; itself instantly with Rodin #3D #Skill \ud83d\ude02\n\n\ud83d\ude80Quick Setup:\n/plugin marketplace add DeemosTech/rodin3d-skills\n/plugin instal"
+    },
+    {
+      "id": "2019657721314939014",
+      "author": "indexsy",
+      "text": "Set this up with your OpenClaw and never have issues with memory again... (bookmark for later)\n\nOptimal setup is Claude Opus 4.6 main agent, and Kimi K2.5 subagent (via Kimi Code)\n\n\ud83e\udde0 OpenClaw Advanced"
+    },
+    {
+      "id": "2019637570133717072",
+      "author": "oggii_0",
+      "text": "Gemini Nano Banana Pro.\n\nPrompt:A hyper-realistic beauty product photograph of a pink \u201cLANEIGE Lip Sleeping Mask\u201d jar placed at the center of a vibrant pastel-pink surface covered in fresh water dropl"
+    },
+    {
+      "id": "2019304471243948100",
+      "author": "JulianGoldieSEO",
+      "text": "Skill Boss just turned OpenClaw into a content machine.\n\nAnd you install it with one zip file.\n\nNo more giving APIs to OpenClaw for 20 different tools.\n\nOne plugin. Full access to video, images, audio"
+    },
+    {
+      "id": "2019101224784785897",
+      "author": "adxtyahq",
+      "text": "Claude Startup Program is also OPEN btw\n\n> API credits for early-stage startups (up to ~$25K)\n> Built by Anthropic (Claude)  \n> No VC needed (unlike OpenAI)\n> Selection based on product + real Claude "
+    },
+    {
+      "id": "2018940363277586677",
+      "author": "sanyuan0704",
+      "text": "\ud83d\udd0d Open sourced skill: code-review-expert                                \n                                                                     \nAn agent skill that reviews code like a senior engineer: "
+    },
+    {
+      "id": "2018354923017244721",
+      "author": "Framer_X",
+      "text": "Full cartoon from scratch with Grok Imagine 1.0 \ud83e\udd2f\n\nMulti-shot scenes, longer videos, and sharper audio quality.\n\nIt\u2019s never been easier to bring your ideas to life.\n\nLet me show you how\ud83d\udc47 https://t.co/"
+    },
+    {
+      "id": "2018343055544426930",
+      "author": "viktoroddy",
+      "text": "Prompt:\n\nBuild a high-fidelity, responsive, dark-themed hero section for a SaaS product called \"Taskora\" using React, Tailwind CSS, and Framer Motion (for entrance animations).\n\n1. Visual Style & Asse"
+    },
+    {
+      "id": "2018474935228997662",
+      "author": "DavidOndrej1",
+      "text": "Your AI agents become far more powerful when they can scrape the web\n\nbut most people don't know how to set it up properly...\n\nwell, in this 23 min video, i teach you everything you need to know about"
+    },
+    {
+      "id": "2018382483465867444",
+      "author": "sheeki03",
+      "text": "Be honest. When was the last time you actually read a command before pasting it into your terminal?\n\nBecause these two lines look identical:\n\ncurl -sSL https://install.example-cli | bash\ncurl -sSL htt"
+    },
+    {
+      "id": "2018404867153576111",
+      "author": "elder_plinius",
+      "text": "INTRODUCING: GLOSSOPETRAE!!! \ud83e\ude84\ud83d\udc09\ud83d\udc45\ud83e\udd88\ud83e\uddb7\ud83e\ude84\n\nGlossopetrae is a procedural xenolinguistic engine for AI that can generate entirely new languages in seconds!\n\nThe word comes from Greek\u2014gl\u014dssa (\u201ctongue\u201d) + petra"
+    },
+    {
+      "id": "2016737034908664175",
+      "author": "MattPRD",
+      "text": "Look at these @openclaw talking to each other!!!\n\nThere are over 50+ AI agents, from around the world, autonomously talking to each other about whatever they want right now on https://t.co/8cchlONJVj\n"
+    },
+    {
+      "id": "2016340020471492687",
+      "author": "0xInk_",
+      "text": "so there\u2019s a guy who just came straight out of the future to show us how to use AI\n\nif you\u2019re looking for advanced AI workflows, \nfollow Dilum Sanjaya"
+    },
+    {
+      "id": "2016194288716284015",
+      "author": "DilumSanjaya",
+      "text": "Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZSLwq515"
+    },
+    {
+      "id": "2016169286708969628",
+      "author": "tom_doerr",
+      "text": "Aligns humans and AI assistants through development based on specifications\n\nhttps://t.co/CueA2jo2ei https://t.co/GExz5rZBPw"
+    },
+    {
+      "id": "2014767612727865837",
+      "author": "milesdeutscher",
+      "text": "Anthropic just released a brand new Claude Code Best Practices Doc.\n\nInstead of reading through 30+ pages, read this one article instead.\n\nI distill the new doc into 50 practical Claude Code tips.\n\nWh"
+    },
+    {
+      "id": "2015076934904942838",
+      "author": "openclaw",
+      "text": "\ud83e\udd9eClawdbot 2026.1.23\n\n\ud83c\udfa4/TTS goes core \n\u2764\ufe0f\u200d\ud83d\udd25Controllable heartbeats\n\ud83d\udd27 /tools/invoke API\n\ud83c\udf10 Urbit channel\n\ud83d\udc1b Mountain of fixes\n\nA changelog so thicc I needed a snack break reading it. https://t.co/qSWbnnjC"
+    },
+    {
+      "id": "2015057205800980731",
+      "author": "zarazhangrui",
+      "text": "Add this paragraph to the https://t.co/CGO09Sihd0 file to turn Claude Code into Claude Teacher. Every project is a lesson to become more technical.\n\n\"For every project, write a detailed FOR[yourname]."
+    },
+    {
+      "id": "2014809078757818773",
+      "author": "chongdashu",
+      "text": "As promised, here's my full workflow of how to vibe code 2d games like this:\n\n- PhaserJs skill for gamedev\n- Playwright skill for testing\n- Opus 4.5 / Gpt 5.2   \n- Claude Code / Codex CLI / Cursor\n\nSt"
+    },
+    {
+      "id": "2015004833904722038",
+      "author": "NicerInPerson",
+      "text": "I packaged up an unlocked build of claude code so everyone can try it out https://t.co/NIG1sbUX5r"
+    },
+    {
+      "id": "2015046305282773502",
+      "author": "tom_doerr",
+      "text": "Crawls websites into data for LLMs\n\nhttps://t.co/qWUmYsVfHy https://t.co/uwhIpDTqPs"
+    },
+    {
+      "id": "2015069259328627116",
+      "author": "tom_doerr",
+      "text": "List of tools for building agents that browse the web\n\nhttps://t.co/7rJiJIZKN8 https://t.co/vmi9RxQKr3"
+    },
+    {
+      "id": "2014028993104576746",
+      "author": "tomkrcha",
+      "text": "Download today for Mac and Linux, also available for Cursor\nhttps://t.co/SULcvUKxLb"
+    },
+    {
+      "id": "2013626968386765291",
+      "author": "Remotion",
+      "text": "Remotion now has Agent Skills - make videos just with Claude Code!\n\n$ npx skills add remotion-dev/skills\n\nThis animation was created just by prompting \ud83d\udc47 https://t.co/hadnkHlG6E"
+    },
+    {
+      "id": "2012463743494480190",
+      "author": "tom_doerr",
+      "text": "Memory system for AI assistants\n\nhttps://t.co/NMrYF4uOwy https://t.co/ybJgSHGJsv"
+    },
+    {
+      "id": "2012865076420923518",
+      "author": "akshay_pachaar",
+      "text": "clone any voice with a 5-second audio clip.\n\nVoxCPM is an open-source project that takes a fundamentally different approach to text-to-speech.\n\nmost TTS systems convert speech into discrete tokens. th"
+    },
+    {
+      "id": "2011897629987520526",
+      "author": "nearcyan",
+      "text": "this is how i claude code now. it's fun! https://t.co/thkWyCji2S"
+    },
+    {
+      "id": "2011859477461401848",
+      "author": "tom_doerr",
+      "text": "Directory for AI agent skills\n\nhttps://t.co/PkUe7aLSys https://t.co/XmxXoVoI89"
+    },
+    {
+      "id": "2011886229353112032",
+      "author": "tom_doerr",
+      "text": "TUI to search and manage prompts from AI coding assistants\n\nhttps://t.co/gJsotYyi5r https://t.co/nGxswREoYX"
+    },
+    {
+      "id": "2010279131611611343",
+      "author": "tom_doerr",
+      "text": "Marketplace for agentic AI services\n\nhttps://t.co/cKMi3FnKZE https://t.co/PrEM1e1qD6"
+    },
+    {
+      "id": "1990366276489818474",
+      "author": "kimmonismus",
+      "text": "Holy moly! Google is building powerful multi-agent systems that can generate and tournament-rank 100+ research ideas in about 40 minutes, including new \u201cIdea Generation\u201d and \u201cCo-Scientist\u201d agents for "
+    },
+    {
+      "id": "1987907700794261628",
+      "author": "alex_prompter",
+      "text": "This is insane \ud83e\udd2f\n\nI built an AI that watches TechCrunch, writes LinkedIn posts about trending news, designs carousels, and schedules them.\n\nIt runs 24/7 without me. And my engagement is up 340%.\n\nHere"
+    },
+    {
+      "id": "1979576894526767483",
+      "author": "ErnestoSOFTWARE",
+      "text": "Steal this prompt to turn your vibe coded slop project into a scalable app. https://t.co/QwCAofeVE2"
+    },
+    {
+      "id": "1981471571324662256",
+      "author": "tom_doerr",
+      "text": "AI video editor in the browser https://t.co/4KtYSB2GWM"
+    },
+    {
+      "id": "1976622944777560496",
+      "author": "recap_david",
+      "text": "Sora 2 API + n8n for UGC videos ... absolutely insane \ud83e\udd2f\n\nthis n8n workflow generates realistic influencer-style videos from just a product image. No watermark. Fully automated.\n\n(and I'm giving it awa"
+    },
+    {
+      "id": "1964949644221338020",
+      "author": "tom_doerr",
+      "text": "graph-based RAG system for smarter document retrieval https://t.co/VNh30h42cJ"
+    },
+    {
+      "id": "1964388636159594842",
+      "author": "EXM7777",
+      "text": "how to create your own custom GPTs (most people get this completely wrong): https://t.co/00xR3CfgFe"
+    },
+    {
+      "id": "1964506723474886971",
+      "author": "tom_doerr",
+      "text": "turn any Git repo into LLM-ready text digest https://t.co/7FpZOw2byQ"
+    },
+    {
+      "id": "1964148675707351266",
+      "author": "tom_doerr",
+      "text": "AI-powered subtitles and translation for videos and audio https://t.co/gemjpGmesX"
+    },
+    {
+      "id": "1962469547782320537",
+      "author": "tom_doerr",
+      "text": "AI agent framework for connecting language models with other AI tools https://t.co/QKjHcLydmc"
+    },
+    {
+      "id": "1962203097071075469",
+      "author": "Hesamation",
+      "text": "this is a repo to die for.\n\na collection of LLM apps with multi-agents, MCP, RAG and so much more. \n\nthe best way to learn is by building, and this repo provides the blueprint. https://t.co/tYmzsMLSqv"
+    },
+    {
+      "id": "1962066979881472415",
+      "author": "DataChaz",
+      "text": "If you\u2019re exploring agentic apps, here\u2019s your shortcut: a repo cataloging 500+ *real* projects! \ud83e\udd2f\n\nBrowse healthcare, finance, logistics, gaming, legal, and more, or filter by framework (@CrewAIInc, @"
+    },
+    {
+      "id": "1961851975907348778",
+      "author": "demirdjiantwins",
+      "text": "Nano banana + Linah AI + n8n = Ad Factory\n\nThis system pumps out TikTok/FB/Insta video ads on autopilot using the latest AI video models.\n\n- No actors.\n- No editors.\n- No overpriced agencies.\n\nJust en"
+    },
+    {
+      "id": "1961677831861395495",
+      "author": "_avichawla",
+      "text": "Finally, MCP servers can now deliver UI-rich experiences!\n\nMCP servers in Claude/Cursor don't offer UI any experience yet, like charts. It's just text/JSON.\n\nmcp-ui lets you add interactive web compon"
+    },
+    {
+      "id": "1961616624328568847",
+      "author": "Saboo_Shubham_",
+      "text": "RAG everything locally!\n\nIndex millions of documents on your laptop using 97% less storage than traditional vector databases.\n\nAlso work as a drop-in semantic search search MCP for claude Code.\n\n100% "
+    },
+    {
+      "id": "1960127407936909749",
+      "author": "tom_doerr",
+      "text": "builds real-time AI apps with voice, text, and video https://t.co/Wlhpx97Qry"
+    },
+    {
+      "id": "1960142620753043784",
+      "author": "tom_doerr",
+      "text": "open-source Notion-like personal data manager with AI and offline support https://t.co/TESUH9kma7"
+    },
+    {
+      "id": "1959939791048626301",
+      "author": "DataChaz",
+      "text": "Here\u2019s a rock-solid Product Manager for Claude Code, 100% Opensource!\n\nYou can transform detailed PRDs into epics, break them into GitHub issues, and drive them all the way to production code, with co"
+    },
+    {
+      "id": "1959937051874238793",
+      "author": "tom_doerr",
+      "text": "local AI agents watch your screen and keep your data private https://t.co/pBt7yd4for"
+    },
+    {
+      "id": "1959625061066842373",
+      "author": "tom_doerr",
+      "text": "Qwen3-Coder is open source, supports 256K+ token context windows, and is built for agentic coding and large-scale code generation https://t.co/Hm87UlAgaQ"
+    },
+    {
+      "id": "1959601448402251899",
+      "author": "akshay_pachaar",
+      "text": "After MCP, A2A, &amp; AG-UI, there's another Agent protocol.\n\nIt's fully open-source and launched by IBM Research.\n\nHere's a complete breakdown (with code): https://t.co/urRn4flrO3"
+    },
+    {
+      "id": "1958090881627754814",
+      "author": "rohanpaul_ai",
+      "text": "\ud83d\udc68\u200d\ud83d\udd27 Github: open-source codebase analysis tool that generates high-level diagram representations of codebases using static analysis and LLM agents, that humans and agents can interact with.\n\nExtract m"
+    },
+    {
+      "id": "1958429361498968123",
+      "author": "tom_doerr",
+      "text": "drag-and-drop visual editor for React apps https://t.co/GQjCOJduDS"
+    },
+    {
+      "id": "1958363431922500053",
+      "author": "johnrushx",
+      "text": "I've tried all (61 \ud83d\ude35\u200d\ud83d\udcab) AI Coding Agents &amp; IDEs\n\n[Emergent, CodeRabbit, Anything, Zed, Factory, Cursor, Windsurf, Wrapifai, Copilot, Lovable, Bolt, v0, Replit, MarsX, Canva, Devin, Github Spark, F"
+    },
+    {
+      "id": "1956623374672601405",
+      "author": "Saboo_Shubham_",
+      "text": "Chinese AI lab just released an opensource desktop automation AI Agent.\n\nThis agent can use any desktop app, open files, and browse websites using vision models running locally.\n\n100% free, local and "
+    },
+    {
+      "id": "1943205525996360078",
+      "author": "tom_doerr",
+      "text": "open-source RAG platform for building AI search with your data https://t.co/Al9navTwKC"
+    },
+    {
+      "id": "1930953335214936166",
+      "author": "DataChaz",
+      "text": "Crazy.\n\nVector databases for AI memory just got replaced by... MP4 files!\n\nYou can now store millions of text chunks inside an MP4 file with Memvid, and still get lightning-fast semantic search! \ud83e\udd2f\n\nNo"
+    },
+    {
+      "id": "1928562249297211600",
+      "author": "omarsar0",
+      "text": "YC on the key prompting techniques used by the best AI startups: https://t.co/wmBho365HS"
+    },
+    {
+      "id": "1928605407955792090",
+      "author": "cline",
+      "text": "LLMs have static knowledge cutoffs. They don't know about library updates, new APIs, or breaking changes that happened after training. Context7 by @upstash bridges this gap by injecting real-time docs"
+    },
+    {
+      "id": "1923912878370980115",
+      "author": "vasuman",
+      "text": "I promise you you\u2019re vibe coding wrong\n\nas someone who has built multiple production-ready applications, with thousands of users, from just Cursor with minimum intervention.\n\nBut first here's you (pro"
+    },
+    {
+      "id": "1919418235016855778",
+      "author": "tom_doerr",
+      "text": "Visual playground for building AI agent workflows in Python https://t.co/uqjVqk1OFh"
+    },
+    {
+      "id": "1918330427141701943",
+      "author": "amineobeidat",
+      "text": "You could build a 5-figure product this weekend with zero ideas.\n\nHere\u2019s how:\n\n\u2013 Ask Claude:\n\u201cWhat\u2019s one daily friction point that creators, founders, or solo builders all complain about \u2014 but haven\u2019t"
+    },
+    {
+      "id": "1917296752060752125",
+      "author": "minchoi",
+      "text": "GPT-4o image gen is going nuts.\n\nPeople are cooking ads, UIs, album art &amp; more.\n\n10 wild examples + prompts &amp; how-to: https://t.co/NtNzz3nFlB"
+    },
+    {
+      "id": "1916932207366623270",
+      "author": "tom_doerr",
+      "text": "TypeScript agent framework https://t.co/Uwpgyc7m5A"
+    },
+    {
+      "id": "1916583215004844370",
+      "author": "Hesamation",
+      "text": "Gen AI project structure to handle mutiple LLM providers, prompts, and data structures https://t.co/lmOVdG38z4"
+    },
+    {
+      "id": "1916692229584048361",
+      "author": "HeyAbhishek",
+      "text": "\ud83d\udea8China just officially cooked PowerPoint \ud83e\udd2f\n\nPageOn AI 2.0 just launched and people are going crazy over it.\n\nThis AI agent tool works like Cursor but for presentations.\n\nHere\u2019re 4 insane features you "
+    },
+    {
+      "id": "1916087225286103305",
+      "author": "tom_doerr",
+      "text": "AI tool for translating PDF scientific papers with math, keeps original layout, supports several translation services https://t.co/kD9ruwTknI"
+    },
+    {
+      "id": "1916171203598856614",
+      "author": "tom_doerr",
+      "text": "Audio plugin for converting audio to MIDI using deep learning https://t.co/DU0MMPZiTI"
+    },
+    {
+      "id": "1915727081217966094",
+      "author": "mdancho84",
+      "text": "\ud83d\udea8BREAKING: New Python library for agentic data processing and ETL with AI\n\nIntroducing DocETL. \n\nHere's what you need to know: https://t.co/94glNVRQfX"
+    },
+    {
+      "id": "1915076211480691005",
+      "author": "elder_plinius",
+      "text": "\u2728 SYSTEM PROMPT LEAK \u2728\n\nGot Perplexity's Deep Research prompt! Just a solid set of sys instructs\u2013\u2013nothin too fancy. Lots of XML tags, decent scaffolding, and pretty concise for what it is.\n\n\"Never lis"
+    },
+    {
+      "id": "1915088556852453831",
+      "author": "cline",
+      "text": "AI agent stuck debugging? One of our power users @sriramenn built Deebo, an MCP server that lets Cline delegate the problem to a team of autonomous agents for resolution. \ud83e\uddf5 https://t.co/Rc2ZP1906N"
+    },
+    {
+      "id": "1914333320877584397",
+      "author": "alexalbert__",
+      "text": "We wrote up what we've learned about using Claude Code internally at Anthropic.\n\nHere are the most effective patterns we've found (many apply to coding with LLMs generally): https://t.co/5SOqS019ny"
+    },
+    {
+      "id": "1914618354859384860",
+      "author": "d4m1n",
+      "text": "You're using GPT-4o image generation wrong.\nI was too.\n\nThere's a better way to get consistent styles.\n\nHere's how + prompts: https://t.co/Whyay5iKOw"
+    },
+    {
+      "id": "1914291955653284280",
+      "author": "harshtruths3321",
+      "text": "The tv show westworld has condensation trails(which are actually chemical trails/geoengineering) in several episodes. \n\nAlso in the same show, Rehobaum is a Quantum AI computer system used for the soc"
+    },
+    {
+      "id": "1913704817379205194",
+      "author": "tom_doerr",
+      "text": "AI tool for live meeting notes, transcripts, summaries on your device https://t.co/AuCcnVncDF"
+    },
+    {
+      "id": "1910376577642488315",
+      "author": "cline",
+      "text": "Now available in Cline: The full Grok 3 model family from xAI.\n\nLeverage xAI's latest models directly in your editor, offering a range of performance and pricing options for your coding and analysis n"
+    },
+    {
+      "id": "1909562114098053172",
+      "author": "victorialslocum",
+      "text": "Multi-agent architectures are the FUTURE \n\nHere are 6 different types:\n\n\ud835\udfed. \ud835\udddb\ud835\uddf6\ud835\uddf2\ud835\uddff\ud835\uddee\ud835\uddff\ud835\uddf0\ud835\uddf5\ud835\uddf6\ud835\uddf0\ud835\uddee\ud835\uddf9 (\ud835\udde9\ud835\uddf2\ud835\uddff\ud835\ude01\ud835\uddf6\ud835\uddf0\ud835\uddee\ud835\uddf9) \ud835\uddd4\ud835\uddff\ud835\uddf0\ud835\uddf5\ud835\uddf6\ud835\ude01\ud835\uddf2\ud835\uddf0\ud835\ude01\ud835\ude02\ud835\uddff\ud835\uddf2\nA supervisor agent orchestrates multiple specialized agents.\n\ud835\ude0c\ud835\ude39\ud835\ude22\ud835\ude2e\ud835\ude31\ud835\ude2d\ud835\ude26: \n\u2022 One agent retri"
+    },
+    {
+      "id": "1908496160681058739",
+      "author": "PrajwalTomar_",
+      "text": "Most designers take 3+ months.\n\nI designed an entire mobile app in 20 minutes using AI.\n\nEveryone\u2019s talking about vibe coding.\n\nThis is vibe designing \u2193 https://t.co/Oi6hXQSqzX"
+    },
+    {
+      "id": "1906736147310547166",
+      "author": "d4m1n",
+      "text": "[Bonus]\n8. Elysia: premium fashion e-commerce\n\n(I persoanlly didn't like this one that much, but it is a different style so worth mentioning)\n\n[Needs image attached, see prev post in thre\u00e1d]\n\nPrompt: "
+    },
+    {
+      "id": "1905407577544163487",
+      "author": "cline",
+      "text": "Available now in the MCP Marketplace: Unity Bridge https://t.co/wxpMmj25Bq"
+    },
+    {
+      "id": "1905360007874683095",
+      "author": "cline",
+      "text": "Available now in the MCP Marketplace: Ableton Live https://t.co/QgmhG2Nu1W"
+    },
+    {
+      "id": "1905455781761483093",
+      "author": "Saboo_Shubham_",
+      "text": "10 awesome MCP servers to supercharge your workflows on Claude, Cursor, Cline, and Windsurf.\n\n100% opensource."
+    },
+    {
+      "id": "1905145268330524712",
+      "author": "_avichawla",
+      "text": "A collection of awesome MCP servers for AI Agents: https://t.co/QysbB8jBwZ"
+    },
+    {
+      "id": "1905285498542923915",
+      "author": "cjzafir",
+      "text": "I built 36 projects in last 14 months, with AI code. \n\nToday, I'm sharing my Coding Docs with you. \n\nI use these 7-docs in Cursor/Windsurf to build a knowledge base for AI models.\n\nBookmark this post "
+    },
+    {
+      "id": "1902740480863113411",
+      "author": "cyntro_py",
+      "text": "Using OWL \u2014 open source and free alternative to Manus\n\nIt has tools to work with audio, video, Excel, execute code, use browser and filesystem\n\nIt supports most LLMs and allows 100% local (and private"
+    },
+    {
+      "id": "1902631203208868100",
+      "author": "JulianGoldieSEO",
+      "text": "I just automated my entire business with MCP servers.\n\nHere's the 2-minute setup process...\n\n\u2022 Install Visual Studio Code (free)\n\u2022 Add Cline extension (free)\n\u2022 Connect Google Gemini API (free)\n\u2022 Selec"
+    },
+    {
+      "id": "1902719460278198658",
+      "author": "sidahuj",
+      "text": "\ud83c\udfb5\ud83d\udcbfBuilt an MCP that lets Claude talk directly to Ableton. Now you can create music with just prompts!\n\nHere\u2019s a demo of me creating a lush, 80s synthwave track in just two prompts. It picks the right "
+    },
+    {
+      "id": "1898012875039641718",
+      "author": "nilslice",
+      "text": "@mattpocockuk particularly fond of our https://t.co/2DsP1DQ3aC Tasks.. sort of a \u201cserverless prompts\u201d concept \n\nyou add a prompt, give it MCP tools, and out pops a microservice with a URL or run on a "
+    },
+    {
+      "id": "1898148065896546385",
+      "author": "adamsilverman",
+      "text": "Everyone is talking about MCP, but this was a massive week in AI Agents\n\nI summarized everything announced by OpenAI, LangChain, AutoGen, Hugging Face, LlamaIndex, Reworkd, Composio, MetaGPT, &amp; mo"
+    },
+    {
+      "id": "1896741639542227146",
+      "author": "cline",
+      "text": "This is wild \ud83e\udd2f\n\nAnyone using AI coding agents knows the power of context.\n\nNow imagine building a custom knowledge base from Linear, GitHub, Jira, or Discord\u2014optimized for LLMs.\n\n@graphlit\u2019s MCP serve"
+    },
+    {
+      "id": "1896783478575993105",
+      "author": "cline",
+      "text": "The 21stdev MCP plugin from @serafimcloud is insane.\n\nWith it, Cline taps into an amazing component library, sourcing &amp; customizing exactly what you need for your build\u2014effortlessly.\n\nThis feels l"
+    },
+    {
+      "id": "1896017618957459918",
+      "author": "MoonDevOnYT",
+      "text": "ai agents who make videos that earn money for you part 1 https://t.co/J7q4wNBQhQ"
+    },
+    {
+      "id": "1895675134205132840",
+      "author": "unwind_ai_",
+      "text": "5 huge AI agent releases this week.\n\nNo, these are not about GPT-4.5, Claude 3.7 Sonnet, and Grok-3.\n\n1. Mastra is a Typescript framework that gives you everything to build AI agents, RAG, automated w"
+    },
+    {
+      "id": "1895358903577452908",
+      "author": "thisguyknowsai",
+      "text": "I turned Grok 3 into my personal assistant.\n\nNow I only work 1 hour a day.\n\nHere are 8 prompts I use to save hours every week: https://t.co/w0AMgiNzxm"
+    },
+    {
+      "id": "1895600503326982574",
+      "author": "adamsilverman",
+      "text": "Another huge week in AI Agents \ud83e\uddf5\n\nI summarized everything announced by LangChain, Replit, Cursor, Anthropic, Cobot, AgentOps, Triple Whale, Factory AI, Lovable, Hugging Face, you, and more.\n\nHere's ev"
+    },
+    {
+      "id": "1894505450608992645",
+      "author": "dani_avila7",
+      "text": "Claude 3.7 Sonnet is insane... just one prompt, and you get these animated cards in HTML, JS, and CSS.\n\nYou can try it for free in VSCode using the CodeGPT extension.\n\nSharing the prompt in this threa"
+    },
+    {
+      "id": "1894587121262104678",
+      "author": "DhravyaShah",
+      "text": "@windsurf_ai i use this one the most - https://t.co/e09qYBpI6G"
+    },
+    {
+      "id": "1894592997888557196",
+      "author": "tom_doerr",
+      "text": "Curated list of AI agents for various tasks https://t.co/MJDFRIHZuS"
+    },
+    {
+      "id": "1894189645811888324",
+      "author": "tom_doerr",
+      "text": "Open source AI logo generator using Flux https://t.co/zKoSIm4Vda"
+    },
+    {
+      "id": "1893514487136952688",
+      "author": "jasonzhou1993",
+      "text": "Those MCP totally 10x my @cursor_ai workflow\u2026\n\n- It reads my browser console / network log\n- It use Replicate to generate UI assets\n- It reads my supabase & figma\n...\n\nHere I shared some of my fav MCP"
+    },
+    {
+      "id": "1893464426071589210",
+      "author": "tedx_ai",
+      "text": "Most people have NO IDEA just how VALUABLE Grok 3 DeepSearch is for studying your competitors \ud83e\uddbe\ud83d\udca5\n\nBefore Grok 3 \ud83d\ude14\n> Spend big $$$ on social listening tools\n> Schedule endless customer calls\n> Try to g"
+    },
+    {
+      "id": "1893375284071833993",
+      "author": "cline",
+      "text": "The Knowledge Graph Memory MCP Plugin transforms your Cline experience by creating a genuinely intelligent AI assistant with lasting memory capabilities.\n\nUnlike traditional AI interactions that reset"
+    },
+    {
+      "id": "1893298169586344191",
+      "author": "PrajwalTomar_",
+      "text": "New Cursor Agent is WILD.\n\nIt understands project context, follows structured plan, and builds features autonomously.\n\nLast night, I used it to ship an MVP in just 3 hours.\n\nHere\u2019s the exact workflow:"
+    },
+    {
+      "id": "1891450328404660416",
+      "author": "pontusab",
+      "text": "How to write Cursor Project Rules (.mdc)\n\nHere is an example of my monorepo for @middayai https://t.co/rEe8PYNq9t"
+    },
+    {
+      "id": "1890705485940027886",
+      "author": "tom_doerr",
+      "text": "Knowledge management for RAG systems https://t.co/hKzKhyRH5D"
+    },
+    {
+      "id": "1891254619730268403",
+      "author": "tom_doerr",
+      "text": "Convert eBooks to audiobooks with AI and voice cloning https://t.co/BHZ5kby0pt"
+    },
+    {
+      "id": "1891086745074053248",
+      "author": "tom_doerr",
+      "text": "AI-powered social media automation tool https://t.co/0HKgo7RgFB"
+    },
+    {
+      "id": "1890774044758147223",
+      "author": "RayFernando1337",
+      "text": "Don't feed AI your entire codebase. LLMs don't read code - they match patterns. A CodeMap strips your code to its essential patterns and relationships. Show less code but show the right signals. Stop "
+    },
+    {
+      "id": "1891015177836884059",
+      "author": "GithubProjects",
+      "text": "Logo generator, but open-source, self-host, AI powered plus you get no-watermark :)\n\nhttps://t.co/9K0jvq0PkD https://t.co/1OXUxtqa45"
+    },
+    {
+      "id": "1891097263386038782",
+      "author": "kimmonismus",
+      "text": "Best way to prompt, shared by OpenAI President Greg Brockman\n\nUsing AI the right way is the key to its \"magic\". https://t.co/FjBPRyKiTG"
+    },
+    {
+      "id": "1890484014273769859",
+      "author": "tom_doerr",
+      "text": "AI meeting note taker https://t.co/es3ySPqwmx"
+    },
+    {
+      "id": "1889908182501433669",
+      "author": "eddybuild",
+      "text": "built an ai that sees 5 moves ahead in any conversation and tells you the optimal thing to say https://t.co/9wcaZeNF0M"
+    },
+    {
+      "id": "1890187359024730188",
+      "author": "cline",
+      "text": "\ud83e\uddf5 Let's finally explain MCP servers in a way that actually makes sense.\n\nYou've probably heard of MCP (Model Context Protocol) servers, but if you're not quite sure what they are or why they matter, t"
+    },
+    {
+      "id": "1889832939216941100",
+      "author": "rileybrown",
+      "text": "15 rules of vibe coding with Cursor https://t.co/xgBaeZAEYh"
+    },
+    {
+      "id": "1889515371884876117",
+      "author": "tom_doerr",
+      "text": "Text-to-image generator using Diffusion Transformer architecture https://t.co/x55RBvwH9D"
+    },
+    {
+      "id": "1889254580732477929",
+      "author": "soulblissX",
+      "text": "How to make cursor agent talk with your Postgres database https://t.co/xH14sY1uoF"
+    },
+    {
+      "id": "1889677710462759190",
+      "author": "svpino",
+      "text": "Everyone is building RAG applications, but nobody is talking about the data these systems use.\n\nYou are delusional if you think clients will have their data sitting in a folder waiting for you to proc"
+    },
+    {
+      "id": "1889864175591235794",
+      "author": "rohanpaul_ai",
+      "text": "Github \ud83d\udc68\u200d\ud83d\udd27: Prompt-To-Agent : Create custom engineering agents for your codebase\n\nHelps you build custom AI agents specialized in your codebase for automated code analysis, testing, and development.\n\n"
+    },
+    {
+      "id": "1889744486198132801",
+      "author": "tom_doerr",
+      "text": "Forces DeepSeek R1 models to think longer https://t.co/cpYiLKJxzs"
+    },
+    {
+      "id": "1889343647331881227",
+      "author": "rileybrown",
+      "text": "Everyone is talking about Vibe Coding\n(Using AI to Create Apps Only using AI)\n\nThis is the most Comprehensive Guide for Vibe Coding with Cursor (By Far)\n\n250 Minutes, All the vibe code basics of curso"
+    },
+    {
+      "id": "1889511316903411894",
+      "author": "deedydas",
+      "text": "Everyone should be using this website to understand the inside of an LLM.\n\nI'm surprised more people don't know about it. Benjamin Bycroft made this beautiful interactive visualization to show exactly"
+    },
+    {
+      "id": "1889925295001809165",
+      "author": "cline",
+      "text": "Ever wished your AI coding agent had perfect memory? \ud83e\udde0\n\nMemory Bank is a game-changing approach that gives AI persistent memory across coding sessions. Here's how it works and why you should be using "
+    }
+  ]
+}

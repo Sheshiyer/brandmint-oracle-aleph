@@ -1,0 +1,2022 @@
+{
+  "schema_version": "1.0",
+  "project": {
+    "name": "Brandmint Front UI Replacement Plan",
+    "repo_root": "/Volumes/madara/2026/brandmint",
+    "generated_on": "2026-02-24",
+    "generated_by": "task-master-planner + using-superpowers + dispatching-parallel-agents",
+    "assumptions": [
+      "Fixed UI port remains 4188 with clear-and-retry policy.",
+      "Brandmint CLI (`bm launch`) remains execution backend.",
+      "Initial user entry point must be Product MD upload and wizard flow."
+    ],
+    "risks": [
+      "Over-optimizing orchestration dashboard may delay user-friendly front flow.",
+      "Prompt scaffolding quality impacts extraction and wizard confidence.",
+      "Lack of real sample Product MD files may cause validation blind spots."
+    ],
+    "totals": {
+      "tasks": 112,
+      "phases": 7,
+      "sprints": 14,
+      "lane_mix": {
+        "ux": 20,
+        "prompt": 15,
+        "frontend": 44,
+        "qa": 11,
+        "platform": 4,
+        "docs": 4,
+        "integration": 13,
+        "security": 1
+      }
+    },
+    "dispatch_strategy": "Run sprint tasks in parallel by dispatch_lane where dependencies permit.",
+    "as_of_user_time": "Tuesday, February 24, 2026 at 08:27 AM GMT+5:30",
+    "planning_intent": "Docs and prompt scaffolding first, then Product-MD-first front flow, then premium visual polish and orchestration.",
+    "inspiration_inputs": {
+      "twitter_refs": 44,
+      "top_tags": [
+        "nano-banana",
+        "color-palette",
+        "brand-design",
+        "typography",
+        "gemini",
+        "logo"
+      ],
+      "style_direction": [
+        "editorial grid",
+        "quiet luxury",
+        "glassmorphism",
+        "clean hierarchy",
+        "story-driven onboarding"
+      ]
+    }
+  },
+  "phases": [
+    {
+      "phase_id": "P0",
+      "name": "Documentation & Narrative Foundation",
+      "objective": "Define user-first product narrative and docs before implementation.",
+      "sprints": [
+        {
+          "sprint_id": "S1",
+          "duration_weeks": 1,
+          "focus": "Repo documentation baseline from inspiration and current gaps",
+          "tasks": [
+            {
+              "id": "P0-S1-01",
+              "title": "Audit current UI gaps vs X inspiration references (twitter-sync + reference-map)",
+              "area": "product",
+              "owner_role": "Product Designer",
+              "est_hours": 8,
+              "dependencies": [],
+              "deliverable": "Audit current UI gaps vs X inspiration references (twitter-sync + reference-map) completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            },
+            {
+              "id": "P0-S1-02",
+              "title": "Define premium UX principles from X inspirations (editorial + glass + calm)",
+              "area": "product",
+              "owner_role": "Product Designer",
+              "est_hours": 8,
+              "dependencies": [
+                "P0-S1-01"
+              ],
+              "deliverable": "Define premium UX principles from X inspirations (editorial + glass + calm) completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            },
+            {
+              "id": "P0-S1-03",
+              "title": "Write Product MD intake requirements spec",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 6,
+              "dependencies": [
+                "P0-S1-01"
+              ],
+              "deliverable": "Write Product MD intake requirements spec completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            },
+            {
+              "id": "P0-S1-04",
+              "title": "Write Brand Config mapping specification",
+              "area": "data",
+              "owner_role": "Solutions Architect",
+              "est_hours": 8,
+              "dependencies": [
+                "P0-S1-02"
+              ],
+              "deliverable": "Write Brand Config mapping specification completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            },
+            {
+              "id": "P0-S1-05",
+              "title": "Define target user personas and JTBD matrix",
+              "area": "product",
+              "owner_role": "Product Researcher",
+              "est_hours": 6,
+              "dependencies": [
+                "P0-S1-02"
+              ],
+              "deliverable": "Define target user personas and JTBD matrix completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            },
+            {
+              "id": "P0-S1-06",
+              "title": "Define IA for Product-MD-first guided non-technical flow",
+              "area": "frontend",
+              "owner_role": "UX Designer",
+              "est_hours": 8,
+              "dependencies": [
+                "P0-S1-03"
+              ],
+              "deliverable": "Define IA for Product-MD-first guided non-technical flow completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            },
+            {
+              "id": "P0-S1-07",
+              "title": "Draft microcopy/content style guide",
+              "area": "product",
+              "owner_role": "Content Designer",
+              "est_hours": 6,
+              "dependencies": [
+                "P0-S1-04",
+                "P0-S1-05"
+              ],
+              "deliverable": "Draft microcopy/content style guide completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            },
+            {
+              "id": "P0-S1-08",
+              "title": "Publish documentation baseline v1 sign-off",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 5,
+              "dependencies": [
+                "P0-S1-06",
+                "P0-S1-07"
+              ],
+              "deliverable": "Publish documentation baseline v1 sign-off completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S1"
+            }
+          ]
+        },
+        {
+          "sprint_id": "S2",
+          "duration_weeks": 1,
+          "focus": "Journey and success criteria docs",
+          "tasks": [
+            {
+              "id": "P0-S2-01",
+              "title": "Map end-to-end journey: Product MD to launch execution",
+              "area": "product",
+              "owner_role": "UX Designer",
+              "est_hours": 8,
+              "dependencies": [
+                "P0-S1-08"
+              ],
+              "deliverable": "Map end-to-end journey: Product MD to launch execution completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            },
+            {
+              "id": "P0-S2-02",
+              "title": "Create storyboard for 8 key screens with emotional narrative beats",
+              "area": "product",
+              "owner_role": "UX Designer",
+              "est_hours": 8,
+              "dependencies": [
+                "P0-S2-01"
+              ],
+              "deliverable": "Create storyboard for 8 key screens with emotional narrative beats completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            },
+            {
+              "id": "P0-S2-03",
+              "title": "Define onboarding states and edge-case matrix",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 7,
+              "dependencies": [
+                "P0-S2-01"
+              ],
+              "deliverable": "Define onboarding states and edge-case matrix completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            },
+            {
+              "id": "P0-S2-04",
+              "title": "Define error handling copy and validation matrix",
+              "area": "product",
+              "owner_role": "Content Designer",
+              "est_hours": 6,
+              "dependencies": [
+                "P0-S2-02"
+              ],
+              "deliverable": "Define error handling copy and validation matrix completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            },
+            {
+              "id": "P0-S2-05",
+              "title": "Define north-star metrics and adoption KPIs",
+              "area": "product",
+              "owner_role": "Product Analyst",
+              "est_hours": 6,
+              "dependencies": [
+                "P0-S2-02"
+              ],
+              "deliverable": "Define north-star metrics and adoption KPIs completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            },
+            {
+              "id": "P0-S2-06",
+              "title": "Set accessibility baseline and readability standards",
+              "area": "qa",
+              "owner_role": "Accessibility QA",
+              "est_hours": 6,
+              "dependencies": [
+                "P0-S2-03"
+              ],
+              "deliverable": "Set accessibility baseline and readability standards completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            },
+            {
+              "id": "P0-S2-07",
+              "title": "Define performance budget for front UI interactions",
+              "area": "infra",
+              "owner_role": "Frontend Architect",
+              "est_hours": 6,
+              "dependencies": [
+                "P0-S2-04",
+                "P0-S2-05"
+              ],
+              "deliverable": "Define performance budget for front UI interactions completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "platform",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            },
+            {
+              "id": "P0-S2-08",
+              "title": "Publish documentation pack v1 for delivery waves",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 5,
+              "dependencies": [
+                "P0-S2-06",
+                "P0-S2-07"
+              ],
+              "deliverable": "Publish documentation pack v1 for delivery waves completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P0",
+              "sprint": "S2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P1",
+      "name": "Prompt Scaffolding First",
+      "objective": "Create and validate prompt scaffolds before visual and integration execution.",
+      "sprints": [
+        {
+          "sprint_id": "S3",
+          "duration_weeks": 1,
+          "focus": "Prompt architecture and templates",
+          "tasks": [
+            {
+              "id": "P1-S3-01",
+              "title": "Design prompt architecture for UI narrative generation",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P0-S2-08"
+              ],
+              "deliverable": "Design prompt architecture for UI narrative generation completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            },
+            {
+              "id": "P1-S3-02",
+              "title": "Create Product MD extraction prompt scaffold",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P1-S3-01"
+              ],
+              "deliverable": "Create Product MD extraction prompt scaffold completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            },
+            {
+              "id": "P1-S3-03",
+              "title": "Create brand-config draft synthesis prompt scaffold",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P1-S3-01"
+              ],
+              "deliverable": "Create brand-config draft synthesis prompt scaffold completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            },
+            {
+              "id": "P1-S3-04",
+              "title": "Create aesthetic direction prompt scaffold from X inspiration tags",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 7,
+              "dependencies": [
+                "P1-S3-02"
+              ],
+              "deliverable": "Create aesthetic direction prompt scaffold from X inspiration tags completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            },
+            {
+              "id": "P1-S3-05",
+              "title": "Create component copy variant prompt templates",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P1-S3-02"
+              ],
+              "deliverable": "Create component copy variant prompt templates completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            },
+            {
+              "id": "P1-S3-06",
+              "title": "Create error/help text rewriting prompt templates",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P1-S3-03"
+              ],
+              "deliverable": "Create error/help text rewriting prompt templates completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            },
+            {
+              "id": "P1-S3-07",
+              "title": "Define prompt evaluation rubric and scorecard",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P1-S3-04",
+                "P1-S3-05"
+              ],
+              "deliverable": "Define prompt evaluation rubric and scorecard completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            },
+            {
+              "id": "P1-S3-08",
+              "title": "Freeze prompt pack v1 for implementation",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 5,
+              "dependencies": [
+                "P1-S3-06",
+                "P1-S3-07"
+              ],
+              "deliverable": "Freeze prompt pack v1 for implementation completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S3"
+            }
+          ]
+        },
+        {
+          "sprint_id": "S4",
+          "duration_weeks": 1,
+          "focus": "Prompt operations and validation harness",
+          "tasks": [
+            {
+              "id": "P1-S4-01",
+              "title": "Define prompt registry schema and naming conventions",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P1-S3-08"
+              ],
+              "deliverable": "Define prompt registry schema and naming conventions completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            },
+            {
+              "id": "P1-S4-02",
+              "title": "Implement prompt versioning/changelog workflow",
+              "area": "infra",
+              "owner_role": "DevOps Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P1-S4-01"
+              ],
+              "deliverable": "Implement prompt versioning/changelog workflow completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "platform",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            },
+            {
+              "id": "P1-S4-03",
+              "title": "Build prompt test harness script",
+              "area": "data",
+              "owner_role": "ML Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P1-S4-01"
+              ],
+              "deliverable": "Build prompt test harness script completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            },
+            {
+              "id": "P1-S4-04",
+              "title": "Create 20 golden examples from X reference prompts for validation",
+              "area": "product",
+              "owner_role": "Product Designer",
+              "est_hours": 8,
+              "dependencies": [
+                "P1-S4-02"
+              ],
+              "deliverable": "Create 20 golden examples from X reference prompts for validation completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            },
+            {
+              "id": "P1-S4-05",
+              "title": "Run prompt QA scoring and capture failures",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P1-S4-02"
+              ],
+              "deliverable": "Run prompt QA scoring and capture failures completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            },
+            {
+              "id": "P1-S4-06",
+              "title": "Refine top failing prompts through focused iterations",
+              "area": "data",
+              "owner_role": "Prompt Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P1-S4-03"
+              ],
+              "deliverable": "Refine top failing prompts through focused iterations completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            },
+            {
+              "id": "P1-S4-07",
+              "title": "Write prompt usage docs for UI teams",
+              "area": "docs",
+              "owner_role": "Technical Writer",
+              "est_hours": 6,
+              "dependencies": [
+                "P1-S4-04",
+                "P1-S4-05"
+              ],
+              "deliverable": "Write prompt usage docs for UI teams completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "docs",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            },
+            {
+              "id": "P1-S4-08",
+              "title": "Sign-off prompt scaffolding wave",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 5,
+              "dependencies": [
+                "P1-S4-06",
+                "P1-S4-07"
+              ],
+              "deliverable": "Sign-off prompt scaffolding wave completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P1",
+              "sprint": "S4"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P2",
+      "name": "Front UI Core Journey",
+      "objective": "Deliver user-friendly flow from Product MD intake to Brand Config creation.",
+      "sprints": [
+        {
+          "sprint_id": "S5",
+          "duration_weeks": 2,
+          "focus": "Intake experience (Product MD first)",
+          "tasks": [
+            {
+              "id": "P2-S5-01",
+              "title": "Build friendly landing page replacing terminal-first entry",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P1-S4-08"
+              ],
+              "deliverable": "Build friendly landing page replacing terminal-first entry completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            },
+            {
+              "id": "P2-S5-02",
+              "title": "Build Product MD upload/dropzone component",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S5-01"
+              ],
+              "deliverable": "Build Product MD upload/dropzone component completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            },
+            {
+              "id": "P2-S5-03",
+              "title": "Implement parsed section preview for uploaded MD",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P2-S5-01"
+              ],
+              "deliverable": "Implement parsed section preview for uploaded MD completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            },
+            {
+              "id": "P2-S5-04",
+              "title": "Create extracted fields review table",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S5-02"
+              ],
+              "deliverable": "Create extracted fields review table completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            },
+            {
+              "id": "P2-S5-05",
+              "title": "Implement inline correction editor for extracted fields",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P2-S5-02"
+              ],
+              "deliverable": "Implement inline correction editor for extracted fields completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            },
+            {
+              "id": "P2-S5-06",
+              "title": "Add save draft intake session functionality",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S5-03"
+              ],
+              "deliverable": "Add save draft intake session functionality completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            },
+            {
+              "id": "P2-S5-07",
+              "title": "Add draft recovery and resume flow",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S5-04",
+                "P2-S5-05"
+              ],
+              "deliverable": "Add draft recovery and resume flow completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            },
+            {
+              "id": "P2-S5-08",
+              "title": "Write intake flow integration tests",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S5-06",
+                "P2-S5-07"
+              ],
+              "deliverable": "Write intake flow integration tests completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S5"
+            }
+          ]
+        },
+        {
+          "sprint_id": "S6",
+          "duration_weeks": 2,
+          "focus": "Brand Config wizard generation",
+          "tasks": [
+            {
+              "id": "P2-S6-01",
+              "title": "Build multi-step wizard shell framework",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P2-S5-08"
+              ],
+              "deliverable": "Build multi-step wizard shell framework completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            },
+            {
+              "id": "P2-S6-02",
+              "title": "Implement Brand Basics wizard step",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S6-01"
+              ],
+              "deliverable": "Implement Brand Basics wizard step completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            },
+            {
+              "id": "P2-S6-03",
+              "title": "Implement Audience & Positioning wizard step",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S6-01"
+              ],
+              "deliverable": "Implement Audience & Positioning wizard step completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            },
+            {
+              "id": "P2-S6-04",
+              "title": "Implement Voice & Tone wizard step",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S6-02"
+              ],
+              "deliverable": "Implement Voice & Tone wizard step completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            },
+            {
+              "id": "P2-S6-05",
+              "title": "Implement Visual Direction wizard step",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S6-02"
+              ],
+              "deliverable": "Implement Visual Direction wizard step completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            },
+            {
+              "id": "P2-S6-06",
+              "title": "Implement Review & Confirm wizard step",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P2-S6-03"
+              ],
+              "deliverable": "Implement Review & Confirm wizard step completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            },
+            {
+              "id": "P2-S6-07",
+              "title": "Implement export to brand-config yaml/json",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P2-S6-04",
+                "P2-S6-05"
+              ],
+              "deliverable": "Implement export to brand-config yaml/json completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            },
+            {
+              "id": "P2-S6-08",
+              "title": "Implement config-ready success handoff card",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 6,
+              "dependencies": [
+                "P2-S6-06",
+                "P2-S6-07"
+              ],
+              "deliverable": "Implement config-ready success handoff card completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P2",
+              "sprint": "S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P3",
+      "name": "Visual Design Elevation",
+      "objective": "Transform functional dashboard into premium, appealing user-facing experience.",
+      "sprints": [
+        {
+          "sprint_id": "S7",
+          "duration_weeks": 2,
+          "focus": "Design system premium revamp",
+          "tasks": [
+            {
+              "id": "P3-S7-01",
+              "title": "Build X-inspired moodboard-to-token pipeline (color, type, surface)",
+              "area": "frontend",
+              "owner_role": "Design Systems Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P2-S6-08"
+              ],
+              "deliverable": "Build X-inspired moodboard-to-token pipeline (color, type, surface) completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            },
+            {
+              "id": "P3-S7-02",
+              "title": "Implement elevation and layered shadow system",
+              "area": "frontend",
+              "owner_role": "Design Systems Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S7-01"
+              ],
+              "deliverable": "Implement elevation and layered shadow system completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            },
+            {
+              "id": "P3-S7-03",
+              "title": "Calibrate palette against top X tags (color-palette, typography, brand-design)",
+              "area": "frontend",
+              "owner_role": "Design Systems Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S7-01"
+              ],
+              "deliverable": "Calibrate palette against top X tags (color-palette, typography, brand-design) completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            },
+            {
+              "id": "P3-S7-04",
+              "title": "Refine typography hierarchy for friendly clarity",
+              "area": "frontend",
+              "owner_role": "Design Systems Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S7-02"
+              ],
+              "deliverable": "Refine typography hierarchy for friendly clarity completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            },
+            {
+              "id": "P3-S7-05",
+              "title": "Build iconography system for key workflow states",
+              "area": "frontend",
+              "owner_role": "Design Systems Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S7-02"
+              ],
+              "deliverable": "Build iconography system for key workflow states completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            },
+            {
+              "id": "P3-S7-06",
+              "title": "Define motion and interaction guidelines",
+              "area": "product",
+              "owner_role": "Interaction Designer",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S7-03"
+              ],
+              "deliverable": "Define motion and interaction guidelines completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            },
+            {
+              "id": "P3-S7-07",
+              "title": "Implement reusable component variant library",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P3-S7-04",
+                "P3-S7-05"
+              ],
+              "deliverable": "Implement reusable component variant library completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            },
+            {
+              "id": "P3-S7-08",
+              "title": "Create illustration placeholders and hero surfaces",
+              "area": "frontend",
+              "owner_role": "UI Designer",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S7-06",
+                "P3-S7-07"
+              ],
+              "deliverable": "Create illustration placeholders and hero surfaces completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S7"
+            }
+          ]
+        },
+        {
+          "sprint_id": "S8",
+          "duration_weeks": 2,
+          "focus": "Page-by-page polish for user appeal",
+          "tasks": [
+            {
+              "id": "P3-S8-01",
+              "title": "Polish onboarding with editorial storytelling inspired by X references",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S7-08"
+              ],
+              "deliverable": "Polish onboarding with editorial storytelling inspired by X references completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            },
+            {
+              "id": "P3-S8-02",
+              "title": "Polish wizard pages for calm progressive flow",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-01"
+              ],
+              "deliverable": "Polish wizard pages for calm progressive flow completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            },
+            {
+              "id": "P3-S8-03",
+              "title": "Polish dashboard home for non-technical readability",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-01"
+              ],
+              "deliverable": "Polish dashboard home for non-technical readability completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            },
+            {
+              "id": "P3-S8-04",
+              "title": "Polish graph canvas with simplified semantics",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-02"
+              ],
+              "deliverable": "Polish graph canvas with simplified semantics completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            },
+            {
+              "id": "P3-S8-05",
+              "title": "Polish logs panel into actionable activity feed",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-02"
+              ],
+              "deliverable": "Polish logs panel into actionable activity feed completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            },
+            {
+              "id": "P3-S8-06",
+              "title": "Polish artifacts gallery as visual outcome wall",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-03"
+              ],
+              "deliverable": "Polish artifacts gallery as visual outcome wall completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            },
+            {
+              "id": "P3-S8-07",
+              "title": "Polish reports preview with executive summary framing",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-04",
+                "P3-S8-05"
+              ],
+              "deliverable": "Polish reports preview with executive summary framing completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            },
+            {
+              "id": "P3-S8-08",
+              "title": "Tune responsive breakpoints across laptop/tablet",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-06",
+                "P3-S8-07"
+              ],
+              "deliverable": "Tune responsive breakpoints across laptop/tablet completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P3",
+              "sprint": "S8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P4",
+      "name": "Orchestration UX Upgrade",
+      "objective": "Make pipeline control intuitive while preserving execution power.",
+      "sprints": [
+        {
+          "sprint_id": "S9",
+          "duration_weeks": 1,
+          "focus": "Control center and dispatch UX",
+          "tasks": [
+            {
+              "id": "P4-S9-01",
+              "title": "Redesign run controls top bar with clear intent states",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P3-S8-08"
+              ],
+              "deliverable": "Redesign run controls top bar with clear intent states completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            },
+            {
+              "id": "P4-S9-02",
+              "title": "Redesign phase timeline with narrative cards and sprint badges",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S9-01"
+              ],
+              "deliverable": "Redesign phase timeline with narrative cards and sprint badges completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            },
+            {
+              "id": "P4-S9-03",
+              "title": "Upgrade task cards with meaningful status language",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S9-01"
+              ],
+              "deliverable": "Upgrade task cards with meaningful status language completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            },
+            {
+              "id": "P4-S9-04",
+              "title": "Visualize dependency ribbons and blockers",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S9-02"
+              ],
+              "deliverable": "Visualize dependency ribbons and blockers completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            },
+            {
+              "id": "P4-S9-05",
+              "title": "Implement dispatch lane board for parallel execution",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P4-S9-02"
+              ],
+              "deliverable": "Implement dispatch lane board for parallel execution completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            },
+            {
+              "id": "P4-S9-06",
+              "title": "Add command palette with guided actions",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S9-03"
+              ],
+              "deliverable": "Add command palette with guided actions completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            },
+            {
+              "id": "P4-S9-07",
+              "title": "Add quick action macros for common operations",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S9-04",
+                "P4-S9-05"
+              ],
+              "deliverable": "Add quick action macros for common operations completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            },
+            {
+              "id": "P4-S9-08",
+              "title": "Add keyboard shortcuts overlay",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 6,
+              "dependencies": [
+                "P4-S9-06",
+                "P4-S9-07"
+              ],
+              "deliverable": "Add keyboard shortcuts overlay completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S9"
+            }
+          ]
+        },
+        {
+          "sprint_id": "S10",
+          "duration_weeks": 1,
+          "focus": "Trust, guidance, and recoverability",
+          "tasks": [
+            {
+              "id": "P4-S10-01",
+              "title": "Build contextual tips system for each core page",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S9-08"
+              ],
+              "deliverable": "Build contextual tips system for each core page completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            },
+            {
+              "id": "P4-S10-02",
+              "title": "Build AI guide panel with plain-language coaching for non-technical users",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S10-01"
+              ],
+              "deliverable": "Build AI guide panel with plain-language coaching for non-technical users completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            },
+            {
+              "id": "P4-S10-03",
+              "title": "Design rich empty states with next-step guidance",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 6,
+              "dependencies": [
+                "P4-S10-01"
+              ],
+              "deliverable": "Design rich empty states with next-step guidance completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            },
+            {
+              "id": "P4-S10-04",
+              "title": "Implement progressive disclosure for advanced settings",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S10-02"
+              ],
+              "deliverable": "Implement progressive disclosure for advanced settings completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            },
+            {
+              "id": "P4-S10-05",
+              "title": "Implement confirmations for destructive actions",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 6,
+              "dependencies": [
+                "P4-S10-02"
+              ],
+              "deliverable": "Implement confirmations for destructive actions completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            },
+            {
+              "id": "P4-S10-06",
+              "title": "Build retry flow wizard with clear cause/resolution",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S10-03"
+              ],
+              "deliverable": "Build retry flow wizard with clear cause/resolution completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            },
+            {
+              "id": "P4-S10-07",
+              "title": "Build failure triage cards with suggested actions",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S10-04",
+                "P4-S10-05"
+              ],
+              "deliverable": "Build failure triage cards with suggested actions completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            },
+            {
+              "id": "P4-S10-08",
+              "title": "Add glossary/tooltips for non-technical users",
+              "area": "docs",
+              "owner_role": "Technical Writer",
+              "est_hours": 6,
+              "dependencies": [
+                "P4-S10-06",
+                "P4-S10-07"
+              ],
+              "deliverable": "Add glossary/tooltips for non-technical users completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "docs",
+              "parallelizable": true,
+              "wave": "P4",
+              "sprint": "S10"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P5",
+      "name": "Backend Integration & Data Intelligence",
+      "objective": "Back the front UI with robust APIs, persistence, and insights.",
+      "sprints": [
+        {
+          "sprint_id": "S11",
+          "duration_weeks": 2,
+          "focus": "Bridge API hardening and feature completion",
+          "tasks": [
+            {
+              "id": "P5-S11-01",
+              "title": "Define typed bridge contract for UI/backend parity",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P4-S10-08"
+              ],
+              "deliverable": "Define typed bridge contract for UI/backend parity completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            },
+            {
+              "id": "P5-S11-02",
+              "title": "Harden start/retry/abort process handling",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P5-S11-01"
+              ],
+              "deliverable": "Harden start/retry/abort process handling completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            },
+            {
+              "id": "P5-S11-03",
+              "title": "Implement run queue and lifecycle state machine",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P5-S11-01"
+              ],
+              "deliverable": "Implement run queue and lifecycle state machine completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            },
+            {
+              "id": "P5-S11-04",
+              "title": "Structure log streams by category and severity",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S11-02"
+              ],
+              "deliverable": "Structure log streams by category and severity completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            },
+            {
+              "id": "P5-S11-05",
+              "title": "Improve artifact indexing and metadata enrichment",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S11-02"
+              ],
+              "deliverable": "Improve artifact indexing and metadata enrichment completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            },
+            {
+              "id": "P5-S11-06",
+              "title": "Add config generation endpoint from wizard payload",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P5-S11-03"
+              ],
+              "deliverable": "Add config generation endpoint from wizard payload completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            },
+            {
+              "id": "P5-S11-07",
+              "title": "Add prompt scaffold endpoint for UI prompts",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S11-04",
+                "P5-S11-05"
+              ],
+              "deliverable": "Add prompt scaffold endpoint for UI prompts completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            },
+            {
+              "id": "P5-S11-08",
+              "title": "Write bridge API integration test suite",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 10,
+              "dependencies": [
+                "P5-S11-06",
+                "P5-S11-07"
+              ],
+              "deliverable": "Write bridge API integration test suite completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S11"
+            }
+          ]
+        },
+        {
+          "sprint_id": "S12",
+          "duration_weeks": 2,
+          "focus": "Persistence, analytics, and reporting intelligence",
+          "tasks": [
+            {
+              "id": "P5-S12-01",
+              "title": "Design local project/session store schema",
+              "area": "data",
+              "owner_role": "Data Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S11-08"
+              ],
+              "deliverable": "Design local project/session store schema completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            },
+            {
+              "id": "P5-S12-02",
+              "title": "Implement autosave for intake and wizard states",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S12-01"
+              ],
+              "deliverable": "Implement autosave for intake and wizard states completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            },
+            {
+              "id": "P5-S12-03",
+              "title": "Implement config snapshot version history",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S12-01"
+              ],
+              "deliverable": "Implement config snapshot version history completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            },
+            {
+              "id": "P5-S12-04",
+              "title": "Capture run analytics events and timelines",
+              "area": "data",
+              "owner_role": "Data Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S12-02"
+              ],
+              "deliverable": "Capture run analytics events and timelines completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            },
+            {
+              "id": "P5-S12-05",
+              "title": "Compute quality score from validation rubric",
+              "area": "data",
+              "owner_role": "Data Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S12-02"
+              ],
+              "deliverable": "Compute quality score from validation rubric completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            },
+            {
+              "id": "P5-S12-06",
+              "title": "Add cost estimate model for planned waves",
+              "area": "data",
+              "owner_role": "Data Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S12-03"
+              ],
+              "deliverable": "Add cost estimate model for planned waves completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            },
+            {
+              "id": "P5-S12-07",
+              "title": "Generate report summary endpoint for UI cards",
+              "area": "backend",
+              "owner_role": "Backend Eng",
+              "est_hours": 8,
+              "dependencies": [
+                "P5-S12-04",
+                "P5-S12-05"
+              ],
+              "deliverable": "Generate report summary endpoint for UI cards completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "integration",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            },
+            {
+              "id": "P5-S12-08",
+              "title": "Sync frontend with live backend state deltas",
+              "area": "frontend",
+              "owner_role": "Frontend Eng",
+              "est_hours": 10,
+              "dependencies": [
+                "P5-S12-06",
+                "P5-S12-07"
+              ],
+              "deliverable": "Sync frontend with live backend state deltas completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "frontend",
+              "parallelizable": true,
+              "wave": "P5",
+              "sprint": "S12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P6",
+      "name": "QA Hardening & Launch",
+      "objective": "Ship confidently with quality, docs, and rollout readiness.",
+      "sprints": [
+        {
+          "sprint_id": "S13",
+          "duration_weeks": 1,
+          "focus": "Quality hardening and reliability",
+          "tasks": [
+            {
+              "id": "P6-S13-01",
+              "title": "Create E2E happy path: Product MD to pipeline run",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 10,
+              "dependencies": [
+                "P5-S12-08"
+              ],
+              "deliverable": "Create E2E happy path: Product MD to pipeline run completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            },
+            {
+              "id": "P6-S13-02",
+              "title": "Create E2E validation/error recovery path tests",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S13-01"
+              ],
+              "deliverable": "Create E2E validation/error recovery path tests completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            },
+            {
+              "id": "P6-S13-03",
+              "title": "Run visual regression for critical journey screens",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S13-01"
+              ],
+              "deliverable": "Run visual regression for critical journey screens completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            },
+            {
+              "id": "P6-S13-04",
+              "title": "Run accessibility audit and remediation pass",
+              "area": "qa",
+              "owner_role": "Accessibility QA",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S13-02"
+              ],
+              "deliverable": "Run accessibility audit and remediation pass completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            },
+            {
+              "id": "P6-S13-05",
+              "title": "Run performance optimization and bundle tuning",
+              "area": "infra",
+              "owner_role": "Frontend Architect",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S13-02"
+              ],
+              "deliverable": "Run performance optimization and bundle tuning completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "platform",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            },
+            {
+              "id": "P6-S13-06",
+              "title": "Run reliability chaos tests around retry flows",
+              "area": "qa",
+              "owner_role": "QA Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S13-03"
+              ],
+              "deliverable": "Run reliability chaos tests around retry flows completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            },
+            {
+              "id": "P6-S13-07",
+              "title": "Run security/privacy review for local data",
+              "area": "security",
+              "owner_role": "Security Engineer",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S13-04",
+                "P6-S13-05"
+              ],
+              "deliverable": "Run security/privacy review for local data completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "security",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            },
+            {
+              "id": "P6-S13-08",
+              "title": "Publish QA sign-off checklist",
+              "area": "qa",
+              "owner_role": "QA Lead",
+              "est_hours": 6,
+              "dependencies": [
+                "P6-S13-06",
+                "P6-S13-07"
+              ],
+              "deliverable": "Publish QA sign-off checklist completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "qa",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S13"
+            }
+          ]
+        },
+        {
+          "sprint_id": "S14",
+          "duration_weeks": 1,
+          "focus": "Launch readiness and execution handoff",
+          "tasks": [
+            {
+              "id": "P6-S14-01",
+              "title": "Build in-app docs hub for guided usage",
+              "area": "docs",
+              "owner_role": "Technical Writer",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S13-08"
+              ],
+              "deliverable": "Build in-app docs hub for guided usage completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "docs",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            },
+            {
+              "id": "P6-S14-02",
+              "title": "Create quickstart tutorial for first-time users",
+              "area": "docs",
+              "owner_role": "Technical Writer",
+              "est_hours": 8,
+              "dependencies": [
+                "P6-S14-01"
+              ],
+              "deliverable": "Create quickstart tutorial for first-time users completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "docs",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            },
+            {
+              "id": "P6-S14-03",
+              "title": "Write stakeholder demo script and runbook",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 6,
+              "dependencies": [
+                "P6-S14-01"
+              ],
+              "deliverable": "Write stakeholder demo script and runbook completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            },
+            {
+              "id": "P6-S14-04",
+              "title": "Finalize release checklist and rollback plan",
+              "area": "infra",
+              "owner_role": "DevOps Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P6-S14-02"
+              ],
+              "deliverable": "Finalize release checklist and rollback plan completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "platform",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            },
+            {
+              "id": "P6-S14-05",
+              "title": "Prepare onboarding walkthrough media assets",
+              "area": "product",
+              "owner_role": "Content Designer",
+              "est_hours": 6,
+              "dependencies": [
+                "P6-S14-02"
+              ],
+              "deliverable": "Prepare onboarding walkthrough media assets completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            },
+            {
+              "id": "P6-S14-06",
+              "title": "Create telemetry dashboard definitions",
+              "area": "data",
+              "owner_role": "Data Engineer",
+              "est_hours": 6,
+              "dependencies": [
+                "P6-S14-03"
+              ],
+              "deliverable": "Create telemetry dashboard definitions completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "prompt",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            },
+            {
+              "id": "P6-S14-07",
+              "title": "Prioritize v2 backlog from test feedback",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 6,
+              "dependencies": [
+                "P6-S14-04",
+                "P6-S14-05"
+              ],
+              "deliverable": "Prioritize v2 backlog from test feedback completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            },
+            {
+              "id": "P6-S14-08",
+              "title": "Launch candidate sign-off and handoff",
+              "area": "product",
+              "owner_role": "Product Manager",
+              "est_hours": 5,
+              "dependencies": [
+                "P6-S14-06",
+                "P6-S14-07"
+              ],
+              "deliverable": "Launch candidate sign-off and handoff completed and usable in the front UI workflow.",
+              "acceptance": "Task output is demoable in UI flow, covered by QA checks, and meets design/content quality criteria.",
+              "dispatch_lane": "ux",
+              "parallelizable": true,
+              "wave": "P6",
+              "sprint": "S14"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

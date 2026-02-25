@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "generated_on": "2026-02-24",
+  "owner": "front-ui-prompt-lane",
+  "prompts": [
+    {
+      "id": "pm_extract_v1",
+      "name": "Product MD Extraction",
+      "purpose": "Extract structured product strategy from raw Product MD text.",
+      "input_contract": [
+        "product_md_text"
+      ],
+      "output_contract": {
+        "product_name": "string",
+        "category": "string",
+        "audience": "object",
+        "value_proposition": "string",
+        "differentiators": "string[]",
+        "voice_clues": "string[]",
+        "tone_clues": "string[]",
+        "confidence": "number"
+      },
+      "quality_targets": {
+        "completeness": 0.9,
+        "clarity": 0.9,
+        "hallucination_risk_max": 0.05
+      }
+    },
+    {
+      "id": "config_synthesis_v1",
+      "name": "Brand Config Synthesis",
+      "purpose": "Map extracted strategy into brand-config.yaml-compatible structure.",
+      "input_contract": [
+        "extraction_json"
+      ],
+      "output_contract": {
+        "brand": "object",
+        "audience": "object",
+        "positioning": "object",
+        "campaign": "object",
+        "notes": "object"
+      },
+      "quality_targets": {
+        "schema_validity": 1.0,
+        "mapping_accuracy": 0.9
+      }
+    },
+    {
+      "id": "aesthetic_direction_v1",
+      "name": "Aesthetic Direction from X References",
+      "purpose": "Convert inspiration tags and examples into actionable UI visual direction.",
+      "input_contract": [
+        "reference_tags",
+        "reference_examples"
+      ],
+      "output_contract": {
+        "palette": "string[]",
+        "typography_direction": "string",
+        "surface_language": "string",
+        "motion_style": "string",
+        "dos": "string[]",
+        "donts": "string[]"
+      },
+      "quality_targets": {
+        "actionability": 0.9,
+        "consistency": 0.9
+      }
+    },
+    {
+      "id": "microcopy_rewrite_v1",
+      "name": "Wizard Microcopy Rewrite",
+      "purpose": "Rewrite technical UI copy into plain-language, user-friendly instructions.",
+      "input_contract": [
+        "raw_copy",
+        "step_context"
+      ],
+      "output_contract": {
+        "headline": "string",
+        "body": "string",
+        "helper": "string",
+        "cta": "string"
+      },
+      "quality_targets": {
+        "readability_grade_max": 9,
+        "tone_consistency": 0.9
+      }
+    },
+    {
+      "id": "error_recovery_v1",
+      "name": "Error Clarity & Recovery",
+      "purpose": "Translate low-level failures into clear cause/fix/retry guidance.",
+      "input_contract": [
+        "error_blob",
+        "operation_context"
+      ],
+      "output_contract": {
+        "what_happened": "string",
+        "why": "string",
+        "how_to_fix": "string[]",
+        "retry_action": "string"
+      },
+      "quality_targets": {
+        "actionability": 0.95,
+        "false_blame_max": 0.0
+      }
+    }
+  ]
+}

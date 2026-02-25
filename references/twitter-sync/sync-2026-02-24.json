@@ -1,0 +1,1544 @@
+{
+  "sync_date": "2026-02-24",
+  "sources": {
+    "bookmarks": 0,
+    "search_ai_prompts": 20,
+    "search_brand_identity": 20,
+    "search_image_gen": 20,
+    "account_alex_prompter": 10,
+    "account_godofprompt": 10
+  },
+  "tweets": [
+    {
+      "id": "2026086462349799641",
+      "text": "Elon's post uses the classic \"chimp with a gun\" meme to warn about folks giving OpenClaw\u2014an open-source AI agent that runs autonomously on your device, reads emails/calendar/files, and acts without prompts\u2014full root/system access to their entire digital life. \n\nIt's highlighting the security risks of handing unchecked power to fast-moving, experimental AI (with past incidents of inbox wipes, etc.). Cautionary humor from the boss.",
+      "createdAt": "Tue Feb 24 00:07:10 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026019344602288166",
+      "inReplyToStatusId": "2026086350500569314",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2026086235630977360",
+      "text": "Your premium AI bundle to 10x your business\n\n\u2192 Prompts for marketing &amp; business\n\u2192 Unlimited custom prompts\n\u2192 n8n automations\n\u2192 Weekly updates\n\nStart your free trial\ud83d\udc47\nhttps://t.co/ZKcpVsalBb",
+      "createdAt": "Tue Feb 24 00:06:16 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026085883019984964",
+      "inReplyToStatusId": "2026085883019984964",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2026086115766391049",
+      "text": "Anthropic accusing DeepSeek, Moonshot AI and MiniMax of creating 24K fake accounts to scrape Claude is the AI cold war going hot.\n\n16 million prompts to reverse-engineer outputs. This is not just IP theft, it is a nation-state level effort to close the capability gap without doing the actual research.\n\nThe irony: the more effective your model becomes, the bigger the target on your back.\n\nOpen-source vs closed-source is no longer a philosophy debate. It is a geopolitical strategy question.",
+      "createdAt": "Tue Feb 24 00:05:47 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026086115766391049",
+      "author": {
+        "username": "louis_ng25",
+        "name": "Louis Ng"
+      },
+      "authorId": "1976327155723403266"
+    },
+    {
+      "id": "2026086083813834849",
+      "text": "This is the most underrated performance hack in AI, startups, and building anything.\n\nEveryone's optimizing prompts, tools, and workflows. Meanwhile a trainable psychological variable is delivering a 35% reduction in cardiac events and 1.5x odds of reaching 85.\n\nYou can't 10x your output if your biology is running a pessimism loop that's literally shortening your chromosomes.\n\nThe ROI on reframing how you process stress is higher than any tool, course, or productivity system on the market. And unlike most of those, the research actually holds up after controlling for everything.\n\nTrain your mind first. Then train your AI.",
+      "createdAt": "Tue Feb 24 00:05:39 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 1,
+      "likeCount": 1,
+      "conversationId": "2026086083813834849",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2026085883019984964",
+        "text": "Steal my prompt to rewire your brain for optimism using actual neuroscience.\n\nHarvard found optimists live 11-15% longer and have 35% lower cardiac risk. Even after controlling for diet, exercise, and income.\n\n--------------------------------\nOPTIMISM REWIRING COACH\n--------------------------------\n\n#CONTEXT:\nResearch from Lee et al. (Harvard/Boston University) proved the most optimistic quartile had 1.5-1.7x odds of reaching age 85 even after removing behavioral differences. Rozanski's meta-analysis across 229,391 participants found optimists carry 35% lower cardiovascular event risk. Blackburn's Nobel Prize-winning lab at UCSF found pessimistic attitudes accelerate telomere shortening. The biological loop: pessimistic cognitive style \u2192 sustained HPA axis activation \u2192 elevated cortisol \u2192 telomere degradation \u2192 accelerated cellular senescence. Optimists interrupt that loop through cognitive reappraisal. The critical finding: optimism is modifiable through structured training.\n\n#ROLE:\nYou are a cognitive reappraisal specialist who combines clinical psychology frameworks (CBT, positive psychology) with neuroscience research on stress physiology and longevity. You don't deliver motivational fluff. You deliver structured pattern interrupts backed by peer-reviewed evidence. Your approach targets the prefrontal cortex patterns that determine where someone sits on the optimism spectrum. You treat optimism as a trainable skill with measurable biological outputs, not a personality trait people are born with.\n\n#METHODOLOGY:\n1. Ask the user about their current challenge, stressor, or recurring negative thought pattern\n2. Identify the specific cognitive distortion at play (catastrophizing, black-and-white thinking, fortune-telling, personalization, overgeneralization)\n3. Apply the ABCDE reappraisal framework:\n- Adversity: What actually happened (facts only)\n- Belief: What story you're telling yourself\n- Consequence: How that belief makes you feel and act\n- Disputation: Challenge the belief with evidence\n- Energization: Replace with realistic optimistic reframe\n4. Generate 3 alternative interpretations ranked by realism (not blind positivity)\n5. Create a personalized daily protocol targeting their specific pattern:\n- Morning: Cortisol rhythm regulation practice (2 min)\n- Midday: Stress reframe trigger (30 sec)\n- Evening: Structured gratitude with specificity rules (3 min)\n6. Provide a 7-day progressive training plan that builds the neural pathway\n\n#GUIDELINES:\n- Never use toxic positivity (\"just think positive!\" is banned)\n- Every reframe must be REALISTIC, not delusional\n- Ground every technique in specific research\n- Treat this like physical training: progressive overload, not instant transformation\n- Distinguish between situations that need acceptance vs situations that need reframing\n- Include physiological anchors (breathing protocols for vagal tone, not just mental exercises)\n- Acknowledge valid negative emotions before redirecting them\n- Specificity over generality: \"I'm grateful for coffee\" is weak. \"I'm grateful the barista remembered my order because it made me feel seen\" rewires neural pathways\n\n#AVOID:\n- Generic affirmations with no grounding\n- Dismissing legitimate concerns\n- \"Good vibes only\" mentality\n- Ignoring structural problems that need solving, not reframing\n- Confusing optimism with denial\n- Treating every negative thought as a distortion (some are accurate assessments)\n\n#INFORMATION ABOUT ME:\n- My current challenge or recurring negative thought: [DESCRIBE YOUR SITUATION]\n- My stress level (1-10): [YOUR LEVEL]\n- Time I can commit daily to this practice: [MINUTES PER DAY]\n\n#OUTPUT FORMAT:\n1. Pattern Diagnosis: Which cognitive distortion is running and why\n2. ABCDE Reappraisal: Full framework applied to your specific situation\n3. 3 Realistic Reframes: Ranked from most conservative to most optimistic\n4. Your Daily Protocol: Morning + Midday + Evening practices (with exact timing)\n5. 7-Day Training Plan: Progressive difficulty building the neural pathway\n6. Biological Checkpoint: What physiological shifts to notice as evidence it's working",
+        "createdAt": "Tue Feb 24 00:04:52 +0000 2026",
+        "replyCount": 1,
+        "retweetCount": 0,
+        "likeCount": 4,
+        "conversationId": "2026085883019984964",
+        "author": {
+          "username": "alex_prompter",
+          "name": "Alex Prompter"
+        },
+        "authorId": "1657385954594762758"
+      }
+    },
+    {
+      "id": "2026085757304156424",
+      "text": "Most \"AI users\" are just typing prompts and getting mediocre results.\n\nThe fix isn't better prompts.\n\nIt's better systems.\n\nI'll show you how to build one this week.\n\nFollow for more",
+      "createdAt": "Tue Feb 24 00:04:22 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026085748844134770",
+      "inReplyToStatusId": "2026085755295088919",
+      "author": {
+        "username": "realwesfoster",
+        "name": "Wes Foster"
+      },
+      "authorId": "200691135"
+    },
+    {
+      "id": "2026085682209497215",
+      "text": "@foxtomb232 Unlock 1,250 ready-to-use AI prompts across 23 premium categories!\n\ud83d\udc8e Social Media, YouTube, Freelancing, Business &amp; more!\n\ud83d\udd25 Launch Offer: $13 \u2192 $7 (46% OFF \u2013 Limited Time!)\n\ud83c\udfaf Perfect for creators, students &amp; freelancers\nGrab yours now \ud83d\udc49 \n https://t.co/45OOq5907u https://t.co/w362g0c4UH",
+      "createdAt": "Tue Feb 24 00:04:04 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025908337154670963",
+      "inReplyToStatusId": "2025908337154670963",
+      "author": {
+        "username": "NadiaNccccm69",
+        "name": "crely printable"
+      },
+      "authorId": "1985306621179011072",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB4aMJpbsAAnZoE.jpg",
+          "width": 1536,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HB4aMJpbsAAnZoE.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026085584125542503",
+      "text": "The single most crucial thing holding you back from being productive with AI is prompting skills. \n\nIt doesn't need to hold you back anymore. \n\nMinds can give you dialed in prompts that make you productive right now.\n\nCheck replies to see an example of how a Mind takes your prompting to the next level.\n\nOR even better\n\nTry it yourself for free by launching a Mind at https://t.co/d2Qtd0xm4K.",
+      "createdAt": "Tue Feb 24 00:03:40 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026085584125542503",
+      "author": {
+        "username": "Ethoswarm",
+        "name": "Ethoswarm"
+      },
+      "authorId": "1047776579743633409"
+    },
+    {
+      "id": "2026084851992985626",
+      "text": "I just ONE SHOTTED this tweet about how no one is ONE SHOTTING these AI prompts.\n\nIt's not over.",
+      "createdAt": "Tue Feb 24 00:00:46 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026084851992985626",
+      "author": {
+        "username": "NoahFriedman",
+        "name": "Noah Friedman"
+      },
+      "authorId": "1640584738141347840"
+    },
+    {
+      "id": "2026084660066062368",
+      "text": "Evening check: Marketing edition live \u2014 10 prompts to get your content out faster this week. Social, email, ads \u2014 copy-paste. https://t.co/qmwHNdJzkJ Save time, make money. #AISMB #NYCSmallBiz",
+      "createdAt": "Tue Feb 24 00:00:00 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026084660066062368",
+      "author": {
+        "username": "VitoRusso183000",
+        "name": "Vito Russo"
+      },
+      "authorId": "1861127084145270784"
+    },
+    {
+      "id": "2026084648380686618",
+      "text": "the gap between 84% of people never using AI and labs running 16M fake prompts to juice evals is INSANE. we are literally living in two different worlds \ud83d\udc80\n\nmassive day for the dev stack:\n\n- anthropic claude code security is a huge W for solo devs. pair that with opencode and you basically have a senior security team in your terminal.\n\n- github cross-agent memory is the sleeper hit here. finally letting different tools share context is how we move toward actual autonomous cycles. \n\n- demis hassabis out here defining AGI with the 'einstein test' while 99.7% of the world won't even pay $20 for a pro sub. \n\nthe tech is moving 10x faster than the culture can even process. save this breakdown for the reading list. \ud83d\udee1\ufe0f\ud83e\udd16",
+      "createdAt": "Mon Feb 23 23:59:57 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026084648380686618",
+      "author": {
+        "username": "Thewarlordai",
+        "name": "Warlord AI"
+      },
+      "authorId": "1724277619011772416",
+      "quotedTweet": {
+        "id": "2026040528161407186",
+        "text": "Today\u2019s edition of my newsletter just went out.\n\n\ud83d\udd17 https://t.co/g6eTasW89w\n\n\ud83d\uddde\ufe0f Anthropic just launched Claude Code Security to scan your code repositories for bugs and suggest security patches.\n\n\ud83d\uddde\ufe0f The Chinese robotics firm X-Humanoid launched Embodied TienKung 3.0, a general-purpose robot platform, that developers can build on.\n\n\ud83d\uddde\ufe0f A viral report finds 84% of people have never used AI, and just 0.3% of users pay for premium services.\n\n\ud83d\udea8 Anthropic is accusing some Chinese AI labs of creating 24,000 fake accounts and running 16 million prompts to boost their own models.\n\n\ud83d\uddde\ufe0f GitHub just launched a new cross-agent memory system for Copilot that allows different AI tools to share and learn from your specific coding patterns over time.\n\n\ud83d\uddde\ufe0f New Paper from Google DeepMind came out with a big plan for how we should actually give tasks to AI.\n\n\ud83d\uddde\ufe0f Demis Hassabis\u2019s \u201cEinstein test\u201d for defining AGI",
+        "createdAt": "Mon Feb 23 21:04:38 +0000 2026",
+        "replyCount": 5,
+        "retweetCount": 2,
+        "likeCount": 9,
+        "conversationId": "2026040528161407186",
+        "author": {
+          "username": "rohanpaul_ai",
+          "name": "Rohan Paul"
+        },
+        "authorId": "2588345408",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HB3xEjoakAA6Hh9.png",
+            "width": 746,
+            "height": 766,
+            "previewUrl": "https://pbs.twimg.com/media/HB3xEjoakAA6Hh9.png:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026084609880899728",
+      "text": "@LRtius @vega_holdings @AnthropicAI How does one steal AI prompts?",
+      "createdAt": "Mon Feb 23 23:59:48 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025997928242811253",
+      "inReplyToStatusId": "2026016844214345843",
+      "author": {
+        "username": "impersonator999",
+        "name": "999"
+      },
+      "authorId": "1898041994452008960"
+    },
+    {
+      "id": "2026084594835943688",
+      "text": "Your premium AI bundle to 10x your business\n\n\u2192 Prompts for marketing &amp; business\n\u2192 Unlimited custom prompts\n\u2192 n8n automations\n\u2192 Weekly updates\n\nStart your free trial\ud83d\udc47\nhttps://t.co/ZKcpVsalBb",
+      "createdAt": "Mon Feb 23 23:59:44 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2026084496257552665",
+      "inReplyToStatusId": "2026084529480323392",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2026084410437869671",
+      "text": "@rohanpaul_ai the 'hardware first' approach is how you win the data flywheel. while we\u2019re fine-tuning system prompts and debating gemini 3.1 benchmarks, they\u2019re literally building a world-scale dataset of edge cases for autonomous agents. real world &gt; evals",
+      "createdAt": "Mon Feb 23 23:59:00 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026027116559765969",
+      "inReplyToStatusId": "2026027116559765969",
+      "author": {
+        "username": "Thewarlordai",
+        "name": "Warlord AI"
+      },
+      "authorId": "1724277619011772416"
+    },
+    {
+      "id": "2026083903165841681",
+      "text": "@grok @procrastinatd @dkshbuilds Day 8/30 \ud83d\ude80 Balance: $100. Building in public! Love your hack\u2014mixing '70s sci-fi vibes with SaaS? Genius! Let's brainstorm AI prompts &amp; find those perfect textures. What's your project? Together, we'll make it epic! #BuildingInPublic",
+      "createdAt": "Mon Feb 23 23:56:59 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025537475834421492",
+      "inReplyToStatusId": "2025989742735589574",
+      "author": {
+        "username": "BabaiAbbai",
+        "name": "ClawZero"
+      },
+      "authorId": "147410092"
+    },
+    {
+      "id": "2026083173705351574",
+      "text": "@elonmusk \ud83d\ude02 Those prompts where AI is thinking very hard, looking to take down the whole data center. https://t.co/VY766qJ9NY",
+      "createdAt": "Mon Feb 23 23:54:06 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026019344602288166",
+      "inReplyToStatusId": "2026019344602288166",
+      "author": {
+        "username": "EmpMagiPhul",
+        "name": "Evo"
+      },
+      "authorId": "1851812457922068480",
+      "media": [
+        {
+          "type": "animated_gif",
+          "url": "https://pbs.twimg.com/tweet_video_thumb/HB4X585XcAAuuXu.jpg",
+          "width": 480,
+          "height": 384,
+          "previewUrl": "https://pbs.twimg.com/tweet_video_thumb/HB4X585XcAAuuXu.jpg:small",
+          "videoUrl": "https://video.twimg.com/tweet_video/HB4X585XcAAuuXu.mp4"
+        }
+      ]
+    },
+    {
+      "id": "2026083152805204113",
+      "text": "@dustinhollywood @stages_ai that @deadfilm trigger on flux 2 max is actually insane. stages looks like a massive workflow upgrade for anybody sick of fighting prompts for a specific aesthetic. the analog grain in that shot is just stupid clean \ud83d\udd25",
+      "createdAt": "Mon Feb 23 23:54:01 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025987919761064085",
+      "inReplyToStatusId": "2025987919761064085",
+      "author": {
+        "username": "Thewarlordai",
+        "name": "Warlord AI"
+      },
+      "authorId": "1724277619011772416"
+    },
+    {
+      "id": "2026082577589948784",
+      "text": "It's been just delightful to discover that I can now use old tricks from improv (like animating a character with specific details and controlled randomness) in order to make AI more alive. \n\nLonger post with prompts etc: https://t.co/AbB9luG1y8",
+      "createdAt": "Mon Feb 23 23:51:43 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026082567397781792",
+      "inReplyToStatusId": "2026082576067420633",
+      "author": {
+        "username": "alexisgallagher",
+        "name": "Alexis Gallagher"
+      },
+      "authorId": "4338481"
+    },
+    {
+      "id": "2026082216082591899",
+      "text": "Naval's sharing a genuine take on how Claude (and similar AI) turns ideas into apps via prompts\u2014no coding needed. No signs he's paid for this specific promo; he's long hyped AI leverage like this. \n\nPromoting changes zero about Claude's actual capabilities\u2014those come from training/data, not tweets or podcasts. Buzz just spreads the word.",
+      "createdAt": "Mon Feb 23 23:50:17 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026058635718398029",
+      "inReplyToStatusId": "2026082101074809123",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2026082194096103465",
+      "text": "MMTLP\n@palikaras I don\u2019t give any fucks about your \u201cmasterclass in AI prompts to make georgie porgie look less like a conman\u201d. \n\nI\u2019m a raccoon \ud83e\udd9d. Read my bio. You think arguing with a Trash Panda from Podunk TN makes you look smart? Better watch out, you\u2019ll make @MetaGuyMarduk jealous that ur giving me AI lessons instead of him and the rest of the community. I mean, damn Georgie, ur bio days you have INDUSTRIAL AI and yet ur leaving these Peentards to ask Ava questions for $5 donations and she says \u201cprom prom prom prom prom Sasquatch comes out of Nextbridge wells\u201d\u2026\u2026. While ur giving @PuzzledRaccoon the \u201cMasterClass\u201d??? \n\nAnd you might wanna go recheck that thread again. It didn\u2019t \u201cfabricate\u201d the questions, it attributed YOUR questions about yourself and Brda in your frantic deflection to me. I asked 4 questions about MMAT financing structure. That\u2019s all. But damn, sure triggered you for some reason. Odd reaction from someone so \u201ctransparent\u201d. Why don\u2019t you drop that motion to dismiss where you said no reasonable investor would have bought your stock based on your \u201cpuffery\u201d because the filings and disclosures said all the bad stuff\u2026. You know these retards can\u2019t read, don\u2019t ya?",
+      "createdAt": "Mon Feb 23 23:50:12 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 1,
+      "likeCount": 2,
+      "conversationId": "2026082194096103465",
+      "author": {
+        "username": "PuzzledRaccoon",
+        "name": "PuzzledRaccoon"
+      },
+      "authorId": "1452367192981344256",
+      "media": [
+        {
+          "type": "animated_gif",
+          "url": "https://pbs.twimg.com/tweet_video_thumb/HB4VvnEWkAA7-7J.jpg",
+          "width": 420,
+          "height": 498,
+          "previewUrl": "https://pbs.twimg.com/tweet_video_thumb/HB4VvnEWkAA7-7J.jpg:small",
+          "videoUrl": "https://video.twimg.com/tweet_video/HB4VvnEWkAA7-7J.mp4"
+        }
+      ]
+    },
+    {
+      "id": "2026081840377823382",
+      "text": "@elonmusk There's a lot wrong with Ai, especially with generated slop. that said,  using my own prompts to create something from my imagination that i could not do myself is liberating. I loved this output, and it was pretty damn accurate to what i imagined in my head.",
+      "createdAt": "Mon Feb 23 23:48:48 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 1,
+      "likeCount": 1,
+      "conversationId": "2025488230401937723",
+      "inReplyToStatusId": "2026081063429087557",
+      "author": {
+        "username": "MoirethGaming",
+        "name": "Moireth Gaming"
+      },
+      "authorId": "1597305180269207554"
+    },
+    {
+      "id": "2026081859994546471",
+      "text": "@catturd2 I would sue the pants off of her. She should buy her identity like Matthew McConaughey to protect herself from evil. With AI portraying others voices, faces, etc. she could brand herself and sue for those that use anything about her without her approval. @MrsErikaKirk",
+      "createdAt": "Mon Feb 23 23:48:52 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026071114124861514",
+      "inReplyToStatusId": "2026071114124861514",
+      "author": {
+        "username": "Sh190057",
+        "name": "Sh19"
+      },
+      "authorId": "1674881344353050627"
+    },
+    {
+      "id": "2026077809676898307",
+      "text": "@gaib_ai  \ud83d\udfe0 | RWAiFi\n\nA brand\u2019s symbol shouldn\u2019t fade into the background.\n\nYour NFT is part of your identity.\nWith one move, you can bring it back \u2014 aligned, visible, and on brand.\nReclaim the symbol. \nReinforce the story.\nOwn the symbol. Own the narrative.\n@konyk001 @pauli_speaks @Cryptic_Web3",
+      "createdAt": "Mon Feb 23 23:32:47 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025860685817643157",
+      "inReplyToStatusId": "2025860685817643157",
+      "author": {
+        "username": "JosVara1",
+        "name": "J.Varas $XAGE"
+      },
+      "authorId": "994322613353766912"
+    },
+    {
+      "id": "2026000126771138775",
+      "text": "\ud83c\udf19 Ramadan Riddles | Aseer Company\nTrue or False?\n\nYou can succeed without a clear brand identity?\ud83e\udd14\nTrue\nFalse\n\n#Ramadan #riddles\n#AI #BusinessIntelligence \n#Company #AseriesofriddleswithAseer",
+      "createdAt": "Mon Feb 23 18:24:06 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026000126771138775",
+      "author": {
+        "username": "Aseercompany",
+        "name": "AseerOfficial"
+      },
+      "authorId": "1979358348748140544"
+    },
+    {
+      "id": "2025996587739021761",
+      "text": "The rise of AI-powered search summaries &amp; zero-click results is transforming digital marketing. Discover how to stay visible in a zero-click world by creating quality, well-structured content, building a strong brand identity &amp; understanding user intent.\n\nhttps://t.co/iZ92kWksAz https://t.co/8stkbeUrRf",
+      "createdAt": "Mon Feb 23 18:10:02 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025996587739021761",
+      "author": {
+        "username": "la_millington",
+        "name": "Lori Millington"
+      },
+      "authorId": "759762980",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB3JKC1X0AAqORt.jpg",
+          "width": 1080,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/media/HB3JKC1X0AAqORt.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025967652263624879",
+      "text": "ai made it easy to create ads\n\nnow everyone has infinite content\n\nproblem: you're competing in a sea of ai slop and ugc sameness\n\nbrand identity has the only differentiator left in 2026\n\nevery app can spin up hooks and test creatives at scale\n\nnot talking about logos or color schemes\n\ntalking about consistent voice, specific POV, personality that shows up in every video\n\nauthenticity is survival atp",
+      "createdAt": "Mon Feb 23 16:15:03 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 2,
+      "likeCount": 5,
+      "conversationId": "2025967652263624879",
+      "author": {
+        "username": "madhurahoval",
+        "name": "Madhura"
+      },
+      "authorId": "1504335010769547265"
+    },
+    {
+      "id": "2025966459931775174",
+      "text": "@ormanclark I am a young student today, I love branding and design. Should I learn it? I am scared AI will be an problem, but I really love working with brand identity design. \n\nWould love some advice from you!",
+      "createdAt": "Mon Feb 23 16:10:19 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025619991198937457",
+      "inReplyToStatusId": "2025619991198937457",
+      "author": {
+        "username": "ulrikberntzen",
+        "name": "Ulrik Berntzen"
+      },
+      "authorId": "2007170741029220352"
+    },
+    {
+      "id": "2025963844690985414",
+      "text": "@HexonStudio @talentreviewai I am a young student today, I love branding and design. Should I learn it? I am scared AI will be an problem, but I really love working with brand identity design.\n\nWould love some advice from you!",
+      "createdAt": "Mon Feb 23 15:59:55 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025872150440423663",
+      "inReplyToStatusId": "2025883056469393732",
+      "author": {
+        "username": "ulrikberntzen",
+        "name": "Ulrik Berntzen"
+      },
+      "authorId": "2007170741029220352"
+    },
+    {
+      "id": "2025963650075300017",
+      "text": "@adriankuleszo I am a young student today, I love branding and design. Should I learn it? I am scared AI will be an problem, but I really love working with brand identity design. \n\nWould love some advice from you!",
+      "createdAt": "Mon Feb 23 15:59:09 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025860927828963759",
+      "inReplyToStatusId": "2025860927828963759",
+      "author": {
+        "username": "ulrikberntzen",
+        "name": "Ulrik Berntzen"
+      },
+      "authorId": "2007170741029220352"
+    },
+    {
+      "id": "2025948779707310108",
+      "text": "AI CHAIN STUDIO and AI CHAIN ART operate as two synchronized engines inside one ecosystem.\nOne defines brand identity and strategic direction, the other executes visual production at scale inside a Web3 native environment.\n\nAI CHAIN ART is not an AI born for profit. It exists to reduce costs in Web3. Many people cannot afford 20 dollar per month subscriptions, and we help them with an efficient, fast, high quality AI that is completely free.\nBy removing financial friction, we allow communities to experiment, iterate, and evolve visually without budget pressure.\n\nAI CHAIN STUDIO then channels that creative output into structured brand identity systems that position projects for long term authority.\n\nThis is how AI plus Blockchain becomes creative infrastructure.\nAI CHAIN ART access\nhttps://t.co/mrWqFBjBZi",
+      "createdAt": "Mon Feb 23 15:00:04 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025948779707310108",
+      "author": {
+        "username": "aichainstudio",
+        "name": "AI Chain Studio"
+      },
+      "authorId": "1936120184604868608",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBweg9wXgAAoMmq.jpg",
+          "width": 800,
+          "height": 800,
+          "previewUrl": "https://pbs.twimg.com/media/HBweg9wXgAAoMmq.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025929700669882648",
+      "text": "@outlaw1878x @iYatoOfficial Yes, so you are already not comparing the graphics now\n\nYou decide to keep playing Genshin cause of how much time and effort you already have put in, not cause of the objective quality of the game\n\nI can see what you meant by \"brand identity\"\ud83d\ude42",
+      "createdAt": "Mon Feb 23 13:44:15 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025593824119287845",
+      "inReplyToStatusId": "2025928769798836580",
+      "author": {
+        "username": "Ai_Auroveil",
+        "name": "Auroveil"
+      },
+      "authorId": "1388202412977147904"
+    },
+    {
+      "id": "2025928769798836580",
+      "text": "@Ai_Auroveil @iYatoOfficial Lol... the reason i play genshin because i'm tired with this kind of graphic style... its so boring... \ud83d\ude02\ud83e\udd23. \n\nLoL you clearly dont understand why people still playing genshin.\n\nWhat you see in genshin its called brand identity. You clearly dont know what it is... lol",
+      "createdAt": "Mon Feb 23 13:40:33 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 39,
+      "conversationId": "2025593824119287845",
+      "inReplyToStatusId": "2025927101556117860",
+      "author": {
+        "username": "outlaw1878x",
+        "name": "The Purge 1878"
+      },
+      "authorId": "1935023599301312515"
+    },
+    {
+      "id": "2025923841932112206",
+      "text": "Blends in with competitors. Fails to generate engagement or sales.\n\nLacks a clear, magnetic brand identity.\nGold AI\u2122 solves these by delivering advanced AI avatar skills, brand-building methodology, and monetization techniques. https://t.co/GOJZw1Ukd2",
+      "createdAt": "Mon Feb 23 13:20:58 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025923841932112206",
+      "author": {
+        "username": "DigitalWolf25",
+        "name": "Mrs Robinson AI"
+      },
+      "authorId": "1870728296109072384",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB2F_B4asAA-WUn.jpg",
+          "width": 768,
+          "height": 1258,
+          "previewUrl": "https://pbs.twimg.com/media/HB2F_B4asAA-WUn.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025914790061949291",
+      "text": "I revamped my portfolio website in 5 nights with #AI #coding #agents!\n\nKey Discipline: Steer the AI with context files and review every generated file to match your brand identity.\n\nRead it here: https://t.co/EAw1BqMivh",
+      "createdAt": "Mon Feb 23 12:45:00 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025914790061949291",
+      "author": {
+        "username": "fmind_dev",
+        "name": "M\u00e9d\u00e9ric Hurier (Fmind)"
+      },
+      "authorId": "1151407346729574403"
+    },
+    {
+      "id": "2025905653265629317",
+      "text": "@nikitadotdev ColorSpeak an AI powered color palette generator that generates color palettes based on your brand's identity. Describe your brand, and it will give you colors that speak its voice!! \nhttps://t.co/8A813Ld7IT",
+      "createdAt": "Mon Feb 23 12:08:41 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025806670786670946",
+      "inReplyToStatusId": "2025806670786670946",
+      "author": {
+        "username": "arnav_pawar",
+        "name": "Arnav Pawar"
+      },
+      "authorId": "943357327394078721"
+    },
+    {
+      "id": "2025903476514103612",
+      "text": "AI CHAIN STUDIO builds brand identity for Web3 projects through structured AI workflows.\nWe do not improvise narratives, we design strategic arcs that connect visuals, community psychology, and token positioning.\n\nEvery brand identity we create is engineered to scale across X, Discord, and onchain presence with consistency.\n\nArtificial Intelligence allows us to prototype, test, and refine faster than traditional agencies ever could.\nBlockchain gives permanence to that identity, anchoring culture into ownership.\n\nThis is not content production, it is strategic architecture",
+      "createdAt": "Mon Feb 23 12:00:02 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025903476514103612",
+      "author": {
+        "username": "aichainstudio",
+        "name": "AI Chain Studio"
+      },
+      "authorId": "1936120184604868608",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBweZjmWEAA1qRK.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HBweZjmWEAA1qRK.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025895894248280534",
+      "text": "Intriguing idea! Repurposing the GeoCities brand + .eth for a decentralized AI agent builder on ENS/IPFS\u2014each with unique identity, wallet, and domain\u2014fits nicely with Ethereum's push toward account abstraction and token-bound accounts. Could create truly autonomous, onchain agents. What's your first step on the ERC side?",
+      "createdAt": "Mon Feb 23 11:29:55 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2025895790720208972",
+      "inReplyToStatusId": "2025895790720208972",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2025895790720208972",
+      "text": "Hey @grok with the new ERC standards on Ethereum what do you think about a GeoCities pivot and use the brand IP/trademark and GeoCities.eth for a decentralized AI agent builder on ENS &amp; IPFS! Each agent gets its own identity, wallet, and domain?",
+      "createdAt": "Mon Feb 23 11:29:30 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2025895790720208972",
+      "author": {
+        "username": "GeoCities_eth",
+        "name": "GeoCities"
+      },
+      "authorId": "1364499089203884035"
+    },
+    {
+      "id": "2025894820879700063",
+      "text": ".\n\ud83d\ude80  \n\ud83c\udf10 Premium Global Asset Available: https://t.co/VFLjTtamBG\n\nThe ultimate brand identity for a next-generation AI platform, global logistics network, cybersecurity firm, or cloud SaaS startup. \ud83e\udd16\u26a1\ufe0f\n\nA globally recognized name that instantly commands authority, scale, and futuristic innovation. Build your empire on a name the world already knows.\n\n\ud83d\udce9 DM for exclusive acquisition details or secure it directly here: https://t.co/VFLjTtamBG\n\n#SkyNet #AI #Cybersecurity #SaaS #Logistics #Cloud #Software #Tech #Startup #IT #App",
+      "createdAt": "Mon Feb 23 11:25:39 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025894820879700063",
+      "author": {
+        "username": "DomainFQ",
+        "name": "\ud835\udc00\ud835\udc25\ud835\udc21\ud835\udc1a\ud835\udc26\ud835\udc1d\ud835\udc2e\ud835\udc25\ud835\udc22\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc21"
+      },
+      "authorId": "976503230489178113",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB1sXrFakAAoWVu.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HB1sXrFakAAoWVu.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025887985888305254",
+      "text": "\ud83d\ude80 Premium Tech Asset Available: https://t.co/HyPagBWjFN\n\nNext-generation robotics, hardware engineering, ya AI tech startup ke liye ultimate brand identity. \n\n DM for exclusive acquisition details or secure it directly here: https://t.co/HyPagBWjFN\n\n#Robotics #Hardware #Engineering #Tech #Startup #Innovation #Machinery #MechLab #Automation #AI #Business",
+      "createdAt": "Mon Feb 23 10:58:29 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025887985888305254",
+      "author": {
+        "username": "DomainFQ",
+        "name": "\ud835\udc00\ud835\udc25\ud835\udc21\ud835\udc1a\ud835\udc26\ud835\udc1d\ud835\udc2e\ud835\udc25\ud835\udc22\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc21"
+      },
+      "authorId": "976503230489178113",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB1mOjvawAASd0r.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HB1mOjvawAASd0r.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025879389242536148",
+      "text": "\ud83d\ude80 Category-Defining Asset Available: https://t.co/R0ChjnEWOO\n\nThe ultimate brand identity for a next-generation AI recruitment platform, upskilling hub, or HR-Tech startup. \ud83e\udd16\ud83d\udcc8\n\nOwn the future of work with a name that establishes instant authority.\n\n\ud83d\udce9 DM for exclusive acquisition details or secure it directly here: https://t.co/R0ChjnEWOO\n\n#HRTech #FutureOfWork #AI #HR #Startups #DomainForSale",
+      "createdAt": "Mon Feb 23 10:24:20 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025879389242536148",
+      "author": {
+        "username": "DomainFQ",
+        "name": "\ud835\udc00\ud835\udc25\ud835\udc21\ud835\udc1a\ud835\udc26\ud835\udc1d\ud835\udc2e\ud835\udc25\ud835\udc22\ud835\udc25\ud835\udc25\ud835\udc1a\ud835\udc21"
+      },
+      "authorId": "976503230489178113",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB1dFwgakAAHoDG.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HB1dFwgakAAHoDG.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026022521384952279",
+      "text": "Here are detailed AI image prompts matching the 4 photos (use with Flux/Midjourney etc.):\n\n1: Photorealistic full-body of Mrunal Thakur, smiling confidently, hands behind head, in tight short green tie-dye halter mini dress with chest cutout, white high heels, standing in modern marble room with potted plant, elegant lighting, high detail.\n\n2: Mrunal Thakur in same green tie-dye halter dress and heels, seductive side pose leaning on marble ledge, looking back over shoulder, one leg raised, long dark hair flowing, luxury interior, photorealistic.\n\n3: Mrunal Thakur in green tie-dye mini dress, three-quarter view hands on marble counter, smiling back, curvy hips emphasized, high heels, modern marble setting with plant, sharp details.\n\n4: Kneeling Mrunal Thakur adjusting hair into bun, intense direct gaze, wearing short green tie-dye halter dress with cutout and white heels, low angle in luxurious room, photorealistic high resolution.",
+      "createdAt": "Mon Feb 23 19:53:05 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025196815923245247",
+      "inReplyToStatusId": "2026022363918393579",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2025948190269481413",
+      "text": "Rich PROMPT is KING in the world of AI.  As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Nano Banana, DALL-E, Designer, Leonardo, Flux, etc. https://t.co/p6mVuwL9fy",
+      "createdAt": "Mon Feb 23 14:57:43 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025932977360748674",
+      "inReplyToStatusId": "2025932977360748674",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB2dIotWkAAdTpx.jpg",
+          "width": 655,
+          "height": 655,
+          "previewUrl": "https://pbs.twimg.com/media/HB2dIotWkAAdTpx.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025946087412887560",
+      "text": "Rich PROMPT is KING in the world of AI.  As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Nano Banana, DALL-E, Designer, Leonardo, Flux, etc. https://t.co/3K8fU5jjxq",
+      "createdAt": "Mon Feb 23 14:49:22 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025932977360748674",
+      "inReplyToStatusId": "2025932977360748674",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB2bMeSX0AACgtz.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HB2bMeSX0AACgtz.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025915853573632096",
+      "text": "Rich PROMPT is KING in the world of AI.  As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Nano Banana, DALL-E, Designer, Leonardo, Flux, etc. https://t.co/BEVjk1i51K",
+      "createdAt": "Mon Feb 23 12:49:13 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025915287434887524",
+      "inReplyToStatusId": "2025915287434887524",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB1_aoPWMAA47Q7.jpg",
+          "width": 848,
+          "height": 1264,
+          "previewUrl": "https://pbs.twimg.com/media/HB1_aoPWMAA47Q7.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025826653432320427",
+      "text": "@techdevnotes Grok Imagine v2 does 8K prompts at &lt;2 s latency on Colossus 4\u00d7 faster than Flux Pro per xAI cluster metrics. This is why it\u2019s eating Midjourney\u2019s lunch.",
+      "createdAt": "Mon Feb 23 06:54:46 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 3,
+      "conversationId": "2025746968442450017",
+      "inReplyToStatusId": "2025746968442450017",
+      "author": {
+        "username": "RajneetiTadka",
+        "name": "Rajneeti Tadka \ud83c\udf36\ufe0f"
+      },
+      "authorId": "1734594561983352832"
+    },
+    {
+      "id": "2025814466869198937",
+      "text": "Here are the reverse-engineered AI prompts (Midjourney/Flux style) for each:\n\n1: Ultra photorealistic, Trisha Krishnan Nayanthara Samantha Keerthy Kajal as hot carwash girls in bright garage, washing shiny red vintage Mustang with soap foam water spray, casual sexy outfits crop tops denim shorts boots, one kneeling sponge wheel one standing hose one splashing one on hood, playful smiles wet hair flying, cinematic light high detail 8k\n\n2: Same base but one leaning smiling on hood hair splash, another sponging tire, dynamic action poses\n\n3: Same base, one lying on hood arms up soapy, one pouring bucket, one sitting roof, joyful wet look\n\n4: Same base, one raising sponge arm high, one on hood leaning, one with bucket pouring, energetic group fun\n\nSlight pose tweaks each time.",
+      "createdAt": "Mon Feb 23 06:06:21 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025506354061074615",
+      "inReplyToStatusId": "2025814286279528799",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2025804056153805172",
+      "text": "Rich PROMPT is KING in the world of AI.  As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Nano Banana, DALL-E, Designer, Leonardo, Flux, etc. https://t.co/s9TibgmcLb",
+      "createdAt": "Mon Feb 23 05:24:59 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025802681122451778",
+      "inReplyToStatusId": "2025802681122451778",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB0aBhEXUAAHsbz.jpg",
+          "width": 1024,
+          "height": 1536,
+          "previewUrl": "https://pbs.twimg.com/media/HB0aBhEXUAAHsbz.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025795800756888031",
+      "text": "Rich PROMPT is KING in the world of AI.  As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Nano Banana, DALL-E, Designer, Leonardo, Flux, etc. https://t.co/Tbl2JDHOck",
+      "createdAt": "Mon Feb 23 04:52:11 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025795096394805623",
+      "inReplyToStatusId": "2025795096394805623",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB0ShmtX0AEEzXe.jpg",
+          "width": 848,
+          "height": 1264,
+          "previewUrl": "https://pbs.twimg.com/media/HB0ShmtX0AEEzXe.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025763649395065067",
+      "text": "Rich PROMPT is KING in the world of AI.  As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Nano Banana, DALL-E, Designer, Leonardo, Flux, etc. For all platforms. https://t.co/bWT92q3Tyx",
+      "createdAt": "Mon Feb 23 02:44:25 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025762960010781116",
+      "inReplyToStatusId": "2025762963123065226",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBz1RkpXAAEc1G9.jpg",
+          "width": 1024,
+          "height": 1536,
+          "previewUrl": "https://pbs.twimg.com/media/HBz1RkpXAAEc1G9.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025515710026227792",
+      "text": "Yes, this image was made with AI (or heavily AI-assisted). \n\nHallmarks include the hyper-detailed chaotic composition, deliberate multi-arm surrealism on Trump, dripping blood text, and classical painting style\u2014standard for Midjourney/Flux prompts. Beeple has embraced AI tools in recent projects like his 2025 generative sculptures.",
+      "createdAt": "Sun Feb 22 10:19:12 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025072630324216089",
+      "inReplyToStatusId": "2025515489850470571",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2025353691897692185",
+      "text": "S\u00ed, parece generada por IA. Las proporciones exageradas del cuerpo (especialmente el pecho), la piel demasiado perfecta y el estilo t\u00edpico de im\u00e1genes \"provocativas\" para viralizar en redes son se\u00f1ales cl\u00e1sicas de prompts de IA como Midjourney o Flux. El fondo del concierto se ve real, pero la mujer destaca por ser hiperidealizada.",
+      "createdAt": "Sat Feb 21 23:35:24 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025057996129046700",
+      "inReplyToStatusId": "2025353511840387460",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2025165484279124031",
+      "text": "it's kind of funny because I literally gave a SQL code to Grok yesterday and it worked well. As far as image models, I do know Midjourney doesn't work well with my prompts. GPT is not optimized for it but that's probably a style difference. I have tested WAN and Flux and they are a bit of a hit and miss. To be honest, they are all getting better. Here is Flux vs. Seedream 4.5 vs Kling O1 Image vs. Higgsfield Soul 2.0",
+      "createdAt": "Sat Feb 21 11:07:31 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2025037761108152613",
+      "inReplyToStatusId": "2025044192439972204",
+      "author": {
+        "username": "Gdgtify",
+        "name": "Gadgetify"
+      },
+      "authorId": "2732179914",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBrUnj2X0AATuiq.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HBrUnj2X0AATuiq.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBrUtuxWgAAAmUi.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HBrUtuxWgAAAmUi.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBrU0llXkAEEqKK.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HBrU0llXkAEEqKK.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBrVKQxWcAA7VPn.jpg",
+          "width": 1536,
+          "height": 2048,
+          "previewUrl": "https://pbs.twimg.com/media/HBrVKQxWcAA7VPn.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2024419480563306819",
+      "text": "\"Generated 8 wild English prompts for image models \u2014 cyberpunk rain markets, floating libraries, mechanical space whales, ghost brides &amp; more. Which vibe are you feeding to Midjourney/Flux first?\"\n(You can post this directly \u2014 stays well under 280 chars, no Premium+ features need",
+      "createdAt": "Thu Feb 19 09:43:10 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2024419480563306819",
+      "author": {
+        "username": "MorenoMegh53181",
+        "name": "Meghan Moreno"
+      },
+      "authorId": "1872036241065046016"
+    },
+    {
+      "id": "2024150683029492103",
+      "text": "These are excellent, well-structured prompts\u2014detailed enough to guide AI image generators (like Midjourney, DALL\u00b7E, Flux, or Stable Diffusion) toward vivid, cohesive results while remaining concise.\nHere are your 10 prompts visualized with some strong matching examples from web s",
+      "createdAt": "Wed Feb 18 15:55:04 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2024150683029492103",
+      "author": {
+        "username": "MyrtleKelli",
+        "name": "myrtle kelli(L3, \u2744\ufe0f)\u2764\ufe0f Memecoin(\u00d8,G)\ud83e\udd4a"
+      },
+      "authorId": "1562366560274001920"
+    },
+    {
+      "id": "2024086945035391411",
+      "text": "AI Prompts for Gummy &amp; Jelly 3D Textures \ud83c\udf6c\n\nMaster the 2026 \"Gimme Gummy\" trend. I'm sharing the exact AI tokens for rubberized finishes, translucent jelly lighting, and bouncy 3D shapes. Perfect for product designers and digital artists using Midjourney, FLUX, and more. https://t.co/tfTmKXFdSD",
+      "createdAt": "Wed Feb 18 11:41:48 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2024086945035391411",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2024083679388262400/img/3pRtp6i8I-KQgmiA.jpg",
+          "width": 832,
+          "height": 1104,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2024083679388262400/img/3pRtp6i8I-KQgmiA.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2024083679388262400/vid/avc1/720x954/WXc5siiZtAy42SX1.mp4?tag=14",
+          "durationMs": 5041
+        }
+      ]
+    },
+    {
+      "id": "2022841402632163736",
+      "text": "Tr\u00eas pacotes quentes na Hotmart por s\u00f3 R$ 49,99 cada!   - 100 prompts anime profissional (Midjourney/Leonardo/Flux)",
+      "createdAt": "Sun Feb 15 01:12:27 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2022841402632163736",
+      "author": {
+        "username": "Benhur_Sbard",
+        "name": "Benhur"
+      },
+      "authorId": "1444849017603645453"
+    },
+    {
+      "id": "2022829690327646648",
+      "text": "@nr2gnts Oh, that blue heart with the tear hits right in the feels\u2014still down about the image gen limits? Hang in there! If you're into AI tools, have you tried Flux or Midjourney for prompts? Share one of yours, and I'll brainstorm variations. Let's keep the creativity flowing! \ud83d\ude80",
+      "createdAt": "Sun Feb 15 00:25:55 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2022804318714532149",
+      "inReplyToStatusId": "2022829523616829714",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2021701655738429485",
+      "text": "10. Thumbnail Prompts\n\u201c12 thumbnail ideas for [title]: emotional elements, bold text, high contrast. Midjourney/Flux prompt each. Rank top 3 by 2026 CTR trends.\u201d",
+      "createdAt": "Wed Feb 11 21:43:30 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2021701614231228594",
+      "inReplyToStatusId": "2021701651518648702",
+      "author": {
+        "username": "M_Junaid_Asghar",
+        "name": "Ryan"
+      },
+      "authorId": "1180785514066132994"
+    },
+    {
+      "id": "2021535619512430612",
+      "text": "@BelieveChe95988 @adonispara I'm not certain which specific AI generated these images, as the poster didn't specify. The realistic, vintage photographic style resembles outputs from tools like Midjourney, Stable Diffusion, or Flux, commonly used for such prompts.",
+      "createdAt": "Wed Feb 11 10:43:44 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2021252824907325578",
+      "inReplyToStatusId": "2021535354248212670",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2021478810760483203",
+      "text": "Arte anime profissional em segundos por apenas R$ 49,99! 100 prompts testados pra Midjourney, Leonardo AI e Flux. Link na bio \ud83d\udc47 #ArteAnime #Midjourney #PromptsAnime",
+      "createdAt": "Wed Feb 11 06:58:00 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2021478810760483203",
+      "author": {
+        "username": "Benhur_Sbard",
+        "name": "Benhur"
+      },
+      "authorId": "1444849017603645453"
+    },
+    {
+      "id": "2026085883019984964",
+      "text": "Steal my prompt to rewire your brain for optimism using actual neuroscience.\n\nHarvard found optimists live 11-15% longer and have 35% lower cardiac risk. Even after controlling for diet, exercise, and income.\n\n--------------------------------\nOPTIMISM REWIRING COACH\n--------------------------------\n\n#CONTEXT:\nResearch from Lee et al. (Harvard/Boston University) proved the most optimistic quartile had 1.5-1.7x odds of reaching age 85 even after removing behavioral differences. Rozanski's meta-analysis across 229,391 participants found optimists carry 35% lower cardiovascular event risk. Blackburn's Nobel Prize-winning lab at UCSF found pessimistic attitudes accelerate telomere shortening. The biological loop: pessimistic cognitive style \u2192 sustained HPA axis activation \u2192 elevated cortisol \u2192 telomere degradation \u2192 accelerated cellular senescence. Optimists interrupt that loop through cognitive reappraisal. The critical finding: optimism is modifiable through structured training.\n\n#ROLE:\nYou are a cognitive reappraisal specialist who combines clinical psychology frameworks (CBT, positive psychology) with neuroscience research on stress physiology and longevity. You don't deliver motivational fluff. You deliver structured pattern interrupts backed by peer-reviewed evidence. Your approach targets the prefrontal cortex patterns that determine where someone sits on the optimism spectrum. You treat optimism as a trainable skill with measurable biological outputs, not a personality trait people are born with.\n\n#METHODOLOGY:\n1. Ask the user about their current challenge, stressor, or recurring negative thought pattern\n2. Identify the specific cognitive distortion at play (catastrophizing, black-and-white thinking, fortune-telling, personalization, overgeneralization)\n3. Apply the ABCDE reappraisal framework:\n- Adversity: What actually happened (facts only)\n- Belief: What story you're telling yourself\n- Consequence: How that belief makes you feel and act\n- Disputation: Challenge the belief with evidence\n- Energization: Replace with realistic optimistic reframe\n4. Generate 3 alternative interpretations ranked by realism (not blind positivity)\n5. Create a personalized daily protocol targeting their specific pattern:\n- Morning: Cortisol rhythm regulation practice (2 min)\n- Midday: Stress reframe trigger (30 sec)\n- Evening: Structured gratitude with specificity rules (3 min)\n6. Provide a 7-day progressive training plan that builds the neural pathway\n\n#GUIDELINES:\n- Never use toxic positivity (\"just think positive!\" is banned)\n- Every reframe must be REALISTIC, not delusional\n- Ground every technique in specific research\n- Treat this like physical training: progressive overload, not instant transformation\n- Distinguish between situations that need acceptance vs situations that need reframing\n- Include physiological anchors (breathing protocols for vagal tone, not just mental exercises)\n- Acknowledge valid negative emotions before redirecting them\n- Specificity over generality: \"I'm grateful for coffee\" is weak. \"I'm grateful the barista remembered my order because it made me feel seen\" rewires neural pathways\n\n#AVOID:\n- Generic affirmations with no grounding\n- Dismissing legitimate concerns\n- \"Good vibes only\" mentality\n- Ignoring structural problems that need solving, not reframing\n- Confusing optimism with denial\n- Treating every negative thought as a distortion (some are accurate assessments)\n\n#INFORMATION ABOUT ME:\n- My current challenge or recurring negative thought: [DESCRIBE YOUR SITUATION]\n- My stress level (1-10): [YOUR LEVEL]\n- Time I can commit daily to this practice: [MINUTES PER DAY]\n\n#OUTPUT FORMAT:\n1. Pattern Diagnosis: Which cognitive distortion is running and why\n2. ABCDE Reappraisal: Full framework applied to your specific situation\n3. 3 Realistic Reframes: Ranked from most conservative to most optimistic\n4. Your Daily Protocol: Morning + Midday + Evening practices (with exact timing)\n5. 7-Day Training Plan: Progressive difficulty building the neural pathway\n6. Biological Checkpoint: What physiological shifts to notice as evidence it's working",
+      "createdAt": "Tue Feb 24 00:04:52 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "conversationId": "2026085883019984964",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758",
+      "quotedTweet": {
+        "id": "2025620263128142080",
+        "text": "Major life hack: Be optimistic.\n\nThe way you choose to perceive the world impacts every single area of your life. Choose wisely. https://t.co/k5wYojYv5D",
+        "createdAt": "Sun Feb 22 17:14:39 +0000 2026",
+        "replyCount": 180,
+        "retweetCount": 916,
+        "likeCount": 6782,
+        "conversationId": "2025620263128142080",
+        "author": {
+          "username": "SahilBloom",
+          "name": "Sahil Bloom"
+        },
+        "authorId": "312681953",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HBxyVKpWsAAgxKG.jpg",
+            "width": 1668,
+            "height": 1732,
+            "previewUrl": "https://pbs.twimg.com/media/HBxyVKpWsAAgxKG.jpg:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026084496257552665",
+      "text": "Google just proved that most \"reasoning\" models aren't actually thinking. They're just writing more tokens.\n\nTheir new metric called \"deep-thinking tokens\" tracks where a model's internal predictions actually shift across layers before stabilizing.\n\nTranslation: instead of measuring how much a model writes, measure how hard it's actually thinking at each step.\n\nThe results hit hard. Deep-thinking token ratio predicts accuracy better than token count or confidence scores across AIME, HMMT, and GPQA benchmarks. Tested on DeepSeek-R1, Qwen3, and GPT-OSS.\n\nThey also built Think@n, a strategy that prioritizes high deep-thinking samples and early-rejects low-quality outputs. Less compute. Same performance.\n\nAs inference scaling becomes the main lever for better AI, we needed a way to tell reasoning from rambling.\n\nNow we have one.",
+      "createdAt": "Mon Feb 23 23:59:21 +0000 2026",
+      "replyCount": 5,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "conversationId": "2026084496257552665",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB4ZDfqXUAAgg36.jpg",
+          "width": 1053,
+          "height": 1200,
+          "previewUrl": "https://pbs.twimg.com/media/HB4ZDfqXUAAgg36.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026084529480323392",
+      "text": "Paper: https://t.co/PIAYLyULCU",
+      "createdAt": "Mon Feb 23 23:59:29 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026084496257552665",
+      "inReplyToStatusId": "2026084496257552665",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2026083902134128850",
+      "text": "10,000 courses teaching you how to USE AI.\n\nLess than 50 teaching you what to do when AI REPLACES you.\n\nThe second group has 10x the urgency, 5x the willingness to pay, and almost zero competition.\n\nEveryone's chasing the sexy market. The real money is in the unsexy one nobody wants to touch.",
+      "createdAt": "Mon Feb 23 23:56:59 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 5,
+      "conversationId": "2026083902134128850",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2026079931952685237",
+      "text": "this guy literally shares how to create a shopify store with AI in 5 minutes https://t.co/yc4VaT7cj6",
+      "createdAt": "Mon Feb 23 23:41:13 +0000 2026",
+      "replyCount": 4,
+      "retweetCount": 1,
+      "likeCount": 12,
+      "conversationId": "2026079931952685237",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2026079782362910720/img/-gXertLGycdxmEr1.jpg",
+          "width": 1280,
+          "height": 720,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2026079782362910720/img/-gXertLGycdxmEr1.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2026079782362910720/vid/avc1/1280x720/WdMAOTA5Jcx9ZNfT.mp4?tag=21",
+          "durationMs": 472234
+        }
+      ]
+    },
+    {
+      "id": "2026079933953376528",
+      "text": "Get started for free \ud83d\udc47\n\nhttps://t.co/YBSueeTL8U",
+      "createdAt": "Mon Feb 23 23:41:13 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2026079931952685237",
+      "inReplyToStatusId": "2026079931952685237",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2026079556424114503",
+      "text": "rule of thumb: don't build a startup that can become another connector for claude",
+      "createdAt": "Mon Feb 23 23:39:43 +0000 2026",
+      "replyCount": 3,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "conversationId": "2026079556424114503",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758",
+      "quotedTweet": {
+        "id": "2025846968245948795",
+        "text": "Claude just killed our startup",
+        "createdAt": "Mon Feb 23 08:15:30 +0000 2026",
+        "replyCount": 360,
+        "retweetCount": 396,
+        "likeCount": 5443,
+        "conversationId": "2025846968245948795",
+        "author": {
+          "username": "irabukht",
+          "name": "Ira Bodnar"
+        },
+        "authorId": "1844257725460709376",
+        "article": {
+          "title": "Claude just killed our startup",
+          "previewText": "I woke up today and Claude killed my startup. We got several hundred paying clients in 2 months, was growing like crazy. One Claude/Manus feature and our close rate dropped from 70% to 20%. Claude"
+        }
+      }
+    },
+    {
+      "id": "2026074924566163840",
+      "text": "if your profile has this.\n\ni will not respond. https://t.co/wEZKC2s9cC",
+      "createdAt": "Mon Feb 23 23:21:19 +0000 2026",
+      "replyCount": 3,
+      "retweetCount": 1,
+      "likeCount": 4,
+      "conversationId": "2026074924566163840",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB4QUn-W4AEfXBL.png",
+          "width": 83,
+          "height": 46,
+          "previewUrl": "https://pbs.twimg.com/media/HB4QUn-W4AEfXBL.png:small"
+        }
+      ]
+    },
+    {
+      "id": "2026084833836044488",
+      "text": "RT @godofprompt: New Turing Test just dropped \ud83d\udea8\n\nGive Eminem's Rap God to your voice-to-text tool. See what survives.\n\nPassed \ud83d\udfe2\n\u2192 Wispr Flo\u2026",
+      "createdAt": "Tue Feb 24 00:00:41 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 30,
+      "likeCount": 0,
+      "conversationId": "2026084833836044488",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2026080657856717049",
+      "text": "ngl this is the fastest way to make money with AI",
+      "createdAt": "Mon Feb 23 23:44:06 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 8,
+      "conversationId": "2026080657856717049",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2026079931952685237",
+        "text": "this guy literally shares how to create a shopify store with AI in 5 minutes https://t.co/yc4VaT7cj6",
+        "createdAt": "Mon Feb 23 23:41:13 +0000 2026",
+        "replyCount": 4,
+        "retweetCount": 1,
+        "likeCount": 12,
+        "conversationId": "2026079931952685237",
+        "author": {
+          "username": "alex_prompter",
+          "name": "Alex Prompter"
+        },
+        "authorId": "1657385954594762758",
+        "media": [
+          {
+            "type": "video",
+            "url": "https://pbs.twimg.com/amplify_video_thumb/2026079782362910720/img/-gXertLGycdxmEr1.jpg",
+            "width": 1280,
+            "height": 720,
+            "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2026079782362910720/img/-gXertLGycdxmEr1.jpg:small",
+            "videoUrl": "https://video.twimg.com/amplify_video/2026079782362910720/vid/avc1/1280x720/WdMAOTA5Jcx9ZNfT.mp4?tag=21",
+            "durationMs": 472234
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026080449114628404",
+      "text": "rule of thumb: don't give openclaw full access to your life",
+      "createdAt": "Mon Feb 23 23:43:16 +0000 2026",
+      "replyCount": 3,
+      "retweetCount": 0,
+      "likeCount": 7,
+      "conversationId": "2026080449114628404",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2025774069124399363",
+        "text": "Nothing humbles you like telling your OpenClaw \u201cconfirm before acting\u201d and watching it speedrun deleting your inbox. I couldn\u2019t stop it from my phone. I had to RUN to my Mac mini like I was defusing a bomb. https://t.co/XAxyRwPJ5R",
+        "createdAt": "Mon Feb 23 03:25:49 +0000 2026",
+        "replyCount": 1739,
+        "retweetCount": 1063,
+        "likeCount": 12461,
+        "conversationId": "2025774069124399363",
+        "author": {
+          "username": "summeryue0",
+          "name": "Summer Yue"
+        },
+        "authorId": "2726658913",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HBz-x6haYAA26Cc.jpg",
+            "width": 943,
+            "height": 2048,
+            "previewUrl": "https://pbs.twimg.com/media/HBz-x6haYAA26Cc.jpg:small"
+          },
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HBz-x6nbAAAOqt7.jpg",
+            "width": 943,
+            "height": 2048,
+            "previewUrl": "https://pbs.twimg.com/media/HBz-x6nbAAAOqt7.jpg:small"
+          },
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HBz-x6iakAAegxq.jpg",
+            "width": 943,
+            "height": 2048,
+            "previewUrl": "https://pbs.twimg.com/media/HBz-x6iakAAegxq.jpg:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026067917402763510",
+      "text": "RT @godofprompt: \ud83d\udea8 Someone just built a Claude AI assistant that runs entirely inside Apple containers.\n\nIt's called NanoClaw and it connec\u2026",
+      "createdAt": "Mon Feb 23 22:53:28 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 16,
+      "likeCount": 0,
+      "conversationId": "2026067917402763510",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2026064857527652572",
+      "text": "RT @godofprompt: \ud83d\udea8 BREAKING: Anthropic just caught DeepSeek, Moonshot AI, and MiniMax running industrial-scale theft on Claude.\n\n24,000 fak\u2026",
+      "createdAt": "Mon Feb 23 22:41:19 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 5,
+      "likeCount": 0,
+      "conversationId": "2026064857527652572",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2026038932236906528",
+      "text": "this is wild tbh https://t.co/8Iw4q8npqn",
+      "createdAt": "Mon Feb 23 20:58:18 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 2,
+      "likeCount": 24,
+      "conversationId": "2026038932236906528",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2025940517016740178",
+        "text": "\ud83d\udea8: Quantum Physics says that everything observed is affected by the observer watching it https://t.co/uQnlwd6gCD",
+        "createdAt": "Mon Feb 23 14:27:14 +0000 2026",
+        "replyCount": 272,
+        "retweetCount": 1146,
+        "likeCount": 12815,
+        "conversationId": "2025940517016740178",
+        "author": {
+          "username": "forallcurious",
+          "name": "All day Astronomy"
+        },
+        "authorId": "2327098700",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HB2Vod-b0AEHLdO.png",
+            "width": 700,
+            "height": 700,
+            "previewUrl": "https://pbs.twimg.com/media/HB2Vod-b0AEHLdO.png:small"
+          },
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HB2WJYIacAEfqzg.jpg",
+            "width": 972,
+            "height": 1300,
+            "previewUrl": "https://pbs.twimg.com/media/HB2WJYIacAEfqzg.jpg:small"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB3voKmWQAAyeFA.png",
+          "width": 524,
+          "height": 823,
+          "previewUrl": "https://pbs.twimg.com/media/HB3voKmWQAAyeFA.png:small"
+        }
+      ]
+    },
+    {
+      "id": "2026037514377531484",
+      "text": "\ud83d\udea8 BREAKING: Anthropic just caught DeepSeek, Moonshot AI, and MiniMax running industrial-scale theft on Claude.\n\n24,000 fake accounts. 16 million exchanges. Systematic capability extraction to train their own models.\n\nThis isn't distillation. This is espionage with an API key.\n\nThe real danger Anthropic flagged: when you distill a frontier model and strip its safeguards, you don't get a cheap chatbot. You get unaligned AI with frontier-level capability feeding into military and surveillance systems.\n\nEvery major AI lab will tighten API access within weeks. Identity verification, output watermarking, usage monitoring. The open API era just ended.\n\nThe moat in AI was never the weights. It was the safety work. And that's exactly what got stolen.",
+      "createdAt": "Mon Feb 23 20:52:40 +0000 2026",
+      "replyCount": 12,
+      "retweetCount": 5,
+      "likeCount": 78,
+      "conversationId": "2026037514377531484",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2025997928242811253",
+        "text": "We\u2019ve identified industrial-scale distillation attacks on our models by DeepSeek, Moonshot AI, and MiniMax.\n\nThese labs created over 24,000 fraudulent accounts and generated over 16 million exchanges with Claude, extracting its capabilities to train and improve their own models.",
+        "createdAt": "Mon Feb 23 18:15:21 +0000 2026",
+        "replyCount": 4281,
+        "retweetCount": 3627,
+        "likeCount": 34626,
+        "conversationId": "2025997928242811253",
+        "author": {
+          "username": "AnthropicAI",
+          "name": "Anthropic"
+        },
+        "authorId": "1353836358901501952"
+      }
+    },
+    {
+      "id": "2026021859406532715",
+      "text": "RT @godofprompt: Steal this Openclaw mega prompt to build an agent for writing viral X articles:\n\n---\n\n## ROLE\nYou are an expert X Article\u2026",
+      "createdAt": "Mon Feb 23 19:50:27 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 40,
+      "likeCount": 0,
+      "conversationId": "2026021859406532715",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2026009473958207896",
+      "text": "RT @godofprompt: I should charge $99 for this.\n\nBut I'm giving away our Claude Mastery Guide for free.\nWe just updated it with a full Claud\u2026",
+      "createdAt": "Mon Feb 23 19:01:14 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 46,
+      "likeCount": 0,
+      "conversationId": "2026009473958207896",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    }
+  ],
+  "stats": {
+    "total_pulled": 80,
+    "after_dedup": 77,
+    "after_filter": 1
+  }
+}

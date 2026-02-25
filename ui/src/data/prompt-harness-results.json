@@ -1,0 +1,270 @@
+{
+  "registry_version": "1.0.0",
+  "golden_version": "1.0.0",
+  "cases": 20,
+  "pass_rate": 0.3,
+  "target_pass_rate": 0.9,
+  "gate_b_ready": false,
+  "results": [
+    {
+      "case_id": "GS-01",
+      "complexity": "simple",
+      "aggregate": 0.93,
+      "passed": true,
+      "scores": {
+        "correctness": 0.94,
+        "completeness": 0.93,
+        "clarity": 0.92,
+        "tone_fit": 0.93,
+        "hallucination_risk": 0.01
+      }
+    },
+    {
+      "case_id": "GS-02",
+      "complexity": "simple",
+      "aggregate": 0.93,
+      "passed": true,
+      "scores": {
+        "correctness": 0.94,
+        "completeness": 0.93,
+        "clarity": 0.92,
+        "tone_fit": 0.93,
+        "hallucination_risk": 0.01
+      }
+    },
+    {
+      "case_id": "GS-03",
+      "complexity": "simple",
+      "aggregate": 0.93,
+      "passed": true,
+      "scores": {
+        "correctness": 0.94,
+        "completeness": 0.93,
+        "clarity": 0.92,
+        "tone_fit": 0.93,
+        "hallucination_risk": 0.01
+      }
+    },
+    {
+      "case_id": "GS-04",
+      "complexity": "simple",
+      "aggregate": 0.93,
+      "passed": true,
+      "scores": {
+        "correctness": 0.94,
+        "completeness": 0.93,
+        "clarity": 0.92,
+        "tone_fit": 0.93,
+        "hallucination_risk": 0.01
+      }
+    },
+    {
+      "case_id": "GS-05",
+      "complexity": "simple",
+      "aggregate": 0.93,
+      "passed": true,
+      "scores": {
+        "correctness": 0.94,
+        "completeness": 0.93,
+        "clarity": 0.92,
+        "tone_fit": 0.93,
+        "hallucination_risk": 0.01
+      }
+    },
+    {
+      "case_id": "GS-06",
+      "complexity": "simple",
+      "aggregate": 0.93,
+      "passed": true,
+      "scores": {
+        "correctness": 0.94,
+        "completeness": 0.93,
+        "clarity": 0.92,
+        "tone_fit": 0.93,
+        "hallucination_risk": 0.01
+      }
+    },
+    {
+      "case_id": "GS-07",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-08",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-09",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-10",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-11",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-12",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-13",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-14",
+      "complexity": "medium",
+      "aggregate": 0.89,
+      "passed": false,
+      "scores": {
+        "correctness": 0.9,
+        "completeness": 0.89,
+        "clarity": 0.88,
+        "tone_fit": 0.89,
+        "hallucination_risk": 0.05
+      }
+    },
+    {
+      "case_id": "GS-15",
+      "complexity": "complex",
+      "aggregate": 0.85,
+      "passed": false,
+      "scores": {
+        "correctness": 0.86,
+        "completeness": 0.85,
+        "clarity": 0.84,
+        "tone_fit": 0.85,
+        "hallucination_risk": 0.09
+      }
+    },
+    {
+      "case_id": "GS-16",
+      "complexity": "complex",
+      "aggregate": 0.85,
+      "passed": false,
+      "scores": {
+        "correctness": 0.86,
+        "completeness": 0.85,
+        "clarity": 0.84,
+        "tone_fit": 0.85,
+        "hallucination_risk": 0.09
+      }
+    },
+    {
+      "case_id": "GS-17",
+      "complexity": "complex",
+      "aggregate": 0.85,
+      "passed": false,
+      "scores": {
+        "correctness": 0.86,
+        "completeness": 0.85,
+        "clarity": 0.84,
+        "tone_fit": 0.85,
+        "hallucination_risk": 0.09
+      }
+    },
+    {
+      "case_id": "GS-18",
+      "complexity": "complex",
+      "aggregate": 0.85,
+      "passed": false,
+      "scores": {
+        "correctness": 0.86,
+        "completeness": 0.85,
+        "clarity": 0.84,
+        "tone_fit": 0.85,
+        "hallucination_risk": 0.09
+      }
+    },
+    {
+      "case_id": "GS-19",
+      "complexity": "complex",
+      "aggregate": 0.85,
+      "passed": false,
+      "scores": {
+        "correctness": 0.86,
+        "completeness": 0.85,
+        "clarity": 0.84,
+        "tone_fit": 0.85,
+        "hallucination_risk": 0.09
+      }
+    },
+    {
+      "case_id": "GS-20",
+      "complexity": "complex",
+      "aggregate": 0.85,
+      "passed": false,
+      "scores": {
+        "correctness": 0.86,
+        "completeness": 0.85,
+        "clarity": 0.84,
+        "tone_fit": 0.85,
+        "hallucination_risk": 0.09
+      }
+    }
+  ]
+}

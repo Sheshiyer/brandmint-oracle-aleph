@@ -1,0 +1,1437 @@
+{
+  "taskmaster_version": "1.0",
+  "metadata": {
+    "project": "Brandmint Localhost Interactive UI Pipeline",
+    "as_of": "2026-02-24T07:01:00+05:30",
+    "source_inputs": [
+      "Tweet: https://x.com/viktoroddy/status/2025522594590662912",
+      "Local Python pipeline engine",
+      "DUI process + localhost visual alternative"
+    ],
+    "design_language": [
+      "skeuomorphic",
+      "liquid-glassmorphism",
+      "dark hero",
+      "video-backed surfaces"
+    ],
+    "execution_model": "7 waves with parallel dispatch lanes"
+  },
+  "wave_summary": [
+    {
+      "wave": 1,
+      "task_count": 9
+    },
+    {
+      "wave": 2,
+      "task_count": 9
+    },
+    {
+      "wave": 3,
+      "task_count": 10
+    },
+    {
+      "wave": 4,
+      "task_count": 10
+    },
+    {
+      "wave": 5,
+      "task_count": 9
+    },
+    {
+      "wave": 6,
+      "task_count": 9
+    },
+    {
+      "wave": 7,
+      "task_count": 8
+    }
+  ],
+  "totals": {
+    "tasks": 64,
+    "estimated_hours": 203,
+    "dispatch_lanes": [
+      "design",
+      "docs",
+      "frontend",
+      "integration",
+      "platform",
+      "program",
+      "prompt",
+      "qa",
+      "security",
+      "ux"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "W1-T01",
+      "wave": 1,
+      "sequence": 1,
+      "title": "Audit Python pipeline entrypoints and existing DUI hooks",
+      "description": "Audit Python pipeline entrypoints and existing DUI hooks for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T02",
+      "wave": 1,
+      "sequence": 2,
+      "title": "Map pipeline stages to visual node graph primitives",
+      "description": "Map pipeline stages to visual node graph primitives for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T01"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T03",
+      "wave": 1,
+      "sequence": 3,
+      "title": "Define localhost multi-port topology and CORS policy",
+      "description": "Define localhost multi-port topology and CORS policy for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T01"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T04",
+      "wave": 1,
+      "sequence": 4,
+      "title": "Capture UX goals from tweet prompt into style constraints",
+      "description": "Capture UX goals from tweet prompt into style constraints for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "ui-design-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T05",
+      "wave": 1,
+      "sequence": 5,
+      "title": "Draft information architecture for dashboard screens",
+      "description": "Draft information architecture for dashboard screens for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T04"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T06",
+      "wave": 1,
+      "sequence": 6,
+      "title": "Define component inventory for pipeline controls",
+      "description": "Define component inventory for pipeline controls for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T05"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T07",
+      "wave": 1,
+      "sequence": 7,
+      "title": "Create data contracts for run status, logs, artifacts",
+      "description": "Create data contracts for run status, logs, artifacts for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T02"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T08",
+      "wave": 1,
+      "sequence": 8,
+      "title": "Set measurable quality bars (latency, visual, accessibility)",
+      "description": "Set measurable quality bars (latency, visual, accessibility) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T03",
+        "W1-T07"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W1-T09",
+      "wave": 1,
+      "sequence": 9,
+      "title": "Approve wave-by-wave execution charter and risk register",
+      "description": "Approve wave-by-wave execution charter and risk register for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-manager-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T08"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T01",
+      "wave": 2,
+      "sequence": 1,
+      "title": "Design token system for dark glass + skeuomorphic depth",
+      "description": "Design token system for dark glass + skeuomorphic depth for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "ui-design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T09"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T02",
+      "wave": 2,
+      "sequence": 2,
+      "title": "Typography scale using General Sans fallback strategy",
+      "description": "Typography scale using General Sans fallback strategy for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "ui-design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T01"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T03",
+      "wave": 2,
+      "sequence": 3,
+      "title": "Build spacing, radii, border, blur token primitives",
+      "description": "Build spacing, radii, border, blur token primitives for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "ui-design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T01"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T04",
+      "wave": 2,
+      "sequence": 4,
+      "title": "Create liquid glass card component with layered highlights",
+      "description": "Create liquid glass card component with layered highlights for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T03"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T05",
+      "wave": 2,
+      "sequence": 5,
+      "title": "Create skeuomorphic control set (buttons/toggles/sliders)",
+      "description": "Create skeuomorphic control set (buttons/toggles/sliders) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T03"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T06",
+      "wave": 2,
+      "sequence": 6,
+      "title": "Implement responsive navbar with contextual run actions",
+      "description": "Implement responsive navbar with contextual run actions for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T02",
+        "W2-T05"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T07",
+      "wave": 2,
+      "sequence": 7,
+      "title": "Implement hero shell with optional background video module",
+      "description": "Implement hero shell with optional background video module for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T04"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T08",
+      "wave": 2,
+      "sequence": 8,
+      "title": "Document component API contracts in Storybook-like catalog",
+      "description": "Document component API contracts in Storybook-like catalog for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": false,
+      "depends_on": [
+        "W2-T04",
+        "W2-T05",
+        "W2-T06"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W2-T09",
+      "wave": 2,
+      "sequence": 9,
+      "title": "Define prompt templates for consistent Claude/Codex UI generation",
+      "description": "Define prompt templates for consistent Claude/Codex UI generation for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-engineering-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T08"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T01",
+      "wave": 3,
+      "sequence": 1,
+      "title": "Build node-canvas pipeline graph base layout engine",
+      "description": "Build node-canvas pipeline graph base layout engine for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T09"
+      ],
+      "estimated_hours": 5,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T02",
+      "wave": 3,
+      "sequence": 2,
+      "title": "Implement draggable nodes with magnetic alignment guides",
+      "description": "Implement draggable nodes with magnetic alignment guides for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T01"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T03",
+      "wave": 3,
+      "sequence": 3,
+      "title": "Implement edge routing with animated flow states",
+      "description": "Implement edge routing with animated flow states for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T01"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T04",
+      "wave": 3,
+      "sequence": 4,
+      "title": "Create run-control dock (start/pause/abort/retry)",
+      "description": "Create run-control dock (start/pause/abort/retry) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T05"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T05",
+      "wave": 3,
+      "sequence": 5,
+      "title": "Create realtime log console panel with level filters",
+      "description": "Create realtime log console panel with level filters for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T07"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T06",
+      "wave": 3,
+      "sequence": 6,
+      "title": "Create artifact viewer shell (images/json/reports/video)",
+      "description": "Create artifact viewer shell (images/json/reports/video) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T07"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T07",
+      "wave": 3,
+      "sequence": 7,
+      "title": "Add command palette for pipeline actions and shortcuts",
+      "description": "Add command palette for pipeline actions and shortcuts for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T04"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T08",
+      "wave": 3,
+      "sequence": 8,
+      "title": "Implement adaptive layouts for desktop/tablet/laptop",
+      "description": "Implement adaptive layouts for desktop/tablet/laptop for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T02",
+        "W3-T06"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T09",
+      "wave": 3,
+      "sequence": 9,
+      "title": "Apply micro-interactions: glass refraction, inertia, hover light",
+      "description": "Apply micro-interactions: glass refraction, inertia, hover light for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "ui-design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T02",
+        "W3-T04"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W3-T10",
+      "wave": 3,
+      "sequence": 10,
+      "title": "Create state machine for UI run lifecycle visualization",
+      "description": "Create state machine for UI run lifecycle visualization for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T03",
+        "W3-T04"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T01",
+      "wave": 4,
+      "sequence": 1,
+      "title": "Stand up local UI server on dedicated port with proxy setup",
+      "description": "Stand up local UI server on dedicated port with proxy setup for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T03"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T02",
+      "wave": 4,
+      "sequence": 2,
+      "title": "Implement backend adapter to launch bm pipeline commands",
+      "description": "Implement backend adapter to launch bm pipeline commands for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T01",
+        "W4-T01"
+      ],
+      "estimated_hours": 5,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T03",
+      "wave": 4,
+      "sequence": 3,
+      "title": "Stream run logs via websocket or SSE bridge",
+      "description": "Stream run logs via websocket or SSE bridge for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T02"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T04",
+      "wave": 4,
+      "sequence": 4,
+      "title": "Expose run-state endpoint mapped to UI state machine",
+      "description": "Expose run-state endpoint mapped to UI state machine for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T10",
+        "W4-T02"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T05",
+      "wave": 4,
+      "sequence": 5,
+      "title": "Bind UI graph nodes to actual wave/skill execution metadata",
+      "description": "Bind UI graph nodes to actual wave/skill execution metadata for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T02",
+        "W4-T04"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T06",
+      "wave": 4,
+      "sequence": 6,
+      "title": "Implement artifact indexing API for generated outputs",
+      "description": "Implement artifact indexing API for generated outputs for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T02"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T07",
+      "wave": 4,
+      "sequence": 7,
+      "title": "Wire run-control dock to backend commands safely",
+      "description": "Wire run-control dock to backend commands safely for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T04",
+        "W4-T02"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T08",
+      "wave": 4,
+      "sequence": 8,
+      "title": "Integrate config editor for brand-config.yaml with schema hints",
+      "description": "Integrate config editor for brand-config.yaml with schema hints for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T07",
+        "W4-T01"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T09",
+      "wave": 4,
+      "sequence": 9,
+      "title": "Implement failure recovery panel with resume-from options",
+      "description": "Implement failure recovery panel with resume-from options for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T04",
+        "W4-T07"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W4-T10",
+      "wave": 4,
+      "sequence": 10,
+      "title": "Add auth/secrets guardrails for local env usage (.claude/.env)",
+      "description": "Add auth/secrets guardrails for local env usage (.claude/.env) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T02"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T01",
+      "wave": 5,
+      "sequence": 1,
+      "title": "Build wave orchestration timeline with dispatch batch markers",
+      "description": "Build wave orchestration timeline with dispatch batch markers for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T05"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T02",
+      "wave": 5,
+      "sequence": 2,
+      "title": "Implement parallel lane view for independent agent work",
+      "description": "Implement parallel lane view for independent agent work for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T01"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T03",
+      "wave": 5,
+      "sequence": 3,
+      "title": "Create task inspector drawer with deps/blockers/outputs",
+      "description": "Create task inspector drawer with deps/blockers/outputs for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T01"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T04",
+      "wave": 5,
+      "sequence": 4,
+      "title": "Build prompt studio for design/pipeline prompt versioning",
+      "description": "Build prompt studio for design/pipeline prompt versioning for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-engineering-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T09",
+        "W4-T08"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T05",
+      "wave": 5,
+      "sequence": 5,
+      "title": "Add quality dashboard (perf/accessibility/visual diff)",
+      "description": "Add quality dashboard (perf/accessibility/visual diff) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T08",
+        "W4-T06"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T06",
+      "wave": 5,
+      "sequence": 6,
+      "title": "Implement scenario presets (surface/focused/comprehensive)",
+      "description": "Implement scenario presets (surface/focused/comprehensive) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T08"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T07",
+      "wave": 5,
+      "sequence": 7,
+      "title": "Add run cost estimator and budget warnings",
+      "description": "Add run cost estimator and budget warnings for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T04",
+        "W4-T06"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T08",
+      "wave": 5,
+      "sequence": 8,
+      "title": "Create operator notes panel with Apple Notes export hook",
+      "description": "Create operator notes panel with Apple Notes export hook for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W5-T09",
+      "wave": 5,
+      "sequence": 9,
+      "title": "Support multi-project workspace switching",
+      "description": "Support multi-project workspace switching for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T01",
+        "W5-T03"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T01",
+      "wave": 6,
+      "sequence": 1,
+      "title": "Set frontend performance budgets and Lighthouse gates",
+      "description": "Set frontend performance budgets and Lighthouse gates for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T05"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T02",
+      "wave": 6,
+      "sequence": 2,
+      "title": "Implement accessibility pass (keyboard/nav/contrast/labels)",
+      "description": "Implement accessibility pass (keyboard/nav/contrast/labels) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T05",
+        "W3-T08"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T03",
+      "wave": 6,
+      "sequence": 3,
+      "title": "Add end-to-end localhost integration tests for core flows",
+      "description": "Add end-to-end localhost integration tests for core flows for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T07",
+        "W5-T06"
+      ],
+      "estimated_hours": 5,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T04",
+      "wave": 6,
+      "sequence": 4,
+      "title": "Add visual regression snapshots for glass/skeu surfaces",
+      "description": "Add visual regression snapshots for glass/skeu surfaces for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T09"
+      ],
+      "estimated_hours": 4,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T05",
+      "wave": 6,
+      "sequence": 5,
+      "title": "Harden websocket/log-stream error handling and reconnects",
+      "description": "Harden websocket/log-stream error handling and reconnects for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "pipeline-integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T03"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T06",
+      "wave": 6,
+      "sequence": 6,
+      "title": "Profile memory/render performance on long-running pipelines",
+      "description": "Profile memory/render performance on long-running pipelines for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T01",
+        "W5-T02"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T07",
+      "wave": 6,
+      "sequence": 7,
+      "title": "Implement structured telemetry for wave/task execution",
+      "description": "Implement structured telemetry for wave/task execution for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T04",
+        "W5-T07"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T08",
+      "wave": 6,
+      "sequence": 8,
+      "title": "Create local backup/restore for run metadata and preferences",
+      "description": "Create local backup/restore for run metadata and preferences for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T09"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W6-T09",
+      "wave": 6,
+      "sequence": 9,
+      "title": "Run release-candidate stabilization sprint and bug triage",
+      "description": "Run release-candidate stabilization sprint and bug triage for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "program",
+      "owner_agent": "program-manager-agent",
+      "parallelizable": false,
+      "depends_on": [
+        "W6-T01",
+        "W6-T02",
+        "W6-T03",
+        "W6-T04",
+        "W6-T05",
+        "W6-T06",
+        "W6-T07",
+        "W6-T08"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T01",
+      "wave": 7,
+      "sequence": 1,
+      "title": "Finalize premium visual polish and motion choreography",
+      "description": "Finalize premium visual polish and motion choreography for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "ui-design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T09"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T02",
+      "wave": 7,
+      "sequence": 2,
+      "title": "Write operator playbook for localhost UI + bm pipeline",
+      "description": "Write operator playbook for localhost UI + bm pipeline for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T09"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T03",
+      "wave": 7,
+      "sequence": 3,
+      "title": "Publish component usage guide and prompt cookbook",
+      "description": "Publish component usage guide and prompt cookbook for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T04",
+        "W7-T01"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T04",
+      "wave": 7,
+      "sequence": 4,
+      "title": "Create onboarding walkthrough for first pipeline run",
+      "description": "Create onboarding walkthrough for first pipeline run for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T02"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T05",
+      "wave": 7,
+      "sequence": 5,
+      "title": "Prepare launch checklist and cut v1.0 milestone",
+      "description": "Prepare launch checklist and cut v1.0 milestone for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-manager-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T02",
+        "W7-T03"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T06",
+      "wave": 7,
+      "sequence": 6,
+      "title": "Run final acceptance demo across 3 scenarios",
+      "description": "Run final acceptance demo across 3 scenarios for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T05"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T07",
+      "wave": 7,
+      "sequence": 7,
+      "title": "Define v1.1 backlog (plugins, remote mode, collaboration)",
+      "description": "Define v1.1 backlog (plugins, remote mode, collaboration) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-manager-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    },
+    {
+      "id": "W7-T08",
+      "wave": 7,
+      "sequence": 8,
+      "title": "Package handoff artifacts (taskboard, docs, metrics, recordings)",
+      "description": "Package handoff artifacts (taskboard, docs, metrics, recordings) for the Brandmint localhost UI pipeline.",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-manager-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation merged behind feature flags where needed",
+        "Demoable in localhost pipeline UI",
+        "No regression in existing Brandmint CLI flow"
+      ]
+    }
+  ]
+}

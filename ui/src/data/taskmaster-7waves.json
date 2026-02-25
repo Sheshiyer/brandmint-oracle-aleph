@@ -1,0 +1,2667 @@
+{
+  "taskmaster_version": "1.1-detailed",
+  "metadata": {
+    "project": "Brandmint Localhost Interactive UI Pipeline",
+    "as_of": "2026-02-24T07:15:00+05:30",
+    "mode": "page-by-page component-by-component detailed plan",
+    "fixed_port": 4188
+  },
+  "wave_summary": [
+    {
+      "wave": 1,
+      "task_count": 16
+    },
+    {
+      "wave": 2,
+      "task_count": 16
+    },
+    {
+      "wave": 3,
+      "task_count": 16
+    },
+    {
+      "wave": 4,
+      "task_count": 16
+    },
+    {
+      "wave": 5,
+      "task_count": 16
+    },
+    {
+      "wave": 6,
+      "task_count": 16
+    },
+    {
+      "wave": 7,
+      "task_count": 16
+    }
+  ],
+  "totals": {
+    "tasks": 112,
+    "estimated_hours": 256,
+    "dispatch_lanes": [
+      "design",
+      "docs",
+      "frontend",
+      "integration",
+      "platform",
+      "program",
+      "prompt",
+      "qa",
+      "security",
+      "ux"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "W1-T01",
+      "wave": 1,
+      "sequence": 1,
+      "title": "Onboarding: Project Selector",
+      "description": "Implement Project Selector for Onboarding in the Brandmint localhost UI.",
+      "page": "Onboarding",
+      "component": "Project Selector",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Project Selector is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T02",
+      "wave": 1,
+      "sequence": 2,
+      "title": "Onboarding: Scenario Picker",
+      "description": "Implement Scenario Picker for Onboarding in the Brandmint localhost UI.",
+      "page": "Onboarding",
+      "component": "Scenario Picker",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T01"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Scenario Picker is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T03",
+      "wave": 1,
+      "sequence": 3,
+      "title": "Onboarding: Config Import",
+      "description": "Implement Config Import for Onboarding in the Brandmint localhost UI.",
+      "page": "Onboarding",
+      "component": "Config Import",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T02"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Config Import is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T04",
+      "wave": 1,
+      "sequence": 4,
+      "title": "Dashboard: Run Header",
+      "description": "Implement Run Header for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Run Header",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T03"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Run Header is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T05",
+      "wave": 1,
+      "sequence": 5,
+      "title": "Dashboard: Wave Rail",
+      "description": "Implement Wave Rail for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Wave Rail",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T04"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Wave Rail is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T06",
+      "wave": 1,
+      "sequence": 6,
+      "title": "Dashboard: Task Board",
+      "description": "Implement Task Board for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Task Board",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T05"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Task Board is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T07",
+      "wave": 1,
+      "sequence": 7,
+      "title": "Dashboard: Quality Snapshot",
+      "description": "Implement Quality Snapshot for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Quality Snapshot",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Quality Snapshot is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T08",
+      "wave": 1,
+      "sequence": 8,
+      "title": "Dashboard: Status Timeline",
+      "description": "Implement Status Timeline for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Status Timeline",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T07"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Status Timeline is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T09",
+      "wave": 1,
+      "sequence": 9,
+      "title": "Pipeline Graph: Node Legend",
+      "description": "Implement Node Legend for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Node Legend",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T08"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Node Legend is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T10",
+      "wave": 1,
+      "sequence": 10,
+      "title": "Pipeline Graph: Dependency Preview",
+      "description": "Implement Dependency Preview for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Dependency Preview",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T09"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Dependency Preview is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T11",
+      "wave": 1,
+      "sequence": 11,
+      "title": "Settings: Port & Runtime",
+      "description": "Implement Port & Runtime for Settings in the Brandmint localhost UI.",
+      "page": "Settings",
+      "component": "Port & Runtime",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T10"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Port & Runtime is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T12",
+      "wave": 1,
+      "sequence": 12,
+      "title": "Settings: Environment Check",
+      "description": "Implement Environment Check for Settings in the Brandmint localhost UI.",
+      "page": "Settings",
+      "component": "Environment Check",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T11"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Environment Check is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T13",
+      "wave": 1,
+      "sequence": 13,
+      "title": "Artifacts: Catalog Skeleton",
+      "description": "Implement Catalog Skeleton for Artifacts in the Brandmint localhost UI.",
+      "page": "Artifacts",
+      "component": "Catalog Skeleton",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T12"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Catalog Skeleton is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T14",
+      "wave": 1,
+      "sequence": 14,
+      "title": "Logs: Console Skeleton",
+      "description": "Implement Console Skeleton for Logs in the Brandmint localhost UI.",
+      "page": "Logs",
+      "component": "Console Skeleton",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Console Skeleton is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T15",
+      "wave": 1,
+      "sequence": 15,
+      "title": "Reports: Summary Shell",
+      "description": "Implement Summary Shell for Reports in the Brandmint localhost UI.",
+      "page": "Reports",
+      "component": "Summary Shell",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Summary Shell is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W1-T16",
+      "wave": 1,
+      "sequence": 16,
+      "title": "Operations: Runbook Links",
+      "description": "Implement Runbook Links for Operations in the Brandmint localhost UI.",
+      "page": "Operations",
+      "component": "Runbook Links",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W1-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Runbook Links is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T01",
+      "wave": 2,
+      "sequence": 1,
+      "title": "Design System: Color Tokens",
+      "description": "Implement Color Tokens for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Color Tokens",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Color Tokens is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T02",
+      "wave": 2,
+      "sequence": 2,
+      "title": "Design System: Type Scale",
+      "description": "Implement Type Scale for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Type Scale",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T01",
+        "W1-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Type Scale is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T03",
+      "wave": 2,
+      "sequence": 3,
+      "title": "Design System: Spacing Scale",
+      "description": "Implement Spacing Scale for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Spacing Scale",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T02"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Spacing Scale is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T04",
+      "wave": 2,
+      "sequence": 4,
+      "title": "Design System: Border + Radius",
+      "description": "Implement Border + Radius for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Border + Radius",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T03",
+        "W1-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Border + Radius is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T05",
+      "wave": 2,
+      "sequence": 5,
+      "title": "Design System: Glass Surfaces",
+      "description": "Implement Glass Surfaces for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Glass Surfaces",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T04"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Glass Surfaces is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T06",
+      "wave": 2,
+      "sequence": 6,
+      "title": "Design System: Skeuo Controls",
+      "description": "Implement Skeuo Controls for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Skeuo Controls",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T05",
+        "W1-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Skeuo Controls is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T07",
+      "wave": 2,
+      "sequence": 7,
+      "title": "Design System: Button Set",
+      "description": "Implement Button Set for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Button Set",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Button Set is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T08",
+      "wave": 2,
+      "sequence": 8,
+      "title": "Design System: Form Controls",
+      "description": "Implement Form Controls for Design System in the Brandmint localhost UI.",
+      "page": "Design System",
+      "component": "Form Controls",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T07",
+        "W1-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Form Controls is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T09",
+      "wave": 2,
+      "sequence": 9,
+      "title": "Dashboard: Card Pattern",
+      "description": "Implement Card Pattern for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Card Pattern",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T08"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Card Pattern is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T10",
+      "wave": 2,
+      "sequence": 10,
+      "title": "Dashboard: Section Frames",
+      "description": "Implement Section Frames for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Section Frames",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T09",
+        "W1-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Section Frames is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T11",
+      "wave": 2,
+      "sequence": 11,
+      "title": "Dashboard: Iconography",
+      "description": "Implement Iconography for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Iconography",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T10"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Iconography is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T12",
+      "wave": 2,
+      "sequence": 12,
+      "title": "Pipeline Graph: Node Cards",
+      "description": "Implement Node Cards for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Node Cards",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T11",
+        "W1-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Node Cards is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T13",
+      "wave": 2,
+      "sequence": 13,
+      "title": "Pipeline Graph: Edge Styles",
+      "description": "Implement Edge Styles for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Edge Styles",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T12"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Edge Styles is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T14",
+      "wave": 2,
+      "sequence": 14,
+      "title": "Logs: Severity Badges",
+      "description": "Implement Severity Badges for Logs in the Brandmint localhost UI.",
+      "page": "Logs",
+      "component": "Severity Badges",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T13",
+        "W1-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Severity Badges is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T15",
+      "wave": 2,
+      "sequence": 15,
+      "title": "Artifacts: Preview Tiles",
+      "description": "Implement Preview Tiles for Artifacts in the Brandmint localhost UI.",
+      "page": "Artifacts",
+      "component": "Preview Tiles",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Preview Tiles is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W2-T16",
+      "wave": 2,
+      "sequence": 16,
+      "title": "Docs: Component Catalog",
+      "description": "Implement Component Catalog for Docs in the Brandmint localhost UI.",
+      "page": "Docs",
+      "component": "Component Catalog",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W2-T15",
+        "W1-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Component Catalog is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T01",
+      "wave": 3,
+      "sequence": 1,
+      "title": "Dashboard: Header Actions",
+      "description": "Implement Header Actions for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Header Actions",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Header Actions is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T02",
+      "wave": 3,
+      "sequence": 2,
+      "title": "Dashboard: Wave Selector",
+      "description": "Implement Wave Selector for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Wave Selector",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T01",
+        "W2-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Wave Selector is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T03",
+      "wave": 3,
+      "sequence": 3,
+      "title": "Dashboard: Task Grid",
+      "description": "Implement Task Grid for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Task Grid",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T02"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Task Grid is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T04",
+      "wave": 3,
+      "sequence": 4,
+      "title": "Dashboard: Dependency Drawer",
+      "description": "Implement Dependency Drawer for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Dependency Drawer",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T03",
+        "W2-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Dependency Drawer is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T05",
+      "wave": 3,
+      "sequence": 5,
+      "title": "Pipeline Graph: Canvas Layout",
+      "description": "Implement Canvas Layout for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Canvas Layout",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T04"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Canvas Layout is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T06",
+      "wave": 3,
+      "sequence": 6,
+      "title": "Pipeline Graph: Drag Nodes",
+      "description": "Implement Drag Nodes for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Drag Nodes",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T05",
+        "W2-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Drag Nodes is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T07",
+      "wave": 3,
+      "sequence": 7,
+      "title": "Pipeline Graph: Animated Edges",
+      "description": "Implement Animated Edges for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Animated Edges",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Animated Edges is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T08",
+      "wave": 3,
+      "sequence": 8,
+      "title": "Pipeline Graph: Mini Map",
+      "description": "Implement Mini Map for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Mini Map",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T07",
+        "W2-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Mini Map is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T09",
+      "wave": 3,
+      "sequence": 9,
+      "title": "Logs: Live Stream Panel",
+      "description": "Implement Live Stream Panel for Logs in the Brandmint localhost UI.",
+      "page": "Logs",
+      "component": "Live Stream Panel",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T08"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Live Stream Panel is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T10",
+      "wave": 3,
+      "sequence": 10,
+      "title": "Logs: Filters + Search",
+      "description": "Implement Filters + Search for Logs in the Brandmint localhost UI.",
+      "page": "Logs",
+      "component": "Filters + Search",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T09",
+        "W2-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Filters + Search is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T11",
+      "wave": 3,
+      "sequence": 11,
+      "title": "Artifacts: Asset Explorer",
+      "description": "Implement Asset Explorer for Artifacts in the Brandmint localhost UI.",
+      "page": "Artifacts",
+      "component": "Asset Explorer",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T10"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Asset Explorer is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T12",
+      "wave": 3,
+      "sequence": 12,
+      "title": "Artifacts: Detail Pane",
+      "description": "Implement Detail Pane for Artifacts in the Brandmint localhost UI.",
+      "page": "Artifacts",
+      "component": "Detail Pane",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T11",
+        "W2-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Detail Pane is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T13",
+      "wave": 3,
+      "sequence": 13,
+      "title": "Reports: KPI Widgets",
+      "description": "Implement KPI Widgets for Reports in the Brandmint localhost UI.",
+      "page": "Reports",
+      "component": "KPI Widgets",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T12"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "KPI Widgets is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T14",
+      "wave": 3,
+      "sequence": 14,
+      "title": "Reports: Progress Charts",
+      "description": "Implement Progress Charts for Reports in the Brandmint localhost UI.",
+      "page": "Reports",
+      "component": "Progress Charts",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T13",
+        "W2-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Progress Charts is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T15",
+      "wave": 3,
+      "sequence": 15,
+      "title": "Operations: Command Palette",
+      "description": "Implement Command Palette for Operations in the Brandmint localhost UI.",
+      "page": "Operations",
+      "component": "Command Palette",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Command Palette is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W3-T16",
+      "wave": 3,
+      "sequence": 16,
+      "title": "Operations: Keyboard Shortcuts",
+      "description": "Implement Keyboard Shortcuts for Operations in the Brandmint localhost UI.",
+      "page": "Operations",
+      "component": "Keyboard Shortcuts",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W3-T15",
+        "W2-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Keyboard Shortcuts is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T01",
+      "wave": 4,
+      "sequence": 1,
+      "title": "Backend Bridge: Process Manager",
+      "description": "Implement Process Manager for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Process Manager",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Process Manager is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T02",
+      "wave": 4,
+      "sequence": 2,
+      "title": "Backend Bridge: bm launch Runner",
+      "description": "Implement bm launch Runner for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "bm launch Runner",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T01",
+        "W3-T13"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "bm launch Runner is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T03",
+      "wave": 4,
+      "sequence": 3,
+      "title": "Backend Bridge: Run PID Tracker",
+      "description": "Implement Run PID Tracker for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Run PID Tracker",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T02"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Run PID Tracker is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T04",
+      "wave": 4,
+      "sequence": 4,
+      "title": "Backend Bridge: Retry + Port Clear",
+      "description": "Implement Retry + Port Clear for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Retry + Port Clear",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T03",
+        "W3-T14"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Retry + Port Clear is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T05",
+      "wave": 4,
+      "sequence": 5,
+      "title": "Backend Bridge: Abort Handler",
+      "description": "Implement Abort Handler for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Abort Handler",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T04"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Abort Handler is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T06",
+      "wave": 4,
+      "sequence": 6,
+      "title": "Backend Bridge: Resume Handler",
+      "description": "Implement Resume Handler for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Resume Handler",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T05",
+        "W3-T15"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Resume Handler is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T07",
+      "wave": 4,
+      "sequence": 7,
+      "title": "Backend Bridge: State Endpoint",
+      "description": "Implement State Endpoint for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "State Endpoint",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T06"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "State Endpoint is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T08",
+      "wave": 4,
+      "sequence": 8,
+      "title": "Backend Bridge: Task Endpoint",
+      "description": "Implement Task Endpoint for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Task Endpoint",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T07",
+        "W3-T16"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Task Endpoint is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T09",
+      "wave": 4,
+      "sequence": 9,
+      "title": "Backend Bridge: Wave Endpoint",
+      "description": "Implement Wave Endpoint for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Wave Endpoint",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T08"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Wave Endpoint is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T10",
+      "wave": 4,
+      "sequence": 10,
+      "title": "Backend Bridge: Logs SSE",
+      "description": "Implement Logs SSE for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Logs SSE",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T09",
+        "W3-T13"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Logs SSE is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T11",
+      "wave": 4,
+      "sequence": 11,
+      "title": "Backend Bridge: Artifacts Endpoint",
+      "description": "Implement Artifacts Endpoint for Backend Bridge in the Brandmint localhost UI.",
+      "page": "Backend Bridge",
+      "component": "Artifacts Endpoint",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T10"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Artifacts Endpoint is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T12",
+      "wave": 4,
+      "sequence": 12,
+      "title": "Settings: Port 4188 Lock",
+      "description": "Implement Port 4188 Lock for Settings in the Brandmint localhost UI.",
+      "page": "Settings",
+      "component": "Port 4188 Lock",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T11",
+        "W3-T14"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Port 4188 Lock is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T13",
+      "wave": 4,
+      "sequence": 13,
+      "title": "Settings: Command Template",
+      "description": "Implement Command Template for Settings in the Brandmint localhost UI.",
+      "page": "Settings",
+      "component": "Command Template",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T12"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Command Template is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T14",
+      "wave": 4,
+      "sequence": 14,
+      "title": "Security: Env Redaction",
+      "description": "Implement Env Redaction for Security in the Brandmint localhost UI.",
+      "page": "Security",
+      "component": "Env Redaction",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T13",
+        "W3-T15"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Env Redaction is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T15",
+      "wave": 4,
+      "sequence": 15,
+      "title": "Security: Local Access Guard",
+      "description": "Implement Local Access Guard for Security in the Brandmint localhost UI.",
+      "page": "Security",
+      "component": "Local Access Guard",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T14"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Local Access Guard is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W4-T16",
+      "wave": 4,
+      "sequence": 16,
+      "title": "Operations: Health Checks",
+      "description": "Implement Health Checks for Operations in the Brandmint localhost UI.",
+      "page": "Operations",
+      "component": "Health Checks",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W4-T15",
+        "W3-T16"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Health Checks is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T01",
+      "wave": 5,
+      "sequence": 1,
+      "title": "Dashboard: Wave Timeline",
+      "description": "Implement Wave Timeline for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Wave Timeline",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Wave Timeline is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T02",
+      "wave": 5,
+      "sequence": 2,
+      "title": "Dashboard: Lane Matrix",
+      "description": "Implement Lane Matrix for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Lane Matrix",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T01",
+        "W4-T13"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Lane Matrix is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T03",
+      "wave": 5,
+      "sequence": 3,
+      "title": "Dashboard: Dispatch Queue",
+      "description": "Implement Dispatch Queue for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Dispatch Queue",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T02"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Dispatch Queue is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T04",
+      "wave": 5,
+      "sequence": 4,
+      "title": "Dashboard: Blocker Alerts",
+      "description": "Implement Blocker Alerts for Dashboard in the Brandmint localhost UI.",
+      "page": "Dashboard",
+      "component": "Blocker Alerts",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T03",
+        "W4-T14"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Blocker Alerts is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T05",
+      "wave": 5,
+      "sequence": 5,
+      "title": "Pipeline Graph: Batch Launch View",
+      "description": "Implement Batch Launch View for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Batch Launch View",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T04"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Batch Launch View is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T06",
+      "wave": 5,
+      "sequence": 6,
+      "title": "Pipeline Graph: Parallel Lane Coloring",
+      "description": "Implement Parallel Lane Coloring for Pipeline Graph in the Brandmint localhost UI.",
+      "page": "Pipeline Graph",
+      "component": "Parallel Lane Coloring",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T05",
+        "W4-T15"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Parallel Lane Coloring is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T07",
+      "wave": 5,
+      "sequence": 7,
+      "title": "Logs: Run Session Tabs",
+      "description": "Implement Run Session Tabs for Logs in the Brandmint localhost UI.",
+      "page": "Logs",
+      "component": "Run Session Tabs",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T06"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Run Session Tabs is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T08",
+      "wave": 5,
+      "sequence": 8,
+      "title": "Logs: Error Focus Mode",
+      "description": "Implement Error Focus Mode for Logs in the Brandmint localhost UI.",
+      "page": "Logs",
+      "component": "Error Focus Mode",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T07",
+        "W4-T16"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Error Focus Mode is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T09",
+      "wave": 5,
+      "sequence": 9,
+      "title": "Artifacts: Publish Readiness",
+      "description": "Implement Publish Readiness for Artifacts in the Brandmint localhost UI.",
+      "page": "Artifacts",
+      "component": "Publish Readiness",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T08"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Publish Readiness is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T10",
+      "wave": 5,
+      "sequence": 10,
+      "title": "Artifacts: Diff Viewer",
+      "description": "Implement Diff Viewer for Artifacts in the Brandmint localhost UI.",
+      "page": "Artifacts",
+      "component": "Diff Viewer",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "program",
+      "owner_agent": "program-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T09",
+        "W4-T13"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Diff Viewer is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T11",
+      "wave": 5,
+      "sequence": 11,
+      "title": "Reports: Cost Board",
+      "description": "Implement Cost Board for Reports in the Brandmint localhost UI.",
+      "page": "Reports",
+      "component": "Cost Board",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T10"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Cost Board is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T12",
+      "wave": 5,
+      "sequence": 12,
+      "title": "Reports: Quality Board",
+      "description": "Implement Quality Board for Reports in the Brandmint localhost UI.",
+      "page": "Reports",
+      "component": "Quality Board",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T11",
+        "W4-T14"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Quality Board is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T13",
+      "wave": 5,
+      "sequence": 13,
+      "title": "Reports: Accessibility Board",
+      "description": "Implement Accessibility Board for Reports in the Brandmint localhost UI.",
+      "page": "Reports",
+      "component": "Accessibility Board",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T12"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Accessibility Board is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T14",
+      "wave": 5,
+      "sequence": 14,
+      "title": "Prompt Studio: Prompt Sets",
+      "description": "Implement Prompt Sets for Prompt Studio in the Brandmint localhost UI.",
+      "page": "Prompt Studio",
+      "component": "Prompt Sets",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T13",
+        "W4-T15"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Prompt Sets is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T15",
+      "wave": 5,
+      "sequence": 15,
+      "title": "Prompt Studio: Prompt History",
+      "description": "Implement Prompt History for Prompt Studio in the Brandmint localhost UI.",
+      "page": "Prompt Studio",
+      "component": "Prompt History",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T14"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Prompt History is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W5-T16",
+      "wave": 5,
+      "sequence": 16,
+      "title": "Operations: Operator Notes",
+      "description": "Implement Operator Notes for Operations in the Brandmint localhost UI.",
+      "page": "Operations",
+      "component": "Operator Notes",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W5-T15",
+        "W4-T16"
+      ],
+      "estimated_hours": 3,
+      "acceptance_criteria": [
+        "Operator Notes is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T01",
+      "wave": 6,
+      "sequence": 1,
+      "title": "QA: Component Tests",
+      "description": "Implement Component Tests for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Component Tests",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Component Tests is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T02",
+      "wave": 6,
+      "sequence": 2,
+      "title": "QA: Integration Tests",
+      "description": "Implement Integration Tests for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Integration Tests",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T01",
+        "W5-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Integration Tests is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T03",
+      "wave": 6,
+      "sequence": 3,
+      "title": "QA: Process-control Tests",
+      "description": "Implement Process-control Tests for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Process-control Tests",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T02"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Process-control Tests is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T04",
+      "wave": 6,
+      "sequence": 4,
+      "title": "QA: Port-retry Tests",
+      "description": "Implement Port-retry Tests for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Port-retry Tests",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T03",
+        "W5-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Port-retry Tests is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T05",
+      "wave": 6,
+      "sequence": 5,
+      "title": "QA: Visual Regression",
+      "description": "Implement Visual Regression for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Visual Regression",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T04"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Visual Regression is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T06",
+      "wave": 6,
+      "sequence": 6,
+      "title": "QA: Performance Budget",
+      "description": "Implement Performance Budget for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Performance Budget",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T05",
+        "W5-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Performance Budget is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T07",
+      "wave": 6,
+      "sequence": 7,
+      "title": "QA: Accessibility Audit",
+      "description": "Implement Accessibility Audit for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Accessibility Audit",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Accessibility Audit is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T08",
+      "wave": 6,
+      "sequence": 8,
+      "title": "QA: Memory Leak Checks",
+      "description": "Implement Memory Leak Checks for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Memory Leak Checks",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T07",
+        "W5-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Memory Leak Checks is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T09",
+      "wave": 6,
+      "sequence": 9,
+      "title": "QA: Error-recovery Drills",
+      "description": "Implement Error-recovery Drills for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Error-recovery Drills",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T08"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Error-recovery Drills is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T10",
+      "wave": 6,
+      "sequence": 10,
+      "title": "QA: Long-run Stability",
+      "description": "Implement Long-run Stability for QA in the Brandmint localhost UI.",
+      "page": "QA",
+      "component": "Long-run Stability",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "program",
+      "owner_agent": "program-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T09",
+        "W5-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Long-run Stability is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T11",
+      "wave": 6,
+      "sequence": 11,
+      "title": "Security: Secret Scanning",
+      "description": "Implement Secret Scanning for Security in the Brandmint localhost UI.",
+      "page": "Security",
+      "component": "Secret Scanning",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T10"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Secret Scanning is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T12",
+      "wave": 6,
+      "sequence": 12,
+      "title": "Security: Localhost Hardening",
+      "description": "Implement Localhost Hardening for Security in the Brandmint localhost UI.",
+      "page": "Security",
+      "component": "Localhost Hardening",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T11",
+        "W5-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Localhost Hardening is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T13",
+      "wave": 6,
+      "sequence": 13,
+      "title": "Observability: Structured Logs",
+      "description": "Implement Structured Logs for Observability in the Brandmint localhost UI.",
+      "page": "Observability",
+      "component": "Structured Logs",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T12"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Structured Logs is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T14",
+      "wave": 6,
+      "sequence": 14,
+      "title": "Observability: Run Metrics",
+      "description": "Implement Run Metrics for Observability in the Brandmint localhost UI.",
+      "page": "Observability",
+      "component": "Run Metrics",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T13",
+        "W5-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Run Metrics is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T15",
+      "wave": 6,
+      "sequence": 15,
+      "title": "Observability: Trace IDs",
+      "description": "Implement Trace IDs for Observability in the Brandmint localhost UI.",
+      "page": "Observability",
+      "component": "Trace IDs",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Trace IDs is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W6-T16",
+      "wave": 6,
+      "sequence": 16,
+      "title": "Operations: Release Candidate Gate",
+      "description": "Implement Release Candidate Gate for Operations in the Brandmint localhost UI.",
+      "page": "Operations",
+      "component": "Release Candidate Gate",
+      "status": "pending",
+      "priority": "medium",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W6-T15",
+        "W5-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Release Candidate Gate is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T01",
+      "wave": 7,
+      "sequence": 1,
+      "title": "Launch: Final Polish",
+      "description": "Implement Final Polish for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Final Polish",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Final Polish is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T02",
+      "wave": 7,
+      "sequence": 2,
+      "title": "Launch: Motion Pass",
+      "description": "Implement Motion Pass for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Motion Pass",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T01",
+        "W6-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Motion Pass is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T03",
+      "wave": 7,
+      "sequence": 3,
+      "title": "Launch: Copy Pass",
+      "description": "Implement Copy Pass for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Copy Pass",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T02"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Copy Pass is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T04",
+      "wave": 7,
+      "sequence": 4,
+      "title": "Launch: Onboarding Walkthrough",
+      "description": "Implement Onboarding Walkthrough for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Onboarding Walkthrough",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T03",
+        "W6-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Onboarding Walkthrough is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T05",
+      "wave": 7,
+      "sequence": 5,
+      "title": "Launch: Scenario Demo: surface",
+      "description": "Implement Scenario Demo: surface for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Scenario Demo: surface",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T04"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Scenario Demo: surface is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T06",
+      "wave": 7,
+      "sequence": 6,
+      "title": "Launch: Scenario Demo: focused",
+      "description": "Implement Scenario Demo: focused for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Scenario Demo: focused",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T05",
+        "W6-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Scenario Demo: focused is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T07",
+      "wave": 7,
+      "sequence": 7,
+      "title": "Launch: Scenario Demo: comprehensive",
+      "description": "Implement Scenario Demo: comprehensive for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Scenario Demo: comprehensive",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "docs",
+      "owner_agent": "docs-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T06"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Scenario Demo: comprehensive is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T08",
+      "wave": 7,
+      "sequence": 8,
+      "title": "Launch: Acceptance Sign-off",
+      "description": "Implement Acceptance Sign-off for Launch in the Brandmint localhost UI.",
+      "page": "Launch",
+      "component": "Acceptance Sign-off",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "security",
+      "owner_agent": "security-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T07",
+        "W6-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Acceptance Sign-off is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T09",
+      "wave": 7,
+      "sequence": 9,
+      "title": "Docs: Operator Manual",
+      "description": "Implement Operator Manual for Docs in the Brandmint localhost UI.",
+      "page": "Docs",
+      "component": "Operator Manual",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "ux",
+      "owner_agent": "ux-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T08"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Operator Manual is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T10",
+      "wave": 7,
+      "sequence": 10,
+      "title": "Docs: Troubleshooting Guide",
+      "description": "Implement Troubleshooting Guide for Docs in the Brandmint localhost UI.",
+      "page": "Docs",
+      "component": "Troubleshooting Guide",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "program",
+      "owner_agent": "program-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T09",
+        "W6-T13"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Troubleshooting Guide is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T11",
+      "wave": 7,
+      "sequence": 11,
+      "title": "Docs: Component Guide",
+      "description": "Implement Component Guide for Docs in the Brandmint localhost UI.",
+      "page": "Docs",
+      "component": "Component Guide",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "frontend",
+      "owner_agent": "frontend-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T10"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Component Guide is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T12",
+      "wave": 7,
+      "sequence": 12,
+      "title": "Docs: API Bridge Guide",
+      "description": "Implement API Bridge Guide for Docs in the Brandmint localhost UI.",
+      "page": "Docs",
+      "component": "API Bridge Guide",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "integration",
+      "owner_agent": "integration-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T11",
+        "W6-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "API Bridge Guide is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T13",
+      "wave": 7,
+      "sequence": 13,
+      "title": "Handoff: Taskbook Export",
+      "description": "Implement Taskbook Export for Handoff in the Brandmint localhost UI.",
+      "page": "Handoff",
+      "component": "Taskbook Export",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "design",
+      "owner_agent": "design-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T12"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Taskbook Export is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T14",
+      "wave": 7,
+      "sequence": 14,
+      "title": "Handoff: Metrics Snapshot",
+      "description": "Implement Metrics Snapshot for Handoff in the Brandmint localhost UI.",
+      "page": "Handoff",
+      "component": "Metrics Snapshot",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "qa",
+      "owner_agent": "qa-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T13",
+        "W6-T15"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Metrics Snapshot is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T15",
+      "wave": 7,
+      "sequence": 15,
+      "title": "Handoff: Backlog v1.1",
+      "description": "Implement Backlog v1.1 for Handoff in the Brandmint localhost UI.",
+      "page": "Handoff",
+      "component": "Backlog v1.1",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "platform",
+      "owner_agent": "platform-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T14"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Backlog v1.1 is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    },
+    {
+      "id": "W7-T16",
+      "wave": 7,
+      "sequence": 16,
+      "title": "Handoff: Implementation Notes",
+      "description": "Implement Implementation Notes for Handoff in the Brandmint localhost UI.",
+      "page": "Handoff",
+      "component": "Implementation Notes",
+      "status": "pending",
+      "priority": "high",
+      "dispatch_lane": "prompt",
+      "owner_agent": "prompt-agent",
+      "parallelizable": true,
+      "depends_on": [
+        "W7-T15",
+        "W6-T16"
+      ],
+      "estimated_hours": 2,
+      "acceptance_criteria": [
+        "Implementation Notes is visible and functional in localhost UI",
+        "Behavior aligns with wave dependency model",
+        "No regressions in fixed-port 4188 orchestration flow"
+      ]
+    }
+  ]
+}

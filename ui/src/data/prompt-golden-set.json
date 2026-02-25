@@ -1,0 +1,347 @@
+{
+  "version": "1.0.0",
+  "generated_on": "2026-02-24",
+  "target_pass_rate": 0.9,
+  "cases": [
+    {
+      "id": "GS-01",
+      "title": "Golden Product MD Case 01",
+      "complexity": "simple",
+      "product_md_excerpt": "Sample Product MD excerpt 01: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-02",
+      "title": "Golden Product MD Case 02",
+      "complexity": "simple",
+      "product_md_excerpt": "Sample Product MD excerpt 02: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-03",
+      "title": "Golden Product MD Case 03",
+      "complexity": "simple",
+      "product_md_excerpt": "Sample Product MD excerpt 03: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-04",
+      "title": "Golden Product MD Case 04",
+      "complexity": "simple",
+      "product_md_excerpt": "Sample Product MD excerpt 04: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-05",
+      "title": "Golden Product MD Case 05",
+      "complexity": "simple",
+      "product_md_excerpt": "Sample Product MD excerpt 05: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-06",
+      "title": "Golden Product MD Case 06",
+      "complexity": "simple",
+      "product_md_excerpt": "Sample Product MD excerpt 06: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-07",
+      "title": "Golden Product MD Case 07",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 07: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-08",
+      "title": "Golden Product MD Case 08",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 08: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-09",
+      "title": "Golden Product MD Case 09",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 09: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-10",
+      "title": "Golden Product MD Case 10",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 10: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-11",
+      "title": "Golden Product MD Case 11",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 11: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-12",
+      "title": "Golden Product MD Case 12",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 12: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-13",
+      "title": "Golden Product MD Case 13",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 13: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-14",
+      "title": "Golden Product MD Case 14",
+      "complexity": "medium",
+      "product_md_excerpt": "Sample Product MD excerpt 14: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-15",
+      "title": "Golden Product MD Case 15",
+      "complexity": "complex",
+      "product_md_excerpt": "Sample Product MD excerpt 15: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-16",
+      "title": "Golden Product MD Case 16",
+      "complexity": "complex",
+      "product_md_excerpt": "Sample Product MD excerpt 16: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-17",
+      "title": "Golden Product MD Case 17",
+      "complexity": "complex",
+      "product_md_excerpt": "Sample Product MD excerpt 17: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-18",
+      "title": "Golden Product MD Case 18",
+      "complexity": "complex",
+      "product_md_excerpt": "Sample Product MD excerpt 18: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-19",
+      "title": "Golden Product MD Case 19",
+      "complexity": "complex",
+      "product_md_excerpt": "Sample Product MD excerpt 19: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    },
+    {
+      "id": "GS-20",
+      "title": "Golden Product MD Case 20",
+      "complexity": "complex",
+      "product_md_excerpt": "Sample Product MD excerpt 20: includes product overview, audience pain points, value proposition, and CTA.",
+      "expected_signals": [
+        "audience extracted",
+        "differentiators extracted",
+        "tone clues captured",
+        "config mapping complete"
+      ],
+      "required_prompts": [
+        "pm_extract_v1",
+        "config_synthesis_v1",
+        "microcopy_rewrite_v1"
+      ]
+    }
+  ]
+}

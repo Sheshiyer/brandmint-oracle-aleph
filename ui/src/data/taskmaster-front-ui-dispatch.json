@@ -1,0 +1,1067 @@
+{
+  "project": "Brandmint Front UI Replacement Plan",
+  "generated_on": "2026-02-24",
+  "generated_by": "task-master-planner + using-superpowers + dispatching-parallel-agents",
+  "parallel_execution_protocol": {
+    "policy": "Dispatch sprint tasks in parallel by lane once dependencies are satisfied.",
+    "max_parallel_lanes": 4,
+    "blocking_rule": "If a dependency task is blocked, only dependent tasks pause; other lanes continue."
+  },
+  "waves": [
+    {
+      "phase_id": "P0",
+      "name": "Documentation & Narrative Foundation",
+      "objective": "Define user-first product narrative and docs before implementation.",
+      "sprints": [
+        {
+          "sprint_id": "S1",
+          "focus": "Repo documentation baseline from inspiration and current gaps",
+          "task_count": 8,
+          "lane_groups": {
+            "ux": [
+              "P0-S1-01",
+              "P0-S1-02",
+              "P0-S1-03",
+              "P0-S1-05",
+              "P0-S1-07",
+              "P0-S1-08"
+            ],
+            "prompt": [
+              "P0-S1-04"
+            ],
+            "frontend": [
+              "P0-S1-06"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P0-S1-02",
+              "depends_on": [
+                "P0-S1-01"
+              ]
+            },
+            {
+              "task_id": "P0-S1-03",
+              "depends_on": [
+                "P0-S1-01"
+              ]
+            },
+            {
+              "task_id": "P0-S1-04",
+              "depends_on": [
+                "P0-S1-02"
+              ]
+            },
+            {
+              "task_id": "P0-S1-05",
+              "depends_on": [
+                "P0-S1-02"
+              ]
+            },
+            {
+              "task_id": "P0-S1-06",
+              "depends_on": [
+                "P0-S1-03"
+              ]
+            },
+            {
+              "task_id": "P0-S1-07",
+              "depends_on": [
+                "P0-S1-04",
+                "P0-S1-05"
+              ]
+            },
+            {
+              "task_id": "P0-S1-08",
+              "depends_on": [
+                "P0-S1-06",
+                "P0-S1-07"
+              ]
+            }
+          ]
+        },
+        {
+          "sprint_id": "S2",
+          "focus": "Journey and success criteria docs",
+          "task_count": 8,
+          "lane_groups": {
+            "ux": [
+              "P0-S2-01",
+              "P0-S2-02",
+              "P0-S2-03",
+              "P0-S2-04",
+              "P0-S2-05",
+              "P0-S2-08"
+            ],
+            "qa": [
+              "P0-S2-06"
+            ],
+            "platform": [
+              "P0-S2-07"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P0-S2-01",
+              "depends_on": [
+                "P0-S1-08"
+              ]
+            },
+            {
+              "task_id": "P0-S2-02",
+              "depends_on": [
+                "P0-S2-01"
+              ]
+            },
+            {
+              "task_id": "P0-S2-03",
+              "depends_on": [
+                "P0-S2-01"
+              ]
+            },
+            {
+              "task_id": "P0-S2-04",
+              "depends_on": [
+                "P0-S2-02"
+              ]
+            },
+            {
+              "task_id": "P0-S2-05",
+              "depends_on": [
+                "P0-S2-02"
+              ]
+            },
+            {
+              "task_id": "P0-S2-06",
+              "depends_on": [
+                "P0-S2-03"
+              ]
+            },
+            {
+              "task_id": "P0-S2-07",
+              "depends_on": [
+                "P0-S2-04",
+                "P0-S2-05"
+              ]
+            },
+            {
+              "task_id": "P0-S2-08",
+              "depends_on": [
+                "P0-S2-06",
+                "P0-S2-07"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P1",
+      "name": "Prompt Scaffolding First",
+      "objective": "Create and validate prompt scaffolds before visual and integration execution.",
+      "sprints": [
+        {
+          "sprint_id": "S3",
+          "focus": "Prompt architecture and templates",
+          "task_count": 8,
+          "lane_groups": {
+            "prompt": [
+              "P1-S3-01",
+              "P1-S3-02",
+              "P1-S3-03",
+              "P1-S3-04",
+              "P1-S3-05",
+              "P1-S3-06"
+            ],
+            "qa": [
+              "P1-S3-07"
+            ],
+            "ux": [
+              "P1-S3-08"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P1-S3-01",
+              "depends_on": [
+                "P0-S2-08"
+              ]
+            },
+            {
+              "task_id": "P1-S3-02",
+              "depends_on": [
+                "P1-S3-01"
+              ]
+            },
+            {
+              "task_id": "P1-S3-03",
+              "depends_on": [
+                "P1-S3-01"
+              ]
+            },
+            {
+              "task_id": "P1-S3-04",
+              "depends_on": [
+                "P1-S3-02"
+              ]
+            },
+            {
+              "task_id": "P1-S3-05",
+              "depends_on": [
+                "P1-S3-02"
+              ]
+            },
+            {
+              "task_id": "P1-S3-06",
+              "depends_on": [
+                "P1-S3-03"
+              ]
+            },
+            {
+              "task_id": "P1-S3-07",
+              "depends_on": [
+                "P1-S3-04",
+                "P1-S3-05"
+              ]
+            },
+            {
+              "task_id": "P1-S3-08",
+              "depends_on": [
+                "P1-S3-06",
+                "P1-S3-07"
+              ]
+            }
+          ]
+        },
+        {
+          "sprint_id": "S4",
+          "focus": "Prompt operations and validation harness",
+          "task_count": 8,
+          "lane_groups": {
+            "prompt": [
+              "P1-S4-01",
+              "P1-S4-03",
+              "P1-S4-06"
+            ],
+            "platform": [
+              "P1-S4-02"
+            ],
+            "ux": [
+              "P1-S4-04",
+              "P1-S4-08"
+            ],
+            "qa": [
+              "P1-S4-05"
+            ],
+            "docs": [
+              "P1-S4-07"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P1-S4-01",
+              "depends_on": [
+                "P1-S3-08"
+              ]
+            },
+            {
+              "task_id": "P1-S4-02",
+              "depends_on": [
+                "P1-S4-01"
+              ]
+            },
+            {
+              "task_id": "P1-S4-03",
+              "depends_on": [
+                "P1-S4-01"
+              ]
+            },
+            {
+              "task_id": "P1-S4-04",
+              "depends_on": [
+                "P1-S4-02"
+              ]
+            },
+            {
+              "task_id": "P1-S4-05",
+              "depends_on": [
+                "P1-S4-02"
+              ]
+            },
+            {
+              "task_id": "P1-S4-06",
+              "depends_on": [
+                "P1-S4-03"
+              ]
+            },
+            {
+              "task_id": "P1-S4-07",
+              "depends_on": [
+                "P1-S4-04",
+                "P1-S4-05"
+              ]
+            },
+            {
+              "task_id": "P1-S4-08",
+              "depends_on": [
+                "P1-S4-06",
+                "P1-S4-07"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P2",
+      "name": "Front UI Core Journey",
+      "objective": "Deliver user-friendly flow from Product MD intake to Brand Config creation.",
+      "sprints": [
+        {
+          "sprint_id": "S5",
+          "focus": "Intake experience (Product MD first)",
+          "task_count": 8,
+          "lane_groups": {
+            "frontend": [
+              "P2-S5-01",
+              "P2-S5-02",
+              "P2-S5-03",
+              "P2-S5-04",
+              "P2-S5-05"
+            ],
+            "integration": [
+              "P2-S5-06",
+              "P2-S5-07"
+            ],
+            "qa": [
+              "P2-S5-08"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P2-S5-01",
+              "depends_on": [
+                "P1-S4-08"
+              ]
+            },
+            {
+              "task_id": "P2-S5-02",
+              "depends_on": [
+                "P2-S5-01"
+              ]
+            },
+            {
+              "task_id": "P2-S5-03",
+              "depends_on": [
+                "P2-S5-01"
+              ]
+            },
+            {
+              "task_id": "P2-S5-04",
+              "depends_on": [
+                "P2-S5-02"
+              ]
+            },
+            {
+              "task_id": "P2-S5-05",
+              "depends_on": [
+                "P2-S5-02"
+              ]
+            },
+            {
+              "task_id": "P2-S5-06",
+              "depends_on": [
+                "P2-S5-03"
+              ]
+            },
+            {
+              "task_id": "P2-S5-07",
+              "depends_on": [
+                "P2-S5-04",
+                "P2-S5-05"
+              ]
+            },
+            {
+              "task_id": "P2-S5-08",
+              "depends_on": [
+                "P2-S5-06",
+                "P2-S5-07"
+              ]
+            }
+          ]
+        },
+        {
+          "sprint_id": "S6",
+          "focus": "Brand Config wizard generation",
+          "task_count": 8,
+          "lane_groups": {
+            "frontend": [
+              "P2-S6-01",
+              "P2-S6-02",
+              "P2-S6-03",
+              "P2-S6-04",
+              "P2-S6-05",
+              "P2-S6-06",
+              "P2-S6-08"
+            ],
+            "integration": [
+              "P2-S6-07"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P2-S6-01",
+              "depends_on": [
+                "P2-S5-08"
+              ]
+            },
+            {
+              "task_id": "P2-S6-02",
+              "depends_on": [
+                "P2-S6-01"
+              ]
+            },
+            {
+              "task_id": "P2-S6-03",
+              "depends_on": [
+                "P2-S6-01"
+              ]
+            },
+            {
+              "task_id": "P2-S6-04",
+              "depends_on": [
+                "P2-S6-02"
+              ]
+            },
+            {
+              "task_id": "P2-S6-05",
+              "depends_on": [
+                "P2-S6-02"
+              ]
+            },
+            {
+              "task_id": "P2-S6-06",
+              "depends_on": [
+                "P2-S6-03"
+              ]
+            },
+            {
+              "task_id": "P2-S6-07",
+              "depends_on": [
+                "P2-S6-04",
+                "P2-S6-05"
+              ]
+            },
+            {
+              "task_id": "P2-S6-08",
+              "depends_on": [
+                "P2-S6-06",
+                "P2-S6-07"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P3",
+      "name": "Visual Design Elevation",
+      "objective": "Transform functional dashboard into premium, appealing user-facing experience.",
+      "sprints": [
+        {
+          "sprint_id": "S7",
+          "focus": "Design system premium revamp",
+          "task_count": 8,
+          "lane_groups": {
+            "frontend": [
+              "P3-S7-01",
+              "P3-S7-02",
+              "P3-S7-03",
+              "P3-S7-04",
+              "P3-S7-05",
+              "P3-S7-07",
+              "P3-S7-08"
+            ],
+            "ux": [
+              "P3-S7-06"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P3-S7-01",
+              "depends_on": [
+                "P2-S6-08"
+              ]
+            },
+            {
+              "task_id": "P3-S7-02",
+              "depends_on": [
+                "P3-S7-01"
+              ]
+            },
+            {
+              "task_id": "P3-S7-03",
+              "depends_on": [
+                "P3-S7-01"
+              ]
+            },
+            {
+              "task_id": "P3-S7-04",
+              "depends_on": [
+                "P3-S7-02"
+              ]
+            },
+            {
+              "task_id": "P3-S7-05",
+              "depends_on": [
+                "P3-S7-02"
+              ]
+            },
+            {
+              "task_id": "P3-S7-06",
+              "depends_on": [
+                "P3-S7-03"
+              ]
+            },
+            {
+              "task_id": "P3-S7-07",
+              "depends_on": [
+                "P3-S7-04",
+                "P3-S7-05"
+              ]
+            },
+            {
+              "task_id": "P3-S7-08",
+              "depends_on": [
+                "P3-S7-06",
+                "P3-S7-07"
+              ]
+            }
+          ]
+        },
+        {
+          "sprint_id": "S8",
+          "focus": "Page-by-page polish for user appeal",
+          "task_count": 8,
+          "lane_groups": {
+            "frontend": [
+              "P3-S8-01",
+              "P3-S8-02",
+              "P3-S8-03",
+              "P3-S8-04",
+              "P3-S8-05",
+              "P3-S8-06",
+              "P3-S8-07",
+              "P3-S8-08"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P3-S8-01",
+              "depends_on": [
+                "P3-S7-08"
+              ]
+            },
+            {
+              "task_id": "P3-S8-02",
+              "depends_on": [
+                "P3-S8-01"
+              ]
+            },
+            {
+              "task_id": "P3-S8-03",
+              "depends_on": [
+                "P3-S8-01"
+              ]
+            },
+            {
+              "task_id": "P3-S8-04",
+              "depends_on": [
+                "P3-S8-02"
+              ]
+            },
+            {
+              "task_id": "P3-S8-05",
+              "depends_on": [
+                "P3-S8-02"
+              ]
+            },
+            {
+              "task_id": "P3-S8-06",
+              "depends_on": [
+                "P3-S8-03"
+              ]
+            },
+            {
+              "task_id": "P3-S8-07",
+              "depends_on": [
+                "P3-S8-04",
+                "P3-S8-05"
+              ]
+            },
+            {
+              "task_id": "P3-S8-08",
+              "depends_on": [
+                "P3-S8-06",
+                "P3-S8-07"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P4",
+      "name": "Orchestration UX Upgrade",
+      "objective": "Make pipeline control intuitive while preserving execution power.",
+      "sprints": [
+        {
+          "sprint_id": "S9",
+          "focus": "Control center and dispatch UX",
+          "task_count": 8,
+          "lane_groups": {
+            "frontend": [
+              "P4-S9-01",
+              "P4-S9-02",
+              "P4-S9-03",
+              "P4-S9-04",
+              "P4-S9-05",
+              "P4-S9-06",
+              "P4-S9-07",
+              "P4-S9-08"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P4-S9-01",
+              "depends_on": [
+                "P3-S8-08"
+              ]
+            },
+            {
+              "task_id": "P4-S9-02",
+              "depends_on": [
+                "P4-S9-01"
+              ]
+            },
+            {
+              "task_id": "P4-S9-03",
+              "depends_on": [
+                "P4-S9-01"
+              ]
+            },
+            {
+              "task_id": "P4-S9-04",
+              "depends_on": [
+                "P4-S9-02"
+              ]
+            },
+            {
+              "task_id": "P4-S9-05",
+              "depends_on": [
+                "P4-S9-02"
+              ]
+            },
+            {
+              "task_id": "P4-S9-06",
+              "depends_on": [
+                "P4-S9-03"
+              ]
+            },
+            {
+              "task_id": "P4-S9-07",
+              "depends_on": [
+                "P4-S9-04",
+                "P4-S9-05"
+              ]
+            },
+            {
+              "task_id": "P4-S9-08",
+              "depends_on": [
+                "P4-S9-06",
+                "P4-S9-07"
+              ]
+            }
+          ]
+        },
+        {
+          "sprint_id": "S10",
+          "focus": "Trust, guidance, and recoverability",
+          "task_count": 8,
+          "lane_groups": {
+            "frontend": [
+              "P4-S10-01",
+              "P4-S10-02",
+              "P4-S10-03",
+              "P4-S10-04",
+              "P4-S10-05",
+              "P4-S10-06",
+              "P4-S10-07"
+            ],
+            "docs": [
+              "P4-S10-08"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P4-S10-01",
+              "depends_on": [
+                "P4-S9-08"
+              ]
+            },
+            {
+              "task_id": "P4-S10-02",
+              "depends_on": [
+                "P4-S10-01"
+              ]
+            },
+            {
+              "task_id": "P4-S10-03",
+              "depends_on": [
+                "P4-S10-01"
+              ]
+            },
+            {
+              "task_id": "P4-S10-04",
+              "depends_on": [
+                "P4-S10-02"
+              ]
+            },
+            {
+              "task_id": "P4-S10-05",
+              "depends_on": [
+                "P4-S10-02"
+              ]
+            },
+            {
+              "task_id": "P4-S10-06",
+              "depends_on": [
+                "P4-S10-03"
+              ]
+            },
+            {
+              "task_id": "P4-S10-07",
+              "depends_on": [
+                "P4-S10-04",
+                "P4-S10-05"
+              ]
+            },
+            {
+              "task_id": "P4-S10-08",
+              "depends_on": [
+                "P4-S10-06",
+                "P4-S10-07"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P5",
+      "name": "Backend Integration & Data Intelligence",
+      "objective": "Back the front UI with robust APIs, persistence, and insights.",
+      "sprints": [
+        {
+          "sprint_id": "S11",
+          "focus": "Bridge API hardening and feature completion",
+          "task_count": 8,
+          "lane_groups": {
+            "integration": [
+              "P5-S11-01",
+              "P5-S11-02",
+              "P5-S11-03",
+              "P5-S11-04",
+              "P5-S11-05",
+              "P5-S11-06",
+              "P5-S11-07"
+            ],
+            "qa": [
+              "P5-S11-08"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P5-S11-01",
+              "depends_on": [
+                "P4-S10-08"
+              ]
+            },
+            {
+              "task_id": "P5-S11-02",
+              "depends_on": [
+                "P5-S11-01"
+              ]
+            },
+            {
+              "task_id": "P5-S11-03",
+              "depends_on": [
+                "P5-S11-01"
+              ]
+            },
+            {
+              "task_id": "P5-S11-04",
+              "depends_on": [
+                "P5-S11-02"
+              ]
+            },
+            {
+              "task_id": "P5-S11-05",
+              "depends_on": [
+                "P5-S11-02"
+              ]
+            },
+            {
+              "task_id": "P5-S11-06",
+              "depends_on": [
+                "P5-S11-03"
+              ]
+            },
+            {
+              "task_id": "P5-S11-07",
+              "depends_on": [
+                "P5-S11-04",
+                "P5-S11-05"
+              ]
+            },
+            {
+              "task_id": "P5-S11-08",
+              "depends_on": [
+                "P5-S11-06",
+                "P5-S11-07"
+              ]
+            }
+          ]
+        },
+        {
+          "sprint_id": "S12",
+          "focus": "Persistence, analytics, and reporting intelligence",
+          "task_count": 8,
+          "lane_groups": {
+            "prompt": [
+              "P5-S12-01",
+              "P5-S12-04",
+              "P5-S12-05",
+              "P5-S12-06"
+            ],
+            "integration": [
+              "P5-S12-02",
+              "P5-S12-03",
+              "P5-S12-07"
+            ],
+            "frontend": [
+              "P5-S12-08"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P5-S12-01",
+              "depends_on": [
+                "P5-S11-08"
+              ]
+            },
+            {
+              "task_id": "P5-S12-02",
+              "depends_on": [
+                "P5-S12-01"
+              ]
+            },
+            {
+              "task_id": "P5-S12-03",
+              "depends_on": [
+                "P5-S12-01"
+              ]
+            },
+            {
+              "task_id": "P5-S12-04",
+              "depends_on": [
+                "P5-S12-02"
+              ]
+            },
+            {
+              "task_id": "P5-S12-05",
+              "depends_on": [
+                "P5-S12-02"
+              ]
+            },
+            {
+              "task_id": "P5-S12-06",
+              "depends_on": [
+                "P5-S12-03"
+              ]
+            },
+            {
+              "task_id": "P5-S12-07",
+              "depends_on": [
+                "P5-S12-04",
+                "P5-S12-05"
+              ]
+            },
+            {
+              "task_id": "P5-S12-08",
+              "depends_on": [
+                "P5-S12-06",
+                "P5-S12-07"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase_id": "P6",
+      "name": "QA Hardening & Launch",
+      "objective": "Ship confidently with quality, docs, and rollout readiness.",
+      "sprints": [
+        {
+          "sprint_id": "S13",
+          "focus": "Quality hardening and reliability",
+          "task_count": 8,
+          "lane_groups": {
+            "qa": [
+              "P6-S13-01",
+              "P6-S13-02",
+              "P6-S13-03",
+              "P6-S13-04",
+              "P6-S13-06",
+              "P6-S13-08"
+            ],
+            "platform": [
+              "P6-S13-05"
+            ],
+            "security": [
+              "P6-S13-07"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P6-S13-01",
+              "depends_on": [
+                "P5-S12-08"
+              ]
+            },
+            {
+              "task_id": "P6-S13-02",
+              "depends_on": [
+                "P6-S13-01"
+              ]
+            },
+            {
+              "task_id": "P6-S13-03",
+              "depends_on": [
+                "P6-S13-01"
+              ]
+            },
+            {
+              "task_id": "P6-S13-04",
+              "depends_on": [
+                "P6-S13-02"
+              ]
+            },
+            {
+              "task_id": "P6-S13-05",
+              "depends_on": [
+                "P6-S13-02"
+              ]
+            },
+            {
+              "task_id": "P6-S13-06",
+              "depends_on": [
+                "P6-S13-03"
+              ]
+            },
+            {
+              "task_id": "P6-S13-07",
+              "depends_on": [
+                "P6-S13-04",
+                "P6-S13-05"
+              ]
+            },
+            {
+              "task_id": "P6-S13-08",
+              "depends_on": [
+                "P6-S13-06",
+                "P6-S13-07"
+              ]
+            }
+          ]
+        },
+        {
+          "sprint_id": "S14",
+          "focus": "Launch readiness and execution handoff",
+          "task_count": 8,
+          "lane_groups": {
+            "docs": [
+              "P6-S14-01",
+              "P6-S14-02"
+            ],
+            "ux": [
+              "P6-S14-03",
+              "P6-S14-05",
+              "P6-S14-07",
+              "P6-S14-08"
+            ],
+            "platform": [
+              "P6-S14-04"
+            ],
+            "prompt": [
+              "P6-S14-06"
+            ]
+          },
+          "dependency_edges": [
+            {
+              "task_id": "P6-S14-01",
+              "depends_on": [
+                "P6-S13-08"
+              ]
+            },
+            {
+              "task_id": "P6-S14-02",
+              "depends_on": [
+                "P6-S14-01"
+              ]
+            },
+            {
+              "task_id": "P6-S14-03",
+              "depends_on": [
+                "P6-S14-01"
+              ]
+            },
+            {
+              "task_id": "P6-S14-04",
+              "depends_on": [
+                "P6-S14-02"
+              ]
+            },
+            {
+              "task_id": "P6-S14-05",
+              "depends_on": [
+                "P6-S14-02"
+              ]
+            },
+            {
+              "task_id": "P6-S14-06",
+              "depends_on": [
+                "P6-S14-03"
+              ]
+            },
+            {
+              "task_id": "P6-S14-07",
+              "depends_on": [
+                "P6-S14-04",
+                "P6-S14-05"
+              ]
+            },
+            {
+              "task_id": "P6-S14-08",
+              "depends_on": [
+                "P6-S14-06",
+                "P6-S14-07"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

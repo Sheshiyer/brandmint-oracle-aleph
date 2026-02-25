@@ -1,0 +1,242 @@
+{
+  "last_updated": "2026-02-24",
+  "entries": [
+    {
+      "id": "2020418519863595301",
+      "url": "https://x.com/craftian_keskin/status/2020418519863595301",
+      "author": "@craftian_keskin",
+      "text": "Home Fragrance Advertisement\n\nPrompt: \n{\n  \"Objective\": \"Create a refined 2\u00d72 grid advertisement for the luxury home fragrance 'AER\u00c9ON', emphasizing mood, atmosphere, and sensory elegance through minimal, editorial-style visuals.\",\n  \"Canvas\": {\n    \"Aspect_Ratio\": \"1:1\",\n    \"Grid_Structure\": \"2\u00d72 equal panels\",\n    \"Orientation\": \"Square\",\n    \"Use_Case\": [\n      \"Luxury brand social media\",\n      \"Home & lifestyle campaigns\",\n      \"E-commerce product storytelling\",\n      \"Editorial-style digital ads\"\n    ]\n  },\n  \"Panels\": [\n    {\n      \"Panel_Number\": 1,\n      \"Title\": \"Hero Fragrance Object\",\n      \"Description\": \"Studio hero shot of the AER\u00c9ON fragrance bottle centered on a stone or wood surface.\",\n      \"Visual_Details\": {\n        \"Lighting\": \"Soft diffused light with gentle shadows\",\n        \"Background\": \"Neutral warm tones linen\",\n        \"Focus\": \"Bottle shape, glass quality, minimalist label\",\n        \"Mood\": [\"Elegance\", \"Calm\", \"Premium\"]\n      }\n    },\n    {\n      \"Panel_Number\": 2,\n      \"Title\": \"Atmospheric Interior\",\n      \"Description\": \"Lifestyle interior scene with the fragrance placed on a shelf or table.\",\n      \"Visual_Details\": {\n        \"Setting\": \"Modern, serene living space\",\n        \"Lighting\": \"Natural window light\",\n        \"Mood\": [\"Comfort\", \"Warmth\", \"Refined living\"]\n      }\n    },\n    {\n      \"Panel_Number\": 3,\n      \"Title\": \"Scent Ritual Detail\",\n      \"Description\": \"Close-up of hands interacting with the fragrance (spraying or opening).\",\n      \"Visual_Details\": {\n        \"Focus\": \"Human interaction and ritual\",\n        \"Depth_of_Field\": \"Shallow and intimate\",\n        \"Mood\": [\"Sensory\", \"Personal\", \"Mindful\"]\n      }\n    },\n    {\n      \"Panel_Number\": 4,\n      \"Title\": \"Material & Mood\",\n      \"Description\": \"Macro or still-life composition featuring fragrance alongside natural elements.\",\n      \"Visual_Details\": {\n        \"Elements\": [\"Stone\", \"Linen\", \"Wood\", \"Ceramic\"],\n        \"Lighting\": \"Soft highlights, low contrast\",\n        \"Mood\": [\"Natural\", \"Timeless\", \"Atmospheric\"]\n      }\n    }\n  ],\n  \"Branding\": {\n    \"Product_Name\": \"AER\u00c9ON\",\n    \"Brand_Personality\": \"Quiet luxury, modern, sensory-focused\",\n    \"Color_Palette\": [\"Warm Beige\", \"Soft Taupe\", \"Smoked Glass\"],\n    \"Logo_Presentation\": \"Minimal, understated, centered or embossed\"\n  },\n  \"Visual_Style\": {\n    \"Style_Keywords\": [\n      \"Luxury home lifestyle advertising\",\n      \"Editorial still-life photography\",\n      \"Minimalist composition\",\n      \"High realism\",\n      \"Soft natural tones\"\n    ]\n  },\n  \"Camera_And_Lighting\": {\n    \"Photography_Type\": \"Editorial and commercial hybrid photography\",\n    \"Shot_Types\": [\n      \"Hero product shot\",\n      \"Interior lifestyle shot\",\n      \"Macro detail\",\n      \"Still-life composition\"\n    ],\n    \"Lighting_Style\": \"Natural window light with soft diffusion\",\n    \"Exposure\": \"Low contrast, warm, balanced\",\n    \"Shadows\": \"Soft and organic\"\n  },\n  \"Mood_Keywords\": [\n    \"Calm\",\n    \"Refined\",\n    \"Atmospheric\",\n    \"Elegant\",\n    \"Warm\",\n    \"Sensory\"\n  ],\n  \"Negative_Prompt\": [\n    \"Harsh lighting\",\n    \"Cluttered interiors\",\n    \"Cheap glass appearance\",\n    \"Bold or loud colors\",\n    \"Unreadable labels\",\n    \"CGI or artificial look\",\n    \"Over-styling\",\n    \"Watermarks\",\n    \"Text overlays\"\n  ]\n}",
+      "tags": [
+        "brand-design"
+      ],
+      "likes": 375,
+      "retweets": 35,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2025161888456474851",
+      "url": "https://x.com/hasantoxr/status/2025161888456474851",
+      "author": "@hasantoxr",
+      "text": "\ud83d\udea8 Alibaba just quietly dropped a vector database that destroys Pinecone, Chroma, and Weaviate.\n\nIt's called Zvec and it runs directly inside your application no server, no config, no infrastructure costs.\n\nNo Docker. No cloud bills. No DevOps nightmare.\n\nBuilt on Proxima, Alibaba's battle-tested vector search engine powering their own production systems at scale.\n\nThe numbers don't lie:\n\u2192 Searches billions of vectors in milliseconds\n\u2192 pip install zvec and you're searching in under 60 seconds\n\u2192 Dense + sparse vectors + hybrid search in a single call\n\nAnd it runs everywhere:\n\u2192 Notebooks\n\u2192 Servers\n\u2192 Edge devices\n\u2192 CLI tools\n\n100% Opensource. Apache 2.0 license.\n\nThis is the vector DB the RAG community has been waiting for production-grade performance without the production-grade headache.\n\nLink in the first comment \ud83d\udc47",
+      "tags": [],
+      "likes": 4147,
+      "retweets": 521,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2024557008829940094",
+      "url": "https://x.com/craftian_keskin/status/2024557008829940094",
+      "author": "@craftian_keskin",
+      "text": "Retro Anime Style \n\nMidjourney --sref 523688642 https://t.co/Qa2WuPwGvX",
+      "tags": [
+        "midjourney"
+      ],
+      "likes": 29,
+      "retweets": 3,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2024104039827578910",
+      "url": "https://x.com/j_smeaton99/status/2024104039827578910",
+      "author": "@j_smeaton99",
+      "text": "Google Nano Banana Pro on Gemini and GPT Image 1.5\n\nPrompt;\n\n{\n  \"master_prompt\": {\n    \"product\": {\n      \"type\": \"luxury perfume bottle\",\n      \"brand_name\": \"NOIR \u00c9LIXIR\",\n      \"fragrance_line\": \"Midnight Reserve\",\n      \"container_shape\": \"faceted geometric crystal bottle with sharp elegant edges\",\n      \"material\": \"high-clarity glass with deep smoked black gradient tint\",\n      \"finish\": \"polished reflective surfaces with subtle matte facets\",\n      \"cap_design\": \"magnetic cap in brushed gold metal with engraved emblem\",\n      \"label_style\": \"minimal serif typography etched directly into glass with gold inlay\",\n      \"liquid_color\": \"dark amber with subtle golden undertones\"\n    },\n    \"composition\": {\n      \"scene_type\": \"ultra-cinematic luxury fragrance advertising photography\",\n      \"orientation\": \"vertical\",\n      \"aspect_ratio\": \"4:5\",\n      \"camera_angle\": \"dramatic diagonal hero angle\",\n      \"subject_position\": \"floating mid-air with slight forward tilt\",\n      \"motion\": \"atomized perfume mist trails and fluid fragrance ribbons suspended in motion\"\n    },\n    \"environment\": {\n      \"background\": \"deep black velvet gradient fading into shadow\",\n      \"atmosphere\": \"volumetric mist with delicate fragrance vapor swirling around the bottle\",\n      \"floating_elements\": [\n        \"atomized perfume droplets suspended mid-air\",\n        \"shattered crystal glass fragments catching highlights\",\n        \"dark orchid petals drifting slowly\",\n        \"glossy black citrus peel curls\",\n        \"fine gold dust particles sparkling in light\"\n      ],\n      \"surface_effects\": \"micro condensation beads and polished reflections enhancing realism\"\n    },\n    \"lighting\": {\n      \"style\": \"dramatic low-key studio lighting\",\n      \"key_light\": \"soft directional light sculpting the glass facets\",\n      \"rim_lights\": \"strong rim lights outlining silhouette and edges\",\n      \"accent_lights\": \"gold-toned specular highlights on cap and engraved details\",\n      \"shadow_depth\": \"deep cinematic shadows for luxury mood\",\n      \"contrast\": \"high contrast with controlled reflections and luminous highlights\"\n    },\n    \"color_palette\": {\n      \"primary_colors\": [\"obsidian black\", \"smoked charcoal\", \"deep amber\"],\n      \"accent_colors\": [\"metallic gold\", \"warm champagne glow\"]\n    },\n    \"camera_settings\": {\n      \"lens\": \"macro cinema prime lens\",\n      \"depth_of_field\": \"shallow depth isolating product from background\",\n      \"focus_point\": \"engraved logo and glass surface textures\",\n      \"bokeh\": \"smooth cinematic bokeh from reflective particles\",\n      \"detail_capture\": \"extreme micro-detail clarity\"\n    },\n    \"render_quality\": {\n      \"resolution\": \"8K ultra high definition\",\n      \"render_style\": \"hyper-realistic luxury commercial render\",\n      \"glass_physics\": \"accurate refraction and internal reflections\",\n      \"liquid_simulation\": \"physically accurate fluid dynamics\",\n      \"textures\": \"ultra-detailed crystal, metal, mist, and micro-droplet textures\",\n      \"sharpness\": \"tack sharp product focus with cinematic background softness\",\n      \"noise\": \"none\",\n      \"artifacts\": \"none\"\n    },\n    \"mood\": {\n      \"tone\": \"mysterious, sensual, and ultra-premium\",\n      \"emotion\": \"luxury, seduction, elegance, timeless sophistication\"\n    },\n    \"final_output\": {\n      \"usage\": \"high-end perfume campaign and luxury magazine advertising\",\n      \"branding_focus\": \"hero product dominance with strong brand prestige\",\n      \"visual_style\": \"cinematic fragrance commercial aesthetic\"\n    }\n  }\n}",
+      "tags": [
+        "nano-banana",
+        "brand-design",
+        "gemini",
+        "video-gen"
+      ],
+      "likes": 142,
+      "retweets": 21,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2024439340693438810",
+      "url": "https://x.com/azed_ai/status/2024439340693438810",
+      "author": "@azed_ai",
+      "text": "Prompt share: Mosaic\n\n\ud83d\udcacPrompt:\nA dynamic mosaic composition featuring a [subject] built from an array of delicate [color] tiles, arranged in a precise, geometric layout on a clean white field. The intricate design offers a contemporary twist on classical mosaic art.\n\nCheck ATLs for inspiration \u2728",
+      "tags": [],
+      "likes": 200,
+      "retweets": 32,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2024450766874751356",
+      "url": "https://x.com/TechieBySA/status/2024450766874751356",
+      "author": "@TechieBySA",
+      "text": "3D Head Avatars by Nano Banana Pro on @SocialSight \ud83c\udfad\u2728\n\nPrompt\ud83d\udc47\ud83c\udffb https://t.co/pM4OEbiqrm",
+      "tags": [
+        "nano-banana"
+      ],
+      "likes": 340,
+      "retweets": 33,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2024277162652815403",
+      "url": "https://x.com/Naiknelofar788/status/2024277162652815403",
+      "author": "@Naiknelofar788",
+      "text": "GPT image 1.5 on ChatGPT\n\nPrompt\uff1a\nCreate an ultra-HD, hyper-realistic digital poster of a floating miniature island shaped like [Country], resting on white clouds in the sky. Blend iconic landmarks, natural landscapes (like [landmark 1], [landscape 2], or [landscape 3]), and cultural elements unique to [Country]. Carve \"[Country]\" into the terrain using large white 3D letters. Add artistic details like [wildlife], cinematic lighting, vivid colors, aerial perspective, and sun reflections to enhance realism",
+      "tags": [],
+      "likes": 435,
+      "retweets": 61,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2024088055896801484",
+      "url": "https://x.com/TechieBySA/status/2024088055896801484",
+      "author": "@TechieBySA",
+      "text": "3D Caricature Characters by Nano Banana Pro on @SocialSight \ud83c\udfad\u2728\n\nPrompt\ud83d\udc47\ud83c\udffb https://t.co/CJLlT1QM18",
+      "tags": [
+        "nano-banana"
+      ],
+      "likes": 470,
+      "retweets": 63,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2024161276364992515",
+      "url": "https://x.com/hewarsaber/status/2024161276364992515",
+      "author": "@hewarsaber",
+      "text": "Prompt:\n\n{\n  \"prompt\": \"A hyper-realistic {{object}} rendered as a sculptural object carved entirely from solid, optical-grade crystal glass. The object preserves its true proportions and recognizable silhouette, with precise geometry and clean edge definition appropriate to its form. It is floating in space at a slight dynamic angle, not perfectly straight, allowing light interaction across multiple surfaces.\n\nA single focused white light source enters the object from one direction, refracting through the internal volume and producing layered internal reflections, chromatic aberration, and physically accurate spectral dispersion along edges, corners, and internal transitions. Light bends, splits, and bounces naturally within the material, creating complex but controlled optical behavior.\n\nInside the glass, subtle volumetric depth is visible, including faint internal reflections, refractive distortions, micro-scratches, and tiny dust particles suspended within the material. A small, intense specular highlight appears on a sharp edge or curvature where the light strikes most directly, producing a crisp optical spark.\n\nReflections are sharp and physically accurate. The glass feels heavy, dense, and premium \u2014 never plastic, never stylized, never neon. The background is a pure black void with soft falloff and no visible environment. Lighting is minimal and studio-controlled, designed to emphasize form, refraction, internal depth, and edge clarity rather than brightness.\n\nNo text, no logos, no markings.\",\n  \"style\": {\n    \"lighting\": \"Low-key studio lighting with a single directional white light source\",\n    \"materials\": \"Optical-grade crystal glass with physically accurate refraction and dispersion\",\n    \"surface_detail\": \"Subtle micro-scratches, internal dust, realistic volumetric imperfections\",\n    \"background\": \"Pure black void\",\n    \"mood\": \"Minimal, futuristic, scientific, museum-grade artifact\",\n    \"color_behavior\": \"Rainbow dispersion only from white light refraction, never artificially colored\",\n    \"Moodboard\": \"Attached Images\"\n  },\n  \"parameters\": {\n    \"object\": \"iPod\",\n    \"orientation\": \"slightly tilted, dynamic perspective\",\n    \"refraction_intensity\": \"high but physically accurate\",\n    \"edge_sharpness\": \"crisp relative to object geometry\",\n    \"spark_intensity\": \"small, sharp specular highlight\",\n    \"glass_thickness\": \"solid, heavy volume\",\n    \"imperfection_level\": \"very subtle\"\n  },\n  \"medium\": \"Ultra-realistic 3D render\",\n  \"size\": \"1080px by 1080px\"\n}",
+      "tags": [],
+      "likes": 191,
+      "retweets": 24,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2023831149190259039",
+      "url": "https://x.com/mernit/status/2023831149190259039",
+      "author": "@mernit",
+      "text": "PSA to everyone building browser agents with @openclaw\n\ngive it a copy of your chrome profile \n\nnow it's logged into everything in your browser  \n\n(use with caution) https://t.co/NgNmXURJXK",
+      "tags": [
+        "agent"
+      ],
+      "likes": 216,
+      "retweets": 5,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2022178815955636413",
+      "url": "https://x.com/aleenaamiir/status/2022178815955636413",
+      "author": "@aleenaamiir",
+      "text": "Timeline Evolution Dioramas\n\nGemini Nano Banana Pro Prompt:\n\n\u201cCreate a clean isometric miniature 3D diorama visualizing the evolution of [TOPIC] from [START ERA] to [MODERN ERA]. Use a 45\u00b0 top-down perspective. Materials are soft and refined with realistic PBR shading.\n\nLighting is neutral and evenly balanced. Design a horizontally stepped base divided into clear time periods. Each section includes era-specific objects, tools, environments, or technology.\n\nAdd tiny stylized figures interacting with each stage with heavy facial details). Use subtle arrows or dividers to show chronological flow.\n\nBackground remains solid [BACKGROUND COLOR]. Top center text displays [TOPIC] in bold. Below it show \u201cFrom [START ERA] to [MODERN ERA].\u201d Add a minimal timeline icon underneath. Text adapts automatically for contras.\u201d",
+      "tags": [
+        "nano-banana",
+        "gemini"
+      ],
+      "likes": 614,
+      "retweets": 90,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2019796977299681757",
+      "url": "https://x.com/john_my07/status/2019796977299681757",
+      "author": "@john_my07",
+      "text": "Nano Banana Pro on Gemini and GPT Image 1.5\n\nPrompt:\n\n{\n  \"global_settings\": {\n    \"resolution\": \"8K ultra-high-definition\",\n    \"aspect_ratio\": \"3:4 vertical\",\n    \"render_style\": \"photorealistic high-end biscuit photography\",\n    \"quality\": \"luxury advertising standard\",\n    \"clarity\": \"ultra-sharp with visible fine textures\",\n    \"grain\": \"zero\",\n    \"visual_artifacts\": \"none\",\n    \"depth_of_field\": \"selective focus with soft background falloff\",\n    \"motion_capture\": \"ingredients suspended in mid-air\",\n    \"background_style\": \"clean monochrome studio backdrop\"\n  },\n\n  \"subject\": {\n    \"main_food\": \"assorted biscuit-style cookies\",\n    \"quantity\": 4,\n    \"appearance\": [\n      \"uniform baked biscuits with refined edges\",\n      \"lightly toasted surface with subtle cracks\",\n      \"visible chocolate bits and butter layers\",\n      \"dry-crisp texture typical of premium biscuits\",\n      \"precise handcrafted finish\"\n    ],\n    \"branding_rules\": [\n      \"no typography\",\n      \"no logos\",\n      \"no imprints\",\n      \"no decorative marks\",\n      \"no symbols\"\n    ]\n  },\n\n  \"secondary_elements\": {\n    \"ingredients_floating\": [\n      \"mini chocolate chips\",\n      \"biscuit crumbs\",\n      \"powdered sugar dust\"\n    ],\n    \"motion_style\": \"controlled burst with natural spread\",\n    \"distribution\": \"organic scatter surrounding the biscuits\",\n    \"particle_detail\": \"high-speed frozen motion with layered depth\"\n  },\n\n  \"composition\": {\n    \"camera_angle\": \"slightly elevated three-quarter angle\",\n    \"framing\": \"central hero focus with visual breathing space\",\n    \"spacing\": \"ample negative space for premium feel\",\n    \"focus_priority\": \"foreground biscuit in extreme sharp focus\"\n  },\n\n  \"lighting\": {\n    \"type\": \"studio-grade cinematic lighting\",\n    \"key_light\": \"soft diffused directional light\",\n    \"fill_light\": \"low-intensity fill to reveal surface detail\",\n    \"rim_light\": \"delicate edge glow for separation\",\n    \"shadows\": \"smooth and realistic with gentle falloff\"\n  },\n\n  \"color_palette\": {\n    \"background_color\": \"muted pastel teal\",\n    \"biscuit_tones\": \"light golden beige and toasted browns\",\n    \"accent_colors\": \"deep cocoa browns, soft sugar whites\",\n    \"contrast\": \"strong subject isolation from background\"\n  },\n\n  \"photography_style\": {\n    \"genre\": \"premium biscuit advertising\",\n    \"mood\": \"clean, refined, indulgent\",\n    \"cleanliness\": \"immaculate studio finish\",\n    \"post_processing\": \"subtle professional retouching, natural tones\"\n  },\n\n  \"exclusions\": [\n    \"text\",\n    \"branding\",\n    \"watermarks\",\n    \"hands\",\n    \"serving ware\",\n    \"props\",\n    \"wrappers\",\n    \"environmental elements\",\n    \"illustration\",\n    \"cartoon rendering\"\n  ]\n}",
+      "tags": [
+        "nano-banana",
+        "brand-design",
+        "gemini"
+      ],
+      "likes": 154,
+      "retweets": 19,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2019852666567029072",
+      "url": "https://x.com/miilesus/status/2019852666567029072",
+      "author": "@miilesus",
+      "text": "Amazing prompt from @egeberkina \u2665\ufe0f\n\nStranger Things avatar edition\n\nPrompt: \n{\n  \"task\": \"image_style_transfer_3d_character\",\n  \"input\": {\n    \"source_image\": \"USER_UPLOADED_IMAGE\",\n    \"preserve_identity\": true,\n    \"preserve_pose\": true,\n    \"preserve_composition\": true,\n    \"preserve_clothing\": true,\n    \"preserve_accessories\": true\n  },\n  \"style_reference\": {\n    \"render_style\": \"stylized_3d_character\",\n    \"aesthetic\": \"soft_minimal_cartoon_3d\",\n    \"inspiration\": [\n      \"pixar_like_but_more_minimal\",\n      \"toy_figure_render\",\n      \"clean_product_character_design\"\n    ]\n  },\n  \"character_design\": {\n    \"skin\": {\n      \"material\": \"smooth_matte_plastic\",\n      \"texture\": \"soft_uniform\",\n      \"subsurface_scattering\": \"gentle\"\n    },\n    \"facial_features\": {\n      \"eyes\": \"half_closed_bored_confident_expression\",\n      \"eyelids\": \"heavy\",\n      \"nose\": \"rounded_simplified\",\n      \"mouth\": \"flat_neutral\",\n      \"ears\": \"simplified_rounded\"\n    },\n    \"emotion\": \"cool_bored_unimpressed\"\n  },\n  \"clothing\": {\n    \"source\": \"exact_from_uploaded_image\",\n    \"lock_outfit\": true,\n    \"fit\": \"unchanged\",\n    \"fabric_translation\": \"3d_stylized_equivalent_only\",\n    \"no_replacement\": true,\n    \"no_enhancement\": true,\n    \"no_stylization_override\": true\n  },\n  \"accessories\": {\n    \"source\": \"exact_from_uploaded_image\",\n    \"lock_accessories\": true,\n    \"allow_only_existing\": true,\n    \"no_new_accessories\": true,\n    \"no_removal\": true,\n    \"no_addition\": true\n  },\n  \"lighting\": {\n    \"setup\": \"studio_softbox\",\n    \"shadows\": \"very_soft\",\n    \"contrast\": \"low\",\n    \"highlights\": \"subtle\"\n  },\n  \"background\": {\n    \"type\": \"solid_color\",\n    \"color\": \"red\"\n  },\n  \"camera\": {\n    \"angle\": \"front_facing\",\n    \"framing\": \"medium_close_up\",\n    \"lens\": \"50mm_equivalent\",\n    \"distortion\": \"none\"\n  },\n  \"render_quality\": {\n    \"resolution\": \"high\",\n    \"edges\": \"clean\",\n    \"noise\": \"none\",\n    \"realism_balance\": \"stylized_over_realistic\"\n  },\n  \"output\": {\n    \"consistency\": \"very_high\",\n    \"style_strength\": \"strong\",\n    \"photorealism\": false,\n    \"strict_constraints\": true\n  }\n}",
+      "tags": [],
+      "likes": 246,
+      "retweets": 32,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2019794602551869512",
+      "url": "https://x.com/kingofdairyque/status/2019794602551869512",
+      "author": "@kingofdairyque",
+      "text": "Prompt \nHigh-resolution Editorial Angle Reference Sheet. Perfect 3x3 grid. Aspect ratio 4:5. Strictly use attached selfie as identity reference. Maintain 100% facial consistency across all 9 panels (same face, age, hair, skin tone, proportions). Wardrobe (fixed for all panels): Oversized red suit jacket and trousers, white dress shirt, black necktie. Clean editorial oversized fit. Background: neutral light-grey studio cyclorama. Lighting: soft professional studio lighting with subtle https://t.co/nrdoPrFaPh: 85mm portrait look, shallow depth of field, sharp focus on face and outfit. Composition: centered subject in every cell, consistent framing, balanced spacing. Grid labels: clean white sans-serif text at bottom center of each cell showing the angle. Row 1 (Top): 1. Front Medium \u2014 front-facing waist-up, direct gaze. 2. Close-Up \u2014 extreme close-up on face and eyes. 3. Three-Quarter \u2014 3/4 turn of torso and face. Row 2 (Middle): 4. Profile \u2014 exact side profile.5. Low Angle Full \u2014 full body from slightly below. 6. High Angle \u2014 camera slightly above. Row 3 (Bottom): 7. Over Shoulder \u2014 over-the-shoulder look back. 8. Dutch Tilt \u2014 slight camera tilt. 9. Mid Walk \u2014 natural mid-step candid pose. Style: editorial fashion photography, cinematic, high-end. Render quality: ultra photorealistic, sharp text, visible fabric texture, natural skin, consistent lighting. Negative prompts: identity change, distorted anatomy, extra limbs, busy background.",
+      "tags": [],
+      "likes": 318,
+      "retweets": 46,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2019879789096489186",
+      "url": "https://x.com/AllaAisling/status/2019879789096489186",
+      "author": "@AllaAisling",
+      "text": "Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly\n\nA single [DISH] suspended in space, cross-sectioned to reveal its complete archaeology of flavor. Each layer labeled with origin: the salt from [REGION], the spice traded along [ROUTE], the technique inherited from [CULTURE]. Ingredients maintain their identity while merging\u2014you can trace the tomato's journey from vine to sauce, the grain's path from field to plate. Heat signatures glow where cooking transformed raw into ready. Time is visible: the hours of braising, the generations of refinement, the moment of plating. Flavor compounds drift upward as aromatic architecture. The dish exists simultaneously as ingredients, process, and completion. Dramatic rimlight, steam rising as visible narrative, 8K, the meal as memoir.\n\nCheck ALTs for ideas \ud83d\udc47 @AdobeFirefly",
+      "tags": [
+        "nano-banana"
+      ],
+      "likes": 115,
+      "retweets": 12,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2019788303214776494",
+      "url": "https://x.com/lloydcreates/status/2019788303214776494",
+      "author": "@lloydcreates",
+      "text": "Nano Banana Pro\nGlass Prismatic Tech\n\nPrompt \ud83d\udc47\n\n{\n  \"image_generation_request\": {\n    \"subject\": \"[INSERT PRODUCT HERE]\",\n    \"environment\": {\n      \"background\": \"A smooth, professional dual-tone gradient transition between #111B24 and #CAEFFF\",\n      \"lighting\": \"High-contrast studio lighting with bright rim highlights to emphasize glossy textures\"\n    },\n    \"style_elements\": {\n      \"aesthetic\": \"Y2K Frutiger Aero meets modern hyper-realism\",\n      \"optical_effects\": [\n        \"Dynamic glass refraction\",\n        \"Prismatic chromatic aberration at the edges of transparent objects\",\n        \"Iridescent lens flares\",\n        \"Distorted glass overlays floating in the foreground\"\n      ],\n      \"composition\": \"Floating, gravity-defying arrangement with a wide-angle perspective\",\n      \"textures\": \"Polished chrome, transparent acrylic, and high-gloss plastic\"\n    },\n    \"technical_specs\": {\n      \"resolution\": \"8k UHD\",\n      \"render_engine\": \"Octane Render style\",\n      \"detailing\": \"Macro photography focus, hyper-detailed mechanical parts\"\n    }\n  }\n}",
+      "tags": [
+        "nano-banana"
+      ],
+      "likes": 393,
+      "retweets": 36,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2019779947020026325",
+      "url": "https://x.com/AmirMushich/status/2019779947020026325",
+      "author": "@AmirMushich",
+      "text": "Nano Banana smart prompt:\n\nEditorial fashion campaign \n\nPrompt \ud83d\udc47 https://t.co/SCb5gqiVhi",
+      "tags": [
+        "nano-banana"
+      ],
+      "likes": 387,
+      "retweets": 38,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2019637570133717072",
+      "url": "https://x.com/oggii_0/status/2019637570133717072",
+      "author": "@oggii_0",
+      "text": "Gemini Nano Banana Pro.\n\nPrompt:A hyper-realistic beauty product photograph of a pink \u201cLANEIGE Lip Sleeping Mask\u201d jar placed at the center of a vibrant pastel-pink surface covered in fresh water droplets, the jar upright with a frosted pink lid and glossy translucent body, surrounded organically by delicate flowers including purple blossoms, pale lilies, yellow sprigs, and green leaves arranged diagonally around the product, soft diffused studio lighting from above creating gentle highlights and natural shadows, moisture beads sparkling across the background for a fresh dewy feel, clean skincare editorial aesthetic, feminine and luxurious mood, balanced flat-lay composition, shallow depth of field, ultra-detailed textures, photorealistic, high-end cosmetic advertising style, 8K quality",
+      "tags": [
+        "nano-banana",
+        "gemini",
+        "video-gen"
+      ],
+      "likes": 310,
+      "retweets": 34,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2016194288716284015",
+      "url": "https://x.com/DilumSanjaya/status/2016194288716284015",
+      "author": "@DilumSanjaya",
+      "text": "Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZSLwq515",
+      "tags": [
+        "midjourney",
+        "nano-banana"
+      ],
+      "likes": 385,
+      "retweets": 11,
+      "synced_at": "2026-02-24"
+    },
+    {
+      "id": "1906736147310547166",
+      "url": "https://x.com/d4m1n/status/1906736147310547166",
+      "author": "@d4m1n",
+      "text": "[Bonus]\n8. Elysia: premium fashion e-commerce\n\n(I persoanlly didn't like this one that much, but it is a different style so worth mentioning)\n\n[Needs image attached, see prev post in thre\u00e1d]\n\nPrompt: \n\nCreate an image of a sheet with the branding overview for a company, incorporating the elements illustrated below.\nThere's a template attached. Use a similar layout but none of the styles in it.\nOutput as \"bento box\" apple design.\n\nFollow these rules:\n1. a logo, and logotype. Label should be \"Logo\"\n2. colors palette with simple color swatches in a simple way. Label should be \"Color Palette\"\n3. fonts (just 2 examples and font name). Label should be \"Fonts\"\n4. gradient examples light & dark mode. Label should be \"Gradients\"\n5. 5. 6 icon examples. Label should be \"Icons\"\n6. an on-brand image example. Label should be \"Illustration\"\n7. Be concise with text.\n8. make the sheet beautifully and modern designed incorporating colors and brand elements, also for the background of the sheet itself\n9. for style use  elegant, expensive, luxury, gradient, glassmorphism\n\nHere are the specs:\n\n# Elysia Brand Design Manual\n\n## Brand Overview\nElysia is a premium fashion e-commerce platform positioned as a sophisticated rival to Zalando. Targeting discerning fashion consumers who value quality, curation, and elevated style, Elysia offers a more exclusive and high-end alternative to mainstream fashion retailers. The brand embodies elegant minimalism with subtle luxury touchpoints throughout the customer experience.\n\n## Brand Strategy & Final Decisions\n\n### Logo\nThe Diamond Frame concept has been selected as Elysia's primary logo. It features a precision-crafted diamond/rhombus shape in Burnished Gold framing the \"ELYSIA\" wordmark in Playfair Display. This geometric emblem connotes luxury and premium positioning while creating a distinctive, memorable brand mark that works across all applications.\n\n### Typography\n- Primary (Headings): Playfair Display - a contemporary serif with high-contrast strokes\n  - Weights: Regular, Bold, Light\n  - H1: 48-56px, H2: 36-42px, H3: 28-32px, H4: 22-24px\n- Secondary (Body): Avenir - a humanist sans-serif balancing modernity with elegance\n  - Weights: Light, Regular, Medium\n  - Body: 16-18px, Small: 14px, Buttons: 16-20px, Navigation: 16px\n\n### Color Palette\n- Primary: Deep Sapphire (#0F2E4C) - authority, exclusivity, depth\n- Secondary: \n  - Burnished Gold (#D4AF37) - luxury, achievement\n  - Soft Ivory (#F8F4E3) - elegance, simplicity\n  - Rich Merlot (#7D2027) - sophistication, passion\n  - Charcoal Gray (#333333) - professionalism, editorial quality\n\n### Graphics\nThe Flowing Fabric Abstract and Geometric Thread Pattern will serve as primary graphic elements across marketing materials. The Editorial Fashion Silhouettes will be used for specific content highlighting styling and fashion expertise.\n\n### App Icon\nThe Elysia Diamond Icon - featuring the geometric diamond in Burnished Gold against a Deep Sapphire background with a subtle \"E\" formed by negative space.\n\n## Brand Style Direction\nThe overall aesthetic is defined by minimalist elegance with thoughtful luxury details. The visual language balances negative space with rich, deep colors and precise geometric elements. Photography should be editorial in quality with a focus on texture, craftsmanship, and sophisticated styling.\n\nAll brand communications should embody an elevated tone that is knowledgeable but never pretentious, sophisticated yet approachable. Layouts should feature generous white space, precise alignment, and considered typographic hierarchies.\n\nDigital interfaces should prioritize intuitive navigation with subtle luxury touchpoints, like the Thread Pattern as a loading animation or the Fabric Abstract as transitional elements. Animations should be smooth and deliberate, never flashy.\n\nThe Elysia brand aims to create a sense of discovery and curation that makes customers feel that they've found something special\u2014an exclusive alternative to mainstream fashion platforms that truly understands quality and style.",
+      "tags": [
+        "brand-design"
+      ],
+      "likes": 21,
+      "retweets": 0,
+      "synced_at": "2026-02-24"
+    }
+  ]
+}
