@@ -10,6 +10,7 @@
   <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.2.1-1f883d?style=flat-square"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest"><img alt="Latest GitHub Release" src="https://img.shields.io/github/v/release/Sheshiyer/brandmint-oracle-aleph?style=flat-square&logo=github"></a>
   <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.2.1-6f42c1?style=flat-square"></a>
+  <a href="https://brandmint-openclaw.vercel.app"><img alt="OpenClaw Integration" src="https://img.shields.io/badge/OpenClaw-Integrated-0ea5e9?style=flat-square&logo=github&logoColor=white"></a>
 </p>
 <!-- readme-gen:end:badges -->
 
@@ -30,6 +31,7 @@
 - **45 specialized skills / 9 categories**: from buyer persona and positioning to visual generation and publishing.
 - **Publishing built in (Wave 7)**: notebook artifacts, decks, reports, diagrams, and Remotion videos.
 - **Agent-friendly**: non-interactive mode for CI/desktop/API contexts.
+- **OpenClaw integration**: documentation and orchestration flows are aligned for OpenClaw-powered agent setups.
 
 ## Quick Start
 
@@ -73,6 +75,16 @@ bm cache      # cache stats / clear
 | 5 | Launch assets | email and campaign collateral |
 | 6 | Distribution | ads, social, outreach content |
 | 7 | Publishing | themes, NotebookLM, decks, reports, diagrams, videos |
+
+## Publishing Deliverables (`bm publish`)
+
+| Command | Output |
+|---|---|
+| `bm publish notebooklm --config <brand-config.yaml>` | Notebook + artifacts |
+| `bm publish decks --config <brand-config.yaml>` | PDF slide decks |
+| `bm publish reports --config <brand-config.yaml>` | PDF reports |
+| `bm publish diagrams --config <brand-config.yaml>` | Mind maps + Mermaid diagrams |
+| `bm publish video --config <brand-config.yaml>` | MP4 videos (brand-sizzle, product-showcase, audio-slides) |
 
 <!-- readme-gen:start:architecture -->
 ## Architecture (high level)
@@ -127,6 +139,13 @@ See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/relea
 | Docs | `README.md`, `CLAUDE.md`, `.github/RELEASE_NOTES.md`, `docs/` |
 | State/Reports | execution state + report pipeline implemented |
 <!-- readme-gen:end:health -->
+
+## OpenClaw Integration
+
+Brandmint supports OpenClaw-oriented workflows and docs publication paths.
+
+- OpenClaw docs/site touchpoint: [brandmint-openclaw.vercel.app](https://brandmint-openclaw.vercel.app)
+- Use the same pipeline-first contract (`bm launch --non-interactive`) for reliable agent orchestration.
 
 ## Notes for Agent/CI execution
 

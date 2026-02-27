@@ -4,7 +4,7 @@
 Brandmint is an end-to-end brand identity orchestration system that transforms a single YAML configuration file into comprehensive marketing outputs—from strategic text documents and AI-generated visual assets to campaign copy and documentation sites.
 
 ## Specifications
-- **Skills**: 44 specialized skills across 9 categories
+- **Skills**: 45 specialized skills across 9 categories
 - **Categories**: text-strategy, visual-prompters, campaign-copy, email-sequences, brand-foundation, social-growth, advertising, publishing, visual-pipeline
 - **Runtime**: Python 3.10+
 - **Package Manager**: uv (recommended), pipx, or pip
@@ -20,6 +20,7 @@ Brandmint is an end-to-end brand identity orchestration system that transforms a
 - **Domain-Aware Asset Selection** — Assets auto-filter based on brand.domain_tags (dtc, saas, app, crowdfunding) — generates only relevant assets, saving cost and time
 - **Programmatic Video Generation** — Remotion-based video pipeline (Wave 7F) scaffolds a React project per brand, injects data as props, and renders 3 MP4 videos (sizzle reel, product showcase, audio+slides) — professional video deliverables without manual editing
 - **Full Publishing Pipeline** — Wave 7 produces 6 deliverable types: brand themes (CSS/Typst/JSON), NotebookLM notebooks, slide decks (Marp), reports (Typst), diagrams (Markmap/Mermaid), and videos (Remotion)
+- **OpenClaw Integration Path** — Documentation and orchestrated execution conventions align with OpenClaw-first agent environments for predictable automation behavior
 
 ## How To Use
 1. **Install**: Run `curl -sSL https://raw.githubusercontent.com/brandmint/brandmint/main/install.sh | bash` or clone and run `uv pip install -e ".[dev]"`
@@ -28,7 +29,7 @@ Brandmint is an end-to-end brand identity orchestration system that transforms a
 4. **Generate**: Execute visual pipeline with `bm visual generate` then `bm visual execute --batch anchor` followed by `bm visual execute --batch all`
 
 ## Summary
-Brandmint eliminates the chaos of brand launches by providing a unified orchestration layer that connects strategic thinking to visual execution. Instead of juggling separate tools for positioning, copywriting, and asset generation, teams define their brand once and let the system cascade that identity across 44 specialized skills and 19+ visual assets. The result: agency-grade brand packages at ~$2-3 per full run, completed in hours instead of weeks, with guaranteed consistency from buyer persona to campaign poster.
+Brandmint eliminates the chaos of brand launches by providing a unified orchestration layer that connects strategic thinking to visual execution. Instead of juggling separate tools for positioning, copywriting, and asset generation, teams define their brand once and let the system cascade that identity across 44 specialized skills and 19+ visual assets. The result: agency-grade brand packages at ~$2-3 per full run, completed in hours instead of weeks, with guaranteed consistency from buyer persona to campaign poster, and clean interoperability with OpenClaw-oriented agent workflows.
 
 ```json
 {
@@ -37,7 +38,7 @@ Brandmint eliminates the chaos of brand launches by providing a unified orchestr
     "price": "Open Source (MIT) + ~$2-3/brand run for FAL.AI generation"
   },
   "specs": {
-    "skills": "44 across 9 categories",
+    "skills": "45 across 9 categories",
     "runtime": "Python 3.10+",
     "ai_models": "Nano Banana Pro ($0.08), Flux 2 Pro ($0.05), Recraft V3 ($0.04)",
     "visual_assets": "19+ per brand run",
