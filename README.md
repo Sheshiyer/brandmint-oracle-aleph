@@ -11,6 +11,7 @@
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest"><img alt="Latest GitHub Release" src="https://img.shields.io/github/v/release/Sheshiyer/brandmint-oracle-aleph?style=flat-square&logo=github"></a>
   <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.2.1-6f42c1?style=flat-square"></a>
   <a href="https://brandmint-openclaw.vercel.app"><img alt="OpenClaw Integration" src="https://img.shields.io/badge/OpenClaw-Integrated-0ea5e9?style=flat-square&logo=github&logoColor=white"></a>
+  <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/pkgs/container/brandmint"><img alt="GHCR Package" src="https://img.shields.io/badge/GHCR-package-blue?style=flat-square&logo=docker&logoColor=white"></a>
 </p>
 <!-- readme-gen:end:badges -->
 
@@ -52,6 +53,17 @@ bm launch --config ./my-brand/brand-config.yaml \
   --waves 1-7 \
   --non-interactive
 ```
+
+## GitHub Package (Container)
+
+Brandmint is now configured to publish a container package to GitHub Container Registry (GHCR).
+
+```bash
+docker pull ghcr.io/sheshiyer/brandmint:latest
+docker run --rm ghcr.io/sheshiyer/brandmint:latest --help
+```
+
+Publishing is automated via GitHub Actions on release publish (`.github/workflows/publish-ghcr.yml`).
 
 ## Core CLI Commands
 

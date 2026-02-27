@@ -1,0 +1,14 @@
+.git
+.gitignore
+.venv
+.pytest_cache
+.ruff_cache
+node_modules
+ui/node_modules
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+README.old.md
