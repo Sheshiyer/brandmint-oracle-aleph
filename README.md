@@ -7,9 +7,9 @@
 <!-- readme-gen:start:badges -->
 <p align="center">
   <a href="https://pypi.org/project/brandmint/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white"></a>
-  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.2.0-1f883d?style=flat-square"></a>
+  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.2.1-1f883d?style=flat-square"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest"><img alt="Latest GitHub Release" src="https://img.shields.io/github/v/release/Sheshiyer/brandmint-oracle-aleph?style=flat-square&logo=github"></a>
-  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.2-6f42c1?style=flat-square"></a>
+  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.2.1-6f42c1?style=flat-square"></a>
 </p>
 <!-- readme-gen:end:badges -->
 
@@ -110,8 +110,9 @@ graph TD
 ## Release Highlights (from all repo releases)
 
 - **v4.0.0** — UX, resilience, logging/caching/reporting foundations, budget gates, resume support.
-- **v4.1.0** *(latest published GitHub release)* — robust `--non-interactive` pipeline behavior, publishing + wiki pipeline, visual asset integration fixes.
-- **v4.2.0** *(documented in repo release notes)* — Remotion video generation (Wave 7F), full Wave 7 publishing flow hardening, optional `brandmint[video]` extras.
+- **v4.1.0** *(published)* — robust `--non-interactive` pipeline behavior, publishing + wiki pipeline, visual asset integration fixes.
+- **v4.2.0** *(published)* — Remotion video generation (Wave 7F), full Wave 7 publishing flow hardening, optional `brandmint[video]` extras.
+- **v4.2.1** *(current)* — README/metadata alignment: release-aware badges, corrected inventory counts, and changelog initialization.
 
 See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/releases) and [repo release notes](./.github/RELEASE_NOTES.md).
 

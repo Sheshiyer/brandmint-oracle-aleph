@@ -1,5 +1,16 @@
 # Release Notes
 
+## What's New in v4.2.1
+
+### Documentation & Packaging Alignment
+- **README refresh** — Updated positioning copy, release-aware badge strategy, architecture/health sections, and corrected skills inventory to match repository reality (45 skills across 9 categories)
+- **Release timeline alignment** — README now distinguishes published GitHub releases from repo-documented milestones
+- **Version metadata** — Bumped package version to `4.2.1` in `pyproject.toml` for a clean patch release
+- **Generator config** — Added `.readme-gen.json` to persist README generation style (`modern`) and badge style (`flat-square`)
+- **Changelog bootstrap** — Introduced `CHANGELOG.md` with consolidated entries for v4.0.0 through v4.2.1
+
+---
+
 ## What's New in v4.2.0
 
 ### Programmatic Video Generation (Wave 7F)
