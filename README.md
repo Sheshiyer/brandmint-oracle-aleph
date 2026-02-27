@@ -54,6 +54,23 @@ bm launch --config ./my-brand/brand-config.yaml \
   --non-interactive
 ```
 
+## Install via Homebrew
+
+```bash
+brew tap Sheshiyer/brandmint
+brew install brandmint
+bm --help
+```
+
+Homebrew packaging docs:
+- [docs/homebrew-packaging.md](./docs/homebrew-packaging.md)
+- [docs/release-checklist.md](./docs/release-checklist.md)
+
+Troubleshooting:
+- If you hit checksum mismatch, refresh tap and reinstall:
+  - `brew update && brew untap Sheshiyer/brandmint && brew tap Sheshiyer/brandmint`
+- If Python version conflicts appear, ensure `python@3.11` is installed.
+
 ## GitHub Package (Container)
 
 Brandmint is now configured to publish a container package to GitHub Container Registry (GHCR).

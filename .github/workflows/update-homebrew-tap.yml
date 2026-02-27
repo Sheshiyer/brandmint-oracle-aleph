@@ -1,0 +1,49 @@
+name: Update Homebrew Tap Formula
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g., v4.2.1)"
+        required: true
+
+jobs:
+  update-tap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+
+      - name: Resolve tag
+        id: tag
+        run: |
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout tap repo
+        uses: actions/checkout@v4
+        with:
+          repository: Sheshiyer/homebrew-brandmint
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+
+      - name: Generate formula
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+          FORMULA_OUT: tap/Formula/brandmint.rb
+        run: |
+          python3 scripts/update_homebrew_formula.py
+
+      - name: Commit and push formula update
+        working-directory: tap
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/brandmint.rb
+          git commit -m "brew: bump brandmint to ${{ steps.tag.outputs.tag }}" || echo "No changes"
+          git push
