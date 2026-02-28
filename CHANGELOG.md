@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.0] - 2026-02-28
+
+### Added
+- Semantic reference matching: 4-gate pipeline (domain filter, subject type, diversity slots, aesthetic tiebreaker) in `scripts/generate_pipeline.py`.
+- 5 new semantic metadata fields on all 138 reference catalog entries: `subject_type`, `domain_suitability`, `lighting_register`, `color_temperature`, `composition_format`.
+- `brandmint[vision]` optional dependency group: Pillow, colorgram.py, imagehash, numpy, scikit-image, opencv-python-headless, scipy.
+- `brandmint[embeddings]` optional dependency group: transformers, torch, sentence-transformers, faiss-cpu.
+- `brandmint/vision/` package scaffold for upcoming pixel-level analysis modules.
+- 43 GitHub issues (#9-#51) tracking 5-wave vision intelligence upgrade roadmap.
+
+### Changed
+- Migrated PIDs 3A, 3B, 4B from Flux 2 Pro to Nano Banana Pro with reference image support.
+- Removed hardcoded Noesis/Tryambakam defaults from `build_vars()` in hydrator.
+- Updated architecture diagram in README to include semantic reference matching layer.
+- Fixed CI/CD health snapshot in README (workflows were present but unreported).
+
+### Removed
+- 5D icon generation: deleted `PROMPT_5D_ICONS`, `PROMPT_5D_ICONS_FLUX`, all 4 icon model branches (recraft_vector, recraft_digital, flux, nano_banana), `ref-5D-engine-icons` catalog entry.
+
 ## [4.2.1] - 2026-02-28
 
 ### Changed

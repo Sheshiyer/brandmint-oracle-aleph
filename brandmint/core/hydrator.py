@@ -54,6 +54,33 @@ HYDRATION_MAP: Dict[str, Dict[str, str]] = {
     "competitor-analysis": {
         "competitive_context.differentiate_from": "key_differentiators",
     },
+    # Visual concept hydration — feeds visual-identity-core output into
+    # aesthetic and product fields so visual prompts use brand-specific concepts
+    "visual-identity-core": {
+        "aesthetic.hero_object_type": "imagery.hero_object_type",
+        "aesthetic.hero_surface": "imagery.hero_surface",
+        "aesthetic.seal_material": "graphic_elements.seal_material",
+        "aesthetic.seal_geometry": "graphic_elements.seal_geometry",
+        "aesthetic.logo_treatment": "logo_usage.treatment",
+        "aesthetic.logo_substrate": "logo_usage.substrate",
+        "aesthetic.panel_structure": "graphic_elements.panel_structure",
+        "aesthetic.icon_line_style": "graphic_elements.icon_line_style",
+        "aesthetic.poster_artifact": "imagery.poster_artifact",
+        "aesthetic.poster_filament": "imagery.poster_filament",
+        "aesthetic.poster_border": "graphic_elements.poster_border",
+        "aesthetic.engraving_style": "graphic_elements.engraving_style",
+        "aesthetic.seeker_inner_detail": "imagery.seeker_inner_detail",
+        "aesthetic.sequence_type": "imagery.sequence_type",
+        "aesthetic.sequence_constraint": "imagery.sequence_constraint",
+    },
+    # Product concept hydration — detailed-product-description output feeds
+    # product fields for visual prompt specificity
+    "detailed-product-description": {
+        "products.hero.name": "hero_product.name",
+        "products.hero.description": "hero_product.description",
+        "products.hero.physical_form": "hero_product.physical_form",
+        "products.category": "product_category",
+    },
 }
 
 

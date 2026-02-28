@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-02-25T01:06:34.245932+00:00",
-  "total_refs": 139,
+  "total_refs": 138,
   "primary": {
     "2A": {
       "file": "ref-2A-bento-grid.jpg",
@@ -32,8 +32,8 @@
     "3A": {
       "file": "ref-3A-capsule-collection.jpg",
       "name": "Capsule Collection",
-      "model": "flux-2-pro",
-      "supports_image_urls": false,
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
       "aspect": "4:3",
       "description": "Product lineup / flatlay composition",
       "prompt_id": "3A"
@@ -41,8 +41,8 @@
     "3B": {
       "file": "ref-3B-hero-product.jpg",
       "name": "Hero Product",
-      "model": "flux-2-pro",
-      "supports_image_urls": false,
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
       "aspect": "1:1",
       "description": "Individual branded product shots",
       "prompt_id": "3B"
@@ -68,8 +68,8 @@
     "4B": {
       "file": "ref-4B-flatlay.jpg",
       "name": "Flatlay",
-      "model": "flux-2-pro",
-      "supports_image_urls": false,
+      "model": "nano-banana-pro",
+      "supports_image_urls": true,
       "aspect": "1:1",
       "description": "Minimal white product photography",
       "prompt_id": "4B"
@@ -92,16 +92,6 @@
       "aspect": "3:4",
       "description": "2-column asymmetric campaign grid",
       "prompt_id": "5B"
-    },
-    "5D": {
-      "file": "ref-5D-engine-icons.jpg",
-      "name": "Engine Icons",
-      "model": "recraft-v3",
-      "supports_image_urls": false,
-      "aspect": "1:1",
-      "style": "vector_illustration/line_circuit",
-      "description": "Minimal icon set on solid background",
-      "prompt_id": "5D"
     },
     "7A": {
       "file": "ref-7A-contact-sheet.jpg",

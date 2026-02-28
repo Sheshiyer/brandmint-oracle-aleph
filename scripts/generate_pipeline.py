@@ -41,7 +41,6 @@ _DEFAULT_REF_IMAGES = {
     "4B": "ref-4B-flatlay.jpg",
     "5A": "ref-5A-heritage-engraving.jpg",
     "5B": "ref-5B-campaign-grid.jpg",
-    "5D": "ref-5D-engine-icons.jpg",
     "7A": "ref-7A-contact-sheet.jpg",
     "8A": "ref-8A-seeker-poster.jpg",
     "9A": "ref-9A-engine-poster.jpg",
@@ -114,12 +113,38 @@ def _extract_tags_from_filename(filename):
 
 
 # Prompt IDs that use Nano Banana Pro (support image_url references)
-_NANO_BANANA_PIDS = ["2A", "3C", "4A", "5B", "7A", "8A", "9A", "10A"]
+_NANO_BANANA_PIDS = ["2A", "3A", "3B", "3C", "4A", "4B", "5B", "7A", "8A", "9A", "10A"]
+
+# Subject type per PID — what the asset conceptually depicts
+_PID_SUBJECT_TYPES = {
+    "2A": "layout",          # bento grid → compositional layout
+    "2B": "logo",            # brand seal
+    "2C": "logo",            # logo emboss
+    "3A": "multi-product",   # capsule collection
+    "3B": "single-product",  # hero product
+    "3C": "single-product",  # product detail
+    "4A": "catalog-layout",  # catalog with spec callouts
+    "4B": "flatlay",         # product flatlay
+    "5A": "illustration",    # heritage engraving
+    "5B": "campaign-layout", # campaign grid
+    "5C": "illustration",    # art panel
+    "7A": "photo-grid",      # contact sheet
+    "8A": "poster",          # seeker poster
+    "9A": "poster",          # engine poster
+    "10A": "photo-grid",     # social proof contact sheet
+}
+
+# Layout PIDs get relaxed subject_type filtering (compositional refs are broadly useful)
+_LAYOUT_PIDS = {"2A", "4A", "5B", "7A", "8A", "9A", "10A"}
 
 # Fallback keyword context (used when reference-catalog.yaml is unavailable)
 _PID_CONTEXT = {
     "2A": ["bento", "grid", "layout", "brand-kit", "composition", "modular"],
+    "3A": ["capsule", "collection", "lineup", "product", "multi", "range"],
+    "3B": ["hero", "product", "single", "flagship", "main", "feature"],
+    "3C": ["detail", "product", "close-up", "texture", "material", "craft"],
     "4A": ["catalog", "layout", "product", "spec", "detail", "grid"],
+    "4B": ["flatlay", "product", "minimal", "white", "arrangement", "overhead"],
     "5B": ["campaign", "grid", "poster", "marketing", "ad", "promotion"],
     "7A": ["contact", "sheet", "proof", "collection", "overview"],
     "8A": ["seeker", "poster", "persona", "portrait", "character"],
@@ -141,14 +166,15 @@ def _aesthetic_distance(profile_a, profile_b):
     ) ** 0.5
 
 
-def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None):
-    """Select supplementary refs using aesthetic distance from YAML catalog.
+def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None,
+                     brand_domain_tags=None):
+    """Select supplementary refs using semantic + aesthetic scoring.
 
-    If catalog_yaml_path is available, uses aesthetic-distance scoring:
-      1. Load primary ref aesthetic profile for each PID
-      2. Find all entries with this PID in asset_compatibility
-      3. Score by aesthetic distance (closer = better style match)
-      4. Return top N closest matches
+    Gated pipeline (when catalog YAML is available):
+      1. Domain filter: candidate domain_suitability must intersect brand domains
+      2. Subject filter: candidate subject_type must match PID (layout PIDs exempt)
+      3. Diversity slots: for multi-domain brands, spread refs across domains
+      4. Aesthetic tiebreaker: within filtered set, score by aesthetic distance
 
     Falls back to keyword-overlap scoring if catalog YAML is not available.
 
@@ -157,16 +183,22 @@ def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None)
         brand_tags: list of brand-relevant keywords (fallback)
         max_per_pid: max supplementary refs per prompt ID
         catalog_yaml_path: path to reference-catalog.yaml (preferred)
+        brand_domain_tags: list of brand domain tags (e.g. ["marketplace", "fashion"])
 
     Returns:
         dict mapping pid -> [{"file": str, "score": float}, ...]
     """
-    # Try aesthetic-distance scoring from YAML catalog
+    if brand_domain_tags is None:
+        brand_domain_tags = []
+
+    # Try semantic + aesthetic scoring from YAML catalog
     if catalog_yaml_path and os.path.exists(catalog_yaml_path):
         try:
             with open(catalog_yaml_path) as f:
                 yaml_catalog = yaml.safe_load(f)
-            return _select_supp_refs_aesthetic(yaml_catalog, max_per_pid)
+            return _select_supp_refs_semantic(
+                yaml_catalog, max_per_pid, brand_domain_tags,
+            )
         except Exception:
             pass  # Fall through to keyword-based scoring
 
@@ -174,11 +206,12 @@ def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None)
     return _select_supp_refs_keyword(catalog, brand_tags, max_per_pid)
 
 
-def _select_supp_refs_aesthetic(yaml_catalog, max_per_pid=3):
-    """Select supplementary refs using aesthetic distance from catalog."""
+def _select_supp_refs_semantic(yaml_catalog, max_per_pid, brand_domain_tags):
+    """Select supplementary refs using semantic gates + aesthetic tiebreaker."""
     entries = yaml_catalog.get("entries", {})
+    brand_domains = set(brand_domain_tags)
 
-    # Build primary ref profiles for comparison
+    # Build primary ref profiles for aesthetic comparison
     primary_profiles = {}
     for entry_id, entry in entries.items():
         if entry.get("type") == "primary" and entry.get("prompt_id"):
@@ -190,27 +223,91 @@ def _select_supp_refs_aesthetic(yaml_catalog, max_per_pid=3):
         if not target_profile:
             continue
 
+        pid_subject = _PID_SUBJECT_TYPES.get(pid, "")
+        is_layout = pid in _LAYOUT_PIDS
+
         candidates = []
         for entry_id, entry in entries.items():
             if entry.get("type") == "primary":
-                continue  # Skip primary refs themselves
+                continue
             if pid not in entry.get("asset_compatibility", []):
-                continue  # Not compatible with this prompt ID
+                continue
 
+            # Gate 1: Domain filter
+            entry_domains = set(entry.get("domain_suitability", []))
+            if entry_domains and brand_domains:
+                if not entry_domains.intersection(brand_domains):
+                    continue  # No domain overlap → skip
+
+            # Gate 2: Subject type filter (layout PIDs exempt)
+            if not is_layout and pid_subject:
+                entry_subject = entry.get("subject_type", "")
+                if entry_subject and entry_subject != pid_subject:
+                    # Allow close matches: multi-product ↔ single-product
+                    product_types = {"multi-product", "single-product", "flatlay"}
+                    if not ({entry_subject, pid_subject} <= product_types):
+                        continue
+
+            # Score by aesthetic distance
             entry_profile = entry.get("aesthetic", {})
             dist = _aesthetic_distance(target_profile, entry_profile)
             similarity = round(1.0 / (1.0 + dist), 3)
             candidates.append({
                 "file": entry.get("file", ""),
                 "score": similarity,
+                "_domains": list(entry_domains),
             })
 
-        # Sort by score descending (most similar first)
-        candidates.sort(key=lambda x: -x["score"])
-        if candidates:
-            result[pid] = candidates[:max_per_pid]
+        # Diversity slot assignment for multi-domain brands
+        if brand_domains and len(brand_domains) >= 3 and candidates:
+            result[pid] = _fill_domain_diverse_slots(
+                candidates, brand_domains, max_per_pid,
+            )
+        else:
+            candidates.sort(key=lambda x: -x["score"])
+            if candidates:
+                result[pid] = [
+                    {"file": c["file"], "score": c["score"]}
+                    for c in candidates[:max_per_pid]
+                ]
 
     return result
+
+
+def _fill_domain_diverse_slots(candidates, brand_domains, max_slots):
+    """Fill slots ensuring domain diversity, then backfill with best aesthetic.
+
+    For multi-domain brands (3+ tags), try to pick one ref per domain tag
+    to showcase breadth. Remaining slots filled by best aesthetic score.
+    """
+    used_files = set()
+    selected = []
+
+    # Pass 1: one per domain (best aesthetic within each domain)
+    for domain in sorted(brand_domains):
+        domain_cands = [
+            c for c in candidates
+            if domain in c.get("_domains", []) and c["file"] not in used_files
+        ]
+        if domain_cands:
+            best = max(domain_cands, key=lambda x: x["score"])
+            selected.append({"file": best["file"], "score": best["score"]})
+            used_files.add(best["file"])
+            if len(selected) >= max_slots:
+                break
+
+    # Pass 2: backfill remaining slots with best overall aesthetic
+    if len(selected) < max_slots:
+        remaining = sorted(
+            [c for c in candidates if c["file"] not in used_files],
+            key=lambda x: -x["score"],
+        )
+        for c in remaining:
+            selected.append({"file": c["file"], "score": c["score"]})
+            if len(selected) >= max_slots:
+                break
+
+    return selected
 
 
 def _select_supp_refs_keyword(catalog, brand_tags, max_per_pid=3):
@@ -338,7 +435,7 @@ CHANNEL_PROFILES = {
     },
     "saas": {
         "hero_aspect": "16:9",
-        "priority_assets": {"2A", "2B", "2C", "5A", "5B", "5D"},
+        "priority_assets": {"2A", "2B", "2C", "5A", "5B"},
         "platform_note": "Optimized for SaaS: brand system, iconography, and campaign visuals.",
     },
     "b2b": {
@@ -362,6 +459,247 @@ CHANNEL_REF_OVERRIDES = {
     "saas": {"2B": "ref-alt-chrome-logos.jpg"},
     "b2b": {"2B": "ref-alt-chrome-logos.jpg"},
 }
+
+
+# =====================================================================
+# DOMAIN-AWARE VISUAL CONCEPT DEFAULTS
+# =====================================================================
+# Maps brand domain_tags to appropriate visual defaults.
+# Replaces the previous Tryambakam Noesis-specific hardcoded fallbacks.
+
+DOMAIN_CONCEPTS = {
+    "saas": {
+        "hero_object_type": "digital product interface",
+        "hero_surface": "clean matte desk surface",
+        "seal_material": "Brushed aluminum",
+        "seal_geometry": "Clean geometric precision",
+        "logo_treatment": "embossed",
+        "logo_substrate": "matte metallic surface",
+        "panel_structure": "Clean interface elements with subtle grid patterns",
+        "icon_line_style": "Minimal geometric linework with consistent stroke weight",
+        "poster_artifact": "digital product artifact",
+        "poster_filament": "subtle gradient light trails",
+        "poster_border": "Clean minimal border frame",
+        "engraving_style": "modern line engraving",
+        "seeker_inner_detail": "data flow patterns, interface wireframe elements",
+        "sequence_type": "sequential product usage narrative",
+        "sequence_constraint": "screen-focused",
+        "product_hero_name": "product",
+        "product_hero_description": "flagship digital product",
+        "product_hero_physical": "laptop screen displaying product dashboard with clean UI",
+        "product_capsule_1": "product interface on laptop screen",
+        "product_capsule_2": "mobile app companion view",
+        "product_capsule_3": "branded merchandise item",
+        "product_essence_name": "product",
+        "product_essence_container": "Sleek device showing product interface with branded elements",
+        "product_essence_size": "standard",
+    },
+    "marketplace": {
+        "hero_object_type": "curated marketplace scene",
+        "hero_surface": "warm textured surface",
+        "seal_material": "Brushed brass",
+        "seal_geometry": "Modern geometric precision",
+        "logo_treatment": "embossed",
+        "logo_substrate": "premium textured card stock",
+        "panel_structure": "Warm architectural elements with ambient lighting",
+        "icon_line_style": "Warm minimal linework with rounded accents",
+        "poster_artifact": "handcrafted marketplace artifact",
+        "poster_filament": "warm ambient light trails",
+        "poster_border": "Warm modern border frame",
+        "engraving_style": "artisan line engraving",
+        "seeker_inner_detail": "connection pathways, discovery network patterns",
+        "sequence_type": "sequential discovery narrative",
+        "sequence_constraint": "lifestyle-focused",
+        "product_hero_name": "experience",
+        "product_hero_description": "curated marketplace experience",
+        "product_hero_physical": "smartphone showing marketplace app with curated selections",
+        "product_capsule_1": "marketplace app interface on phone",
+        "product_capsule_2": "curated selection showcase",
+        "product_capsule_3": "branded companion card",
+        "product_essence_name": "discovery",
+        "product_essence_container": "Curated selection box with branded tissue and card",
+        "product_essence_size": "standard",
+    },
+    "dtc": {
+        "hero_object_type": "premium retail product",
+        "hero_surface": "clean studio surface",
+        "seal_material": "Metallic foil",
+        "seal_geometry": "Refined geometric precision",
+        "logo_treatment": "foil-stamped",
+        "logo_substrate": "premium packaging surface",
+        "panel_structure": "Clean product display elements with studio lighting",
+        "icon_line_style": "Clean refined linework with brand-consistent weight",
+        "poster_artifact": "premium product artifact",
+        "poster_filament": "product highlight accents",
+        "poster_border": "Elegant minimal border frame",
+        "engraving_style": "refined line engraving",
+        "seeker_inner_detail": "product craftsmanship details, material textures",
+        "sequence_type": "sequential unboxing narrative",
+        "sequence_constraint": "product-focused",
+        "product_hero_name": "product",
+        "product_hero_description": "flagship retail product",
+        "product_hero_physical": "premium packaged product with branded box and tissue",
+        "product_capsule_1": "primary product with packaging",
+        "product_capsule_2": "companion accessory item",
+        "product_capsule_3": "branded gift item",
+        "product_essence_name": "product",
+        "product_essence_container": "Premium branded container with clean label design",
+        "product_essence_size": "standard",
+    },
+    "food": {
+        "hero_object_type": "artisan food product",
+        "hero_surface": "natural wood or stone surface",
+        "seal_material": "Wax seal",
+        "seal_geometry": "Organic rounded precision",
+        "logo_treatment": "letterpress",
+        "logo_substrate": "kraft or textured paper",
+        "panel_structure": "Natural organic elements with warm ambient lighting",
+        "icon_line_style": "Hand-drawn organic linework with natural curves",
+        "poster_artifact": "artisan food artifact",
+        "poster_filament": "warm steam and aroma trails",
+        "poster_border": "Natural rustic border frame",
+        "engraving_style": "woodcut-style engraving",
+        "seeker_inner_detail": "ingredient textures, preparation process details",
+        "sequence_type": "sequential preparation narrative",
+        "sequence_constraint": "hands-only cooking",
+        "product_hero_name": "product",
+        "product_hero_description": "artisan food product",
+        "product_hero_physical": "artisan food product in branded packaging on natural surface",
+        "product_capsule_1": "primary food product with packaging",
+        "product_capsule_2": "companion flavor or variety",
+        "product_capsule_3": "branded serving accessory",
+        "product_essence_name": "essence",
+        "product_essence_container": "Small artisan jar with branded label and natural lid",
+        "product_essence_size": "standard",
+    },
+    "wellness": {
+        "hero_object_type": "wellness product",
+        "hero_surface": "natural stone or wood surface",
+        "seal_material": "Matte ceramic",
+        "seal_geometry": "Soft organic precision",
+        "logo_treatment": "debossed",
+        "logo_substrate": "natural matte surface",
+        "panel_structure": "Serene organic elements with soft natural lighting",
+        "icon_line_style": "Flowing organic linework with gentle curves",
+        "poster_artifact": "wellness ritual artifact",
+        "poster_filament": "soft ambient glow trails",
+        "poster_border": "Soft organic border frame",
+        "engraving_style": "botanical line engraving",
+        "seeker_inner_detail": "energy flow patterns, botanical elements",
+        "sequence_type": "sequential wellness ritual narrative",
+        "sequence_constraint": "hands-only",
+        "product_hero_name": "product",
+        "product_hero_description": "premium wellness product",
+        "product_hero_physical": "wellness product in minimal branded packaging with natural elements",
+        "product_capsule_1": "primary wellness product",
+        "product_capsule_2": "companion wellness item",
+        "product_capsule_3": "branded wellness accessory",
+        "product_essence_name": "essence",
+        "product_essence_container": "Frosted glass bottle with minimal branded dropper cap",
+        "product_essence_size": "30ml",
+    },
+    "fashion": {
+        "hero_object_type": "fashion product",
+        "hero_surface": "polished studio surface",
+        "seal_material": "Embossed leather",
+        "seal_geometry": "Sharp angular precision",
+        "logo_treatment": "foil-embossed",
+        "logo_substrate": "leather or satin surface",
+        "panel_structure": "Editorial fashion elements with dramatic lighting",
+        "icon_line_style": "Sharp angular linework with fashion-forward precision",
+        "poster_artifact": "fashion editorial artifact",
+        "poster_filament": "dramatic light streaks",
+        "poster_border": "Editorial fashion border frame",
+        "engraving_style": "fashion illustration engraving",
+        "seeker_inner_detail": "textile patterns, construction detail elements",
+        "sequence_type": "sequential editorial styling narrative",
+        "sequence_constraint": "styling-focused",
+        "product_hero_name": "piece",
+        "product_hero_description": "signature fashion piece",
+        "product_hero_physical": "fashion item draped on premium surface with editorial styling",
+        "product_capsule_1": "signature garment or accessory",
+        "product_capsule_2": "companion fashion piece",
+        "product_capsule_3": "branded fashion accessory",
+        "product_essence_name": "fragrance",
+        "product_essence_container": "Sculptural glass bottle with branded cap and embossed label",
+        "product_essence_size": "50ml",
+    },
+    "education": {
+        "hero_object_type": "educational product",
+        "hero_surface": "clean desk surface",
+        "seal_material": "Matte metal",
+        "seal_geometry": "Clean structured precision",
+        "logo_treatment": "embossed",
+        "logo_substrate": "premium paper surface",
+        "panel_structure": "Structured learning elements with clear visual hierarchy",
+        "icon_line_style": "Clean structured linework with educational clarity",
+        "poster_artifact": "knowledge artifact",
+        "poster_filament": "connecting knowledge pathways",
+        "poster_border": "Structured academic border frame",
+        "engraving_style": "academic line engraving",
+        "seeker_inner_detail": "knowledge maps, learning pathway diagrams",
+        "sequence_type": "sequential learning progression narrative",
+        "sequence_constraint": "study-focused",
+        "product_hero_name": "course",
+        "product_hero_description": "flagship educational product",
+        "product_hero_physical": "branded course materials with workbook and digital access card",
+        "product_capsule_1": "primary course workbook",
+        "product_capsule_2": "companion reference guide",
+        "product_capsule_3": "branded notebook or tool",
+        "product_essence_name": "toolkit",
+        "product_essence_container": "Compact branded toolkit box with embossed label",
+        "product_essence_size": "standard",
+    },
+}
+
+# Truly generic fallback — no domain-specific assumptions
+_GENERIC_DEFAULTS = {
+    "hero_object_type": "brand product",
+    "hero_surface": "clean surface",
+    "seal_material": "Metallic",
+    "seal_geometry": "Clean geometric precision",
+    "logo_treatment": "embossed",
+    "logo_substrate": "textured premium surface",
+    "panel_structure": "Clean design elements with balanced lighting",
+    "icon_line_style": "Clean minimal linework with consistent stroke weight",
+    "poster_artifact": "brand artifact",
+    "poster_filament": "subtle accent light trails",
+    "poster_border": "Clean minimal border frame",
+    "engraving_style": "refined line engraving",
+    "seeker_inner_detail": "brand pattern details, structural elements",
+    "sequence_type": "sequential brand narrative",
+    "sequence_constraint": "lifestyle-focused",
+    "product_hero_name": "product",
+    "product_hero_description": "flagship brand product",
+    "product_hero_physical": "premium branded product on clean surface with studio lighting",
+    "product_capsule_1": "primary brand product",
+    "product_capsule_2": "companion product item",
+    "product_capsule_3": "branded accessory",
+    "product_essence_name": "product",
+    "product_essence_container": "Compact branded container with clean label design",
+    "product_essence_size": "standard",
+}
+
+
+def resolve_domain_defaults(cfg):
+    """Derive visual concept defaults from brand domain_tags and archetype.
+
+    Priority: first matching domain_tag in DOMAIN_CONCEPTS, else generic.
+    """
+    domain_tags = cfg.get("brand", {}).get("domain_tags", [])
+    channel = cfg.get("execution_context", {}).get("launch_channel", "")
+
+    # Check domain_tags first (most specific)
+    for tag in domain_tags:
+        tag_lower = tag.lower()
+        if tag_lower in DOMAIN_CONCEPTS:
+            return DOMAIN_CONCEPTS[tag_lower]
+
+    # Fall back to launch channel (less specific)
+    if channel in DOMAIN_CONCEPTS:
+        return DOMAIN_CONCEPTS[channel]
+
+    return dict(_GENERIC_DEFAULTS)
 
 
 def _resolve_logo_path(path_str, config_dir):
@@ -500,35 +838,35 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
         "identity_pillars": ", ".join(pillars) if pillars else "",
     }
 
-    # ── Products (with safe fallbacks to original defaults) ──
+    # ── Domain-aware defaults (replaces hardcoded Noesis fallbacks) ──
+    dd = resolve_domain_defaults(cfg)
+
+    # ── Products (domain-aware fallbacks) ──
     prods = cfg.get("products", {})
     hero = prods.get("hero", {})
-    v["product_hero_name"] = hero.get("name", "guidebook")
-    v["product_hero_description"] = hero.get("description", "comprehensive practice manual")
-    v["product_hero_physical"] = hero.get("physical_form",
-        f"hardcover codex with custom spine in {v['accent_name']} ({v['accent_hex']}) material, "
-        f"pages made of fine craft paper, geometric diagrams visible on open pages in {v['data_font']}")
+    v["product_hero_name"] = hero.get("name", dd["product_hero_name"])
+    v["product_hero_description"] = hero.get("description", dd["product_hero_description"])
+    v["product_hero_physical"] = hero.get("physical_form", dd["product_hero_physical"])
 
     capsule = prods.get("capsule_lineup", [])
     if len(capsule) >= 3:
         v["product_capsule_1"] = capsule[0].get("description", "primary product")
         v["product_capsule_2"] = capsule[1].get("description", "companion piece")
-        v["product_capsule_3"] = capsule[2].get("description", "symbolic artifact")
+        v["product_capsule_3"] = capsule[2].get("description", "brand accessory")
     elif len(capsule) >= 1:
         descs = [c.get("description", "brand product") for c in capsule]
         while len(descs) < 3:
-            descs.append("brand artifact")
+            descs.append("brand product")
         v["product_capsule_1"], v["product_capsule_2"], v["product_capsule_3"] = descs
     else:
-        v["product_capsule_1"] = "bio-digital notebook with custom spine"
-        v["product_capsule_2"] = "small glass vessel"
-        v["product_capsule_3"] = "symbolic craft object"
+        v["product_capsule_1"] = dd["product_capsule_1"]
+        v["product_capsule_2"] = dd["product_capsule_2"]
+        v["product_capsule_3"] = dd["product_capsule_3"]
 
     essence = prods.get("essence", {})
-    v["product_essence_name"] = essence.get("name", "essence")
-    v["product_essence_container"] = essence.get("container",
-        "Small borosilicate glass bottle with oxidized metal dropper cap")
-    v["product_essence_size"] = essence.get("size", "30ml")
+    v["product_essence_name"] = essence.get("name", dd["product_essence_name"])
+    v["product_essence_container"] = essence.get("container", dd["product_essence_container"])
+    v["product_essence_size"] = essence.get("size", dd["product_essence_size"])
 
     flatlay = prods.get("flatlay_objects", {})
     v["product_flatlay_count"] = str(flatlay.get("count", 5))
@@ -537,27 +875,24 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
 
     v["product_category"] = prods.get("category", "lifestyle product")
 
-    # ── Aesthetic language overrides (backward-compatible defaults) ──
+    # ── Aesthetic language overrides (domain-aware defaults) ──
     aes = cfg.get("aesthetic", {})
-    v["hero_object_type"] = aes.get("hero_object_type", "bio-digital object")
-    v["hero_surface"] = aes.get("hero_surface", "polished surface")
-    v["seal_material"] = aes.get("seal_material", "Oxidized copper")
-    v["seal_geometry"] = aes.get("seal_geometry", "Art Deco geometric precision")
-    v["logo_treatment"] = aes.get("logo_treatment", "stained-glass")
-    v["logo_substrate"] = aes.get("logo_substrate", "stained-glass window panel")
-    v["panel_structure"] = aes.get("panel_structure",
-        "Bio-digital structure elements with fiber-optic filaments")
-    v["icon_line_style"] = aes.get("icon_line_style",
-        "Flowing organic curves with circuit-trace precision")
-    v["poster_artifact"] = aes.get("poster_artifact", "bio-digital artifact")
-    v["poster_filament"] = aes.get("poster_filament", "fiber-optic filaments")
-    v["poster_border"] = aes.get("poster_border", "Art Deco geometric border frame")
+    v["hero_object_type"] = aes.get("hero_object_type", dd["hero_object_type"])
+    v["hero_surface"] = aes.get("hero_surface", dd["hero_surface"])
+    v["seal_material"] = aes.get("seal_material", dd["seal_material"])
+    v["seal_geometry"] = aes.get("seal_geometry", dd["seal_geometry"])
+    v["logo_treatment"] = aes.get("logo_treatment", dd["logo_treatment"])
+    v["logo_substrate"] = aes.get("logo_substrate", dd["logo_substrate"])
+    v["panel_structure"] = aes.get("panel_structure", dd["panel_structure"])
+    v["icon_line_style"] = aes.get("icon_line_style", dd["icon_line_style"])
+    v["poster_artifact"] = aes.get("poster_artifact", dd["poster_artifact"])
+    v["poster_filament"] = aes.get("poster_filament", dd["poster_filament"])
+    v["poster_border"] = aes.get("poster_border", dd["poster_border"])
     v["quality_reference"] = aes.get("quality_reference", "Behance Trend / Awwwards Winner")
-    v["engraving_style"] = aes.get("engraving_style", "heritage engraving")
-    v["seeker_inner_detail"] = aes.get("seeker_inner_detail",
-        "circuit-trace diagrams, fiber-optic filaments")
-    v["sequence_type"] = aes.get("sequence_type", "sequential practice narrative")
-    v["sequence_constraint"] = aes.get("sequence_constraint", "hands-only")
+    v["engraving_style"] = aes.get("engraving_style", dd["engraving_style"])
+    v["seeker_inner_detail"] = aes.get("seeker_inner_detail", dd["seeker_inner_detail"])
+    v["sequence_type"] = aes.get("sequence_type", dd["sequence_type"])
+    v["sequence_constraint"] = aes.get("sequence_constraint", dd["sequence_constraint"])
 
     # ── Aesthetic variant structural holes (Phase D) ──
     # All default to "" — overridden by aesthetic engine with variant-specific text.
@@ -1096,12 +1431,12 @@ Color palette: {color_directive} {primary_hex} deep shadows, {secondary_hex} hig
 Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.
 {3a_atmosphere}{detail_suffix}"""
 
-PROMPT_3B_BOOK = """{brand_name} hero product shot. {product_hero_physical}.
+PROMPT_3B_HERO = """{brand_name} hero product shot. {product_hero_physical}.
 {3b_composition_style}Sitting on {hero_surface}. {photo_style}. Environment: {photo_environment}.
 {3b_lighting_note}{photo_constraint}. Camera: {photo_camera}. Materials: {materials_list}.
 {3b_atmosphere}8K."""
 
-PROMPT_3C_VIAL = """{brand_name} {product_essence_name} product shot. {product_essence_container}
+PROMPT_3C_DETAIL = """{brand_name} {product_essence_name} product shot. {product_essence_container}
 ({product_essence_size}). {3c_composition_style}Etched label directly into surface in {data_font}.
 Brand name "{brand_name}" etched dominant. Minimal sigil below. Pure solid
 {primary_name} ({primary_hex}) background. {3c_lighting_approach}Sharp high-contrast lighting from above.
@@ -1155,23 +1490,10 @@ PROMPT_5C_PANEL = """{brand_name} conceptual panel illustration. {illus_style}.
 glowing {secondary_name}. No mystical imagery. Paper texture: warm, fibrous.
 {5c_atmosphere}"""
 
-PROMPT_5D_ICONS = """{count} minimalist styled flat vector icons for {brand_name}
-"{group_name}" in {layout} layout. {icon_line_style}. Only {primary_name} ({primary_hex}) and {secondary_name} ({secondary_hex}).
-No shading, no gradients. Icons: {icon_list}. {secondary_name} background.
-Square frames with decorative corner accents. {data_font} labels."""
-
-PROMPT_5D_ICONS_FLUX = """{count} clean, modern feature icons for {brand_name} "{group_name}".
-Arranged in a {layout} grid on clean {secondary_name} ({secondary_hex}) background.
-Style: {icon_line_style}. Professional iconography, no cartoon elements.
-Each icon is a distinct, recognizable pictogram with consistent stroke weight.
-Primary: {primary_name} ({primary_hex}). Accent: {accent_name} ({accent_hex}).
-No text labels. No newspaper or stamp aesthetic. Clean minimalist precision.
-Icons: {icon_list}. {quality}."""
-
 PROMPT_7A_CONTACT = """{brand_name} editorial contact sheet. {7a_grid_approach}3x3 grid, 9 panels,
-hands-only lifestyle photography inside {photo_environment}. No face -- only hands
-and forearms. Same hands all panels. {7a_moment_style}9 panels showing different moments of a
-practice ritual with brand objects. Materials: {materials_list}.
+{sequence_constraint} lifestyle photography inside {photo_environment}. No face -- only hands
+and forearms. Same hands all panels. {7a_moment_style}9 panels showing different moments of
+{sequence_type} with brand products. Materials: {materials_list}.
 Camera: {photo_camera}. {photo_environment} light. {accent_name} ({accent_hex})
 highlights. 2px {support_name} ({support_hex}) borders. {quality} detail.
 Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.
@@ -1449,8 +1771,8 @@ def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
 
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt_3a = render(PROMPT_3A_CAPSULE, v)
-    prompt_3b = render(PROMPT_3B_BOOK, v)
-    prompt_3c = render(PROMPT_3C_VIAL, v)
+    prompt_3b = render(PROMPT_3B_HERO, v)
+    prompt_3c = render(PROMPT_3C_DETAIL, v)
     out_sub = cfg["generation"].get("output_dir", "generated")
 
     # Build new asset code (Nano Banana Pro for domain-specific product assets)
@@ -1487,14 +1809,11 @@ def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
         **v, "script_desc": "Product Concepts",
         "output_subdir": out_sub,
     })
+    func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_flux = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
 
-    # Add Nano Banana if we have new assets needing it
-    func_nb = ""
-    nb_setup = ""
-    if any(adef.get("model") == "nano-banana-pro" for _, adef in new_assets):
-        func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
-        nb_setup = '''
+    # Always set up style anchor (3A/3B/3C all use Nano Banana Pro now)
+    nb_setup = '''
     # Style anchor for Nano Banana Pro assets
     image_urls = []
     anchor_path = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
@@ -1508,17 +1827,38 @@ def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
         image_urls.append(purl)
 '''
 
-    gen_3a = f'''
-    print("\\n--- 3A: Capsule Collection ---")
-    gen_flux_pro("3A", "capsule-collection", PROMPT_3A, "landscape_4_3")
+    gen_3a = '''
+    # 3A with composition reference
+    print("\\n--- 3A: Capsule Collection (Nano Banana Pro) ---")
+    urls_3a = list(image_urls)
+    ref_3a = get_ref_image("3A")
+    if ref_3a:
+        print(f"  Adding composition ref: {os.path.basename(ref_3a)}")
+        urls_3a.append(fal_client.upload_file(ref_3a))
+    urls_3a.extend(get_supp_ref_images("3A"))
+    gen_nano_banana("3A", "capsule-collection", PROMPT_3A, "4:3", urls_3a)
 ''' if "3A" in asset_ids else ""
-    gen_3b = f'''
-    print("\\n--- 3B: Hero Book ---")
-    gen_flux_pro("3B", "hero-book", PROMPT_3B, "square_hd")
+    gen_3b = '''
+    # 3B with composition reference
+    print("\\n--- 3B: Hero Product (Nano Banana Pro) ---")
+    urls_3b = list(image_urls)
+    ref_3b = get_ref_image("3B")
+    if ref_3b:
+        print(f"  Adding composition ref: {os.path.basename(ref_3b)}")
+        urls_3b.append(fal_client.upload_file(ref_3b))
+    urls_3b.extend(get_supp_ref_images("3B"))
+    gen_nano_banana("3B", "hero-product", PROMPT_3B, "1:1", urls_3b)
 ''' if "3B" in asset_ids else ""
-    gen_3c = f'''
-    print("\\n--- 3C: Essence Vial ---")
-    gen_flux_pro("3C", "essence-vial", PROMPT_3C, "square_hd")
+    gen_3c = '''
+    # 3C with composition reference
+    print("\\n--- 3C: Product Detail (Nano Banana Pro) ---")
+    urls_3c = list(image_urls)
+    ref_3c = get_ref_image("3C")
+    if ref_3c:
+        print(f"  Adding composition ref: {os.path.basename(ref_3c)}")
+        urls_3c.append(fal_client.upload_file(ref_3c))
+    urls_3c.extend(get_supp_ref_images("3C"))
+    gen_nano_banana("3C", "product-detail", PROMPT_3C, "1:1", urls_3c)
 ''' if "3C" in asset_ids else ""
 
     main_body = f'''
@@ -1532,7 +1872,7 @@ PROMPT_3C = """{prompt_3c}"""
 def main():
     print("=" * 60)
     print(f"{{BRAND_NAME}} -- Product Concepts")
-    print("Model: Flux 2 Pro / Nano Banana Pro")
+    print("Model: Nano Banana Pro")
     print("=" * 60)
 {nb_setup}{gen_3a}{gen_3b}{gen_3c}{new_asset_code}
     print("\\n" + "=" * 60)
@@ -1599,8 +1939,15 @@ def gen_photography_script(scripts_dir, v, cfg, asset_groups=None):
 ''' if "4A" in asset_ids else ""
 
     gen_4b = '''
-    print("\\n--- 4B: Flatlay (Flux 2 Pro) ---")
-    gen_flux_pro("4B", "flatlay", PROMPT_4B, "square_hd")
+    # 4B with composition reference
+    print("\\n--- 4B: Flatlay (Nano Banana Pro) ---")
+    urls_4b = list(anchor_urls)
+    ref_4b = get_ref_image("4B")
+    if ref_4b:
+        print(f"  Adding composition ref: {os.path.basename(ref_4b)}")
+        urls_4b.append(fal_client.upload_file(ref_4b))
+    urls_4b.extend(get_supp_ref_images("4B"))
+    gen_nano_banana("4B", "flatlay", PROMPT_4B, "1:1", urls_4b)
 ''' if "4B" in asset_ids else ""
 
     main_body = f'''
@@ -1645,7 +1992,7 @@ if __name__ == "__main__":
 
 
 def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
-    """Generate generate-illustrations.py (5A-5D)."""
+    """Generate generate-illustrations.py (5A-5C)."""
     seeds = cfg["generation"].get("seeds", [42, 137])
     # Condense for Recraft 1000-char limit
     prompt_5a = render(PROMPT_5A_HERITAGE, v)[:990]
@@ -1653,104 +2000,13 @@ def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
     prompt_5c = render(PROMPT_5C_PANEL, v)[:990]
     out_sub = cfg["generation"].get("output_dir", "generated")
 
-    # Build icon prompts from config
-    illus_cfg = cfg.get("prompts", {}).get("illustration", {})
-    if isinstance(illus_cfg, dict):
-        icon_groups = illus_cfg.get("icon_groups", [])
-        icon_gen_model = illus_cfg.get("icon_generation_model", "flux")  # Default: flux (PNG), opt-in: recraft_vector (SVG)
-    else:
-        icon_groups = []
-        icon_gen_model = "flux"
-
-    # Build 5D icon generation code (depth-gated at generation time)
-    icon_code = ""
-    if icon_groups:
-        depth = v.get("depth_level", "focused")
-        if depth == "surface":
-            active_groups = []
-        elif depth == "focused":
-            active_groups = icon_groups[:2]
-        else:
-            active_groups = icon_groups
-
-        for gi, group in enumerate(active_groups):
-            gname = group.get("name", f"Group {gi+1}")
-            icons = group.get("icons", [])
-            icon_names = [ic.get("name", "") if isinstance(ic, dict) else str(ic) for ic in icons]
-            icon_list_str = ", ".join(icon_names)
-            count = len(icons)
-            layout = "2x2" if count <= 4 else "3x2" if count <= 6 else "4x2"
-
-            batch_id = f"5D-{gi+1}"
-            slug = slugify(gname)
-
-            # Choose prompt template and generation code based on icon model
-            if icon_gen_model == "recraft_vector":
-                icon_prompt = render(PROMPT_5D_ICONS, {
-                    **v, "count": str(count), "group_name": gname,
-                    "layout": layout, "icon_list": icon_list_str,
-                })[:990]  # Recraft 1000-char limit
-                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
-                icon_code += f'''
-    # {batch_id}: {gname} Icons (Recraft V3 vector — SVG opt-in)
-    print("\\n--- {batch_id}: {gname} Icons (Recraft V3 vector) ---")
-    gen_recraft("{batch_id}", "{slug}-icons",
-                """{safe_prompt}""",
-                "vector_illustration",
-                ["{v['primary_hex']}", "{v['secondary_hex']}"],
-                "square_hd")
-'''
-            elif icon_gen_model == "recraft_digital":
-                icon_prompt = render(PROMPT_5D_ICONS, {
-                    **v, "count": str(count), "group_name": gname,
-                    "layout": layout, "icon_list": icon_list_str,
-                })[:990]
-                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
-                icon_code += f'''
-    # {batch_id}: {gname} Icons (Recraft V3 digital illustration)
-    print("\\n--- {batch_id}: {gname} Icons (Recraft V3 digital) ---")
-    gen_recraft("{batch_id}", "{slug}-icons",
-                """{safe_prompt}""",
-                "digital_illustration",
-                ["{v['primary_hex']}", "{v['secondary_hex']}"],
-                "square_hd")
-'''
-            elif icon_gen_model == "flux":
-                icon_prompt = render(PROMPT_5D_ICONS_FLUX, {
-                    **v, "count": str(count), "group_name": gname,
-                    "layout": layout, "icon_list": icon_list_str,
-                })
-                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
-                icon_code += f'''
-    # {batch_id}: {gname} Icons (Flux 2 Pro — default, PNG only)
-    print("\\n--- {batch_id}: {gname} Icons (Flux 2 Pro) ---")
-    gen_flux_pro("{batch_id}", "{slug}-icons",
-                 """{safe_prompt}""",
-                 "square_hd")
-'''
-            elif icon_gen_model == "nano_banana":
-                icon_prompt = render(PROMPT_5D_ICONS_FLUX, {
-                    **v, "count": str(count), "group_name": gname,
-                    "layout": layout, "icon_list": icon_list_str,
-                })
-                safe_prompt = icon_prompt.replace('"""', '\\"\\"\\"')
-                icon_code += f'''
-    # {batch_id}: {gname} Icons (Nano Banana Pro with style anchor)
-    print("\\n--- {batch_id}: {gname} Icons (Nano Banana Pro) ---")
-    gen_nano_banana("{batch_id}", "{slug}-icons",
-                    """{safe_prompt}""",
-                    "1:1", image_urls)
-'''
-
     header = render(SCRIPT_HEADER, {
-        **v, "script_desc": "Illustrations + Icons (5A-5D)",
+        **v, "script_desc": "Illustrations (5A-5C)",
         "output_subdir": out_sub,
     })
     func_rc = render(FUNC_RECRAFT, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_flux = ""
-    if icon_gen_model == "flux":
-        func_flux = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
 
     main_body = f'''
 PROMPT_5A = """{prompt_5a}"""
@@ -1764,7 +2020,7 @@ STYLE_ANCHOR = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
 
 def main():
     print("=" * 60)
-    print(f"{{BRAND_NAME}} -- Illustrations + Icons (5A-5D)")
+    print(f"{{BRAND_NAME}} -- Illustrations (5A-5C)")
     print("=" * 60)
 
     # Verify Recraft prompt lengths
@@ -1805,9 +2061,9 @@ def main():
                 "digital_illustration",
                 ["{v['primary_hex']}", "{v['accent_hex']}", "{v['signal_hex']}"],
                 "portrait_4_3")
-{icon_code}
+
     print("\\n" + "=" * 60)
-    print("  ILLUSTRATIONS COMPLETE (5A-5D)")
+    print("  ILLUSTRATIONS COMPLETE (5A-5C)")
     print("=" * 60)
 
 
@@ -2202,11 +2458,11 @@ def gen_cookbook(out_dir, v, cfg):
         ("2A", "Brand Kit Bento Grid", "fal-ai/nano-banana-pro", "16:9", PROMPT_2A_BENTO),
         ("2B", "Brand Seal", "fal-ai/flux-2-pro", "1:1", PROMPT_2B_SEAL),
         ("2C", "Logo Emboss", "fal-ai/flux-2-pro", "16:9", PROMPT_2C_LOGO),
-        ("3A", "Capsule Collection", "fal-ai/flux-2-pro", "4:3", PROMPT_3A_CAPSULE),
-        ("3B", "Hero Book", "fal-ai/flux-2-pro", "1:1", PROMPT_3B_BOOK),
-        ("3C", "Essence Vial", "fal-ai/flux-2-pro", "1:1", PROMPT_3C_VIAL),
+        ("3A", "Capsule Collection", "fal-ai/nano-banana-pro", "4:3", PROMPT_3A_CAPSULE),
+        ("3B", "Hero Product", "fal-ai/nano-banana-pro", "1:1", PROMPT_3B_HERO),
+        ("3C", "Product Detail", "fal-ai/nano-banana-pro", "1:1", PROMPT_3C_DETAIL),
         ("4A", "Catalog Layout", "fal-ai/nano-banana-pro", "3:4", PROMPT_4A_CATALOG),
-        ("4B", "Flatlay", "fal-ai/flux-2-pro", "1:1", PROMPT_4B_FLATLAY),
+        ("4B", "Flatlay", "fal-ai/nano-banana-pro", "1:1", PROMPT_4B_FLATLAY),
         ("5A", "Heritage Engraving", "fal-ai/recraft/v3", "1:1", PROMPT_5A_HERITAGE),
         ("5B", "Campaign Grid", "fal-ai/nano-banana-pro", "3:4", PROMPT_5B_CAMPAIGN),
         ("5C", "Art Panel", "fal-ai/recraft/v3", "3:4", PROMPT_5C_PANEL),
@@ -2334,15 +2590,15 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
         for pid in ["2B", "2C"]:
             if pid not in skip_ids:
                 assets.append({"id": pid, "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
-        # 3A, 3B, 3C: Flux 2 Pro
+        # 3A, 3B, 3C: Nano Banana Pro
         for pid in ["3A", "3B", "3C"]:
             if pid not in skip_ids:
-                assets.append({"id": pid, "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
-        # 4A: Nano Banana, 4B: Flux 2
+                assets.append({"id": pid, "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
+        # 4A, 4B: Nano Banana Pro
         if "4A" not in skip_ids:
             assets.append({"id": "4A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
         if "4B" not in skip_ids:
-            assets.append({"id": "4B", "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
+            assets.append({"id": "4B", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
         # 5A, 5C: Recraft
         for pid in ["5A", "5C"]:
             if pid not in skip_ids:
@@ -2350,13 +2606,6 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
         # 5B: Nano Banana
         if "5B" not in skip_ids:
             assets.append({"id": "5B", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
-        # 5D: Recraft (icon groups)
-        illus_cfg = cfg.get("prompts", {}).get("illustration", {})
-        icon_groups = illus_cfg.get("icon_groups", []) if isinstance(illus_cfg, dict) else []
-        if depth != "surface":
-            active = icon_groups[:2] if depth == "focused" else icon_groups
-            for gi, g in enumerate(active):
-                assets.append({"id": f"5D-{gi+1}", "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
         # 7A: Nano Banana
         if "7A" not in skip_ids:
             assets.append({"id": "7A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
@@ -2377,15 +2626,6 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
         sid = seq.get("id", "10A")
         if sid not in skip_ids:
             assets.append({"id": sid, "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
-
-    # 5D icon groups (always config-driven)
-    if asset_groups is not None:
-        illus_cfg = cfg.get("prompts", {}).get("illustration", {})
-        icon_groups = illus_cfg.get("icon_groups", []) if isinstance(illus_cfg, dict) else []
-        if depth != "surface":
-            active = icon_groups[:2] if depth == "focused" else icon_groups
-            for gi, g in enumerate(active):
-                assets.append({"id": f"5D-{gi+1}", "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
 
     total_calls = sum(a["calls"] for a in assets)
     total_cost = sum(a["est_cost"] for a in assets)
@@ -2519,9 +2759,13 @@ def main():
         *[t.strip() for t in v.get("mood_keywords", "").split(",") if t.strip()],
     ]
     catalog_yaml_path = os.path.join(os.path.dirname(ref_map_path), "reference-catalog.yaml")
+    brand_domain_tags = v.get("domain_tags", [])
+    if isinstance(brand_domain_tags, str):
+        brand_domain_tags = [t.strip() for t in brand_domain_tags.split(",") if t.strip()]
     supp_refs = select_supp_refs(
         full_catalog, brand_tags,
         catalog_yaml_path=catalog_yaml_path,
+        brand_domain_tags=brand_domain_tags,
     ) if full_catalog or os.path.exists(catalog_yaml_path) else {}
     if supp_refs:
         total_supp = sum(len(refs) for refs in supp_refs.values())

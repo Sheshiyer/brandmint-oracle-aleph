@@ -7,9 +7,9 @@
 <!-- readme-gen:start:badges -->
 <p align="center">
   <a href="https://pypi.org/project/brandmint/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white"></a>
-  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.2.1-1f883d?style=flat-square"></a>
+  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.3.0-1f883d?style=flat-square"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest"><img alt="Latest GitHub Release" src="https://img.shields.io/github/v/release/Sheshiyer/brandmint-oracle-aleph?style=flat-square&logo=github"></a>
-  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.2.1-6f42c1?style=flat-square"></a>
+  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.3.0-6f42c1?style=flat-square"></a>
   <a href="https://brandmint-openclaw.vercel.app"><img alt="OpenClaw Integration" src="https://img.shields.io/badge/OpenClaw-Integrated-0ea5e9?style=flat-square&logo=github&logoColor=white"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/pkgs/container/brandmint"><img alt="GHCR Package" src="https://img.shields.io/badge/GHCR-package-blue?style=flat-square&logo=docker&logoColor=white"></a>
 </p>
@@ -30,7 +30,9 @@
 
 - **Pipeline-first execution**: run the full chain with `bm launch` instead of ad-hoc skill runs.
 - **45 specialized skills / 9 categories**: from buyer persona and positioning to visual generation and publishing.
+- **Semantic reference matching**: 4-gate pipeline (domain, subject type, diversity, aesthetic) routes the right reference images to the right assets.
 - **Publishing built in (Wave 7)**: notebook artifacts, decks, reports, diagrams, and Remotion videos.
+- **Vision intelligence** *(coming in v4.4)*: CLIP embeddings, pixel feature extraction, and Gemini Vision for true image understanding.
 - **Agent-friendly**: non-interactive mode for CI/desktop/API contexts.
 - **OpenClaw integration**: documentation and orchestration flows are aligned for OpenClaw-powered agent setups.
 
@@ -82,6 +84,24 @@ docker run --rm ghcr.io/sheshiyer/brandmint:latest --help
 
 Publishing is automated via GitHub Actions on release publish (`.github/workflows/publish-ghcr.yml`).
 
+## Semantic Reference Matching (v4.3.0)
+
+The visual pipeline now routes reference images to generated assets using a 4-gate semantic filter:
+
+1. **Domain filter** — candidate `domain_suitability` must match brand's `domain_tags`
+2. **Subject type filter** — candidate `subject_type` must match the target PID (e.g., `multi-product` for 3A)
+3. **Diversity slots** — multi-domain brands get refs spanning different domain tags
+4. **Aesthetic tiebreaker** — 5-axis distance scoring within filtered candidates
+
+138 reference images are annotated with 5 semantic fields: `subject_type`, `domain_suitability`, `lighting_register`, `color_temperature`, `composition_format`.
+
+Install vision extras for pixel-level analysis:
+
+```bash
+pip install -e '.[vision]'       # Pillow, colorgram, imagehash, scikit-image, OpenCV
+pip install -e '.[embeddings]'   # CLIP, FAISS, torch (coming in v4.4)
+```
+
 ## Core CLI Commands
 
 ```bash
@@ -124,6 +144,8 @@ graph TD
     B --> C[🌊 Wave Executor]
     C --> D[📝 Text Skills]
     C --> E[🎨 Visual Pipeline]
+    E --> K[🔍 Semantic Reference Matcher]
+    K --> L[📸 Nano Banana / Flux / Recraft]
     D --> F[💧 Hydrator]
     F --> A
     C --> G[📦 Publishing Pipeline]
@@ -151,9 +173,10 @@ graph TD
 ## Release Highlights (from all repo releases)
 
 - **v4.0.0** — UX, resilience, logging/caching/reporting foundations, budget gates, resume support.
-- **v4.1.0** *(published)* — robust `--non-interactive` pipeline behavior, publishing + wiki pipeline, visual asset integration fixes.
-- **v4.2.0** *(published)* — Remotion video generation (Wave 7F), full Wave 7 publishing flow hardening, optional `brandmint[video]` extras.
-- **v4.2.1** *(current)* — README/metadata alignment: release-aware badges, corrected inventory counts, and changelog initialization.
+- **v4.1.0** — robust `--non-interactive` pipeline behavior, publishing + wiki pipeline, visual asset integration fixes.
+- **v4.2.0** — Remotion video generation (Wave 7F), full Wave 7 publishing flow hardening, optional `brandmint[video]` extras.
+- **v4.2.1** — README/metadata alignment: release-aware badges, corrected inventory counts, and changelog initialization.
+- **v4.3.0** *(current)* — Semantic reference matching: 4-gate pipeline, 5 new semantic metadata fields on 138 catalog entries, 5D icon removal, 3A/3B/4B migrated to Nano Banana Pro, `brandmint[vision]` + `brandmint[embeddings]` optional dependency groups, 43-task vision upgrade roadmap (issues #9-#51).
 
 See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/releases) and [repo release notes](./.github/RELEASE_NOTES.md).
 
@@ -163,8 +186,9 @@ See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/relea
 | Category | Signal |
 |---|---|
 | Tests | `tests/test_hydrator.py` present |
-| CI/CD | No `.github/workflows` detected in this repo snapshot |
-| Packaging | `pyproject.toml` + console scripts (`brandmint`, `bm`) |
+| CI/CD | `publish-ghcr.yml` (container), `update-homebrew-tap.yml` (formula) |
+| Packaging | `pyproject.toml` + console scripts (`brandmint`, `bm`) + Homebrew tap + GHCR container |
+| Extras | `brandmint[vision]` (Pillow, colorgram, imagehash, scikit-image, OpenCV) / `brandmint[embeddings]` (CLIP, FAISS, torch) |
 | Docs | `README.md`, `CLAUDE.md`, `.github/RELEASE_NOTES.md`, `docs/` |
 | State/Reports | execution state + report pipeline implemented |
 <!-- readme-gen:end:health -->

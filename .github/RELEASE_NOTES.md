@@ -1,5 +1,34 @@
 # Release Notes
 
+## What's New in v4.3.0
+
+### Semantic Reference Matching
+- **4-gate matching pipeline** — Domain filter, subject type filter, diversity slot allocation, and aesthetic tiebreaker replace the old aesthetic-only distance scoring
+- **5 new semantic fields** — Every reference image (138 entries) annotated with `subject_type`, `domain_suitability`, `lighting_register`, `color_temperature`, `composition_format`
+- **Domain-aware routing** — Leather bags no longer match SaaS brands; calligraphic logos no longer match food brands
+- **Diversity slots** — Multi-domain brands (3+ tags) get references spanning different domain categories
+
+### 5D Icon Removal
+- **Deleted entirely** — `PROMPT_5D_ICONS`, `PROMPT_5D_ICONS_FLUX`, all 4 model branches (recraft_vector, recraft_digital, flux, nano_banana), and `ref-5D-engine-icons` catalog entry
+- **Rationale** — Reference images with icon templates provide better style consistency than generated icons
+
+### Nano Banana Migration
+- **3A, 3B, 4B migrated** from Flux 2 Pro to Nano Banana Pro with full reference image assembly (style anchor + composition ref + supplementary refs)
+- **2B, 2C stay on Flux** — Identity geometry assets (Brand Seal, Logo Emboss) need Flux's text precision
+
+### Vision Intelligence Foundation
+- **`brandmint[vision]`** — Optional dependency group: Pillow, colorgram.py, imagehash, numpy, scikit-image, opencv-python-headless, scipy
+- **`brandmint[embeddings]`** — Optional dependency group: transformers, torch, sentence-transformers, faiss-cpu
+- **`brandmint/vision/` package** — Scaffold for 5-wave upgrade (pixel features, CLIP embeddings, Gemini Vision, feedback loop)
+- **43 GitHub issues** (#9-#51) tracking the full vision upgrade roadmap across 5 waves
+
+### Pipeline Fixes
+- Removed hardcoded Noesis/Tryambakam defaults from `build_vars()` — brand-config values now always win
+- Fixed `_PID_CONTEXT` missing entries for 3A, 3B, 3C, 4B
+- Fixed `_DEFAULT_REF_IMAGES["3C"]` wrong filename
+
+---
+
 ## What's New in v4.2.1
 
 ### Documentation & Packaging Alignment

@@ -1,6 +1,6 @@
 [project]
 name = "brandmint"
-version = "4.2.1"
+version = "4.3.0"
 description = "Unified brand creation orchestrator — text skills, visual assets, campaigns, video deliverables"
 requires-python = ">=3.10"
 dependencies = [
@@ -21,6 +21,21 @@ bm = "brandmint.cli.app:main"
 dev = ["pytest", "ruff"]
 publishing = ["notebooklm-py>=0.3.2"]
 video = ["jinja2>=3.1"]
+vision = [
+    "Pillow>=10.0",
+    "colorgram.py>=1.2",
+    "imagehash>=4.3",
+    "numpy>=1.24",
+    "scikit-image>=0.21",
+    "opencv-python-headless>=4.8",
+    "scipy>=1.11",
+]
+embeddings = [
+    "transformers>=4.35",
+    "torch>=2.1",
+    "sentence-transformers>=2.2",
+    "faiss-cpu>=1.7",
+]
 
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
