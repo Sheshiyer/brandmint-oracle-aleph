@@ -202,24 +202,52 @@ class NotebookLMPublisher:
     # -- Internal steps ----------------------------------------------------
 
     def _preflight(self) -> bool:
-        """Check CLI is installed and authenticated."""
+        """Check CLI is installed (auto-install if missing) and authenticated."""
         if not self.client.check_installed():
             self.console.print(
-                "[red]notebooklm CLI not found.[/red]\n"
-                "Install with: [bold]pip install notebooklm-py[/bold]\n"
-                "Then run: [bold]notebooklm login[/bold]"
+                "  [yellow]notebooklm CLI not found — installing notebooklm-py...[/yellow]"
             )
-            return False
+            if not self._auto_install_notebooklm():
+                self.console.print(
+                    "[red]Auto-install failed.[/red]\n"
+                    "Install manually: [bold]pip install notebooklm-py[/bold]\n"
+                    "Then run: [bold]notebooklm login[/bold]"
+                )
+                return False
+
+            # Re-check after install
+            if not self.client.check_installed():
+                self.console.print(
+                    "[red]notebooklm CLI still not found after install.[/red]\n"
+                    "Install manually: [bold]pip install notebooklm-py[/bold]"
+                )
+                return False
+            self.console.print("  [green]✓[/green] notebooklm-py installed successfully")
 
         if not self.client.check_authenticated():
             self.console.print(
-                "[red]NotebookLM authentication failed.[/red]\n"
+                "[red]NotebookLM authentication required.[/red]\n"
                 "Run: [bold]notebooklm login[/bold]"
             )
             return False
 
         self.console.print("  [green]✓[/green] NotebookLM CLI ready")
         return True
+
+    @staticmethod
+    def _auto_install_notebooklm() -> bool:
+        """Attempt to pip-install notebooklm-py into the current environment."""
+        import subprocess as _sp
+        import sys
+
+        try:
+            proc = _sp.run(
+                [sys.executable, "-m", "pip", "install", "notebooklm-py"],
+                capture_output=True, text=True, timeout=120,
+            )
+            return proc.returncode == 0
+        except (FileNotFoundError, _sp.TimeoutExpired):
+            return False
 
     def _ensure_notebook(self) -> Optional[str]:
         """Create or reuse a notebook. Returns notebook_id or None."""
