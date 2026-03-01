@@ -38,7 +38,7 @@ if SCRIPTS_DIR not in sys.path:
 from twitter_sync import (
     run_bird, pull_bookmarks, pull_search, pull_account,
     dedup_tweets, score_relevance, extract_urls,
-    SEARCH_QUERIES, TRACKED_ACCOUNTS,
+    SEARCH_QUERIES, TRACKED_ACCOUNTS, TRACKED_ACCOUNT_OVERRIDES,
 )
 
 # =====================================================================
@@ -312,7 +312,9 @@ def main():
 
     if "accounts" in sources:
         for handle in TRACKED_ACCOUNTS:
-            all_raw.extend(pull_account(handle, 10))
+            overrides = TRACKED_ACCOUNT_OVERRIDES.get(handle, {})
+            count = overrides.get("count", 10)
+            all_raw.extend(pull_account(handle, count))
 
     # Dedup and score
     all_tweets = dedup_tweets(all_raw)
@@ -320,7 +322,15 @@ def main():
 
     scored = []
     for tweet in all_tweets:
-        tier, score = score_relevance(tweet, min_likes_override=args.min_likes)
+        # Apply per-account min_likes for tracked accounts
+        effective_min_likes = args.min_likes  # CLI override takes precedence
+        if effective_min_likes is None:
+            author = tweet.get("author", {})
+            username = author.get("username", "") if isinstance(author, dict) else ""
+            acct_overrides = TRACKED_ACCOUNT_OVERRIDES.get(username, {})
+            if "min_likes" in acct_overrides:
+                effective_min_likes = acct_overrides["min_likes"]
+        tier, score = score_relevance(tweet, min_likes_override=effective_min_likes)
         if tier == 1:  # Only Tier 1 for asset downloads
             scored.append((tweet, tier, score))
 

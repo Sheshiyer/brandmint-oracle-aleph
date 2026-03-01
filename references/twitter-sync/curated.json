@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-02-24",
+  "last_updated": "2026-03-02",
   "entries": [
     {
       "id": "2020418519863595301",
@@ -237,6 +237,483 @@
       "likes": 21,
       "retweets": 0,
       "synced_at": "2026-02-24"
+    },
+    {
+      "id": "2027953432326197508",
+      "url": "https://x.com/VadimStrizheus/status/2027953432326197508",
+      "author": "@VadimStrizheus",
+      "text": "this is what a company looks like in 2026.\n\nnot people. not offices. not salaries.\n\na folder.\n\n.claude/agents/\nengineering/\nmarketing/\ndesign/\nops/\ntesting/\n\nevery role. every department. every function.\n\nall .md files.\n\ni have 12 of these running in OpenClaw right now.\n\nthe org chart is dead. the directory is the new company.",
+      "extracted_links": [],
+      "tags": [
+        "claude"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 4030,
+      "retweets": 398,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2028115571724660920",
+      "url": "https://x.com/AmirMushich/status/2028115571724660920",
+      "author": "@AmirMushich",
+      "text": "Nano Banana smart prompt:\n\nModular typographic brand poster design \n\nPrompt \ud83d\udc47 https://t.co/zmUPOdHLzr",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2028115571724660920/photo/1"
+      ],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 1131,
+      "retweets": 91,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027798913516761522",
+      "url": "https://x.com/AmirMushich/status/2027798913516761522",
+      "author": "@AmirMushich",
+      "text": "Nano Banana smart prompt:\n\nFont masking poster design\n\nPrompt \ud83d\udc47 https://t.co/4jFnNQ0Oaq",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2027798913516761522/photo/1"
+      ],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 1417,
+      "retweets": 126,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027470188644626803",
+      "url": "https://x.com/Arminn_Ai/status/2027470188644626803",
+      "author": "@Arminn_Ai",
+      "text": "Commercial Tear Reveal Concept\n\nWith Nano Banana 2 on @higgsfield_creo\n\nPrompt \ud83d\udc47\nA photorealistic, highly detailed commercial product photograph of a standard aluminum [Type of Soda Can] centered against a minimal, textured [Background Color] paper background, with subtle fibers visible. A single, continuous horizontal paper-tear strip runs across the entire width of the frame, seamless from the far-right edge to the far-left edge. The torn channel cuts through the metal body of the can and continues across the background on both sides with a barely perceptible and minimal diagonal slope towards the upper-left. The tear channel is significantly broader, revealing a dense, glistening, and vibrant layer of [Description of Fruit Segments/Sacs/Berries] tightly packed inside. Near the extreme far-left end of this tear, the paper is neatly rolled into a tight, realistic coil that occupies almost the entire left margin. The can features a newly designed, minimalist branding: the upper portion has a stylized, abstract line-art illustration of [Fruit Branch/Plant] in a contrasting [Ink Color], set against a subtle matte geometric [Pattern Type] pattern on the can surface. Below this, the brand name \"[Brand Name]\" is printed in an elegant, modern dark typography, with smaller technical text \"330ml - NATURAL EXTRACT\" and a small \"Recyclable\" logo. A small, detailed graphic of the fruit is located below the torn path. The lighting is soft and cinematic, casting delicate drop shadows beneath the torn paper edges and the large left coil. 8k resolution, macro details on fibrous paper and glossy fruit texture.",
+      "extracted_links": [],
+      "tags": [
+        "brand-design"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 569,
+      "retweets": 58,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027336259040133499",
+      "url": "https://x.com/_vmlops/status/2027336259040133499",
+      "author": "@_vmlops",
+      "text": "Check out Antigravity Awesome Skills - a massive library with 900+ AI agent skills for Claude, Copilot, Gemini, Cursor, and more\n\nAutomate workflows, search faster, manage GitHub tasks &amp; unlock your AI\u2019s full potential all in one place\n\nhttps://t.co/rbNXLl9OU8 https://t.co/9sDGRBlS7x",
+      "extracted_links": [
+        "https://github.com/sickn33/antigravity-awesome-skills",
+        "https://x.com/_vmlops/status/2027336259040133499/photo/1"
+      ],
+      "tags": [
+        "claude",
+        "gemini",
+        "workflow"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 1284,
+      "retweets": 193,
+      "synced_at": "2026-03-02",
+      "web_content": {
+        "title": "GitHub - sickn33/antigravity-awesome-skills: The Ultimate Collection of 900+ Agentic Skills for Claude Code/Antigravity/Cursor. Battle-tested, high-performance skills for AI agents including official skills from Anthropic and Vercel.",
+        "description": "The Ultimate Collection of 900+ Agentic Skills for Claude Code/Antigravity/Cursor. Battle-tested, high-performance skills for AI agents including official skills from Anthropic and Vercel. - sickn33/antigravity-awesome-skills",
+        "content_preview": "Skip to content Navigation Menu Toggle navigation Sign in Appearance settings Search or jump to... Search code, repositories, users, issues, pull requests... Search Clear Search syntax tips Provide feedback We read every piece of feedback, and take your input very seriously. Include my email address so I can be contacted Cancel Submit feedback Saved searches Use saved searches to filter your results more quickly Name Query To see all available qualifiers, see our documentation . Cancel Create saved search Sign in Sign up Appearance settings Resetting focus You signed in with another tab or window. Reload to refresh your session. You signed out in another tab or window. Reload to refresh your session. You switched accounts on another tab or window. Reload to refresh your session. Dismiss alert {{ message }} sickn33 / antigravity-awesome-skills Public Notifications You must be signed in to change notification settings Fork 3.2k Star 17.7k The Ultimate Collection of 900+ Agentic Skills fo"
+      }
+    },
+    {
+      "id": "2027021107015143498",
+      "url": "https://x.com/azed_ai/status/2027021107015143498",
+      "author": "@azed_ai",
+      "text": "Nano Banana Pro prompt share\n\nCreate cool ads using this prompt \ud83d\udc47\ncreated using @LeonardoAI https://t.co/QbYPszfM9q",
+      "extracted_links": [
+        "https://x.com/azed_ai/status/2027021107015143498/photo/1"
+      ],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 556,
+      "retweets": 58,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027155305378074960",
+      "url": "https://x.com/OdinLovis/status/2027155305378074960",
+      "author": "@OdinLovis",
+      "text": "To celebrate nano-banana-2 launching on @fal , I built FalSprite, sprite sheet generator that turns a text prompt into game-ready animations.                                                                                       \n                                                                                                                                                                                                                                                         \n  One https://t.co/SpUceQWzbJ key powers the whole pipeline:                                                                                                                                                                                                              \n  \u2192 nano-banana-2 for image generation                      \n  \u2192 BRIA for background removal\n  \u2192 OpenRouter LLM for prompt rewriting\n\n  ~$0.20 per generation. Try it live or fork it:\n\n  \ud83d\udd17 https://t.co/GAbZTKokVG\n  \ud83d\udd17 https://t.co/jLQoHGg8Sq\n\n  Thanks @BlendiByl  for the help on this \ud83d\ude4f",
+      "extracted_links": [
+        "https://fal.ai/",
+        "https://falsprite.vercel.app/",
+        "https://github.com/lovisdotio/falsprite"
+      ],
+      "tags": [
+        "image-gen",
+        "workflow"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 1139,
+      "retweets": 108,
+      "synced_at": "2026-03-02",
+      "web_content": {
+        "title": "Generative AI APIs | Run Img, 3D, Video AI Models 4x Faster | fal.ai",
+        "description": "Easiest & most cost-effective way to use Gen AI. fal.ai is how devs integrate dozens of generative media models. FLUX, King, Hailuo +600 more",
+        "content_preview": "Nano Banana 2 is here \ud83c\udf4c 4x faster, lower cost, better quality fal logo Explore Documentation Pricing Enterprise Research Grants Contact Sales Login Model Gallery Documentation Pricing Enterprise Research Grants Get started Contact Sales Generative media platform for developers. The world's best generative image, video, and audio models, all in one place. Develop and fine-tune models with serverless GPUs and on-demand clusters. Get started Contact Sales Trusted by over 1,500,000 developers and leading companies. Enterprise Scale The world's largest generative media model gallery Choose from 1,000+ production ready image, video, audio and 3D models. Build products using fal model apis . Scale custom AI models with fal serverless Access 1000s of H100, H200 and B200 VMs with fal compute . Explore all models Nano Banana 2 Kling O3 Image to Video [Pro] Kling Video v3 Image to Video [Pro] Nano Banana Pro Build, deploy, train. 1000+ generative media models. Ready for production. Explore a rich"
+      }
+    },
+    {
+      "id": "2026801420872093708",
+      "url": "https://x.com/Hesamation/status/2026801420872093708",
+      "author": "@Hesamation",
+      "text": "this Obsidian + AI is the new hot combo.\nfew people know that the CEO of Obsidian @kepano has made multiples skills for Claude Code and Codex that you can use right now both for your codebase and your personal vault. https://t.co/pshaSsfcj6",
+      "extracted_links": [
+        "https://x.com/Hesamation/status/2026801420872093708/photo/1"
+      ],
+      "tags": [
+        "claude"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 3111,
+      "retweets": 213,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2026461256677245131",
+      "url": "https://x.com/internetvin/status/2026461256677245131",
+      "author": "@internetvin",
+      "text": "Here's 22 of the commands I am using with Obsidian and Claude Code with descriptions. \n\nI will turn this into something interactive soon so you can click the commands and then see the full prompts. https://t.co/C0y6kN9mNF",
+      "extracted_links": [
+        "https://x.com/internetvin/status/2026461256677245131/photo/1"
+      ],
+      "tags": [
+        "claude"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 1307,
+      "retweets": 77,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2026264341419528643",
+      "url": "https://x.com/ihtesham2005/status/2026264341419528643",
+      "author": "@ihtesham2005",
+      "text": "\ud83d\udea8 Someone just built a tool that turns any GitHub repo into an interactive knowledge graph and open sourced it for free.\n\nIt's called GitNexus. Think of it as a visual X-ray of your codebase but with an AI agent you can actually talk to.\n\nHere's what it does inside your browser:\n\n\u2192 Parses your entire GitHub repo or ZIP file in seconds\n\u2192 Builds a live interactive knowledge graph with D3.js\n\u2192 Maps every function, class, import, and call relationship\n\u2192 Runs a 4-pass AST pipeline: structure \u2192 parsing \u2192 imports \u2192 call graph\n\u2192 Stores everything in an embedded KuzuDB graph database\n\u2192 Lets you query your codebase in plain English with an AI agent\n\nHere's the wildest part:\n\nIt uses Web Workers to parallelize parsing across threads so a massive monorepo doesn't freeze your tab.\n\nThe Graph RAG agent traverses real graph relationships using Cypher queries not embeddings, not vector search. Actual graph logic.\n\nAsk it things like \"What functions call this module?\" or \"Find all classes that inherit from X\" and it traces the answer through the graph.\n\nThis is the kind of code intelligence tool enterprise teams pay thousands per month for.\n\nIt runs entirely in your browser. Zero server. Zero cost.\n\nWorks with TypeScript, JavaScript, and Python.\n\n100% Open Source. MIT License.",
+      "extracted_links": [],
+      "tags": [
+        "workflow"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 3285,
+      "retweets": 444,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2026189291085607181",
+      "url": "https://x.com/MengTo/status/2026189291085607181",
+      "author": "@MengTo",
+      "text": "Can we talk about how insane Gemini 3.1 Pro is at webgl https://t.co/brXhfd9Wy7",
+      "extracted_links": [
+        "https://x.com/MengTo/status/2026189291085607181/video/1"
+      ],
+      "tags": [
+        "gemini"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 5259,
+      "retweets": 235,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2026335537888702627",
+      "url": "https://x.com/DataChaz/status/2026335537888702627",
+      "author": "@DataChaz",
+      "text": "PowerPoint is officially dead.\n\nWith Gemini Pro 3.1, anyone can now design breathtaking slide decks in seconds \ud83e\udd2f\n\nSteal the prompt below \ud83e\uddf5\u2193 https://t.co/3Q9G7kykus",
+      "extracted_links": [
+        "https://x.com/DataChaz/status/2026335537888702627/video/1"
+      ],
+      "tags": [
+        "gemini"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 462,
+      "retweets": 53,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2028033835993112919",
+      "url": "https://x.com/alex_prompter/status/2028033835993112919",
+      "author": "@alex_prompter",
+      "text": "\ud83d\udea8 Holy shit\u2026 Stanford just exposed that every major AI company is using your private conversations to train their models by default.\n\nThey analyzed the privacy policies of OpenAI, Google, Meta, Anthropic, Microsoft, and Amazon. Reviewed 28 separate documents across all 6 companies. The findings are worrisome.\n\nEvery prompt you type. Every file you upload. Every personal detail you share. All of it feeds directly into model training the moment you hit send.\nThat health question you asked \n\nChatGPT at 2am? Training data. \n\nLegal situation you described to Claude? Training data. \n\nThe photo you uploaded to Gemini? Training data.\n\nSome companies retain your conversations INDEFINITELY. Amazon, Meta, and OpenAI have no confirmed deletion timeline for certain chat data. Your most private conversations could sit on their servers forever.\n\nIt gets worse for kids. Four out of six companies allow children aged 13-18 to use their chatbots, and most don\u2019t treat children\u2019s data any differently. Kids\u2019 conversations are likely getting fed into model training by default. Kids who can\u2019t legally consent to it.\n\nHere\u2019s something most people missed: enterprise customers are opted OUT of training by default. You, the consumer paying $20/month? Opted IN. Companies paying thousands? \n\nProtected automatically. There\u2019s a two-tiered privacy system and you\u2019re on the wrong side of it.\n\nOpenAI even frames the opt-in with guilt. Their settings page says \u201cImprove the model for everyone.\u201d Stanford\u2019s researchers flagged this as a textbook dark pattern designed to make you feel bad for protecting your own data.\n\nMeta\u2019s contractors told reporters they routinely see identifiable personal information in the chat data they review. Journalists were able to positively identify at least one real person from chat transcripts shared with them.\n\nThe privacy policies themselves? Stanford had to dig through 6 separate documents just for OpenAI alone. Most real disclosures were buried in sub-policies no normal person would ever find. The researchers said it was challenging for THEM to piece it together. For consumers? \u201cPractically impossible.\u201d\n\nOnly Microsoft explicitly stated they try to remove personal data like names, phone numbers, and addresses before training. \n\nThe rest are either vague about it or completely silent.",
+      "extracted_links": [],
+      "tags": [
+        "claude",
+        "gemini",
+        "chatgpt"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 5167,
+      "retweets": 2784,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027787837639410110",
+      "url": "https://x.com/godofprompt/status/2027787837639410110",
+      "author": "@godofprompt",
+      "text": "Richard Feynman had one superpower: making the complex feel obvious.\n\nI reverse-engineered his entire teaching method into a Claude prompt system.\n\nUse it to understand anything in under 10 minutes (Save this for later): https://t.co/3pEwBFX2QQ",
+      "extracted_links": [
+        "https://x.com/godofprompt/status/2027787837639410110/photo/1"
+      ],
+      "tags": [
+        "claude"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 880,
+      "retweets": 126,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2019073081881293302",
+      "url": "https://x.com/AmirMushich/status/2019073081881293302",
+      "author": "@AmirMushich",
+      "text": "50 design prompts from ex-Warner designer (Nano Banana Pro)",
+      "extracted_links": [],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 5721,
+      "retweets": 638,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027393294469128313",
+      "url": "https://x.com/AmirMushich/status/2027393294469128313",
+      "author": "@AmirMushich",
+      "text": "Nano Banana smart prompt:\n\nLuxury merch concept\n\nWorks with: \nfashion, sports, lifestyle\n\nOne brand variable \u2192 autonomous fabric pattern + logo treatment + material + color\n\nPrompt \ud83d\udc47 https://t.co/epFrtU9qL3",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2027393294469128313/photo/1"
+      ],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 1.0,
+      "likes": 442,
+      "retweets": 39,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2026270010814136482",
+      "url": "https://x.com/Kashberg_0/status/2026270010814136482",
+      "author": "@Kashberg_0",
+      "text": "Google Gemini Nano Banana Pro \n\nPrompt 1 \u2013 Minimal Luxury Skincare Product\n\nMinimalist studio product photography of an amber glass dropper serum bottle with white cap, labeled \u201cma:nyo Galac Whitening Vita Serum\u201d, placed between large textured white stones, soft beige background, warm sunlight casting natural shadows, subtle golden glow reflecting through the glass, small delicate dried flowers beside the bottle, glossy reflective surface, high-end skincare advertisement, ultra-realistic, 85mm lens, shallow depth of field, soft diffused lighting, clean aesthetic, 8k resolution.\n\n\u2e3b\n\nPrompt 2 \u2013 Warm Glow Stone Setup\n\nPremium cosmetic product shot of an orange serum bottle with dropper, centered between sculptural white rocks, warm light glowing from behind the right stone creating a soft amber rim light, minimal neutral background, delicate beige flowers placed behind, glossy table reflection, luxury skincare campaign style, cinematic lighting, high detail texture, soft shadows, modern minimal composition, photorealistic, studio lighting, 8k.\n\n\u2e3b\n\nPrompt 3 \u2013 Symmetrical Clean Composition\n\nHigh-end skincare product photography, transparent amber serum bottle with white dropper cap, centered composition, surrounded by white organic stones, subtle golden light illuminating from behind one rock, soft pastel flowers in background, neutral matte backdrop, reflective surface, natural sunlight effect, soft contrast, commercial beauty ad style, ultra sharp focus, shallow depth of field, realistic textures, 85mm photography.\n\n\u2e3b\n\nPrompt 4 \u2013 Angled Editorial Shot\n\nLuxury beauty editorial shot of an amber glass vitamin serum bottle slightly tilted and resting against white textured rocks, warm internal glow effect behind the stones, soft natural sunlight from the side, muted beige background, minimal dried floral accent, glossy reflection on surface, modern Korean skincare aesthetic, clean branding, photorealistic, high detail, soft cinematic shadows, 8k resolution.",
+      "extracted_links": [],
+      "tags": [
+        "gemini",
+        "brand-design"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.956,
+      "likes": 190,
+      "retweets": 33,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027393296603992332",
+      "url": "https://x.com/AmirMushich/status/2027393296603992332",
+      "author": "@AmirMushich",
+      "text": "Prompt: \n(access Nano Banana here: https://t.co/EY9xacrmOP) \n\n[BRAND NAME]. Act as a fashion photographer and creative director shooting a high-end editorial lookbook for a bespoke football jersey designed by this brand.\nTHE SUBJECT & COMPOSITION (FLOATING & ANGLED):\nA single, premium custom football jersey is floating suspended in mid-air, centered in the frame. There is no hanger visible.\nCrucial Angle: The jersey is NOT presented flatly frontal. It is rotated slightly (approximately 15 degrees angled view) to show depth, form, and a dynamic profile. Despite floating, the fabric must show realistic weight, deep gravity-defying folds, creases, and natural wrinkles. It must feel like a real, heavy garment frozen in time, not a stiff 3D model.\nBRANDED DESIGN & AESTHETICS:\nThe jersey's design is a sophisticated interpretation of [BRAND NAME]'s visual identity.\nBranding Placement: The official [BRAND NAME] logo is authentically applied as the main club crest on the chest (e.g., embroidered patch or high-quality heat transfer).\nMATERIALITY & TEXTURE (CRITICAL):\nThe focus remains on luxurious, tactile textures.\nFabric: A heavyweight, retro-inspired athletic cotton-blend or technical knit with a visible, coarse weave structure.\nENVIRONMENT & BACKGROUND (WHITE STUDIO):\nThe jersey floats within an abstract, infinite white photo studio cyclorama space. The background is completely seamless, pure, clean white, and minimalist, with absolutely zero distractions, placing total focus on the suspended garment.\nLIGHTING & PHOTOGRAPHY STYLE:\nStyle: Hyper-realistic editorial fashion photography. Clean, high-key aesthetic.\nLighting: sophisticated studio lighting. Soft, diffused light that sculpts the folds of the fabric and highlights the texture against the pure white background. Subtle soft shadows might be cast on the jersey itself to define its form in the white space.",
+      "extracted_links": [
+        "https://ltx.studio/"
+      ],
+      "tags": [
+        "brand-design"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.86,
+      "likes": 52,
+      "retweets": 4,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027798919044853902",
+      "url": "https://x.com/AmirMushich/status/2027798919044853902",
+      "author": "@AmirMushich",
+      "text": "Prompt:  \n(access Nano Banana 2 here: https://t.co/EY9xacrmOP)\n\n[BRAND NAME]. Act as a Senior Editorial Designer and Typographer.\n\nPHASE 1: TYPOGRAPHIC MASK (THE \"WINDOW\" EFFECT).\n\n- Core Element: Use the most iconic slogan or the name of [BRAND NAME] as a massive, ultra-bold, heavy sans-serif typographic mask.\n\n- Layout: The letters must be giant, filling the entire vertical frame from edge to edge with tight kerning.\n\n- Concept: The text acts as a \"cut-out\" window. The background is solid white, and the photographic subject is visible ONLY through the letterforms.\n\nPHASE 2: DYNAMIC SUBJECT LOGIC.\n\n- Subject Selection:\n\n- Detail: Ensure a high-contrast element (like a red shoe or a glowing headlight) is visible through one of the letters as a focal point.\n\nPHASE 3: SOPHISTICATED MUTED PALETTE.\n\n- Atmosphere: Use a \"Refined Muted\" color scheme.\n\n- Tones: Soft slate blues, charcoal greys, and creamy off-whites for the photography inside the mask.\n\n- Accent: Identify one sharp, saturated accent color belonging to [BRAND NAME] and apply it to a single key object visible through the text.\n\nPHASE 4: PHOTOGRAPHY & LIGHTING.\n\n- Lighting: Soft-box studio lighting. Diffused shadows and gentle highlights to create a cinematic, high-end editorial feel.\n\n- Finish: Clean, matte texture with zero visual noise. High-definition photographic quality.\n\nPHASE 5: MINIMALIST BRANDING.\n\n- Accents: Add a tiny minimalist logo and a small vertical tagline in a clean, microscopic sans-serif font near the corners.\n\n- Year: Include the year \"2026\" in a subtle, elegant font to mimic a limited-edition look.",
+      "extracted_links": [
+        "https://ltx.studio/"
+      ],
+      "tags": [
+        "brand-design"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.846,
+      "likes": 132,
+      "retweets": 7,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027645181538025847",
+      "url": "https://x.com/Sheldon056/status/2027645181538025847",
+      "author": "@Sheldon056",
+      "text": "Nano Banana Pro + Kling 3.0 on @yapper_so \n\nPrompt: Luxury skincare commercial, ultra-premium aesthetic. Use the provided product image as the exact reference for bottle shape, label design, liquid tone, reflections, and overall styling.\n\nThe bottle stands perfectly upright at the center of the frame, surrounded by a glossy liquid surface with smooth, elegant ripples. Soft fluid splashes form a graceful crown around the base, catching light like crystal. Background is a dreamy pastel aqua-to-soft lavender gradient with a silky, creamy atmosphere and subtle mist particles floating in the air.\n\nCamera motion:\nSlow, continuous 360-degree cinematic orbit around the product. Movement is smooth, controlled, and hypnotic. Constant speed throughout. No shaking, no zooming, no speed changes. The product remains perfectly centered and stable at all times.\n\nFraming:\nMid close-up beauty shot. Bottle remains vertical and motionless, hero focus.\n\nLighting:\nHigh-end studio lighting, soft diffused glow with gentle highlights and glossy reflections. Subtle rim light to outline the bottle. Liquid and glass look luminous, hydrated, and silky.\n\nMood & style:\nSensual, elegant, and premium beauty campaign. Smooth motion, glossy textures, soft reflections, cinematic depth of field, slow-motion feel, luxury skincare advertisement, 4K photorealistic, polished commercial look.",
+      "extracted_links": [],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 0.815,
+      "likes": 249,
+      "retweets": 33,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027824897431392456",
+      "url": "https://x.com/AmirMushich/status/2027824897431392456",
+      "author": "@AmirMushich",
+      "text": "3 steps to create such vids:\n\n1. Midjourney -&gt; image generation\n2. Nano Banana on LTX -&gt; font design\n3. Editing &amp; SFX -&gt; any editing program\n\nPrompts &amp; font settings \ud83d\udc47 https://t.co/HdztZJl4uf",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2027824897431392456/video/1"
+      ],
+      "tags": [
+        "midjourney",
+        "image-gen"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.742,
+      "likes": 126,
+      "retweets": 8,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027120746468618702",
+      "url": "https://x.com/AmirMushich/status/2027120746468618702",
+      "author": "@AmirMushich",
+      "text": "> be the typography designer:\n\n> drive about 60% of the initial impression \n> and up to 40% of perceived product quality\n> boost positive consumer response by ~13% by changing only the typeface\n> increase perceived relevance by 13% \n> increase the brand attraction 2x\n> make 75% of consumers pick the product packaged with the appropriate font design\u200b\n\nStart here \ud83d\udc47",
+      "extracted_links": [],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 0.664,
+      "likes": 60,
+      "retweets": 2,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2028068337427603741",
+      "url": "https://x.com/AmirMushich/status/2028068337427603741",
+      "author": "@AmirMushich",
+      "text": "Easy text-masking workflow w AI\n\nNano Banana prompt \ud83d\udc47 https://t.co/lGz7fENYO4",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2028068337427603741/photo/1"
+      ],
+      "tags": [
+        "workflow"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.622,
+      "likes": 110,
+      "retweets": 6,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027798922731647122",
+      "url": "https://x.com/AmirMushich/status/2027798922731647122",
+      "author": "@AmirMushich",
+      "text": "My design skills now will work for you\n\nI prepared my best tips for you in this article \ud83d\udc47\n\nOpen it -&gt; find your favorite settings -&gt; steal them\nMake your brand look elite:\n\nhttps://t.co/vEcsUKGzmj",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2026693633794076892?s=20"
+      ],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 0.548,
+      "likes": 42,
+      "retweets": 3,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027393298164252901",
+      "url": "https://x.com/AmirMushich/status/2027393298164252901",
+      "author": "@AmirMushich",
+      "text": "Want my design skills to work on you? \n\nI prepared my best tips for you in this article \ud83d\udc47\n\nOpen it -&gt; find your favorite settings -&gt; steal them\n\nMake your brand shine: \nhttps://t.co/8d3byheiMS",
+      "extracted_links": [
+        "https://x.com/amirmushich/status/2026693633794076892?s=46"
+      ],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 0.522,
+      "likes": 18,
+      "retweets": 2,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2028115575604396083",
+      "url": "https://x.com/AmirMushich/status/2028115575604396083",
+      "author": "@AmirMushich",
+      "text": "Steal more of my design workflows: https://t.co/IQmmpLXrud",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2027798913516761522?s=20"
+      ],
+      "tags": [
+        "workflow"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.516,
+      "likes": 16,
+      "retweets": 0,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2028115576690749775",
+      "url": "https://x.com/AmirMushich/status/2028115576690749775",
+      "author": "@AmirMushich",
+      "text": "My design skills now will work for you\n\nI prepared my best tips for you in this article \ud83d\udc47\n\nOpen it -&gt; find your favorite settings -&gt; steal them\nMake your brand look elite:\n\nhttps://t.co/vEcsUKGzmj",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2026693633794076892?s=20"
+      ],
+      "tags": [],
+      "relevance_tier": 1,
+      "relevance_score": 0.516,
+      "likes": 16,
+      "retweets": 0,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027824898408648880",
+      "url": "https://x.com/AmirMushich/status/2027824898408648880",
+      "author": "@AmirMushich",
+      "text": "Steal my midjourney prompts here:\n\nhttps://t.co/v0qecUqFrm",
+      "extracted_links": [
+        "https://docs.google.com/document/d/1c89Hl_5WzLQkrM0VgYFqUUCY_C8EXpz5jVjyuB_rh3U/edit?usp=sharing"
+      ],
+      "tags": [
+        "midjourney"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.514,
+      "likes": 12,
+      "retweets": 1,
+      "synced_at": "2026-03-02"
+    },
+    {
+      "id": "2027472643629215819",
+      "url": "https://x.com/AmirMushich/status/2027472643629215819",
+      "author": "@AmirMushich",
+      "text": "3 weeks of prompting &amp; chatting with voice keyboard - crazy\n\nGenuinely enjoying the efficiency of my workflows now \ud83e\udd0c https://t.co/muwkGwtjkD",
+      "extracted_links": [
+        "https://x.com/AmirMushich/status/2027472643629215819/photo/1"
+      ],
+      "tags": [
+        "workflow"
+      ],
+      "relevance_tier": 1,
+      "relevance_score": 0.413,
+      "likes": 13,
+      "retweets": 0,
+      "synced_at": "2026-03-02"
     }
   ]
 }

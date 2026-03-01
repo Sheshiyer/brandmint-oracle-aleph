@@ -11,8 +11,8 @@
 #   editorial_vs_commercial: 0=editorial  → 1=commercial/conversion
 
 version: '1.0'
-generated_at: '2026-02-25T01:06:34.404803+00:00'
-total_entries: 138
+generated_at: '2026-03-01T20:33:00.897880+00:00'
+total_entries: 160
 entries:
   ref-2A-bento-grid:
     file: ref-2A-bento-grid.jpg
@@ -32,11 +32,6 @@ entries:
     asset_compatibility:
     - 2A
     description: 6-module bento grid layout structure (style anchor)
-    subject_type: layout
-    domain_suitability: []
-    lighting_register: flat
-    color_temperature: neutral
-    composition_format: grid
   ref-2B-brand-seal:
     file: ref-2B-brand-seal.jpg
     type: primary
@@ -55,11 +50,6 @@ entries:
     asset_compatibility:
     - 2B
     description: Wax seal / emblem composition
-    subject_type: logo
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: single-object
   ref-2C-logo-emboss:
     file: ref-2C-logo-emboss.jpg
     type: primary
@@ -78,11 +68,6 @@ entries:
     asset_compatibility:
     - 2C
     description: Frosted glass logo emboss style
-    subject_type: logo
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: single-object
   ref-3A-capsule-collection:
     file: ref-3A-capsule-collection.jpg
     type: primary
@@ -97,15 +82,10 @@ entries:
     composition_tags:
     - product-shot
     model_affinity:
-    - nano-banana-pro
+    - flux-2-pro
     asset_compatibility:
     - 3A
     description: Product lineup / flatlay composition
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-3B-hero-product:
     file: ref-3B-hero-product.jpg
     type: primary
@@ -120,15 +100,10 @@ entries:
     composition_tags:
     - product-shot
     model_affinity:
-    - nano-banana-pro
+    - flux-2-pro
     asset_compatibility:
     - 3B
     description: Individual branded product shots
-    subject_type: single-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-3C-essence-vial:
     file: ref-3C-essence-vial.jpg
     type: primary
@@ -147,11 +122,6 @@ entries:
     asset_compatibility:
     - 3C
     description: Branded vessel / vial product shots
-    subject_type: single-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-4A-catalog-layout:
     file: ref-4A-catalog-layout.jpg
     type: primary
@@ -170,11 +140,6 @@ entries:
     asset_compatibility:
     - 4A
     description: Product catalog with spec callouts
-    subject_type: catalog-layout
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: grid
   ref-4B-flatlay:
     file: ref-4B-flatlay.jpg
     type: primary
@@ -189,15 +154,10 @@ entries:
     composition_tags:
     - product-shot
     model_affinity:
-    - nano-banana-pro
+    - flux-2-pro
     asset_compatibility:
     - 4B
     description: Minimal white product photography
-    subject_type: flatlay
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-5A-heritage-engraving:
     file: ref-5A-heritage-engraving.jpg
     type: primary
@@ -215,11 +175,6 @@ entries:
     asset_compatibility:
     - 5A
     description: Fine-line botanical heritage engraving
-    subject_type: illustration
-    domain_suitability: []
-    lighting_register: flat
-    color_temperature: warm
-    composition_format: single-object
   ref-5B-campaign-grid:
     file: ref-5B-campaign-grid.jpg
     type: primary
@@ -238,11 +193,24 @@ entries:
     asset_compatibility:
     - 5B
     description: 2-column asymmetric campaign grid
-    subject_type: campaign-layout
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: grid
+  ref-5D-engine-icons:
+    file: ref-5D-engine-icons.jpg
+    type: primary
+    prompt_id: 5D
+    name: Engine Icons
+    aesthetic:
+      composition_density: 0.15
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.25
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - icon-set
+    model_affinity:
+    - recraft-v3
+    asset_compatibility:
+    - 5D
+    description: Minimal icon set on solid background
   ref-7A-contact-sheet:
     file: ref-7A-contact-sheet.jpg
     type: primary
@@ -261,11 +229,6 @@ entries:
     asset_compatibility:
     - 7A
     description: 3x3 grid-tiled photo composition
-    subject_type: photo-grid
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: grid
   ref-8A-seeker-poster:
     file: ref-8A-seeker-poster.jpg
     type: primary
@@ -284,11 +247,6 @@ entries:
     asset_compatibility:
     - 8A
     description: Brand presentation poster layout
-    subject_type: poster
-    domain_suitability: []
-    lighting_register: dramatic
-    color_temperature: neutral
-    composition_format: full-bleed
   ref-9A-engine-poster:
     file: ref-9A-engine-poster.jpg
     type: primary
@@ -307,11 +265,6 @@ entries:
     asset_compatibility:
     - 9A
     description: Detailed single-object poster with labels
-    subject_type: poster
-    domain_suitability: []
-    lighting_register: dramatic
-    color_temperature: neutral
-    composition_format: full-bleed
   ref-alt-3d-sticker-logos:
     file: ref-alt-3d-sticker-logos.jpg
     type: alternative
@@ -332,14 +285,6 @@ entries:
     - 2C
     - 9A
     description: 3D tactile logo artifacts
-    subject_type: logo
-    domain_suitability:
-    - dtc
-    - tech
-    - saas
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-alt-chrome-logos:
     file: ref-alt-chrome-logos.jpg
     type: alternative
@@ -360,13 +305,6 @@ entries:
     - 2C
     - 9A
     description: Polished 3D chrome logo renders
-    subject_type: logo
-    domain_suitability:
-    - saas
-    - tech
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: single-object
   ref-alt-minimal-logos:
     file: ref-alt-minimal-logos.jpg
     type: alternative
@@ -385,14 +323,6 @@ entries:
     - 2B
     - 2C
     description: Clean metallic minimal logo reimaginings
-    subject_type: logo
-    domain_suitability:
-    - saas
-    - tech
-    - dtc
-    lighting_register: flat
-    color_temperature: neutral
-    composition_format: single-object
   ref-alt-beverage-bottles:
     file: ref-alt-beverage-bottles.jpg
     type: alternative
@@ -409,14 +339,6 @@ entries:
     asset_compatibility:
     - 3C
     description: Branded bottles on colored backgrounds
-    subject_type: single-product
-    domain_suitability:
-    - food
-    - wellness
-    - dtc
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: single-object
   ref-alt-boxing-gloves:
     file: ref-alt-boxing-gloves.jpg
     type: alternative
@@ -438,14 +360,6 @@ entries:
     - 4A
     - 4B
     description: Luxury branded product concept
-    subject_type: single-product
-    domain_suitability:
-    - dtc
-    - fashion
-    - luxury
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: single-object
   ref-alt-passport-covers:
     file: ref-alt-passport-covers.jpg
     type: alternative
@@ -467,14 +381,6 @@ entries:
     - 4A
     - 4B
     description: Branded accessory product shots
-    subject_type: single-product
-    domain_suitability:
-    - dtc
-    - luxury
-    - fashion
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-alt-branded-shoes:
     file: ref-alt-branded-shoes.jpg
     type: alternative
@@ -496,13 +402,6 @@ entries:
     - 4A
     - 4B
     description: Cross-brand product design collabs
-    subject_type: multi-product
-    domain_suitability:
-    - fashion
-    - dtc
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-alt-embossed-tshirts:
     file: ref-alt-embossed-tshirts.jpg
     type: alternative
@@ -519,13 +418,6 @@ entries:
     asset_compatibility:
     - 3A
     description: Material texture detail in branded apparel
-    subject_type: single-product
-    domain_suitability:
-    - fashion
-    - dtc
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-alt-leather-bags:
     file: ref-alt-leather-bags.jpg
     type: alternative
@@ -547,14 +439,6 @@ entries:
     - 4A
     - 4B
     description: Branded leather bag product shots
-    subject_type: multi-product
-    domain_suitability:
-    - dtc
-    - fashion
-    - luxury
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: multi-object
   ref-alt-leather-duffles:
     file: ref-alt-leather-duffles.jpg
     type: alternative
@@ -571,14 +455,6 @@ entries:
     asset_compatibility:
     - 3A
     description: Branded luxury duffle bag lineup
-    subject_type: multi-product
-    domain_suitability:
-    - dtc
-    - fashion
-    - luxury
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: multi-object
   ref-alt-varsity-jackets:
     file: ref-alt-varsity-jackets.jpg
     type: alternative
@@ -595,13 +471,6 @@ entries:
     asset_compatibility:
     - 3A
     description: Branded apparel in environmental setting
-    subject_type: single-product
-    domain_suitability:
-    - fashion
-    - dtc
-    lighting_register: natural
-    color_temperature: warm
-    composition_format: person-in-environment
   ref-alt-calligraphic-initials:
     file: ref-alt-calligraphic-initials.jpg
     type: alternative
@@ -621,14 +490,6 @@ entries:
     - 5A
     - 8A
     description: Ornate typography / letterform style
-    subject_type: logo
-    domain_suitability:
-    - heritage
-    - luxury
-    - wellness
-    lighting_register: flat
-    color_temperature: warm
-    composition_format: single-object
   ref-alt-dieline-to-3d:
     file: ref-alt-dieline-to-3d.jpg
     type: alternative
@@ -653,14 +514,6 @@ entries:
     - 9A
     - misc
     description: Packaging design dieline-to-3D workflow
-    subject_type: packaging
-    domain_suitability:
-    - dtc
-    - food
-    - wellness
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-alt-foil-stickers:
     file: ref-alt-foil-stickers.jpg
     type: alternative
@@ -677,13 +530,6 @@ entries:
     asset_compatibility:
     - misc
     description: Crinkled foil / balloon textured brand stickers
-    subject_type: abstract
-    domain_suitability:
-    - dtc
-    - fashion
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-alt-organic-logo:
     file: ref-alt-organic-logo.jpg
     type: alternative
@@ -703,14 +549,6 @@ entries:
     - 2C
     - misc
     description: Logo-as-organic-material concept
-    subject_type: logo
-    domain_suitability:
-    - wellness
-    - food
-    - heritage
-    lighting_register: natural
-    color_temperature: warm
-    composition_format: single-object
   ref-alt-product-branding-workflow:
     file: ref-alt-product-branding-workflow.jpg
     type: alternative
@@ -733,11 +571,6 @@ entries:
     - 4B
     - misc
     description: Product branding workflow diagram
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-alt-sneaker-collabs:
     file: ref-alt-sneaker-collabs.jpg
     type: alternative
@@ -760,13 +593,6 @@ entries:
     - 4B
     - misc
     description: Cross-brand sneaker collab product design
-    subject_type: multi-product
-    domain_suitability:
-    - fashion
-    - dtc
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: multi-object
   ref-alt-emboss-monochrome:
     file: ref-alt-emboss-monochrome.jpg
     type: alternative
@@ -783,14 +609,6 @@ entries:
     asset_compatibility:
     - 2C
     description: Monochrome glossy emboss on colored surfaces
-    subject_type: logo
-    domain_suitability:
-    - luxury
-    - fashion
-    - tech
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: single-object
   ref-alt-glass-editorial:
     file: ref-alt-glass-editorial.jpg
     type: alternative
@@ -810,14 +628,6 @@ entries:
     - 2C
     - 5B
     description: Frosted glass editorial layouts
-    subject_type: layout
-    domain_suitability:
-    - luxury
-    - tech
-    - saas
-    lighting_register: ambient
-    color_temperature: cool
-    composition_format: grid
   ref-style-bold-portrait-grid:
     file: ref-style-bold-portrait-grid.jpg
     type: style
@@ -838,14 +648,6 @@ entries:
     - 7A
     - 8A
     description: Celebrity portraits with bold color blocks
-    subject_type: photo-grid
-    domain_suitability:
-    - fashion
-    - dtc
-    - marketplace
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: grid
   ref-style-cartoon-caricatures:
     file: ref-style-cartoon-caricatures.jpg
     type: style
@@ -862,13 +664,6 @@ entries:
     asset_compatibility:
     - 8A
     description: Colored cartoon caricatures
-    subject_type: illustration
-    domain_suitability:
-    - education
-    - dtc
-    lighting_register: flat
-    color_temperature: warm
-    composition_format: single-object
   ref-style-collage-portraits:
     file: ref-style-collage-portraits.jpg
     type: style
@@ -888,13 +683,6 @@ entries:
     - 7A
     - 8A
     description: Collage/glitch torn-paper portrait effect
-    subject_type: person
-    domain_suitability:
-    - fashion
-    - dtc
-    lighting_register: dramatic
-    color_temperature: neutral
-    composition_format: grid
   ref-style-duotone-faces:
     file: ref-style-duotone-faces.jpg
     type: style
@@ -911,13 +699,6 @@ entries:
     asset_compatibility:
     - 8A
     description: Minimalist duotone flat vector face illustrations
-    subject_type: illustration
-    domain_suitability:
-    - tech
-    - saas
-    lighting_register: flat
-    color_temperature: cool
-    composition_format: single-object
   ref-style-fashion-prompt:
     file: ref-style-fashion-prompt.jpg
     type: style
@@ -932,12 +713,6 @@ entries:
     - nano-banana-pro
     asset_compatibility: []
     description: Fashion prompt with outfit changes
-    subject_type: person
-    domain_suitability:
-    - fashion
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-style-fashion-tutorial:
     file: ref-style-fashion-tutorial.jpg
     type: style
@@ -954,12 +729,6 @@ entries:
     asset_compatibility:
     - 8A
     description: Fashion prompt tutorial (3 person photos)
-    subject_type: person
-    domain_suitability:
-    - fashion
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-style-graffiti-overlay:
     file: ref-style-graffiti-overlay.jpg
     type: style
@@ -976,13 +745,6 @@ entries:
     asset_compatibility:
     - 8A
     description: Graffiti/crackle face overlays with doodles
-    subject_type: person
-    domain_suitability:
-    - fashion
-    - dtc
-    lighting_register: dramatic
-    color_temperature: warm
-    composition_format: single-object
   ref-style-halftone-portraits:
     file: ref-style-halftone-portraits.jpg
     type: style
@@ -997,13 +759,6 @@ entries:
     - nano-banana-pro
     asset_compatibility: []
     description: Halftone dot comic-style portraits
-    subject_type: illustration
-    domain_suitability:
-    - dtc
-    - tech
-    lighting_register: flat
-    color_temperature: neutral
-    composition_format: single-object
   ref-style-line-portraits:
     file: ref-style-line-portraits.jpg
     type: style
@@ -1020,14 +775,6 @@ entries:
     asset_compatibility:
     - 8A
     description: B&W minimal line-art portrait icons
-    subject_type: illustration
-    domain_suitability:
-    - tech
-    - saas
-    - education
-    lighting_register: flat
-    color_temperature: neutral
-    composition_format: single-object
   ref-style-line-sketches:
     file: ref-style-line-sketches.jpg
     type: style
@@ -1044,13 +791,6 @@ entries:
     asset_compatibility:
     - 8A
     description: Line-art character sketches
-    subject_type: illustration
-    domain_suitability:
-    - education
-    - tech
-    lighting_register: flat
-    color_temperature: neutral
-    composition_format: single-object
   ref-style-retro-typography:
     file: ref-style-retro-typography.jpg
     type: style
@@ -1068,14 +808,6 @@ entries:
     - 2B
     - 8A
     description: Retro baseball-style brand typography
-    subject_type: logo
-    domain_suitability:
-    - fashion
-    - heritage
-    - dtc
-    lighting_register: flat
-    color_temperature: warm
-    composition_format: single-object
   ref-demo-aerial-logo:
     file: ref-demo-aerial-logo.jpg
     type: demo
@@ -1093,11 +825,6 @@ entries:
     - 2B
     - 2C
     description: Logo made of aerial people (creative concept)
-    subject_type: logo
-    domain_suitability: []
-    lighting_register: natural
-    color_temperature: neutral
-    composition_format: full-bleed
   ref-demo-box-christmas-trees:
     file: ref-demo-box-christmas-trees.jpg
     type: demo
@@ -1112,12 +839,6 @@ entries:
     - nano-banana-pro
     asset_compatibility: []
     description: Christmas trees made of brand boxes
-    subject_type: abstract
-    domain_suitability:
-    - dtc
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: single-object
   ref-demo-metal-grillz:
     file: ref-demo-metal-grillz.jpg
     type: demo
@@ -1132,13 +853,6 @@ entries:
     - nano-banana-pro
     asset_compatibility: []
     description: Metal grillz/jewelry with brand names
-    subject_type: abstract
-    domain_suitability:
-    - fashion
-    - luxury
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: single-object
   ref-demo-product-design-tutorial:
     file: ref-demo-product-design-tutorial.jpg
     type: demo
@@ -1159,11 +873,6 @@ entries:
     - 4A
     - 4B
     description: Creative product design tutorial slide
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-demo-superhero-composite:
     file: ref-demo-superhero-composite.jpg
     type: demo
@@ -1178,11 +887,6 @@ entries:
     - nano-banana-pro
     asset_compatibility: []
     description: Superhero characters composite
-    subject_type: person
-    domain_suitability: []
-    lighting_register: dramatic
-    color_temperature: cool
-    composition_format: full-bleed
   ref-tw-008-mehvishs25-nano-banana-pro-gemini-gpt:
     file: ref-tw-008-mehvishs25-nano-banana-pro-gemini-gpt.jpg
     type: community
@@ -1219,11 +923,6 @@ entries:
     - 9A
     description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type":
       "luxury b...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: warm
-    composition_format: multi-object
   ref-tw-008-mehvishs25-nano-banana-pro-gemini-gpt-2:
     file: ref-tw-008-mehvishs25-nano-banana-pro-gemini-gpt-2.jpg
     type: community
@@ -1260,11 +959,6 @@ entries:
     - 9A
     description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type":
       "luxury b...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: warm
-    composition_format: multi-object
   ref-tw-009-AmirMushich-graphic-design-smart-prompt:
     file: ref-tw-009-AmirMushich-graphic-design-smart-prompt.jpg
     type: community
@@ -1285,11 +979,6 @@ entries:
     asset_compatibility: []
     description: 'Graphic design smart prompt  Generate ad posters in Nano Banana  This prompt generates: • POV low-angle
       photo (pointi...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-010-Strength04_X-recipe-powered-google-nano:
     file: ref-tw-010-Strength04_X-recipe-powered-google-nano.jpg
     type: community
@@ -1323,13 +1012,6 @@ entries:
     - 9A
     description: My recipe, powered by Google Nano Banana Pro + Kling AI 🎥   → Pure taste → Smart creation  → Cooking, upgraded
       by AI...
-    subject_type: layout
-    domain_suitability:
-    - saas
-    - tech
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: grid
   ref-tw-011-rovvmut_-nano-banana-pro-has-improved:
     file: ref-tw-011-rovvmut_-nano-banana-pro-has-improved.jpg
     type: community
@@ -1354,11 +1036,6 @@ entries:
     - 8A
     description: 'Nano Banana Pro has improved after the Gemini 3.1 Pro update 🔥  Prompt: A cinematic, high-contrast profile
       portrait o...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-012-Naiknelofar788-gpt-image-chatgpt-prompt:
     file: ref-tw-012-Naiknelofar788-gpt-image-chatgpt-prompt.jpg
     type: community
@@ -1380,11 +1057,6 @@ entries:
     - 8A
     description: 'GPT image 1.5 on ChatGPT  Prompt: Transform the input photo into a refined monochromatic ink portrait on
       a pure white...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-012-Naiknelofar788-gpt-image-chatgpt-prompt-2:
     file: ref-tw-012-Naiknelofar788-gpt-image-chatgpt-prompt-2.jpg
     type: community
@@ -1406,11 +1078,6 @@ entries:
     - 8A
     description: 'GPT image 1.5 on ChatGPT  Prompt: Transform the input photo into a refined monochromatic ink portrait on
       a pure white...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-013-Kashberg_0-google-gemini-nano-banana-pro:
     file: ref-tw-013-Kashberg_0-google-gemini-nano-banana-pro.jpg
     type: community
@@ -1440,11 +1107,6 @@ entries:
     - 8A
     description: 'Google Gemini Nano Banana Pro   Prompt 1:  Ultra-realistic commercial product photography of a caramel frappuccino
       in...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: multi-object
   ref-tw-013-Kashberg_0-google-gemini-nano-banana-pro-2:
     file: ref-tw-013-Kashberg_0-google-gemini-nano-banana-pro-2.jpg
     type: community
@@ -1474,11 +1136,6 @@ entries:
     - 8A
     description: 'Google Gemini Nano Banana Pro   Prompt 1:  Ultra-realistic commercial product photography of a caramel frappuccino
       in...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: multi-object
   ref-tw-014-Kashberg_0-google-gemini-nano-banana-pro:
     file: ref-tw-014-Kashberg_0-google-gemini-nano-banana-pro.jpg
     type: community
@@ -1505,11 +1162,6 @@ entries:
     - 8A
     description: Google Gemini Nano Banana Pro   Prompt 1 (Male Portrait – Blue & Pink Neon Lighting)  Ultra-realistic studio
       portrait...
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: person-in-environment
   ref-tw-014-Kashberg_0-google-gemini-nano-banana-pro-2:
     file: ref-tw-014-Kashberg_0-google-gemini-nano-banana-pro-2.jpg
     type: community
@@ -1536,11 +1188,6 @@ entries:
     - 8A
     description: Google Gemini Nano Banana Pro   Prompt 1 (Male Portrait – Blue & Pink Neon Lighting)  Ultra-realistic studio
       portrait...
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: person-in-environment
   ref-tw-015-Strength04_X-tried-infographic-prompt:
     file: ref-tw-015-Strength04_X-tried-infographic-prompt.jpg
     type: community
@@ -1569,15 +1216,8 @@ entries:
     - 4A
     - 4B
     - 9A
-    description: 'Tried my Infographic prompt with Gemini Nano Banana Pro imagine on @SocialSight 🧾  Prompt - Simply replace
-      [OBJECT]...'
-    subject_type: multi-product
-    domain_suitability:
-    - saas
-    - tech
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
+    description: Tried my Infographic prompt with Gemini Nano Banana Pro imagine on @SocialSight 🧾  Prompt - Simply replace
+      [OBJECT]...
   ref-tw-016-john_my07-studio-photoshoot-using-google:
     file: ref-tw-016-john_my07-studio-photoshoot-using-google.jpg
     type: community
@@ -1603,11 +1243,6 @@ entries:
     - 8A
     description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic studio portrait of
       a man match...
-    subject_type: person
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-016-john_my07-studio-photoshoot-using-google-2:
     file: ref-tw-016-john_my07-studio-photoshoot-using-google-2.jpg
     type: community
@@ -1633,11 +1268,6 @@ entries:
     - 8A
     description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic studio portrait of
       a man match...
-    subject_type: person
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-016-john_my07-studio-photoshoot-using-google-3:
     file: ref-tw-016-john_my07-studio-photoshoot-using-google-3.jpg
     type: community
@@ -1663,11 +1293,6 @@ entries:
     - 8A
     description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic studio portrait of
       a man match...
-    subject_type: person
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-017-ZaraIrahh-gemini-nano-banana-pro-prompt:
     file: ref-tw-017-ZaraIrahh-gemini-nano-banana-pro-prompt.jpg
     type: community
@@ -1695,11 +1320,6 @@ entries:
     - 8A
     description: 'Gemini Nano Banana Pro   Prompt:  A cinematic golden hour portrait of a stylish man leaning against a textured
       stone...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: warm
-    composition_format: person-in-environment
   ref-tw-019-john_my07-google-nano-banana-pro-gemini:
     file: ref-tw-019-john_my07-google-nano-banana-pro-gemini.jpg
     type: community
@@ -1735,11 +1355,6 @@ entries:
     - 9A
     description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "master_prompt": {     "product": {       "type":
       "l...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: warm
-    composition_format: multi-object
   ref-tw-019-john_my07-google-nano-banana-pro-gemini-2:
     file: ref-tw-019-john_my07-google-nano-banana-pro-gemini-2.jpg
     type: community
@@ -1775,11 +1390,6 @@ entries:
     - 9A
     description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "master_prompt": {     "product": {       "type":
       "l...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: warm
-    composition_format: multi-object
   ref-tw-021-AmirMushich-smart-illustration-nano-banana:
     file: ref-tw-021-AmirMushich-smart-illustration-nano-banana.jpg
     type: community
@@ -1800,12 +1410,7 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 5A
-    description: 'Smart illustration in Nano Banana  Branded venue in minimalist vector style  Grab the prompt 👇 https://t.co/d8VJp8zxsN'
-    subject_type: illustration
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Smart illustration in Nano Banana  Branded venue in minimalist vector style  Grab the prompt 👇 https://t.co/d8VJp8zxsN
   ref-tw-022-harboriis-gemini-nano-banana-pro-prompt:
     file: ref-tw-022-harboriis-gemini-nano-banana-pro-prompt.jpg
     type: community
@@ -1829,11 +1434,6 @@ entries:
     - 8A
     description: 'Gemini Nano Banana Pro  Prompt:  A Cinematic Night Photo On A Dimly Lit Urban Overpass With A View Of The
       City Skylin...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-024-lloydcreates-nano-banana-pro-3d-neuro:
     file: ref-tw-024-lloydcreates-nano-banana-pro-3d-neuro.jpg
     type: community
@@ -1868,11 +1468,6 @@ entries:
     - 9A
     description: 'Nano Banana Pro 3D Neuro Chromatic FX  🔴 Prompt  {   "action": "image_generation",   "input_parameters":
       {     "promp...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: multi-object
   ref-tw-025-azed_ai-prompt-share-cinematic-motion:
     file: ref-tw-025-azed_ai-prompt-share-cinematic-motion.jpg
     type: community
@@ -1895,11 +1490,6 @@ entries:
     - 8A
     description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through
       a [landscape]...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-025-azed_ai-prompt-share-cinematic-motion-2:
     file: ref-tw-025-azed_ai-prompt-share-cinematic-motion-2.jpg
     type: community
@@ -1922,11 +1512,6 @@ entries:
     - 8A
     description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through
       a [landscape]...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-025-azed_ai-prompt-share-cinematic-motion-3:
     file: ref-tw-025-azed_ai-prompt-share-cinematic-motion-3.jpg
     type: community
@@ -1949,11 +1534,6 @@ entries:
     - 8A
     description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through
       a [landscape]...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-025-azed_ai-prompt-share-cinematic-motion-4:
     file: ref-tw-025-azed_ai-prompt-share-cinematic-motion-4.jpg
     type: community
@@ -1976,11 +1556,6 @@ entries:
     - 8A
     description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through
       a [landscape]...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve:
     file: ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve.jpg
     type: community
@@ -2000,13 +1575,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: 'Recraft V4 is extremely good  I''ve been testing it inside Freepik, and it''s clearly built for designers.
-      It generates...'
-    subject_type: logo
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers.
+      It generates...
   ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve-2:
     file: ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve-2.jpg
     type: community
@@ -2026,13 +1596,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: 'Recraft V4 is extremely good  I''ve been testing it inside Freepik, and it''s clearly built for designers.
-      It generates...'
-    subject_type: logo
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers.
+      It generates...
   ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve-3:
     file: ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve-3.jpg
     type: community
@@ -2052,13 +1617,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: 'Recraft V4 is extremely good  I''ve been testing it inside Freepik, and it''s clearly built for designers.
-      It generates...'
-    subject_type: logo
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers.
+      It generates...
   ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve-4:
     file: ref-tw-026-MayorKingAI-recraft-v4-extremely-good-ve-4.jpg
     type: community
@@ -2078,13 +1638,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: 'Recraft V4 is extremely good  I''ve been testing it inside Freepik, and it''s clearly built for designers.
-      It generates...'
-    subject_type: logo
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers.
+      It generates...
   ref-tw-027-Maercihh-nano-banana-pro-gemini-prompt:
     file: ref-tw-027-Maercihh-nano-banana-pro-gemini-prompt.jpg
     type: community
@@ -2119,11 +1674,6 @@ entries:
     - 8A
     description: 'Nano Banana pro on Gemini   Prompt   {   "prompt": {     "subject": "Ultra-realistic high-energy commercial
       product p...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: multi-object
   ref-tw-028-Arminn_Ai-minimalist-fashion-scrapbook:
     file: ref-tw-028-Arminn_Ai-minimalist-fashion-scrapbook.jpg
     type: community
@@ -2156,11 +1706,6 @@ entries:
     - 9A
     description: Minimalist Fashion Scrapbook   With Nano Banana Pro on @higgsfield_creo   Prompt 👇 Masterpiece, best quality,
       high re...
-    subject_type: person
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: warm
-    composition_format: person-in-environment
   ref-tw-029-mehvishs25-google-nano-banana-pro-gemini:
     file: ref-tw-029-mehvishs25-google-nano-banana-pro-gemini.jpg
     type: community
@@ -2190,11 +1735,6 @@ entries:
     - 8A
     description: 'Google Nano Banana Pro on Gemini App.  watch_model: "L’Élévation" brand: "Genève Horlogerie" render_engine:
       "High-End...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-tw-029-mehvishs25-google-nano-banana-pro-gemini-2:
     file: ref-tw-029-mehvishs25-google-nano-banana-pro-gemini-2.jpg
     type: community
@@ -2224,11 +1764,6 @@ entries:
     - 8A
     description: 'Google Nano Banana Pro on Gemini App.  watch_model: "L’Élévation" brand: "Genève Horlogerie" render_engine:
       "High-End...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-tw-030-oggii_0-gemini-nano-banana-pro-prompt:
     file: ref-tw-030-oggii_0-gemini-nano-banana-pro-prompt.jpg
     type: community
@@ -2260,11 +1795,6 @@ entries:
     - 8A
     description: 'Gemini Nano Banana Pro.  Prompt: Ultra-realistic commercial product  photography of a beauty collagen shot
       bottle lab...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: neutral
-    composition_format: multi-object
   ref-tw-030-oggii_0-gemini-nano-banana-pro-prompt-2:
     file: ref-tw-030-oggii_0-gemini-nano-banana-pro-prompt-2.jpg
     type: community
@@ -2296,11 +1826,6 @@ entries:
     - 8A
     description: 'Gemini Nano Banana Pro.  Prompt: Ultra-realistic commercial product  photography of a beauty collagen shot
       bottle lab...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: neutral
-    composition_format: multi-object
   ref-tw-031-Gdgtify-nano-banana-prompt-visionaries:
     file: ref-tw-031-Gdgtify-nano-banana-prompt-visionaries.jpg
     type: community
@@ -2324,11 +1849,6 @@ entries:
     - 5B
     - 8A
     description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-031-Gdgtify-nano-banana-prompt-visionaries-2:
     file: ref-tw-031-Gdgtify-nano-banana-prompt-visionaries-2.jpg
     type: community
@@ -2352,11 +1872,6 @@ entries:
     - 5B
     - 8A
     description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-031-Gdgtify-nano-banana-prompt-visionaries-3:
     file: ref-tw-031-Gdgtify-nano-banana-prompt-visionaries-3.jpg
     type: community
@@ -2380,11 +1895,6 @@ entries:
     - 5B
     - 8A
     description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-031-Gdgtify-nano-banana-prompt-visionaries-4:
     file: ref-tw-031-Gdgtify-nano-banana-prompt-visionaries-4.jpg
     type: community
@@ -2408,11 +1918,6 @@ entries:
     - 5B
     - 8A
     description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: neutral
-    composition_format: person-in-environment
   ref-tw-032-azed_ai-prompt-share-synthwave:
     file: ref-tw-032-azed_ai-prompt-share-synthwave.jpg
     type: community
@@ -2441,11 +1946,6 @@ entries:
     - 8A
     description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing
       on a glowing...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-032-azed_ai-prompt-share-synthwave-2:
     file: ref-tw-032-azed_ai-prompt-share-synthwave-2.jpg
     type: community
@@ -2474,11 +1974,6 @@ entries:
     - 8A
     description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing
       on a glowing...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-032-azed_ai-prompt-share-synthwave-3:
     file: ref-tw-032-azed_ai-prompt-share-synthwave-3.jpg
     type: community
@@ -2507,11 +2002,6 @@ entries:
     - 8A
     description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing
       on a glowing...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-032-azed_ai-prompt-share-synthwave-4:
     file: ref-tw-032-azed_ai-prompt-share-synthwave-4.jpg
     type: community
@@ -2540,11 +2030,6 @@ entries:
     - 8A
     description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing
       on a glowing...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-034-astronomerozge1-nano-banana-pro-prompt:
     file: ref-tw-034-astronomerozge1-nano-banana-pro-prompt.jpg
     type: community
@@ -2576,11 +2061,6 @@ entries:
     - 8A
     description: 'Nano Banana Pro @astronomerozge1  Prompt: 💚  {   "generation_request": {     "meta_data": {       "tool":
       "NanoBanana...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: person-in-environment
   ref-tw-035-Mystveil7-midnight-dominance-bmw-m4-g82:
     file: ref-tw-035-Mystveil7-midnight-dominance-bmw-m4-g82.jpg
     type: community
@@ -2605,11 +2085,6 @@ entries:
     - 8A
     description: 'Midnight dominance by the BMW M4 (G82) — “THE BEAST” unleashed in neon blue, shot and styled with ChatGPT.  Prompt:
       F...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-035-Mystveil7-midnight-dominance-bmw-m4-g82-2:
     file: ref-tw-035-Mystveil7-midnight-dominance-bmw-m4-g82-2.jpg
     type: community
@@ -2634,11 +2109,6 @@ entries:
     - 8A
     description: 'Midnight dominance by the BMW M4 (G82) — “THE BEAST” unleashed in neon blue, shot and styled with ChatGPT.  Prompt:
       F...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-036-craftian_keskin-home-fragrance-advertisement:
     file: ref-tw-036-craftian_keskin-home-fragrance-advertisement.jpg
     type: community
@@ -2672,11 +2142,6 @@ entries:
     - 7A
     description: 'Home Fragrance Advertisement  Prompt:  {   "Objective": "Create a refined 2×2 grid advertisement for the
       luxury home...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-tw-039-hasantoxr-alibaba-just-quietly-dropped:
     file: ref-tw-039-hasantoxr-alibaba-just-quietly-dropped.png
     type: community
@@ -2694,13 +2159,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: '🚨 Alibaba just quietly dropped a vector database that destroys Pinecone, Chroma, and Weaviate.  It''s called
-      Zvec and...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: 🚨 Alibaba just quietly dropped a vector database that destroys Pinecone, Chroma, and Weaviate.  It's called
+      Zvec and...
   ref-tw-049-craftian_keskin-retro-anime-style-midjourney:
     file: ref-tw-049-craftian_keskin-retro-anime-style-midjourney.jpg
     type: community
@@ -2720,12 +2180,7 @@ entries:
     model_affinity:
     - midjourney
     asset_compatibility: []
-    description: 'Retro Anime Style   Midjourney --sref 523688642 https://t.co/Qa2WuPwGvX'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Retro Anime Style   Midjourney --sref 523688642 https://t.co/Qa2WuPwGvX
   ref-tw-051-j_smeaton99-google-nano-banana-pro-gemini:
     file: ref-tw-051-j_smeaton99-google-nano-banana-pro-gemini.jpg
     type: community
@@ -2766,11 +2221,6 @@ entries:
     - 9A
     description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type":
       "l...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: multi-object
   ref-tw-051-j_smeaton99-google-nano-banana-pro-gemini-2:
     file: ref-tw-051-j_smeaton99-google-nano-banana-pro-gemini-2.jpg
     type: community
@@ -2811,11 +2261,6 @@ entries:
     - 9A
     description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type":
       "l...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: multi-object
   ref-tw-052-azed_ai-prompt-share-mosaic-prompt:
     file: ref-tw-052-azed_ai-prompt-share-mosaic-prompt.jpg
     type: community
@@ -2836,11 +2281,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of
       delicate [co...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-052-azed_ai-prompt-share-mosaic-prompt-2:
     file: ref-tw-052-azed_ai-prompt-share-mosaic-prompt-2.jpg
     type: community
@@ -2861,11 +2301,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of
       delicate [co...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-052-azed_ai-prompt-share-mosaic-prompt-3:
     file: ref-tw-052-azed_ai-prompt-share-mosaic-prompt-3.jpg
     type: community
@@ -2886,11 +2321,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of
       delicate [co...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-052-azed_ai-prompt-share-mosaic-prompt-4:
     file: ref-tw-052-azed_ai-prompt-share-mosaic-prompt-4.jpg
     type: community
@@ -2911,11 +2341,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of
       delicate [co...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-054-TechieBySA-3d-head-avatars-nano-banana:
     file: ref-tw-054-TechieBySA-3d-head-avatars-nano-banana.jpg
     type: community
@@ -2936,12 +2361,7 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 9A
-    description: '3D Head Avatars by Nano Banana Pro on @SocialSight 🎭✨  Prompt👇🏻 https://t.co/pM4OEbiqrm'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: 3D Head Avatars by Nano Banana Pro on @SocialSight 🎭✨  Prompt👇🏻 https://t.co/pM4OEbiqrm
   ref-tw-056-Naiknelofar788-gpt-image-chatgpt-prompt:
     file: ref-tw-056-Naiknelofar788-gpt-image-chatgpt-prompt.jpg
     type: community
@@ -2967,11 +2387,6 @@ entries:
     - 9A
     description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic digital poster of a floating miniature
       island s...
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-056-Naiknelofar788-gpt-image-chatgpt-prompt-2:
     file: ref-tw-056-Naiknelofar788-gpt-image-chatgpt-prompt-2.jpg
     type: community
@@ -2997,11 +2412,6 @@ entries:
     - 9A
     description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic digital poster of a floating miniature
       island s...
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-056-Naiknelofar788-gpt-image-chatgpt-prompt-3:
     file: ref-tw-056-Naiknelofar788-gpt-image-chatgpt-prompt-3.jpg
     type: community
@@ -3027,11 +2437,6 @@ entries:
     - 9A
     description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic digital poster of a floating miniature
       island s...
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-060-TechieBySA-3d-caricature-characters-nano:
     file: ref-tw-060-TechieBySA-3d-caricature-characters-nano.jpg
     type: community
@@ -3052,12 +2457,7 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 9A
-    description: '3D Caricature Characters by Nano Banana Pro on @SocialSight 🎭✨  Prompt👇🏻 https://t.co/CJLlT1QM18'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: single-object
+    description: 3D Caricature Characters by Nano Banana Pro on @SocialSight 🎭✨  Prompt👇🏻 https://t.co/CJLlT1QM18
   ref-tw-062-hewarsaber-prompt-prompt-hyper-realistic:
     file: ref-tw-062-hewarsaber-prompt-prompt-hyper-realistic.jpg
     type: community
@@ -3079,11 +2479,6 @@ entries:
     - 9A
     description: 'Prompt:  {   "prompt": "A hyper-realistic {{object}} rendered as a sculptural object carved entirely from
       solid, opti...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-067-mernit-psa-everyone-building-browser:
     file: ref-tw-067-mernit-psa-everyone-building-browser.jpg
     type: community
@@ -3102,13 +2497,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'PSA to everyone building browser agents with @openclaw  give it a copy of your chrome profile   now it''s
-      logged into...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: PSA to everyone building browser agents with @openclaw  give it a copy of your chrome profile   now it's
+      logged into...
   ref-tw-097-aleenaamiir-timeline-evolution-dioramas:
     file: ref-tw-097-aleenaamiir-timeline-evolution-dioramas.jpg
     type: community
@@ -3135,13 +2525,6 @@ entries:
     - 9A
     description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama
       visualizi...'
-    subject_type: layout
-    domain_suitability:
-    - saas
-    - tech
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: grid
   ref-tw-097-aleenaamiir-timeline-evolution-dioramas-2:
     file: ref-tw-097-aleenaamiir-timeline-evolution-dioramas-2.jpg
     type: community
@@ -3168,13 +2551,6 @@ entries:
     - 9A
     description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama
       visualizi...'
-    subject_type: layout
-    domain_suitability:
-    - saas
-    - tech
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: grid
   ref-tw-097-aleenaamiir-timeline-evolution-dioramas-3:
     file: ref-tw-097-aleenaamiir-timeline-evolution-dioramas-3.jpg
     type: community
@@ -3201,13 +2577,6 @@ entries:
     - 9A
     description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama
       visualizi...'
-    subject_type: layout
-    domain_suitability:
-    - saas
-    - tech
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: grid
   ref-tw-097-aleenaamiir-timeline-evolution-dioramas-4:
     file: ref-tw-097-aleenaamiir-timeline-evolution-dioramas-4.jpg
     type: community
@@ -3234,13 +2603,6 @@ entries:
     - 9A
     description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama
       visualizi...'
-    subject_type: layout
-    domain_suitability:
-    - saas
-    - tech
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: grid
   ref-tw-112-john_my07-nano-banana-pro-gemini-gpt:
     file: ref-tw-112-john_my07-nano-banana-pro-gemini-gpt.jpg
     type: community
@@ -3272,11 +2634,6 @@ entries:
     - 5B
     - 8A
     description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
-    subject_type: illustration
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-112-john_my07-nano-banana-pro-gemini-gpt-2:
     file: ref-tw-112-john_my07-nano-banana-pro-gemini-gpt-2.jpg
     type: community
@@ -3308,11 +2665,6 @@ entries:
     - 5B
     - 8A
     description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
-    subject_type: illustration
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-112-john_my07-nano-banana-pro-gemini-gpt-3:
     file: ref-tw-112-john_my07-nano-banana-pro-gemini-gpt-3.jpg
     type: community
@@ -3344,11 +2696,6 @@ entries:
     - 5B
     - 8A
     description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
-    subject_type: illustration
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-112-john_my07-nano-banana-pro-gemini-gpt-4:
     file: ref-tw-112-john_my07-nano-banana-pro-gemini-gpt-4.jpg
     type: community
@@ -3380,11 +2727,6 @@ entries:
     - 5B
     - 8A
     description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
-    subject_type: illustration
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: single-object
   ref-tw-113-miilesus-amazing-prompt-from-stranger:
     file: ref-tw-113-miilesus-amazing-prompt-from-stranger.jpg
     type: community
@@ -3405,11 +2747,6 @@ entries:
     asset_compatibility:
     - 8A
     description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-113-miilesus-amazing-prompt-from-stranger-2:
     file: ref-tw-113-miilesus-amazing-prompt-from-stranger-2.jpg
     type: community
@@ -3430,11 +2767,6 @@ entries:
     asset_compatibility:
     - 8A
     description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-113-miilesus-amazing-prompt-from-stranger-3:
     file: ref-tw-113-miilesus-amazing-prompt-from-stranger-3.jpg
     type: community
@@ -3455,11 +2787,6 @@ entries:
     asset_compatibility:
     - 8A
     description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-113-miilesus-amazing-prompt-from-stranger-4:
     file: ref-tw-113-miilesus-amazing-prompt-from-stranger-4.jpg
     type: community
@@ -3480,11 +2807,6 @@ entries:
     asset_compatibility:
     - 8A
     description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-116-kingofdairyque-prompt-high-resolution:
     file: ref-tw-116-kingofdairyque-prompt-high-resolution.jpg
     type: community
@@ -3513,13 +2835,8 @@ entries:
     - 7A
     - 8A
     - 9A
-    description: 'Prompt  High-resolution Editorial Angle Reference Sheet. Perfect 3x3 grid. Aspect ratio 4:5. Strictly use
-      attached se...'
-    subject_type: person
-    domain_suitability: []
-    lighting_register: cinematic
-    color_temperature: cool
-    composition_format: person-in-environment
+    description: Prompt  High-resolution Editorial Angle Reference Sheet. Perfect 3x3 grid. Aspect ratio 4:5. Strictly use
+      attached se...
   ref-tw-117-AllaAisling-prompt-studio-archaeology:
     file: ref-tw-117-AllaAisling-prompt-studio-archaeology.jpg
     type: community
@@ -3540,11 +2857,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space,
       cross-sec...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-117-AllaAisling-prompt-studio-archaeology-2:
     file: ref-tw-117-AllaAisling-prompt-studio-archaeology-2.jpg
     type: community
@@ -3565,11 +2877,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space,
       cross-sec...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-117-AllaAisling-prompt-studio-archaeology-3:
     file: ref-tw-117-AllaAisling-prompt-studio-archaeology-3.jpg
     type: community
@@ -3590,11 +2897,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space,
       cross-sec...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-117-AllaAisling-prompt-studio-archaeology-4:
     file: ref-tw-117-AllaAisling-prompt-studio-archaeology-4.jpg
     type: community
@@ -3615,11 +2917,6 @@ entries:
     asset_compatibility: []
     description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space,
       cross-sec...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-118-lloydcreates-nano-banana-pro-glass:
     file: ref-tw-118-lloydcreates-nano-banana-pro-glass.jpg
     type: community
@@ -3648,11 +2945,6 @@ entries:
     - 9A
     description: 'Nano Banana Pro Glass Prismatic Tech  Prompt 👇  {   "image_generation_request": {     "subject": "[INSERT
       PRODUCT HER...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
   ref-tw-119-AmirMushich-nano-banana-smart-prompt:
     file: ref-tw-119-AmirMushich-nano-banana-smart-prompt.jpg
     type: community
@@ -3675,11 +2967,6 @@ entries:
     - 2A
     - 5B
     description: 'Nano Banana smart prompt:  Editorial fashion campaign   Prompt 👇 https://t.co/SCb5gqiVhi'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-122-oggii_0-gemini-nano-banana-pro-prompt:
     file: ref-tw-122-oggii_0-gemini-nano-banana-pro-prompt.jpg
     type: community
@@ -3709,13 +2996,8 @@ entries:
     - 4A
     - 4B
     - 5B
-    description: 'Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping
-      Mask” jar...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
+    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping
+      Mask” jar...
   ref-tw-122-oggii_0-gemini-nano-banana-pro-prompt-2:
     file: ref-tw-122-oggii_0-gemini-nano-banana-pro-prompt-2.jpg
     type: community
@@ -3745,13 +3027,8 @@ entries:
     - 4A
     - 4B
     - 5B
-    description: 'Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping
-      Mask” jar...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
+    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping
+      Mask” jar...
   ref-tw-122-oggii_0-gemini-nano-banana-pro-prompt-3:
     file: ref-tw-122-oggii_0-gemini-nano-banana-pro-prompt-3.jpg
     type: community
@@ -3781,13 +3058,8 @@ entries:
     - 4A
     - 4B
     - 5B
-    description: 'Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping
-      Mask” jar...'
-    subject_type: multi-product
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: multi-object
+    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping
+      Mask” jar...
   ref-tw-133-DilumSanjaya-started-few-images-found:
     file: ref-tw-133-DilumSanjaya-started-few-images-found.jpg
     type: community
@@ -3808,12 +3080,7 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
   ref-tw-133-DilumSanjaya-started-few-images-found-2:
     file: ref-tw-133-DilumSanjaya-started-few-images-found-2.jpg
     type: community
@@ -3834,12 +3101,7 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
   ref-tw-133-DilumSanjaya-started-few-images-found-3:
     file: ref-tw-133-DilumSanjaya-started-few-images-found-3.jpg
     type: community
@@ -3860,12 +3122,7 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
   ref-tw-133-DilumSanjaya-started-few-images-found-4:
     file: ref-tw-133-DilumSanjaya-started-few-images-found-4.jpg
     type: community
@@ -3886,12 +3143,7 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...'
-    subject_type: abstract
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
   ref-tw-198-d4m1n-bonus-elysia-premium-fashion:
     file: ref-tw-198-d4m1n-bonus-elysia-premium-fashion.jpg
     type: community
@@ -3923,11 +3175,6 @@ entries:
     - 7A
     description: '[Bonus] 8. Elysia: premium fashion e-commerce  (I persoanlly didn''t like this one that much, but it is
       a different st...'
-    subject_type: layout
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
   ref-tw-198-d4m1n-bonus-elysia-premium-fashion-2:
     file: ref-tw-198-d4m1n-bonus-elysia-premium-fashion-2.jpg
     type: community
@@ -3959,8 +3206,545 @@ entries:
     - 7A
     description: '[Bonus] 8. Elysia: premium fashion e-commerce  (I persoanlly didn''t like this one that much, but it is
       a different st...'
-    subject_type: layout
-    domain_suitability: []
-    lighting_register: studio
-    color_temperature: neutral
-    composition_format: single-object
+  ref-tw-199-VadimStrizheus-what-company-looks-like-2026:
+    file: ref-tw-199-VadimStrizheus-what-company-looks-like-2026.jpg
+    type: community
+    source:
+      author: '@VadimStrizheus'
+      tweet_id: '2027953432326197508'
+      likes: 4034
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - claude
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: this is what a company looks like in 2026.  not people. not offices. not salaries.  a folder.  .claude/agents/
+      engine...
+  ref-tw-200-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-200-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2028115571724660920'
+      likes: 1136
+    aesthetic:
+      composition_density: 0.6
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.65
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - grid
+    - nano-banana
+    - poster
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 10A
+    - 2A
+    - 7A
+    - 8A
+    - 9A
+    description: 'Nano Banana smart prompt:  Modular typographic brand poster design   Prompt 👇 https://t.co/zmUPOdHLzr'
+  ref-tw-201-AmirMushich-nano-banana-smart-prompt-font:
+    file: ref-tw-201-AmirMushich-nano-banana-smart-prompt-font.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2027798913516761522'
+      likes: 1418
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.65
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    - poster
+    - typography
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2B
+    - 8A
+    - 9A
+    description: 'Nano Banana smart prompt:  Font masking poster design  Prompt 👇 https://t.co/4jFnNQ0Oaq'
+  ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept:
+    file: ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept.jpg
+    type: community
+    source:
+      author: '@Arminn_Ai'
+      tweet_id: '2027470188644626803'
+      likes: 569
+    aesthetic:
+      composition_density: 0.05
+      temporal_register: 0.6
+      material_richness: 0.6
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.7
+    composition_tags:
+    - brand-design
+    - cinematic
+    - illustration
+    - logo
+    - nano-banana
+    - product-shot
+    - typography
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2B
+    - 2C
+    - 3A
+    - 3B
+    - 3C
+    - 4A
+    - 4B
+    - 5A
+    - 5B
+    - 8A
+    description: Commercial Tear Reveal Concept  With Nano Banana 2 on @higgsfield_creo  Prompt 👇 A photorealistic, highly
+      detailed co...
+  ref-tw-203-_vmlops-check-out-antigravity-awesome:
+    file: ref-tw-203-_vmlops-check-out-antigravity-awesome.jpg
+    type: community
+    source:
+      author: '@_vmlops'
+      tweet_id: '2027336259040133499'
+      likes: 1284
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - claude
+    - workflow
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Check out Antigravity Awesome Skills - a massive library with 900+ AI agent skills for Claude, Copilot, Gemini,
+      Curso...
+  ref-tw-204-azed_ai-nano-banana-pro-prompt-share:
+    file: ref-tw-204-azed_ai-nano-banana-pro-prompt-share.jpg
+    type: community
+    source:
+      author: '@azed_ai'
+      tweet_id: '2027021107015143498'
+      likes: 556
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana Pro prompt share  Create cool ads using this prompt 👇 created using @LeonardoAI https://t.co/QbYPszfM9q
+  ref-tw-206-Hesamation-obsidian-ai-new-hot-combo:
+    file: ref-tw-206-Hesamation-obsidian-ai-new-hot-combo.jpg
+    type: community
+    source:
+      author: '@Hesamation'
+      tweet_id: '2026801420872093708'
+      likes: 3111
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - claude
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: this Obsidian + AI is the new hot combo. few people know that the CEO of Obsidian @kepano has made multiples
+      skills f...
+  ref-tw-207-internetvin-here-22-commands-am-using:
+    file: ref-tw-207-internetvin-here-22-commands-am-using.jpg
+    type: community
+    source:
+      author: '@internetvin'
+      tweet_id: '2026461256677245131'
+      likes: 1307
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - claude
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Here's 22 of the commands I am using with Obsidian and Claude Code with descriptions.   I will turn this
+      into somethi...
+  ref-tw-211-alex_prompter-holy-shit-stanford-just:
+    file: ref-tw-211-alex_prompter-holy-shit-stanford-just.jpg
+    type: community
+    source:
+      author: '@alex_prompter'
+      tweet_id: '2028033835993112919'
+      likes: 5188
+    aesthetic:
+      composition_density: 0.65
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - claude
+    - infographic
+    - portrait
+    model_affinity:
+    - gpt-image-1
+    - nano-banana-pro
+    asset_compatibility:
+    - 8A
+    - 9A
+    description: 🚨 Holy shit… Stanford just exposed that every major AI company is using your private conversations to train
+      their mod...
+  ref-tw-212-godofprompt-richard-feynman-had-one:
+    file: ref-tw-212-godofprompt-richard-feynman-had-one.jpg
+    type: community
+    source:
+      author: '@godofprompt'
+      tweet_id: '2027787837639410110'
+      likes: 880
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - claude
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Richard Feynman had one superpower: making the complex feel obvious.  I reverse-engineered his entire teaching
+      method...'
+  ref-tw-214-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-214-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2027393294469128313'
+      likes: 442
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.75
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.3
+    composition_tags:
+    - lifestyle
+    - logo
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2B
+    - 2C
+    - 3A
+    - 3B
+    - 4A
+    description: 'Nano Banana smart prompt:  Luxury merch concept  Works with:  fashion, sports, lifestyle  One brand variable
+      → autono...'
+  ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro:
+    file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro.jpg
+    type: community
+    source:
+      author: '@Kashberg_0'
+      tweet_id: '2026270010814136482'
+      likes: 190
+    aesthetic:
+      composition_density: 0.05
+      temporal_register: 0.5
+      material_richness: 1.0
+      visual_boldness: 0.6
+      editorial_vs_commercial: 0.65
+    composition_tags:
+    - brand-design
+    - cinematic
+    - editorial
+    - nano-banana
+    - product-shot
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2A
+    - 3A
+    - 3B
+    - 3C
+    - 4A
+    - 4B
+    - 5B
+    - 8A
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography
+      of...
+  ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-2:
+    file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-2.jpg
+    type: community
+    source:
+      author: '@Kashberg_0'
+      tweet_id: '2026270010814136482'
+      likes: 190
+    aesthetic:
+      composition_density: 0.05
+      temporal_register: 0.5
+      material_richness: 1.0
+      visual_boldness: 0.6
+      editorial_vs_commercial: 0.65
+    composition_tags:
+    - brand-design
+    - cinematic
+    - editorial
+    - nano-banana
+    - product-shot
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2A
+    - 3A
+    - 3B
+    - 3C
+    - 4A
+    - 4B
+    - 5B
+    - 8A
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography
+      of...
+  ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-3:
+    file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-3.jpg
+    type: community
+    source:
+      author: '@Kashberg_0'
+      tweet_id: '2026270010814136482'
+      likes: 190
+    aesthetic:
+      composition_density: 0.05
+      temporal_register: 0.5
+      material_richness: 1.0
+      visual_boldness: 0.6
+      editorial_vs_commercial: 0.65
+    composition_tags:
+    - brand-design
+    - cinematic
+    - editorial
+    - nano-banana
+    - product-shot
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2A
+    - 3A
+    - 3B
+    - 3C
+    - 4A
+    - 4B
+    - 5B
+    - 8A
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography
+      of...
+  ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-4:
+    file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-4.jpg
+    type: community
+    source:
+      author: '@Kashberg_0'
+      tweet_id: '2026270010814136482'
+      likes: 190
+    aesthetic:
+      composition_density: 0.05
+      temporal_register: 0.5
+      material_richness: 1.0
+      visual_boldness: 0.6
+      editorial_vs_commercial: 0.65
+    composition_tags:
+    - brand-design
+    - cinematic
+    - editorial
+    - nano-banana
+    - product-shot
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2A
+    - 3A
+    - 3B
+    - 3C
+    - 4A
+    - 4B
+    - 5B
+    - 8A
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography
+      of...
+  ref-tw-216-AmirMushich-prompt-access-nano-banana-here:
+    file: ref-tw-216-AmirMushich-prompt-access-nano-banana-here.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2027393296603992332'
+      likes: 52
+    aesthetic:
+      composition_density: 0.05
+      temporal_register: 0.75
+      material_richness: 0.8
+      visual_boldness: 0.3
+      editorial_vs_commercial: 0.2
+    composition_tags:
+    - 3d-render
+    - brand-design
+    - editorial
+    - logo
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2A
+    - 2B
+    - 2C
+    - 5B
+    - 9A
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND NAME]. Act as a fashion photographer
+      and creativ...'
+  ref-tw-217-AmirMushich-prompt-access-nano-banana-here:
+    file: ref-tw-217-AmirMushich-prompt-access-nano-banana-here.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2027798919044853902'
+      likes: 132
+    aesthetic:
+      composition_density: 0.0
+      temporal_register: 0.5
+      material_richness: 0.6
+      visual_boldness: 0.3
+      editorial_vs_commercial: 0.15
+    composition_tags:
+    - brand-design
+    - cinematic
+    - editorial
+    - logo
+    - nano-banana
+    - typography
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2A
+    - 2B
+    - 2C
+    - 5B
+    - 8A
+    description: 'Prompt:   (access Nano Banana 2 here: https://t.co/EY9xacrmOP)  [BRAND NAME]. Act as a Senior Editorial
+      Designer and...'
+  ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt:
+    file: ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt.jpg
+    type: community
+    source:
+      author: '@Sheldon056'
+      tweet_id: '2027645181538025847'
+      likes: 249
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.2
+      material_richness: 0.55
+      visual_boldness: 1.0
+      editorial_vs_commercial: 0.85
+    composition_tags:
+    - cinematic
+    - nano-banana
+    - product-shot
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 3A
+    - 3B
+    - 3C
+    - 4A
+    - 4B
+    - 5B
+    - 8A
+    description: 'Nano Banana Pro + Kling 3.0 on @yapper_so   Prompt: Luxury skincare commercial, ultra-premium aesthetic.
+      Use the prov...'
+  ref-tw-220-AmirMushich-be-typography-designer-drive:
+    file: ref-tw-220-AmirMushich-be-typography-designer-drive.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2027120746468618702'
+      likes: 60
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.6
+      editorial_vs_commercial: 0.65
+    composition_tags:
+    - product-shot
+    - typography
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility:
+    - 2B
+    - 3A
+    - 3B
+    - 3C
+    - 4A
+    - 4B
+    - 8A
+    description: '> be the typography designer:  > drive about 60% of the initial impression  > and up to 40% of perceived
+      product qual...'
+  ref-tw-221-AmirMushich-easy-text-masking-workflow-ai:
+    file: ref-tw-221-AmirMushich-easy-text-masking-workflow-ai.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2028068337427603741'
+      likes: 110
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    - workflow
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Easy text-masking workflow w AI  Nano Banana prompt 👇 https://t.co/lGz7fENYO4
+  ref-tw-227-AmirMushich-weeks-prompting-amp-chatting:
+    file: ref-tw-227-AmirMushich-weeks-prompting-amp-chatting.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2027472643629215819'
+      likes: 13
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - workflow
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 3 weeks of prompting &amp; chatting with voice keyboard - crazy  Genuinely enjoying the efficiency of my
+      workflows no...
