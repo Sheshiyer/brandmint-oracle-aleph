@@ -51,13 +51,23 @@ SEARCH_QUERIES = {
     "ai_prompts": "AI prompts",
     "brand_identity": "brand identity AI",
     "image_gen": "flux midjourney prompts",
+    "prompt_libraries": "prompt library collection",
 }
 
 # Accounts to track via bird user-tweets
 TRACKED_ACCOUNTS = [
     "alex_prompter",
     "godofprompt",
+    "AmirMushich",
 ]
+
+# Per-account configuration overrides
+TRACKED_ACCOUNT_OVERRIDES = {
+    "AmirMushich": {
+        "count": 20,          # Pull more tweets (default is 10)
+        "min_likes": 10,      # Lower threshold for niche prompt library content
+    },
+}
 
 # Domain allowlist for web fetching
 ALLOWED_DOMAINS = {
@@ -705,7 +715,9 @@ def main():
 
     if "accounts" in sources:
         for handle in TRACKED_ACCOUNTS:
-            tweets = pull_account(handle, 10)
+            overrides = TRACKED_ACCOUNT_OVERRIDES.get(handle, {})
+            count = overrides.get("count", 10)
+            tweets = pull_account(handle, count)
             source_counts[f"account_{handle}"] = len(tweets)
             source_counts["_total_raw"] += len(tweets)
             all_raw.extend(tweets)
@@ -721,7 +733,15 @@ def main():
     # Score relevance
     scored = []
     for tweet in new_tweets:
-        tier, score = score_relevance(tweet, min_likes_override=args.min_likes)
+        # Apply per-account min_likes for tracked accounts
+        effective_min_likes = args.min_likes  # CLI override takes precedence
+        if effective_min_likes is None:
+            author = tweet.get("author", {})
+            username = author.get("username", "") if isinstance(author, dict) else ""
+            acct_overrides = TRACKED_ACCOUNT_OVERRIDES.get(username, {})
+            if "min_likes" in acct_overrides:
+                effective_min_likes = acct_overrides["min_likes"]
+        tier, score = score_relevance(tweet, min_likes_override=effective_min_likes)
         if tier > 0:
             scored.append((tweet, tier, score))
 

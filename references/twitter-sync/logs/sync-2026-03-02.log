@@ -1,0 +1,406 @@
+  WARN: bird user-tweets godofprompt timed out after 30s
+  WARN: bird user-tweets AmirMushich timed out after 30s
+
+BRANDMINT — Twitter + Web Sync
+==================================================
+  Date: 2026-03-02
+  Sources: bookmarks, search, accounts
+  Dry run: True
+  Web fetch: True
+
+── Layer 1: Twitter Discovery ──
+  Pulling bookmarks (n=50)...
+  Searching: "AI prompts" (n=20)...
+  Searching: "brand identity AI" (n=20)...
+  Searching: "flux midjourney prompts" (n=20)...
+  Searching: "prompt library collection" (n=20)...
+  Pulling @alex_prompter tweets (n=10)...
+  Pulling @godofprompt tweets (n=10)...
+  Pulling @AmirMushich tweets (n=20)...
+
+  Raw: 115 → Deduped: 115
+  New (unseen): 115
+  After filter: 15 relevant tweets
+    Tier 1 (high signal): 15
+    Tier 2 (moderate): 0
+
+── Dry Run Summary ──
+  Would write sync archive: sync-2026-03-02.json (115 tweets)
+  Would update curated.json (+15 entries)
+  Would append to learnings.md: 15 high-signal entries
+  Would update state.json (+115 seen IDs)
+
+  Top scored tweets:
+    T1 [1.00] @VadimStrizheus (4002 likes): this is what a company looks like in 2026.
+
+not people. not offices. not salaries.
+
+a folder.
+
+.clau...
+    T1 [1.00] @AmirMushich (1115 likes): Nano Banana smart prompt:
+
+Modular typographic brand poster design 
+
+Prompt 👇 https://t.co/zmUPOdHLz...
+    T1 [1.00] @AmirMushich (1414 likes): Nano Banana smart prompt:
+
+Font masking poster design
+
+Prompt 👇 https://t.co/4jFnNQ0Oaq
+    T1 [1.00] @Arminn_Ai (569 likes): Commercial Tear Reveal Concept
+
+With Nano Banana 2 on @higgsfield_creo
+
+Prompt 👇
+A photorealistic, h...
+    T1 [1.00] @_vmlops (1284 likes): Check out Antigravity Awesome Skills - a massive library with 900+ AI agent skills for Claude, Copil...
+    T1 [1.00] @azed_ai (557 likes): Nano Banana Pro prompt share
+
+Create cool ads using this prompt 👇
+created using @LeonardoAI https://...
+    T1 [1.00] @OdinLovis (1139 likes): To celebrate nano-banana-2 launching on @fal , I built FalSprite, sprite sheet generator that turns ...
+    T1 [1.00] @Hesamation (3111 likes): this Obsidian + AI is the new hot combo.
+few people know that the CEO of Obsidian @kepano has made m...
+    T1 [1.00] @internetvin (1307 likes): Here's 22 of the commands I am using with Obsidian and Claude Code with descriptions. 
+
+I will turn ...
+    T1 [1.00] @ihtesham2005 (3285 likes): 🚨 Someone just built a tool that turns any GitHub repo into an interactive knowledge graph and open ...
+
+  (No files written — dry run)
+  WARN: bird bookmarks -n timed out after 30s
+  WARN: bird search AI prompts timed out after 30s
+  WARN: bird search brand identity AI timed out after 30s
+
+BRANDMINT — Tweet Asset Downloader
+==================================================
+  Date: 2026-03-02
+  Sources: bookmarks, search, accounts
+  Dry run: True
+  Force: False
+
+── Pulling tweets ──
+  Pulling bookmarks (n=50)...
+  Searching: "AI prompts" (n=20)...
+  Searching: "brand identity AI" (n=20)...
+  Searching: "flux midjourney prompts" (n=20)...
+  Searching: "prompt library collection" (n=20)...
+  Pulling @alex_prompter tweets (n=10)...
+  Pulling @godofprompt tweets (n=10)...
+  Pulling @AmirMushich tweets (n=20)...
+
+  Raw: 77 → Deduped: 77
+  Tier 1 (high signal): 17 tweets
+  With photo media: 10
+
+  Existing manifest: 44 tweets already downloaded
+  New to download: 17
+
+── Dry Run Preview ──
+  [199] @alex_prompter (5144 likes, score=1.00)
+         🚨 Holy shit… Stanford just exposed that every major AI company is using your pri...
+         -> ref-tw-199-alex_prompter-holy-shit-stanford-just.jpg (1200x1557)
+         -> ref-tw-199-alex_prompter-holy-shit-stanford-just.prompt.md
+
+  [200] @godofprompt (878 likes, score=1.00)
+         Richard Feynman had one superpower: making the complex feel obvious.
+
+I reverse-...
+         -> ref-tw-200-godofprompt-richard-feynman-had-one.jpg (1930x1172)
+         -> ref-tw-200-godofprompt-richard-feynman-had-one.prompt.md
+
+  [201] @AmirMushich (1124 likes, score=1.00)
+         Nano Banana smart prompt:
+
+Modular typographic brand poster design 
+
+Prompt 👇 ht...
+         -> ref-tw-201-AmirMushich-nano-banana-smart-prompt.jpg (1080x1080)
+         -> ref-tw-201-AmirMushich-nano-banana-smart-prompt.prompt.md
+
+  [202] @AmirMushich (1415 likes, score=1.00)
+         Nano Banana smart prompt:
+
+Font masking poster design
+
+Prompt 👇 https://t.co/4jF...
+         -> ref-tw-202-AmirMushich-nano-banana-smart-prompt-font.jpg (1080x1080)
+         -> ref-tw-202-AmirMushich-nano-banana-smart-prompt-font.prompt.md
+
+  [203] @AmirMushich (5721 likes, score=1.00)
+         50 design prompts from ex-Warner designer (Nano Banana Pro)
+         -> ref-tw-203-AmirMushich-50-design-prompts-from.prompt.md
+
+  [204] @AmirMushich (442 likes, score=1.00)
+         Nano Banana smart prompt:
+
+Luxury merch concept
+
+Works with: 
+fashion, sports, l...
+         -> ref-tw-204-AmirMushich-nano-banana-smart-prompt.jpg (1080x1350)
+         -> ref-tw-204-AmirMushich-nano-banana-smart-prompt.prompt.md
+
+  [205] @AmirMushich (52 likes, score=0.86)
+         Prompt: 
+(access Nano Banana here: https://t.co/EY9xacrmOP) 
+
+[BRAND NAME]. Act ...
+         -> ref-tw-205-AmirMushich-prompt-access-nano-banana-here.jpg (1080x1350)
+         -> ref-tw-205-AmirMushich-prompt-access-nano-banana-here.prompt.md
+
+  [206] @AmirMushich (132 likes, score=0.85)
+         Prompt:  
+(access Nano Banana 2 here: https://t.co/EY9xacrmOP)
+
+[BRAND NAME]. Ac...
+         -> ref-tw-206-AmirMushich-prompt-access-nano-banana-here.jpg (1080x1350)
+         -> ref-tw-206-AmirMushich-prompt-access-nano-banana-here.prompt.md
+
+  [207] @AmirMushich (126 likes, score=0.74)
+         3 steps to create such vids:
+
+1. Midjourney -&gt; image generation
+2. Nano Banan...
+         -> ref-tw-207-AmirMushich-steps-create-such-vids.prompt.md
+
+  [208] @AmirMushich (60 likes, score=0.66)
+         > be the typography designer:
+
+> drive about 60% of the initial impression 
+> an...
+         -> ref-tw-208-AmirMushich-be-typography-designer-drive.jpg (1152x928)
+         -> ref-tw-208-AmirMushich-be-typography-designer-drive.prompt.md
+
+  [209] @AmirMushich (110 likes, score=0.62)
+         Easy text-masking workflow w AI
+
+Nano Banana prompt 👇 https://t.co/lGz7fENYO4
+         -> ref-tw-209-AmirMushich-easy-text-masking-workflow-ai.jpg (1024x1024)
+         -> ref-tw-209-AmirMushich-easy-text-masking-workflow-ai.prompt.md
+
+  [210] @AmirMushich (42 likes, score=0.55)
+         My design skills now will work for you
+
+I prepared my best tips for you in this ...
+         -> ref-tw-210-AmirMushich-design-skills-now-will-work.prompt.md
+
+  [211] @AmirMushich (18 likes, score=0.52)
+         Want my design skills to work on you? 
+
+I prepared my best tips for you in this ...
+         -> ref-tw-211-AmirMushich-want-design-skills-work.prompt.md
+
+  [212] @AmirMushich (16 likes, score=0.52)
+         Steal more of my design workflows: https://t.co/IQmmpLXrud
+         -> ref-tw-212-AmirMushich-steal-more-design-workflows.prompt.md
+
+  [213] @AmirMushich (16 likes, score=0.52)
+         My design skills now will work for you
+
+I prepared my best tips for you in this ...
+         -> ref-tw-213-AmirMushich-design-skills-now-will-work.prompt.md
+
+  [214] @AmirMushich (12 likes, score=0.51)
+         Steal my midjourney prompts here:
+
+https://t.co/v0qecUqFrm
+         -> ref-tw-214-AmirMushich-steal-midjourney-prompts-here.prompt.md
+
+  [215] @AmirMushich (13 likes, score=0.41)
+         3 weeks of prompting &amp; chatting with voice keyboard - crazy
+
+Genuinely enjoy...
+         -> ref-tw-215-AmirMushich-weeks-prompting-amp-chatting.jpg (1179x826)
+         -> ref-tw-215-AmirMushich-weeks-prompting-amp-chatting.prompt.md
+
+  Summary: 17 tweets, 10 images to download
+  (No files written — dry run)
+
+BRANDMINT — Twitter + Web Sync
+==================================================
+  Date: 2026-03-02
+  Sources: bookmarks, search, accounts
+  Dry run: False
+  Web fetch: True
+
+── Layer 1: Twitter Discovery ──
+  Pulling bookmarks (n=50)...
+  Searching: "AI prompts" (n=20)...
+  Searching: "brand identity AI" (n=20)...
+  Searching: "flux midjourney prompts" (n=20)...
+  Searching: "prompt library collection" (n=20)...
+  Pulling @alex_prompter tweets (n=10)...
+  Pulling @godofprompt tweets (n=10)...
+  Pulling @AmirMushich tweets (n=20)...
+
+  Raw: 145 → Deduped: 143
+  New (unseen): 143
+  After filter: 29 relevant tweets
+    Tier 1 (high signal): 29
+    Tier 2 (moderate): 0
+
+── Layer 2: Web Content Extraction ──
+    Fetching [1/20]: https://github.com/sickn33/antigravity-awesome-skills...
+    Fetching [2/20]: https://fal.ai/...
+    Fetching [3/20]: https://github.com/lovisdotio/falsprite...
+  Fetched 3 web pages (3 with content)
+
+── Layer 3: Save ──
+  Archive: /Volumes/madara/2026/brandmint/references/twitter-sync/sync-2026-03-02.json (143 tweets)
+  Curated: /Volumes/madara/2026/brandmint/references/twitter-sync/curated.json (+29 new, 49 total)
+  Learnings: /Volumes/madara/2026/brandmint/references/learnings.md (+21 new sections)
+  State: 426 seen IDs tracked
+
+==================================================
+  Sync complete: 2026-03-02
+  Tweets: 143 pulled, 29 curated
+  Web pages: 3 fetched
+  Learnings: 21 appended
+
+  WARN: bird search flux midjourney prompts timed out after 30s
+  WARN: bird search prompt library collection timed out after 30s
+
+BRANDMINT — Tweet Asset Downloader
+==================================================
+  Date: 2026-03-02
+  Sources: bookmarks, search, accounts
+  Dry run: False
+  Force: False
+
+── Pulling tweets ──
+  Pulling bookmarks (n=50)...
+  Searching: "AI prompts" (n=20)...
+  Searching: "brand identity AI" (n=20)...
+  Searching: "flux midjourney prompts" (n=20)...
+  Searching: "prompt library collection" (n=20)...
+  Pulling @alex_prompter tweets (n=10)...
+  Pulling @godofprompt tweets (n=10)...
+  Pulling @AmirMushich tweets (n=20)...
+
+  Raw: 108 → Deduped: 106
+  Tier 1 (high signal): 29 tweets
+  With photo media: 18
+
+  Existing manifest: 44 tweets already downloaded
+  New to download: 29
+
+── Downloading assets ──
+
+  [199] @VadimStrizheus — what-company-looks-like-2026
+    Downloading: ref-tw-199-VadimStrizheus-what-company-looks-like-2026.jpg
+    Wrote: ref-tw-199-VadimStrizheus-what-company-looks-like-2026.prompt.md
+
+  [200] @AmirMushich — nano-banana-smart-prompt
+    Downloading: ref-tw-200-AmirMushich-nano-banana-smart-prompt.jpg
+    Wrote: ref-tw-200-AmirMushich-nano-banana-smart-prompt.prompt.md
+
+  [201] @AmirMushich — nano-banana-smart-prompt-font
+    Downloading: ref-tw-201-AmirMushich-nano-banana-smart-prompt-font.jpg
+    Wrote: ref-tw-201-AmirMushich-nano-banana-smart-prompt-font.prompt.md
+
+  [202] @Arminn_Ai — commercial-tear-reveal-concept
+    Downloading: ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept.jpg
+    Wrote: ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept.prompt.md
+
+  [203] @_vmlops — check-out-antigravity-awesome
+    Downloading: ref-tw-203-_vmlops-check-out-antigravity-awesome.jpg
+    Wrote: ref-tw-203-_vmlops-check-out-antigravity-awesome.prompt.md
+
+  [204] @azed_ai — nano-banana-pro-prompt-share
+    Downloading: ref-tw-204-azed_ai-nano-banana-pro-prompt-share.jpg
+    Wrote: ref-tw-204-azed_ai-nano-banana-pro-prompt-share.prompt.md
+
+  [205] @OdinLovis — celebrate-nano-banana-2
+    Wrote: ref-tw-205-OdinLovis-celebrate-nano-banana-2.prompt.md
+
+  [206] @Hesamation — obsidian-ai-new-hot-combo
+    Downloading: ref-tw-206-Hesamation-obsidian-ai-new-hot-combo.jpg
+    Wrote: ref-tw-206-Hesamation-obsidian-ai-new-hot-combo.prompt.md
+
+  [207] @internetvin — here-22-commands-am-using
+    Downloading: ref-tw-207-internetvin-here-22-commands-am-using.jpg
+    Wrote: ref-tw-207-internetvin-here-22-commands-am-using.prompt.md
+
+  [208] @ihtesham2005 — someone-just-built-tool-turns
+    Wrote: ref-tw-208-ihtesham2005-someone-just-built-tool-turns.prompt.md
+
+  [209] @MengTo — can-talk-about-how-insane
+    Wrote: ref-tw-209-MengTo-can-talk-about-how-insane.prompt.md
+
+  [210] @DataChaz — powerpoint-officially-dead
+    Wrote: ref-tw-210-DataChaz-powerpoint-officially-dead.prompt.md
+
+  [211] @alex_prompter — holy-shit-stanford-just
+    Downloading: ref-tw-211-alex_prompter-holy-shit-stanford-just.jpg
+    Wrote: ref-tw-211-alex_prompter-holy-shit-stanford-just.prompt.md
+
+  [212] @godofprompt — richard-feynman-had-one
+    Downloading: ref-tw-212-godofprompt-richard-feynman-had-one.jpg
+    Wrote: ref-tw-212-godofprompt-richard-feynman-had-one.prompt.md
+
+  [213] @AmirMushich — 50-design-prompts-from
+    Wrote: ref-tw-213-AmirMushich-50-design-prompts-from.prompt.md
+
+  [214] @AmirMushich — nano-banana-smart-prompt
+    Downloading: ref-tw-214-AmirMushich-nano-banana-smart-prompt.jpg
+    Wrote: ref-tw-214-AmirMushich-nano-banana-smart-prompt.prompt.md
+
+  [215] @Kashberg_0 — google-gemini-nano-banana-pro
+    Downloading: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro.jpg
+    Downloading: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-2.jpg
+    Downloading: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-3.jpg
+    Downloading: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-4.jpg
+    Wrote: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro.prompt.md
+
+  [216] @AmirMushich — prompt-access-nano-banana-here
+    Downloading: ref-tw-216-AmirMushich-prompt-access-nano-banana-here.jpg
+    Wrote: ref-tw-216-AmirMushich-prompt-access-nano-banana-here.prompt.md
+
+  [217] @AmirMushich — prompt-access-nano-banana-here
+    Downloading: ref-tw-217-AmirMushich-prompt-access-nano-banana-here.jpg
+    Wrote: ref-tw-217-AmirMushich-prompt-access-nano-banana-here.prompt.md
+
+  [218] @Sheldon056 — nano-banana-pro-kling-prompt
+    Downloading: ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt.jpg
+    Wrote: ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt.prompt.md
+
+  [219] @AmirMushich — steps-create-such-vids
+    Wrote: ref-tw-219-AmirMushich-steps-create-such-vids.prompt.md
+
+  [220] @AmirMushich — be-typography-designer-drive
+    Downloading: ref-tw-220-AmirMushich-be-typography-designer-drive.jpg
+    Wrote: ref-tw-220-AmirMushich-be-typography-designer-drive.prompt.md
+
+  [221] @AmirMushich — easy-text-masking-workflow-ai
+    Downloading: ref-tw-221-AmirMushich-easy-text-masking-workflow-ai.jpg
+    Wrote: ref-tw-221-AmirMushich-easy-text-masking-workflow-ai.prompt.md
+
+  [222] @AmirMushich — design-skills-now-will-work
+    Wrote: ref-tw-222-AmirMushich-design-skills-now-will-work.prompt.md
+
+  [223] @AmirMushich — want-design-skills-work
+    Wrote: ref-tw-223-AmirMushich-want-design-skills-work.prompt.md
+
+  [224] @AmirMushich — steal-more-design-workflows
+    Wrote: ref-tw-224-AmirMushich-steal-more-design-workflows.prompt.md
+
+  [225] @AmirMushich — design-skills-now-will-work
+    Wrote: ref-tw-225-AmirMushich-design-skills-now-will-work.prompt.md
+
+  [226] @AmirMushich — steal-midjourney-prompts-here
+    Wrote: ref-tw-226-AmirMushich-steal-midjourney-prompts-here.prompt.md
+
+  [227] @AmirMushich — weeks-prompting-amp-chatting
+    Downloading: ref-tw-227-AmirMushich-weeks-prompting-amp-chatting.jpg
+    Wrote: ref-tw-227-AmirMushich-weeks-prompting-amp-chatting.prompt.md
+
+==================================================
+  Complete: 2026-03-02
+  New tweets processed: 29
+  Images downloaded: 21
+  Images failed: 0
+  Prompt files written: 29
+  Manifest entries: 73 total
+  Assets dir: /Volumes/madara/2026/brandmint/references/twitter-sync/assets
+

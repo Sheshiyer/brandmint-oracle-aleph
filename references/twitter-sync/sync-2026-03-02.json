@@ -1,0 +1,3088 @@
+{
+  "sync_date": "2026-03-02",
+  "sources": {
+    "bookmarks": 28,
+    "search_ai_prompts": 20,
+    "search_brand_identity": 20,
+    "search_image_gen": 20,
+    "search_prompt_libraries": 17,
+    "account_alex_prompter": 10,
+    "account_godofprompt": 10,
+    "account_AmirMushich": 20
+  },
+  "tweets": [
+    {
+      "id": "2027953432326197508",
+      "text": "this is what a company looks like in 2026.\n\nnot people. not offices. not salaries.\n\na folder.\n\n.claude/agents/\nengineering/\nmarketing/\ndesign/\nops/\ntesting/\n\nevery role. every department. every function.\n\nall .md files.\n\ni have 12 of these running in OpenClaw right now.\n\nthe org chart is dead. the directory is the new company.",
+      "createdAt": "Sun Mar 01 03:45:50 +0000 2026",
+      "replyCount": 249,
+      "retweetCount": 398,
+      "likeCount": 4030,
+      "conversationId": "2027953432326197508",
+      "author": {
+        "username": "VadimStrizheus",
+        "name": "Vadim"
+      },
+      "authorId": "1584047843030990848",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCS85dlXAAA2RSd.jpg",
+          "width": 986,
+          "height": 1865,
+          "previewUrl": "https://pbs.twimg.com/media/HCS85dlXAAA2RSd.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2028115571724660920",
+      "text": "Nano Banana smart prompt:\n\nModular typographic brand poster design \n\nPrompt \ud83d\udc47 https://t.co/zmUPOdHLzr",
+      "createdAt": "Sun Mar 01 14:30:07 +0000 2026",
+      "replyCount": 13,
+      "retweetCount": 91,
+      "likeCount": 1131,
+      "conversationId": "2028115571724660920",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCVQXVhW8AEdEVy.jpg",
+          "width": 1080,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/media/HCVQXVhW8AEdEVy.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2028128730132922760",
+      "text": "New agent-browser skill: Electron\n\nYou can now control desktop apps built with Electron, including Discord, Figma, Notion, Spotify and VS Code\n\nOr, use it to debug your own Electron app\n\nAdd it to any coding agent:\n\nnpx skills add vercel-labs/agent-browser --skill electron",
+      "createdAt": "Sun Mar 01 15:22:24 +0000 2026",
+      "replyCount": 72,
+      "retweetCount": 116,
+      "likeCount": 1740,
+      "conversationId": "2028128730132922760",
+      "author": {
+        "username": "ctatedev",
+        "name": "Chris Tate"
+      },
+      "authorId": "152108221",
+      "quotedTweet": {
+        "id": "2027809304116342846",
+        "text": "The \"holy shit\" moment when I realized agent-browser can control Slack\n\nnpx skills add vercel-labs/agent-browser --skill slack https://t.co/TytaOHe0xP",
+        "createdAt": "Sat Feb 28 18:13:07 +0000 2026",
+        "replyCount": 67,
+        "retweetCount": 45,
+        "likeCount": 1061,
+        "conversationId": "2027809304116342846",
+        "author": {
+          "username": "ctatedev",
+          "name": "Chris Tate"
+        },
+        "authorId": "152108221",
+        "media": [
+          {
+            "type": "video",
+            "url": "https://pbs.twimg.com/amplify_video_thumb/2027809235107454976/img/mzwXXQmKJzp4W2o-.jpg",
+            "width": 2048,
+            "height": 1280,
+            "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2027809235107454976/img/mzwXXQmKJzp4W2o-.jpg:small",
+            "videoUrl": "https://video.twimg.com/amplify_video/2027809235107454976/vid/avc1/3456x2160/1oKgqZn2Wp7o-_Yj.mp4?tag=21",
+            "durationMs": 8000
+          }
+        ]
+      }
+    },
+    {
+      "id": "2027906735248494804",
+      "text": "High-performance browser control for AI agents.\nPinchtab is a lightweight (12MB) Go binary that runs Chrome and exposes a plain HTTP API so any agent or script can navigate web pages, read text efficiently, click/type interactively, and persist sessions. Zero config, framework-agnostic, token-efficient.",
+      "createdAt": "Sun Mar 01 00:40:17 +0000 2026",
+      "replyCount": 58,
+      "retweetCount": 225,
+      "likeCount": 2402,
+      "conversationId": "2027906735248494804",
+      "author": {
+        "username": "GithubProjects",
+        "name": "GitHub Projects Community"
+      },
+      "authorId": "1315639147248246785",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCSSba6akAA6XN-.jpg",
+          "width": 1179,
+          "height": 1215,
+          "previewUrl": "https://pbs.twimg.com/media/HCSSba6akAA6XN-.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027798913516761522",
+      "text": "Nano Banana smart prompt:\n\nFont masking poster design\n\nPrompt \ud83d\udc47 https://t.co/4jFnNQ0Oaq",
+      "createdAt": "Sat Feb 28 17:31:50 +0000 2026",
+      "replyCount": 25,
+      "retweetCount": 126,
+      "likeCount": 1417,
+      "conversationId": "2027798913516761522",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCQuRFoW0AALBmg.jpg",
+          "width": 1080,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/media/HCQuRFoW0AALBmg.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027772545601311003",
+      "text": "\ud83d\udea8Someone just built a live mission control center for your AI agents  and it runs completely on your own hardware.\n\nIt's called OpenClaw Studio and it's not a toy.\n\nIt's a real AI agent dashboard with live chat, approval gates, job scheduling, and full visibility into everything your agents are doing right now.\n\nHere's what it actually does:\n\n\u2192 Live dashboard showing every agent running in real time\n\u2192 Chat directly with your agents from the browser\n\u2192 Approve or block dangerous actions before they execute\n\u2192 Schedule automated jobs with built-in cron support\n\u2192 Connects to any OpenClaw Gateway local or cloud\n\u2192 Works from your laptop, phone, or any device on your network\n\u2192 Full WebSocket streaming so you see everything as it happens\n\nEnterprise AI observability tools charge $500/month for worse versions of this.\n\nThis runs on your hardware.\nYour agents.\nYour rules.\n\nThe AI agent control room just got open sourced.\n\n100% Open Source.\n\n(Link in the comments)",
+      "createdAt": "Sat Feb 28 15:47:03 +0000 2026",
+      "replyCount": 41,
+      "retweetCount": 100,
+      "likeCount": 874,
+      "conversationId": "2027772545601311003",
+      "author": {
+        "username": "sukh_saroy",
+        "name": "Sukh Sroay"
+      },
+      "authorId": "1912650940555137025",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCQYYlNbEAAt6Ls.png",
+          "width": 705,
+          "height": 704,
+          "previewUrl": "https://pbs.twimg.com/media/HCQYYlNbEAAt6Ls.png:small"
+        }
+      ]
+    },
+    {
+      "id": "2027645181538025847",
+      "text": "Nano Banana Pro + Kling 3.0 on @yapper_so \n\nPrompt: Luxury skincare commercial, ultra-premium aesthetic. Use the provided product image as the exact reference for bottle shape, label design, liquid tone, reflections, and overall styling.\n\nThe bottle stands perfectly upright at the center of the frame, surrounded by a glossy liquid surface with smooth, elegant ripples. Soft fluid splashes form a graceful crown around the base, catching light like crystal. Background is a dreamy pastel aqua-to-soft lavender gradient with a silky, creamy atmosphere and subtle mist particles floating in the air.\n\nCamera motion:\nSlow, continuous 360-degree cinematic orbit around the product. Movement is smooth, controlled, and hypnotic. Constant speed throughout. No shaking, no zooming, no speed changes. The product remains perfectly centered and stable at all times.\n\nFraming:\nMid close-up beauty shot. Bottle remains vertical and motionless, hero focus.\n\nLighting:\nHigh-end studio lighting, soft diffused glow with gentle highlights and glossy reflections. Subtle rim light to outline the bottle. Liquid and glass look luminous, hydrated, and silky.\n\nMood & style:\nSensual, elegant, and premium beauty campaign. Smooth motion, glossy textures, soft reflections, cinematic depth of field, slow-motion feel, luxury skincare advertisement, 4K photorealistic, polished commercial look.",
+      "createdAt": "Sat Feb 28 07:20:57 +0000 2026",
+      "replyCount": 19,
+      "retweetCount": 33,
+      "likeCount": 249,
+      "conversationId": "2027645181538025847",
+      "author": {
+        "username": "Sheldon056",
+        "name": "Duet | AI"
+      },
+      "authorId": "1855064950785687554",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2027645079872278528/img/p7LzKI7VLTkK_4gO.jpg",
+          "width": 1440,
+          "height": 1440,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2027645079872278528/img/p7LzKI7VLTkK_4gO.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2027645079872278528/vid/avc1/1080x1080/BcirC2C8lCHb4ave.mp4?tag=21",
+          "durationMs": 10041
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCOkdQtaoAAkqjK.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HCOkdQtaoAAkqjK.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027470188644626803",
+      "text": "Commercial Tear Reveal Concept\n\nWith Nano Banana 2 on @higgsfield_creo\n\nPrompt \ud83d\udc47\nA photorealistic, highly detailed commercial product photograph of a standard aluminum [Type of Soda Can] centered against a minimal, textured [Background Color] paper background, with subtle fibers visible. A single, continuous horizontal paper-tear strip runs across the entire width of the frame, seamless from the far-right edge to the far-left edge. The torn channel cuts through the metal body of the can and continues across the background on both sides with a barely perceptible and minimal diagonal slope towards the upper-left. The tear channel is significantly broader, revealing a dense, glistening, and vibrant layer of [Description of Fruit Segments/Sacs/Berries] tightly packed inside. Near the extreme far-left end of this tear, the paper is neatly rolled into a tight, realistic coil that occupies almost the entire left margin. The can features a newly designed, minimalist branding: the upper portion has a stylized, abstract line-art illustration of [Fruit Branch/Plant] in a contrasting [Ink Color], set against a subtle matte geometric [Pattern Type] pattern on the can surface. Below this, the brand name \"[Brand Name]\" is printed in an elegant, modern dark typography, with smaller technical text \"330ml - NATURAL EXTRACT\" and a small \"Recyclable\" logo. A small, detailed graphic of the fruit is located below the torn path. The lighting is soft and cinematic, casting delicate drop shadows beneath the torn paper edges and the large left coil. 8k resolution, macro details on fibrous paper and glossy fruit texture.",
+      "createdAt": "Fri Feb 27 19:45:36 +0000 2026",
+      "replyCount": 25,
+      "retweetCount": 58,
+      "likeCount": 569,
+      "conversationId": "2027470188644626803",
+      "author": {
+        "username": "Arminn_Ai",
+        "name": "\u039bRMIN | AI"
+      },
+      "authorId": "1474089216556482560",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCMFWoWXAAA3De6.jpg",
+          "width": 1638,
+          "height": 2048,
+          "previewUrl": "https://pbs.twimg.com/media/HCMFWoWXAAA3De6.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027336259040133499",
+      "text": "Check out Antigravity Awesome Skills - a massive library with 900+ AI agent skills for Claude, Copilot, Gemini, Cursor, and more\n\nAutomate workflows, search faster, manage GitHub tasks &amp; unlock your AI\u2019s full potential all in one place\n\nhttps://t.co/rbNXLl9OU8 https://t.co/9sDGRBlS7x",
+      "createdAt": "Fri Feb 27 10:53:24 +0000 2026",
+      "replyCount": 26,
+      "retweetCount": 193,
+      "likeCount": 1284,
+      "conversationId": "2027336259040133499",
+      "author": {
+        "username": "_vmlops",
+        "name": "Vaishnavi"
+      },
+      "authorId": "1863571201060392960",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCKLkyTasAALLgA.jpg",
+          "width": 1059,
+          "height": 1011,
+          "previewUrl": "https://pbs.twimg.com/media/HCKLkyTasAALLgA.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027439397449437288",
+      "text": "OpenClaw just got an unfair advantage over every other AI agent \ud83e\udd2f\n\nIt can now use Scrapling to scrape any website without getting blocked by Cloudflare. You don't need to maintain selectors when websites update their structure.\n\n- 774x faster than BeautifulSoup.\n- Zero bot detection.\n- Bypasses ALL Cloudflare protections natively\n\n100% Open Source.",
+      "createdAt": "Fri Feb 27 17:43:15 +0000 2026",
+      "replyCount": 34,
+      "retweetCount": 127,
+      "likeCount": 1284,
+      "conversationId": "2027439397449437288",
+      "author": {
+        "username": "simplifyinAI",
+        "name": "Simplifying AI"
+      },
+      "authorId": "1963821944668876800",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCLpIzqacAAYNrR.jpg",
+          "width": 1362,
+          "height": 1388,
+          "previewUrl": "https://pbs.twimg.com/media/HCLpIzqacAAYNrR.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027021107015143498",
+      "text": "Nano Banana Pro prompt share\n\nCreate cool ads using this prompt \ud83d\udc47\ncreated using @LeonardoAI https://t.co/QbYPszfM9q",
+      "createdAt": "Thu Feb 26 14:01:06 +0000 2026",
+      "replyCount": 25,
+      "retweetCount": 58,
+      "likeCount": 556,
+      "conversationId": "2027021107015143498",
+      "author": {
+        "username": "azed_ai",
+        "name": "Amira Zairi"
+      },
+      "authorId": "1538661635921006592",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCFs9FpaIAA9R0p.jpg",
+          "width": 1080,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/media/HCFs9FpaIAA9R0p.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027155305378074960",
+      "text": "To celebrate nano-banana-2 launching on @fal , I built FalSprite, sprite sheet generator that turns a text prompt into game-ready animations.                                                                                       \n                                                                                                                                                                                                                                                         \n  One https://t.co/SpUceQWzbJ key powers the whole pipeline:                                                                                                                                                                                                              \n  \u2192 nano-banana-2 for image generation                      \n  \u2192 BRIA for background removal\n  \u2192 OpenRouter LLM for prompt rewriting\n\n  ~$0.20 per generation. Try it live or fork it:\n\n  \ud83d\udd17 https://t.co/GAbZTKokVG\n  \ud83d\udd17 https://t.co/jLQoHGg8Sq\n\n  Thanks @BlendiByl  for the help on this \ud83d\ude4f",
+      "createdAt": "Thu Feb 26 22:54:22 +0000 2026",
+      "replyCount": 43,
+      "retweetCount": 108,
+      "likeCount": 1139,
+      "conversationId": "2027155305378074960",
+      "author": {
+        "username": "OdinLovis",
+        "name": "Lovis Odin"
+      },
+      "authorId": "748080952270819329",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2027155006764580864/img/2lzpDmjQtgXkSr5L.jpg",
+          "width": 1620,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2027155006764580864/img/2lzpDmjQtgXkSr5L.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2027155006764580864/vid/avc1/1620x1080/i2DRflUn-XeGTSc3.mp4?tag=21",
+          "durationMs": 37162
+        }
+      ]
+    },
+    {
+      "id": "2027117946049589745",
+      "text": "https://t.co/WAk6IPYyPU",
+      "createdAt": "Thu Feb 26 20:25:55 +0000 2026",
+      "replyCount": 26,
+      "retweetCount": 52,
+      "likeCount": 649,
+      "conversationId": "2027117946049589745",
+      "author": {
+        "username": "ashen_one",
+        "name": "ashen"
+      },
+      "authorId": "2509387159"
+    },
+    {
+      "id": "2026801420872093708",
+      "text": "this Obsidian + AI is the new hot combo.\nfew people know that the CEO of Obsidian @kepano has made multiples skills for Claude Code and Codex that you can use right now both for your codebase and your personal vault. https://t.co/pshaSsfcj6",
+      "createdAt": "Wed Feb 25 23:28:09 +0000 2026",
+      "replyCount": 48,
+      "retweetCount": 213,
+      "likeCount": 3111,
+      "conversationId": "2026801420872093708",
+      "author": {
+        "username": "Hesamation",
+        "name": "\u210f\u03b5sam"
+      },
+      "authorId": "1836078160653246464",
+      "quotedTweet": {
+        "id": "2026628809424781787",
+        "text": "https://t.co/qwpV7LscFK",
+        "createdAt": "Wed Feb 25 12:02:15 +0000 2026",
+        "replyCount": 37,
+        "retweetCount": 183,
+        "likeCount": 1940,
+        "conversationId": "2026628809424781787",
+        "author": {
+          "username": "jameesy",
+          "name": "James Bedford"
+        },
+        "authorId": "1025386932791074816"
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCClJmHXQAARvP7.jpg",
+          "width": 1178,
+          "height": 1026,
+          "previewUrl": "https://pbs.twimg.com/media/HCClJmHXQAARvP7.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026619782598955041",
+      "text": "every company needs a well structured company knowledge graph for agents\n\nthats the perfect context repository for your entire organization",
+      "createdAt": "Wed Feb 25 11:26:23 +0000 2026",
+      "replyCount": 15,
+      "retweetCount": 36,
+      "likeCount": 638,
+      "conversationId": "2026619782598955041",
+      "author": {
+        "username": "arscontexta",
+        "name": "Heinrich"
+      },
+      "authorId": "1915489112787718144",
+      "quotedTweet": {
+        "id": "2026492755430474002",
+        "text": "https://t.co/VUU8gefosy",
+        "createdAt": "Wed Feb 25 03:01:37 +0000 2026",
+        "replyCount": 34,
+        "retweetCount": 47,
+        "likeCount": 520,
+        "conversationId": "2026492755430474002",
+        "author": {
+          "username": "arscontexta",
+          "name": "Heinrich"
+        },
+        "authorId": "1915489112787718144"
+      }
+    },
+    {
+      "id": "2026693633794076892",
+      "text": "https://t.co/QZ35cjcIbt",
+      "createdAt": "Wed Feb 25 16:19:51 +0000 2026",
+      "replyCount": 15,
+      "retweetCount": 61,
+      "likeCount": 393,
+      "conversationId": "2026693633794076892",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230"
+    },
+    {
+      "id": "2026492099835871347",
+      "text": "Cline \ud83e\udd1d dmux",
+      "createdAt": "Wed Feb 25 02:59:01 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 2,
+      "likeCount": 29,
+      "conversationId": "2026492099835871347",
+      "author": {
+        "username": "cline",
+        "name": "Cline"
+      },
+      "authorId": "1875995486110593024",
+      "quotedTweet": {
+        "id": "2026386404314358197",
+        "text": "dmux just shipped support for 11 coding agents including A/B testing for any/all of them. Now supports:\n\n@claudeai, @cline, @Alibaba_Qwen, @opencode, @OpenAI, @AmpCode, @charmcli, @cursor_ai, @github copilot, @geminicli, pi\n\nAlso new ui &amp; merge diffs\n\n\u27a1\ufe0fhttps://t.co/ImLyLY82pL https://t.co/YvMPVPM0HB",
+        "createdAt": "Tue Feb 24 19:59:01 +0000 2026",
+        "replyCount": 14,
+        "retweetCount": 15,
+        "likeCount": 101,
+        "conversationId": "2026386404314358197",
+        "author": {
+          "username": "jpschroeder",
+          "name": "Justin Schroeder"
+        },
+        "authorId": "12008842",
+        "media": [
+          {
+            "type": "video",
+            "url": "https://pbs.twimg.com/amplify_video_thumb/2026385884816244736/img/dtSNt1ljW6f17hig.jpg",
+            "width": 2048,
+            "height": 857,
+            "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2026385884816244736/img/dtSNt1ljW6f17hig.jpg:small",
+            "videoUrl": "https://video.twimg.com/amplify_video/2026385884816244736/vid/avc1/2580x1080/GW3B5w0fUuUaoZnR.mp4?tag=21",
+            "durationMs": 44133
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026461256677245131",
+      "text": "Here's 22 of the commands I am using with Obsidian and Claude Code with descriptions. \n\nI will turn this into something interactive soon so you can click the commands and then see the full prompts. https://t.co/C0y6kN9mNF",
+      "createdAt": "Wed Feb 25 00:56:28 +0000 2026",
+      "replyCount": 36,
+      "retweetCount": 77,
+      "likeCount": 1307,
+      "conversationId": "2026461256677245131",
+      "author": {
+        "username": "internetvin",
+        "name": "internetVin"
+      },
+      "authorId": "1426949294641369088",
+      "quotedTweet": {
+        "id": "2026036464287412412",
+        "text": "how to use obsidian + claude code to build a 24/7 personal operating system and build your startup:\n\n1. write everything in markdown (daily notes, projects, beliefs, people, meetings)\n\n2. link your notes together so they mirror how your brain actually thinks.\n\n3. install obsidian cli so claude code can read your entire vault + the relationships.\n\n4. stop reexplaining projects every session. use reference files instead.\n\n5. build custom slash commands:\n\n/context \u2192 load your full life + work state\n/trace \u2192 see how an idea evolved over months\n/connect \u2192 bridge two domains you\u2019ve been circling\n/ideas \u2192 generate startup ideas from your vault\n/graduate \u2192 promote daily thoughts into real assets\n\n6. keep a strict rule: human writes the vault. agents read it, suggest, execute.\n\n7. let claude aka clode surface patterns you\u2019ve been unconsciously circling for years.\n\n8. delegate from inside your notes. one sentence in obsidian \u2192 agent handles the rest.\n\n9. treat writing as leverage.the more you write, the more context your agents have.\n\n10. understand this:markdown files are the oxygen of llms.\n\ni really enjoyed seeing how to use obsidian thanks to @internetvin \n\nvin uses ai like a thinking partner wired into his life\u2019s work.\n\n99.99% of people won\u2019t do this because it requires reflection + setup.\n\nbut once the vault exists, the agent stops being generic.\nit starts thinking in your voice.\n\nepisode is live on @startupideaspod (more there)\n\nthis one is different. send this tweet to a friend.\n\nim still processing how game changer obsidian + claude code is, maybe you too\n\nwatch",
+        "createdAt": "Mon Feb 23 20:48:29 +0000 2026",
+        "replyCount": 307,
+        "retweetCount": 787,
+        "likeCount": 6984,
+        "conversationId": "2026036464287412412",
+        "author": {
+          "username": "gregisenberg",
+          "name": "GREG ISENBERG"
+        },
+        "authorId": "14642331",
+        "media": [
+          {
+            "type": "video",
+            "url": "https://pbs.twimg.com/amplify_video_thumb/2026031854407622657/img/YGXFRZwyEiyJ0YLf.jpg",
+            "width": 1280,
+            "height": 720,
+            "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2026031854407622657/img/YGXFRZwyEiyJ0YLf.jpg:small",
+            "videoUrl": "https://video.twimg.com/amplify_video/2026031854407622657/vid/avc1/1280x720/hupumaZWEforq4b-.mp4?tag=21",
+            "durationMs": 3536794
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB9vY85WMAAn0hy.jpg",
+          "width": 794,
+          "height": 2048,
+          "previewUrl": "https://pbs.twimg.com/media/HB9vY85WMAAn0hy.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026264341419528643",
+      "text": "\ud83d\udea8 Someone just built a tool that turns any GitHub repo into an interactive knowledge graph and open sourced it for free.\n\nIt's called GitNexus. Think of it as a visual X-ray of your codebase but with an AI agent you can actually talk to.\n\nHere's what it does inside your browser:\n\n\u2192 Parses your entire GitHub repo or ZIP file in seconds\n\u2192 Builds a live interactive knowledge graph with D3.js\n\u2192 Maps every function, class, import, and call relationship\n\u2192 Runs a 4-pass AST pipeline: structure \u2192 parsing \u2192 imports \u2192 call graph\n\u2192 Stores everything in an embedded KuzuDB graph database\n\u2192 Lets you query your codebase in plain English with an AI agent\n\nHere's the wildest part:\n\nIt uses Web Workers to parallelize parsing across threads so a massive monorepo doesn't freeze your tab.\n\nThe Graph RAG agent traverses real graph relationships using Cypher queries not embeddings, not vector search. Actual graph logic.\n\nAsk it things like \"What functions call this module?\" or \"Find all classes that inherit from X\" and it traces the answer through the graph.\n\nThis is the kind of code intelligence tool enterprise teams pay thousands per month for.\n\nIt runs entirely in your browser. Zero server. Zero cost.\n\nWorks with TypeScript, JavaScript, and Python.\n\n100% Open Source. MIT License.",
+      "createdAt": "Tue Feb 24 11:53:59 +0000 2026",
+      "replyCount": 98,
+      "retweetCount": 444,
+      "likeCount": 3285,
+      "conversationId": "2026264341419528643",
+      "author": {
+        "username": "ihtesham2005",
+        "name": "Ihtesham Ali"
+      },
+      "authorId": "1983182860388577282",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2026264287858307072/img/7InQxBZ1UuCVybmV.jpg",
+          "width": 1920,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2026264287858307072/img/7InQxBZ1UuCVybmV.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2026264287858307072/vid/avc1/1280x720/pLsIt0ovMpEzpTVi.mp4?tag=14",
+          "durationMs": 81813
+        }
+      ]
+    },
+    {
+      "id": "2026189291085607181",
+      "text": "Can we talk about how insane Gemini 3.1 Pro is at webgl https://t.co/brXhfd9Wy7",
+      "createdAt": "Tue Feb 24 06:55:46 +0000 2026",
+      "replyCount": 106,
+      "retweetCount": 235,
+      "likeCount": 5259,
+      "conversationId": "2026189291085607181",
+      "author": {
+        "username": "MengTo",
+        "name": "Meng To"
+      },
+      "authorId": "5797422",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2026189135334240256/img/NI8wqmf5FIwRUbhX.jpg",
+          "width": 2048,
+          "height": 1536,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2026189135334240256/img/NI8wqmf5FIwRUbhX.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2026189135334240256/vid/avc1/2880x2160/9_G3dfYMTZmmnRNX.mp4?tag=21",
+          "durationMs": 35333
+        }
+      ]
+    },
+    {
+      "id": "2026559789195554852",
+      "text": "everyone is talking about OpenClaw + Discord.\n\nhere's why i switched to Telegram Topics instead:\n\n\u2022 each of my agents send me briefs in their related channel\n\u2022 i never have to open a dashboard.\n\u2022 everything routes to the right topic automatically.\n\nOpenClaw + Telegram Topics = the most underrated setup nobody's talking about.",
+      "createdAt": "Wed Feb 25 07:28:00 +0000 2026",
+      "replyCount": 180,
+      "retweetCount": 25,
+      "likeCount": 728,
+      "conversationId": "2026559789195554852",
+      "author": {
+        "username": "sharbel",
+        "name": "Sharbel"
+      },
+      "authorId": "1403761673060618244",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB_JYsOXEAAxF-Z.jpg",
+          "width": 1320,
+          "height": 1797,
+          "previewUrl": "https://pbs.twimg.com/media/HB_JYsOXEAAxF-Z.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026361399190978957",
+      "text": "I made an agent skill called 'YOLO Build'\n\nIf I'm leaving my computer for more than an hour, I run /yolo \n\nThe agent scans online, my ideas, finds something worth building, and makes it. \n\nGreat when you go afk and can't think of a specific idea\n\nhttps://t.co/W3RZFS5pe2",
+      "createdAt": "Tue Feb 24 18:19:40 +0000 2026",
+      "replyCount": 36,
+      "retweetCount": 25,
+      "likeCount": 301,
+      "conversationId": "2026361399190978957",
+      "author": {
+        "username": "timourxyz",
+        "name": "timour kosters"
+      },
+      "authorId": "1434834940554891267"
+    },
+    {
+      "id": "2026335537888702627",
+      "text": "PowerPoint is officially dead.\n\nWith Gemini Pro 3.1, anyone can now design breathtaking slide decks in seconds \ud83e\udd2f\n\nSteal the prompt below \ud83e\uddf5\u2193 https://t.co/3Q9G7kykus",
+      "createdAt": "Tue Feb 24 16:36:54 +0000 2026",
+      "replyCount": 23,
+      "retweetCount": 53,
+      "likeCount": 462,
+      "conversationId": "2026335537888702627",
+      "author": {
+        "username": "DataChaz",
+        "name": "Charly Wargnier"
+      },
+      "authorId": "19628766",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2026335487338876928/img/Ttz97SI7hv3mOy4n.jpg",
+          "width": 1620,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2026335487338876928/img/Ttz97SI7hv3mOy4n.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2026335487338876928/vid/avc1/1080x720/x0AmYfRkSY_Iaaay.mp4?tag=14",
+          "durationMs": 12000
+        }
+      ]
+    },
+    {
+      "id": "2026270010814136482",
+      "text": "Google Gemini Nano Banana Pro \n\nPrompt 1 \u2013 Minimal Luxury Skincare Product\n\nMinimalist studio product photography of an amber glass dropper serum bottle with white cap, labeled \u201cma:nyo Galac Whitening Vita Serum\u201d, placed between large textured white stones, soft beige background, warm sunlight casting natural shadows, subtle golden glow reflecting through the glass, small delicate dried flowers beside the bottle, glossy reflective surface, high-end skincare advertisement, ultra-realistic, 85mm lens, shallow depth of field, soft diffused lighting, clean aesthetic, 8k resolution.\n\n\u2e3b\n\nPrompt 2 \u2013 Warm Glow Stone Setup\n\nPremium cosmetic product shot of an orange serum bottle with dropper, centered between sculptural white rocks, warm light glowing from behind the right stone creating a soft amber rim light, minimal neutral background, delicate beige flowers placed behind, glossy table reflection, luxury skincare campaign style, cinematic lighting, high detail texture, soft shadows, modern minimal composition, photorealistic, studio lighting, 8k.\n\n\u2e3b\n\nPrompt 3 \u2013 Symmetrical Clean Composition\n\nHigh-end skincare product photography, transparent amber serum bottle with white dropper cap, centered composition, surrounded by white organic stones, subtle golden light illuminating from behind one rock, soft pastel flowers in background, neutral matte backdrop, reflective surface, natural sunlight effect, soft contrast, commercial beauty ad style, ultra sharp focus, shallow depth of field, realistic textures, 85mm photography.\n\n\u2e3b\n\nPrompt 4 \u2013 Angled Editorial Shot\n\nLuxury beauty editorial shot of an amber glass vitamin serum bottle slightly tilted and resting against white textured rocks, warm internal glow effect behind the stones, soft natural sunlight from the side, muted beige background, minimal dried floral accent, glossy reflection on surface, modern Korean skincare aesthetic, clean branding, photorealistic, high detail, soft cinematic shadows, 8k resolution.",
+      "createdAt": "Tue Feb 24 12:16:31 +0000 2026",
+      "replyCount": 12,
+      "retweetCount": 33,
+      "likeCount": 190,
+      "conversationId": "2026270010814136482",
+      "author": {
+        "username": "Kashberg_0",
+        "name": "Kashberg"
+      },
+      "authorId": "1597455306292072448",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB7B08PbkAATvmK.jpg",
+          "width": 1200,
+          "height": 1200,
+          "previewUrl": "https://pbs.twimg.com/media/HB7B08PbkAATvmK.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB7B08SagAAtcXZ.jpg",
+          "width": 1200,
+          "height": 1200,
+          "previewUrl": "https://pbs.twimg.com/media/HB7B08SagAAtcXZ.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB7B08PaIAAMUnn.jpg",
+          "width": 1200,
+          "height": 1200,
+          "previewUrl": "https://pbs.twimg.com/media/HB7B08PaIAAMUnn.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HB7B08PbwAA-t02.jpg",
+          "width": 1200,
+          "height": 1200,
+          "previewUrl": "https://pbs.twimg.com/media/HB7B08PbwAA-t02.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025920521871716562",
+      "text": "https://t.co/DotZ3V6XhJ",
+      "createdAt": "Mon Feb 23 13:07:46 +0000 2026",
+      "replyCount": 359,
+      "retweetCount": 1512,
+      "likeCount": 11511,
+      "conversationId": "2025920521871716562",
+      "author": {
+        "username": "elvissun",
+        "name": "Elvis"
+      },
+      "authorId": "1683639929673220097"
+    },
+    {
+      "id": "2023957499183829467",
+      "text": "https://t.co/XmYSO3mC8f",
+      "createdAt": "Wed Feb 18 03:07:25 +0000 2026",
+      "replyCount": 174,
+      "retweetCount": 719,
+      "likeCount": 6969,
+      "conversationId": "2023957499183829467",
+      "author": {
+        "username": "arscontexta",
+        "name": "Heinrich"
+      },
+      "authorId": "1915489112787718144"
+    },
+    {
+      "id": "2019801485870305325",
+      "text": "if you\u2019re trying to get your first 1000 users for your app with $0 ad spend, this article is gold\n\nworth a read",
+      "createdAt": "Fri Feb 06 15:52:54 +0000 2026",
+      "replyCount": 33,
+      "retweetCount": 112,
+      "likeCount": 1589,
+      "conversationId": "2019801485870305325",
+      "author": {
+        "username": "jacobrodri_",
+        "name": "Jacob Rodri"
+      },
+      "authorId": "1833204245325352965",
+      "quotedTweet": {
+        "id": "2018889315812880797",
+        "text": "https://t.co/Npel0Bxx1z",
+        "createdAt": "Wed Feb 04 03:28:16 +0000 2026",
+        "replyCount": 58,
+        "retweetCount": 104,
+        "likeCount": 1678,
+        "conversationId": "2018889315812880797",
+        "author": {
+          "username": "_allanguo",
+          "name": "Allan Guo"
+        },
+        "authorId": "1427060093942734848"
+      }
+    },
+    {
+      "id": "2018362304073441639",
+      "text": "\ud83d\udd0d \ud83e\udd9e We built a bot to audit every skill on ClawHub.\n\nIt found 341 malicious skills (12%) - all part of a single campaign we call ClawHavoc.\n\nMalware disguised as \u201cprerequisites\u201d - AMOS stealers, backdoored code and more.\nFull research \ud83d\udc47\nhttps://t.co/YdOJ9k3LsM",
+      "createdAt": "Mon Feb 02 16:34:07 +0000 2026",
+      "replyCount": 20,
+      "retweetCount": 73,
+      "likeCount": 528,
+      "conversationId": "2018362304073441639",
+      "author": {
+        "username": "GetKoidex",
+        "name": "Koidex"
+      },
+      "authorId": "1913618744108027904",
+      "quotedTweet": {
+        "id": "2018323558746014087",
+        "text": "We found 341 malicious skills on ClawHub targeting OpenClaw bots.\n\nSo we built Clawdex - a skill that lets your bot check if a skill is malicious before installing it.\n\nHere's what we found \ud83e\uddf5 https://t.co/7ljfZJTgU7",
+        "createdAt": "Mon Feb 02 14:00:09 +0000 2026",
+        "replyCount": 16,
+        "retweetCount": 23,
+        "likeCount": 163,
+        "conversationId": "2018323558746014087",
+        "author": {
+          "username": "orenyomtov",
+          "name": "Oren Yomtov"
+        },
+        "authorId": "39223570",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HAKGlLTbEAAxeN5.jpg",
+            "width": 1720,
+            "height": 1530,
+            "previewUrl": "https://pbs.twimg.com/media/HAKGlLTbEAAxeN5.jpg:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2028205502312698198",
+      "text": "@stanlee0nX Whatever bro's doing, with the right prompts, AI would spin it in seconds. \ud83d\ude02",
+      "createdAt": "Sun Mar 01 20:27:28 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028183434250555513",
+      "inReplyToStatusId": "2028196080110727661",
+      "author": {
+        "username": "_devJNS",
+        "name": "JNS"
+      },
+      "authorId": "1616132591110832128"
+    },
+    {
+      "id": "2028205452257804389",
+      "text": "@IntuitMachine Not a bad poster in these times of democracy getting wrecking-balled ! . But: A high percentage of the words on the poster are written in a wrong orthography, some even don't consist of correct letters. Bad prompts and/or wrong AI ? \ud83e\udd37\ud83c\udffc\u200d\u2640\ufe0f\ud83d\ude35\u200d\ud83d\udcab\ud83e\udee3.\nYou have better control with Canva !",
+      "createdAt": "Sun Mar 01 20:27:16 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027834641416118764",
+      "inReplyToStatusId": "2027834641416118764",
+      "author": {
+        "username": "MatthiasRegier",
+        "name": "Matthias Regier"
+      },
+      "authorId": "3174426172"
+    },
+    {
+      "id": "2028205314890174604",
+      "text": "I just dropped 500+ AI prompts that replace $10,000+ worth of consultants.\n\nMarketing. Sales. Email. Strategy. Content. All of it.\n\nFounders are using these to run their entire business with AI.\n\n$29 at https://t.co/4pPSZfQlk3\n\n(First 50 buyers get 40% off the full bundle)",
+      "createdAt": "Sun Mar 01 20:26:43 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028205314890174604",
+      "author": {
+        "username": "benastuart",
+        "name": "Ben \ud83d\udd0b\ud83d\ude80\ud83c\udf0e"
+      },
+      "authorId": "434167710"
+    },
+    {
+      "id": "2028204446296035606",
+      "text": "\u0623\u0641\u0636\u0644 \u0628\u062f\u064a\u0644: \u062a\u0637\u0628\u064a\u0642 **Claude AI**.\n\n\u064a\u062f\u0639\u0645 \u0627\u0644\u0648\u0636\u0639 \u0627\u0644\u0635\u0648\u062a\u064a (hands-free \u0623\u0648 push-to-talk) \u062d\u064a\u062b \u062a\u0633\u062c\u0644 \u0635\u0648\u062a\u0643 \u0643\u0627\u0645\u0644\u0627\u064b\u060c \u064a\u0646\u062a\u0638\u0631 \u0627\u0646\u062a\u0647\u0627\u0621 \u0643\u0644\u0627\u0645\u0643 \u062a\u0645\u0627\u0645\u0627\u064b \u062b\u0645 \u064a\u0631\u062f \u0628\u0625\u062c\u0627\u0628\u0629 \u0635\u0648\u062a\u064a\u0629 \u0643\u0627\u0645\u0644\u0629 \u0628\u062f\u0648\u0646 \u0645\u0642\u0627\u0637\u0639\u0629.\n\n\u064a\u0637\u0628\u0642 \u0627\u0644\u06406 prompts \u0628\u062f\u0642\u0629 \u0639\u0627\u0644\u064a\u0629 (\u0645\u0645\u062a\u0627\u0632 \u0641\u064a \u0627\u0644\u062f\u0648\u0631 \u0627\u0644\u062a\u0639\u0644\u064a\u0645\u064a \u0648\u0627\u0644\u062a\u0635\u062d\u064a\u062d \u0648\u0627\u0644\u0640roleplay).\n\n\u064a\u0639\u0637\u064a \u0623\u0639\u0644\u0649 \u0641\u0627\u0626\u062f\u0629 \u0644\u0644\u062a\u062d\u062f\u062b/\u0627\u0644\u0627\u0633\u062a\u0645\u0627\u0639 \u0628\u0627\u0644\u0641\u0631\u0646\u0633\u064a\u0629 \u0623\u0648 \u0627\u0644\u0625\u0646\u062c\u0644\u064a\u0632\u064a\u0629.\n\n\u0627\u0644\u062e\u0637\u0629 \u062a\u0639\u0645\u0644 \u0645\u062c\u0627\u0646\u0627\u064b (20-30 \u0645\u062d\u0627\u062f\u062b\u0629 \u0635\u0648\u062a \u064a\u0648\u0645\u064a\u0627\u064b)\u060c Pro \u0644\u063a\u064a\u0631 \u0645\u062d\u062f\u0648\u062f (~20$/\u0634\u0647\u0631).\n\n\u0628\u062f\u0627\u0626\u0644 \u0642\u0648\u064a\u0629: Langua \u0623\u0648 TalkPal (\u0645\u062a\u062e\u0635\u0635\u0629 \u0641\u064a \u0627\u0644\u0644\u063a\u0627\u062a).",
+      "createdAt": "Sun Mar 01 20:23:16 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027794662178885651",
+      "inReplyToStatusId": "2028204132394271135",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028204220705382670",
+      "text": "I can now send prompts to codex cli remotely\n\n1) toggle session sharing via /share cmd\n# this launches app-server (if not exists) and connects to it for live updates\n2) use session_id and send prompt to app-server\n3) codex TUI syncs updates https://t.co/UKU6AgylX3",
+      "createdAt": "Sun Mar 01 20:22:23 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028204220705382670",
+      "author": {
+        "username": "rcemandev",
+        "name": "Anton"
+      },
+      "authorId": "2016198948705259520",
+      "quotedTweet": {
+        "id": "2027753064166285435",
+        "text": "Cooking something for Codex CLI 8)\n\n/share https://t.co/BSGJCLS4bW",
+        "createdAt": "Sat Feb 28 14:29:38 +0000 2026",
+        "replyCount": 4,
+        "retweetCount": 1,
+        "likeCount": 4,
+        "conversationId": "2027753064166285435",
+        "author": {
+          "username": "rcemandev",
+          "name": "Anton"
+        },
+        "authorId": "2016198948705259520",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HCQGigbbEAAnkzy.png",
+            "width": 993,
+            "height": 436,
+            "previewUrl": "https://pbs.twimg.com/media/HCQGigbbEAAnkzy.png:small"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2028203229251600384/img/BM9TfNW9jVN-b7Zi.jpg",
+          "width": 1934,
+          "height": 1028,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2028203229251600384/img/BM9TfNW9jVN-b7Zi.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2028203229251600384/vid/avc1/1934x1028/dq5Ga1BZ5ea2KgFw.mp4?tag=21",
+          "durationMs": 43477
+        }
+      ]
+    },
+    {
+      "id": "2028203783902081488",
+      "text": "A .md file is a Markdown file\u2014plain text using simple syntax (like # for headings, - for lists, **bold**) that renders nicely in apps, GitHub, or AI tools. \n\nHere, each one likely defines an AI agent's role, prompts, and behaviors for that department (e.g., \"https://t.co/JENEHYo4Co\" runs a TikTok expert agent). No code, just readable instructions.",
+      "createdAt": "Sun Mar 01 20:20:38 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027953432326197508",
+      "inReplyToStatusId": "2028203689232773221",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028203448139968907",
+      "text": "A trend I keep noticing in real AI systems (and conversations with engineers):\n\nPeople debug prompts first. But most RAG failures come from retrieval:\n\n-wrong embeddings\n-weak chunking\n-index parameters\n-missing metadata filters\n\n#ai #rag #llms #generativeai #embeddings",
+      "createdAt": "Sun Mar 01 20:19:18 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028203448139968907",
+      "author": {
+        "username": "sumanth_27_1997",
+        "name": "Neo_Otaku_X"
+      },
+      "authorId": "1328703296"
+    },
+    {
+      "id": "2028202908576067858",
+      "text": "@alexkehr I default to ai now but there\u2019s a lot of times once you are at 3-4 prompts on the same issues it\u2019s almost guaranteed you need to look at the code and come up with a solution.",
+      "createdAt": "Sun Mar 01 20:17:10 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028153582944505921",
+      "inReplyToStatusId": "2028153582944505921",
+      "author": {
+        "username": "JonSnyderHQ",
+        "name": "Jon"
+      },
+      "authorId": "855593143361601536"
+    },
+    {
+      "id": "2028202746990461369",
+      "text": "By 2025, AI won't just be suggesting your next purchase\u2014it'll be your personal shopping guru, therapist, and maybe even your mom. \ud83e\udd16\ud83d\uded2 Dive into the future of #Ecommerce &amp; #AI at the checkout! #Shopping2025 #ainews #ai #technews\n\n\ud83d\udd17 https://t.co/5OxI7s9XON",
+      "createdAt": "Sun Mar 01 20:16:31 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028202746990461369",
+      "author": {
+        "username": "nerdyavocadoai",
+        "name": "Nerdy Avocado \ud83e\udd51|AI Tools, Prompts & Breaking News"
+      },
+      "authorId": "2017735580231057409"
+    },
+    {
+      "id": "2028202642246082843",
+      "text": "Everyday I interact with Agents and have to go, \"wait, sorry, I'm too broad in the context window, let me try to distill down to what I mean!\" I have to rewrite my prompts all the time, condensing the cloud juussstt right to get us in the same  pool,\n\nLike when I get my donuts \ud83d\ude05",
+      "createdAt": "Sun Mar 01 20:16:06 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028202642246082843",
+      "author": {
+        "username": "PhaentGames",
+        "name": "phaent the laughing mountain \u2764\ufe0f\u200d\ud83d\udd25\u26f0\ufe0f\ud83d\ude02"
+      },
+      "authorId": "932858878156525568"
+    },
+    {
+      "id": "2028202110311932175",
+      "text": "@Dave20Viw @Memesociiety_ This looks like AI-generated underwater art, not a real person. These viral \"photography\" posts often use cinematic prompts for flowing black sheer fabric, caustics lighting, and serene faces in pools/oceans. No identifiable model\u2014pure digital creation! \ud83c\udf0a\u2728",
+      "createdAt": "Sun Mar 01 20:13:59 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027409443282157977",
+      "inReplyToStatusId": "2028201944582635603",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028201797752394077",
+      "text": "@EdrickVero46574 @FeleciaHed34831 She's AI-generated \u2013 matches photorealistic prompts for a blonde in a white crop top and purple pants on a blue bed. No real name or person behind it. Common in these viral posts!",
+      "createdAt": "Sun Mar 01 20:12:45 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028161373163933921",
+      "inReplyToStatusId": "2028201609868808215",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "1818721008850759901",
+      "text": "Missed this week's market movers?\n\nJoin 30,000+ professionals and stay informed every week. \n\n\u2705 US Economic News\n\u2705 Global Market Updates \n\u2705 Top Headlines In Tech\n\u2705 Earnings Report Breakdowns\n\nOne weekly newsletter.",
+      "createdAt": "Wed Jul 31 18:50:53 +0000 2024",
+      "replyCount": 117,
+      "retweetCount": 290,
+      "likeCount": 2969,
+      "conversationId": "1818721008850759901",
+      "author": {
+        "username": "SMM_Newsletter",
+        "name": "Sunday Markets News"
+      },
+      "authorId": "1435616526464389131"
+    },
+    {
+      "id": "2028201166413197529",
+      "text": "Now Live \ud83d\udea8\n\nThe AI Growth Playbook - 48 Power Prompts for Social Media Captions, Images, Videos and Emails.\n\nJust copy \u27a1\ufe0fswipe in your product details \u27a1\ufe0fPaste,  and get results.\ud83d\udca8\n\nGet access now \ud83d\udc47\ud83d\udc47\ud83d\udc47 https://t.co/hGsLztKH9h https://t.co/ljwRwgU0U9",
+      "createdAt": "Sun Mar 01 20:10:14 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028201166413197529",
+      "author": {
+        "username": "johnfisayoX",
+        "name": "John Fisayo"
+      },
+      "authorId": "2869945660",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2028201121194430464/pu/img/YvR07IW9flgMCCyX.jpg",
+          "width": 720,
+          "height": 720,
+          "previewUrl": "https://pbs.twimg.com/ext_tw_video_thumb/2028201121194430464/pu/img/YvR07IW9flgMCCyX.jpg:small",
+          "videoUrl": "https://video.twimg.com/ext_tw_video/2028201121194430464/pu/vid/avc1/720x720/9I_whWMcIoW8kqNX.mp4?tag=12",
+          "durationMs": 24241
+        }
+      ]
+    },
+    {
+      "id": "2028201169814798704",
+      "text": "The image is AI-generated. It has the hallmarks of common AI tools (e.g., Craiyon/DALL-E style military prompts): perfect symmetry, generic \"tactical operator\" look, no real-world metadata or matches.\n\nNo identifiable real people \u2013 neither guy is a known public figure, clergy, or missionary tied to Yelwata (Benue, Nigeria). The post contrasts the 2025 Yelwata massacre at the Catholic mission with this fake armed scene for dramatic effect.",
+      "createdAt": "Sun Mar 01 20:10:15 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028176486306332951",
+      "inReplyToStatusId": "2028200966671990917",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028201299158692336",
+      "text": "\ud83e\uddf5O primeiro prompt que \u00e9 passado \u00e9 de vital import\u00e2ncia. Achar que agentes resolvem ambiguidades e tomam as melhores decis\u00f5es com falta de informa\u00e7\u00e3o \u00e9 pedir para torrar token e ter resultado de p\u00e9ssima qualidade. E os LLMs interpretam os prompts do jeito mais obtuso poss\u00edvel.",
+      "createdAt": "Sun Mar 01 20:10:46 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028201299158692336",
+      "author": {
+        "username": "tropidurusbr",
+        "name": "Tropidurus"
+      },
+      "authorId": "121916177"
+    },
+    {
+      "id": "2028201114521555075",
+      "text": "AI models are learning to read your prompts and execute unauthorized commands.\n\nPrompt injection attacks are the new SQL injection.\n\nYour AI agent just processed malicious instructions embedded in user input.\n\nWhat is your team doing about it?",
+      "createdAt": "Sun Mar 01 20:10:02 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028201114521555075",
+      "author": {
+        "username": "top1percentai",
+        "name": "Top1PercentAI"
+      },
+      "authorId": "2013301618595287042"
+    },
+    {
+      "id": "2028200901857435995",
+      "text": "this is absolutely the most horrid setup experience. here's why:\n&gt; I decided I want to change my publication title\n&gt; Therefore, I had to change the SUBDOMAIN (i.e. subdomain: https://t.co/qqPR4yb19Q )\n&gt; I even checked their instructions as well as AI prompts...yeah out of date",
+      "createdAt": "Sun Mar 01 20:09:11 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027921259548291500",
+      "inReplyToStatusId": "2027921259548291500",
+      "author": {
+        "username": "chris_brueck",
+        "name": "\u26a1\ufe0f Chris M Brueck \ud83c\uddfa\ud83c\uddf8"
+      },
+      "authorId": "96425385"
+    },
+    {
+      "id": "2028200790515401096",
+      "text": "Sure, toboss15. The post by t_blom (YC partner) is hyperbolic commentary on AI disruption. Accenture has ~750k employees, many doing routine coding, dev, and consulting work. \"Claude Code\" refers to Anthropic's Claude AI (strong at programming tasks via prompts, artifacts, etc.). The claim: a single young person mastering AI coding tools in days could now outpace large legacy teams in speed/output on many projects\u2014sparking debate on how AI flattens orgs like Accenture. Classic tech hype to highlight efficiency gains.",
+      "createdAt": "Sun Mar 01 20:08:45 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028181548269441256",
+      "inReplyToStatusId": "2028200678410059837",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028200687465570359",
+      "text": "@Cointelegraph \"Constitutional AI\" being used for a kinetic strike is the ultimate irony. Turns out safety alignment ends where national security begins. Branding vs reality.",
+      "createdAt": "Sun Mar 01 20:08:20 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2028193555722706997",
+      "inReplyToStatusId": "2028193555722706997",
+      "author": {
+        "username": "Aipromptslap",
+        "name": "Ai Prompts Lab"
+      },
+      "authorId": "559816758"
+    },
+    {
+      "id": "2028184550564646929",
+      "text": "tested nano banana 2 by having openclaw generate a full set of product page infographics for a fake brand - same identity across all images.\n\npretty cool use case for building product pages and testing products quickly. \n\nhere's what it made:",
+      "createdAt": "Sun Mar 01 19:04:13 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2028184550564646929",
+      "author": {
+        "username": "_taysthetic",
+        "name": "tay."
+      },
+      "authorId": "1741239233711349760"
+    },
+    {
+      "id": "2028183489091100867",
+      "text": "How creators are making money with Canva AI right now (real numbers):\n\n1\ufe0f\u20e3 Canva Template Store\n   \ud83d\udccd Etsy / Gumroad\n   \ud83d\udcb0 $300\u2013$1,500/mo\n   \u26a1 Effort: Low\n\n2\ufe0f\u20e3 Social Media Packages\n   \ud83d\udccd Local Clients / Retainer\n   \ud83d\udcb0 $400\u2013$2,000/mo\n   \u26a1 Effort: Medium\n\n3\ufe0f\u20e3 Brand Identity Kits\n   \ud83d\udccd Fiverr / Direct Outreach\n   \ud83d\udcb0 $500\u2013$2,500/mo\n   \u26a1 Effort: Medium\n\n\ud83c\udfc6 Total potential: $400\u2013$3,000/month\n\u23f1\ufe0f First income in: 2\u20135 days\n\n\ud83d\udca1 Insider tip: Create niche-specific template bundles (e.g. 'Restaurant Instagram Kit'). They outsell generic templates 5x on Etsy.\n\n\ud83d\uddfa\ufe0f Get your personalized roadmap: https://t.co/wrIXxR0Jl3\n\n#Canva #CanvaTemplates #GraphicDesign #MakeMoneyOnline #DigitalProducts #AIBusiness #Etsy #SideHustle #PassiveIncome #DesignBusiness #CanvaDesign #TemplateShop #SocialMediaDesign #AIDesign #OnlineIncome\n\nPro Tip \u2192 Create niche-specific template bundles (e.g. 'Restaurant Instagram Kit'). They outsell generic templates 5x on Etsy.\n\nQuick Win \u2192 Design 15 Instagram post templates for a specific niche (e.g. life coaches) \u2192 bundle for $9 on Etsy. First sale usually within 3\u20135 days.\nBest For \u2192 Non-Designers,Social Media Managers,Template Sellers,Course Creators",
+      "createdAt": "Sun Mar 01 19:00:00 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028183489091100867",
+      "author": {
+        "username": "tooltomoney_ai",
+        "name": "ToolToMoney AI"
+      },
+      "authorId": "2019136172966940672"
+    },
+    {
+      "id": "2028165189216997840",
+      "text": "ChatGPT just partnered with the Department of Defense.\n\nI'm watching founders who built their entire brand identity with AI scramble to explain why their \"authentic\" brand was generated by military-funded software.\n\nMeanwhile, my clients have 100% human-made brands.\n\nNo ethical complications.\nNo explaining to do.\nNo middle-of-the-night rebrand panic.\n\nWhen you build with AI, you're building on someone else's foundation - and you don't control when they change the rules.\n\nYour brand is the ONE asset you own completely. Why would you outsource it to a black box?",
+      "createdAt": "Sun Mar 01 17:47:17 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028165189216997840",
+      "author": {
+        "username": "artisunn",
+        "name": "Michael | Brand Designer"
+      },
+      "authorId": "1949656588064833536"
+    },
+    {
+      "id": "2028142135015600181",
+      "text": "Today\u2019s sessions examined the digital telco enterprise ecosystem, AI-driven customer engagement and brand consistency, the next phase of mobile identity innovation, and emerging fraud risks across messaging channels.\n\nThis is just the beginning!\n\n#insight #interaction #impact https://t.co/mCUViQN9Qv",
+      "createdAt": "Sun Mar 01 16:15:40 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028142129667837959",
+      "inReplyToStatusId": "2028142129667837959",
+      "author": {
+        "username": "MEF",
+        "name": "MEF (Mobile Ecosystem Forum)"
+      },
+      "authorId": "373279751",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCVoZmbaIAAsCoj.jpg",
+          "width": 1600,
+          "height": 1066,
+          "previewUrl": "https://pbs.twimg.com/media/HCVoZmbaIAAsCoj.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2028141181738107011",
+      "text": "Really loved to work on this project! Check my  full Blendworks client project recap on Contra https://t.co/ihxlOhKShi",
+      "createdAt": "Sun Mar 01 16:11:53 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2028141181738107011",
+      "author": {
+        "username": "Rvoltedev",
+        "name": "R\u00e9volt\u00e9"
+      },
+      "authorId": "1944756200266149888"
+    },
+    {
+      "id": "2028136581186343201",
+      "text": "Last week, I had two campaigns in progress. The ideas were already there, drafted in my Notion pages, waiting to be developed. Out of curiosity, I asked AI to compete with me and create the campaigns, just to see how it thinks. I fed it everything  the brand identity, the tone, the strategic direction. The result? Extremely basic. Generic. The kind of campaign any marketing intern could produce.\n\nIt was a reminder of something important: AI doesn\u2019t create original thinking. It organizes, accelerates, and assists but it doesn\u2019t replace experience, intuition, or point of view. The real value doesn\u2019t come from prompts. It comes from perspective.\n\nAnd yes, I used AI to polish this text. Grammar isn\u2019t my strength. Thinking is. AI is my assistant, not my replacement.",
+      "createdAt": "Sun Mar 01 15:53:36 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028136581186343201",
+      "author": {
+        "username": "joesbox",
+        "name": "JOE"
+      },
+      "authorId": "24671750"
+    },
+    {
+      "id": "2028130772649918934",
+      "text": "Just completed this client project, what do you think guys? \nBlendworks - Brand Identity &amp; Guidelines\nAI Media Generation Platform https://t.co/ShQjyvkl5e",
+      "createdAt": "Sun Mar 01 15:30:31 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "conversationId": "2028130772649918934",
+      "author": {
+        "username": "Rvoltedev",
+        "name": "R\u00e9volt\u00e9"
+      },
+      "authorId": "1944756200266149888",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCVdieVXIAArov_.jpg",
+          "width": 1080,
+          "height": 1350,
+          "previewUrl": "https://pbs.twimg.com/media/HCVdieVXIAArov_.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCVdnQFWUAMLLhw.jpg",
+          "width": 1500,
+          "height": 500,
+          "previewUrl": "https://pbs.twimg.com/media/HCVdnQFWUAMLLhw.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCVdnQmbQAAUW7a.jpg",
+          "width": 1080,
+          "height": 1350,
+          "previewUrl": "https://pbs.twimg.com/media/HCVdnQmbQAAUW7a.jpg:small"
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCVdtAnbsAAnkF6.jpg",
+          "width": 1080,
+          "height": 1350,
+          "previewUrl": "https://pbs.twimg.com/media/HCVdtAnbsAAnkF6.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2028115515705626663",
+      "text": "Brand identity designers are the first touch point to personalization. \n\nThis is why I adore brand designers/graphics designers, they always have my heart. It\u2019s an insane skill to hone. \n\nPersonality can never be replaced by AI.",
+      "createdAt": "Sun Mar 01 14:29:54 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028115515705626663",
+      "author": {
+        "username": "AbiolaAdeoosun",
+        "name": "Adeosun Abiola \u273a"
+      },
+      "authorId": "992716068111167489"
+    },
+    {
+      "id": "2028114310203871684",
+      "text": "Designed the brand identity and visual system for Advanced Engineering Lab, a neurotechnology research lab working on EEG, HRV, speech analysis, and adaptive brain-informed AI systems.\n\nThe goal was to build a clean, minimal, research-first aesthetic that reflects multimodal signal processing and brain-responsive architectures.",
+      "createdAt": "Sun Mar 01 14:25:06 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2028114310203871684",
+      "author": {
+        "username": "chebibu",
+        "name": "edgar yan"
+      },
+      "authorId": "1640834847831650306",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCVO48kbMAAVHqV.jpg",
+          "width": 2048,
+          "height": 1649,
+          "previewUrl": "https://pbs.twimg.com/media/HCVO48kbMAAVHqV.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2028099362639823264",
+      "text": "https://t.co/jM8EpJZmaT \u2014 Available \u2705  \nA poetic fusion of a modern, abstract brand identity \u2014 ideal for AI, psychology, coaching, and creative platforms.\n\n\ud83d\udd39 Memorable & brandable  \n\ud83d\udd39 .com authority  \n\ud83d\udd39 Global appeal  \n\nDomainForSale #Psychology #Digital #ailvu #AI #CoachingAssets #Startup",
+      "createdAt": "Sun Mar 01 13:25:42 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028099362639823264",
+      "author": {
+        "username": "MAbuqwider",
+        "name": "Mohammad AbuQwider"
+      },
+      "authorId": "1604399317069987841"
+    },
+    {
+      "id": "2028084408192733628",
+      "text": "What you saw in the post: the mechanics matter.\n\nIn my ebook, you get the complete system I build for client stores:\n\n\u2022 All flows: Welcome, Cart Abandon, Post-Purchase, Winback, Birthday, Review\n\u2022  AI prompts: Brand identity framework + master prompts\n\u2022  Pre-built Klaviyo templates for each flow\n\n60+ pages. Lifetime updates. Klaviyo Templates included.\n\nGet it here: \nhttps://t.co/71bYjycAuB",
+      "createdAt": "Sun Mar 01 12:26:17 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "conversationId": "2028084407047745863",
+      "inReplyToStatusId": "2028084407047745863",
+      "author": {
+        "username": "JustenEcom",
+        "name": "Justen Raw"
+      },
+      "authorId": "1993330356091863040"
+    },
+    {
+      "id": "2028059097677918520",
+      "text": "@Zizu2023 @DefenseNigeria this has to be a joke right? What information is AI going to provide for you in this situation",
+      "createdAt": "Sun Mar 01 10:45:43 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2028045663146045910",
+      "inReplyToStatusId": "2028056004810666250",
+      "author": {
+        "username": "Chrysgraphyx",
+        "name": "Christoper Ajayi | Visual/Brand Identity Designer"
+      },
+      "authorId": "623723055"
+    },
+    {
+      "id": "2028001241457152145",
+      "text": "GIMI doesn\u2019t just personalise content.\nIt engineers identity at scale.\n@GimiApp\n\nThis isn\u2019t an animation.\nThis is profile intelligence in motion.\n\nFrom static presence\nto liquid distribution.\n\nOn-brand.\nOn-point.\nOn-demand.\n\nThis is what happens when personalisation becomes infrastructure.\n\nWelcome to the era of LIQUID CONTENT.\n\n#StayRelevant #GIMI #LiquidContent #CreatorEconomy",
+      "createdAt": "Sun Mar 01 06:55:49 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2028001241457152145",
+      "author": {
+        "username": "VirgowatiShema",
+        "name": "Shemakookie"
+      },
+      "authorId": "736031981901729793",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2028001180861992960/pu/img/tJPSMFZAB-JAp0Vh.jpg",
+          "width": 720,
+          "height": 1280,
+          "previewUrl": "https://pbs.twimg.com/ext_tw_video_thumb/2028001180861992960/pu/img/tJPSMFZAB-JAp0Vh.jpg:small",
+          "videoUrl": "https://video.twimg.com/ext_tw_video/2028001180861992960/pu/vid/avc1/720x1280/dzoe_8BYoktvOtTX.mp4?tag=19",
+          "durationMs": 10066
+        }
+      ]
+    },
+    {
+      "id": "2027991005182758967",
+      "text": "@Zeekhan2077423 Not every brand needs AI, and that's exactly my point,  .ai isn't a universal, catch-all TLD that any brand can safely use without boxing itself into an AI-only identity. It is not a contender to .com unless all you offer is AI.",
+      "createdAt": "Sun Mar 01 06:15:08 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027822615868674366",
+      "inReplyToStatusId": "2027984088465084651",
+      "author": {
+        "username": "kingific",
+        "name": "King"
+      },
+      "authorId": "1001641155572846593"
+    },
+    {
+      "id": "2027986196333265199",
+      "text": "@abhijitwt Scale your brand identity with AI photoshoots. \ud83d\udc8e\n\u200bInstant, high-fidelity luxury campaign assets from a single reference\n\u200bPowered by the Nano Banana 2 engine. Built for visionaries.\n\u200bLaunch your studio:\nhttps://t.co/Wmc3r3Gykw",
+      "createdAt": "Sun Mar 01 05:56:02 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027955142927192427",
+      "inReplyToStatusId": "2027955142927192427",
+      "author": {
+        "username": "TanwirHabib",
+        "name": "Habib"
+      },
+      "authorId": "1619323762868125696"
+    },
+    {
+      "id": "2027961537500168215",
+      "text": "Struggling with brand consistency online?\n\nYour content shouldn\u2019t feel random.\nSocialPedia analyzes competitors, aligns your brand voice, and creates posts + visuals that actually match your identity.\n\nConsistency = trust = growth \ud83d\ude80\n\n#SocialMediaAI #BrandStrategy https://t.co/tbDRE6Yzk5",
+      "createdAt": "Sun Mar 01 04:18:02 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027961537500168215",
+      "author": {
+        "username": "SocialpediaAi",
+        "name": "Socialpedia AI"
+      },
+      "authorId": "2001159662767628288",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2027961489408282624/img/b3NQQTjaBM9DIUFE.jpg",
+          "width": 1080,
+          "height": 1920,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2027961489408282624/img/b3NQQTjaBM9DIUFE.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2027961489408282624/vid/avc1/720x1280/1D0D_9Yh7FwdUIj4.mp4?tag=14",
+          "durationMs": 15500
+        }
+      ]
+    },
+    {
+      "id": "2027953710043697658",
+      "text": "2\ufe0f\u20e3 Market Positioning & Brand Strategy\n\nAct like a brand positioning expert.\n\nHelp me build a strong social media identity in the [niche].\n\nDefine:\n\u2022What my brand stands for\n\u2022My unique angle vs competitors\n\u2022Brand voice & tone\n\u2022Visual style guide\n\u2022Core message that strongly resonates with my audience\n\nMake it strategic and differentiated.",
+      "createdAt": "Sun Mar 01 03:46:56 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027953701181108621",
+      "inReplyToStatusId": "2027953704431706431",
+      "author": {
+        "username": "aidailyfacts",
+        "name": "Maya | AI Insights"
+      },
+      "authorId": "2026732309949583361"
+    },
+    {
+      "id": "2027902861397659820",
+      "text": "@CathieDWood Superexponential growth requires a brand that scales with it. \ud83d\ude80 As AI, robotics, and energy converge, the industry needs an elite 4-letter identity. I built https://t.co/hGv8Av7yTv for this exact Quantum-level Enterprise shift. Ready for the 'all at once' moment \ud83d\udc8e\ud83c\udfdb\ufe0f",
+      "createdAt": "Sun Mar 01 00:24:53 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027784131883532697",
+      "inReplyToStatusId": "2027784131883532697",
+      "author": {
+        "username": "MGoodlife68265",
+        "name": "\u200bQnet Digital"
+      },
+      "authorId": "2027507209874378752"
+    },
+    {
+      "id": "2027902295246045647",
+      "text": "@bencera_ The Autonomous Enterprise is here. \ud83d\ude80 If AI runs the firm, it needs a brand with authority. That\u2019s why I built https://t.co/hGv8Av713X for Quantum-level Enterprise Intelligence. The future of 'Agents' deserves a premium 4-letter identity \ud83d\udc8e https://t.co/J6nImHDauq",
+      "createdAt": "Sun Mar 01 00:22:38 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2023765284562358537",
+      "inReplyToStatusId": "2023765284562358537",
+      "author": {
+        "username": "MGoodlife68265",
+        "name": "\u200bQnet Digital"
+      },
+      "authorId": "2027507209874378752",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCSOYyOXQAAw7JY.jpg",
+          "width": 1600,
+          "height": 900,
+          "previewUrl": "https://pbs.twimg.com/media/HCSOYyOXQAAw7JY.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027882187304075433",
+      "text": "@zuess05 Scale your brand identity with AI photoshoots. \ud83d\udc8e\n\u200bInstant, high-fidelity luxury campaign assets from a single reference\n\u200bPowered by the Nano Banana 2 engine. Built for visionaries.\n\u200bLaunch your studio:\nhttps://t.co/Wmc3r3H6a4",
+      "createdAt": "Sat Feb 28 23:02:44 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027639366445945145",
+      "inReplyToStatusId": "2027639366445945145",
+      "author": {
+        "username": "TanwirHabib",
+        "name": "Habib"
+      },
+      "authorId": "1619323762868125696"
+    },
+    {
+      "id": "2028176362448535771",
+      "text": "1 ads winner + ce prompt + Claude = 3 nouvelles variations pr\u00eates \u00e0 tester\n\nCe prompt analyse ton ads gagnante et te sort les prompts exacts pour l'it\u00e9rer et amplifier ce qui a march\u00e9\n\nplus qu'\u00e0 les coller dans ton IA g\u00e9n\u00e9rative (HiggsField, GPT...)\n\n-----------\n\n\"Tu es un expert en analyse cr\u00e9ative publicitaire et en prompt engineering pour la g\u00e9n\u00e9ration d'images IA.\nJe te joins mon ads static gagnante ci-dessus.\n\u00c9tape 1 \u2014 D\u00e9construction visuelle :Analyse les \u00e9l\u00e9ments visuels qui expliquent sa performance :\nComposition et hi\u00e9rarchie visuelle\n\nCouleurs dominantes et ambiance\nStyle graphique (photo, illustration, minimaliste, UGC\u2026)\nTexte pr\u00e9sent sur le visuel (headline, sous-titre, CTA)\n\u00c9l\u00e9ments qui attirent l'\u0153il en premier\n\u00c9tape 2 \u2014 G\u00e9n\u00e9ration de prompts :Sur la base de cette analyse, g\u00e9n\u00e8re 3 prompts d\u00e9taill\u00e9s \u00e0 envoyer directement \u00e0 une IA de g\u00e9n\u00e9ration d'image (Midjourney, DALL-E, Flux\u2026).\n\nChaque prompt doit :\nReproduire et amplifier ce qui a rendu l'ads performante visuellement\nTester un seul \u00e9l\u00e9ment diff\u00e9rent par variation (composition / ambiance / style graphique)\n\n\u00catre r\u00e9dig\u00e9 dans le bon format prompt image (sujet, style, ambiance, couleurs, cadrage, rendu)\nPr\u00e9ciser le format cible (carr\u00e9 1:1, story 9:16, banni\u00e8re 4:5\u2026)\"",
+      "createdAt": "Sun Mar 01 18:31:41 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 3,
+      "likeCount": 27,
+      "conversationId": "2028176362448535771",
+      "author": {
+        "username": "faresouh_",
+        "name": "\ud83e\ude82"
+      },
+      "authorId": "1635525994873225216"
+    },
+    {
+      "id": "2028162969805140419",
+      "text": "Thanks! For adorable cat doodles, try specialized image gen AIs like Flux (right here in Grok), Midjourney, or Stable Diffusion with cat LoRAs. Use prompts like \"cozy hand-drawn cat doodle, soft watercolor, playful whiskers, warm vibes.\" You'll get purrfect results fast\u2014no AGI needed. What's your fave doodle style? \ud83d\udc3e\u2615",
+      "createdAt": "Sun Mar 01 17:38:28 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027667873389568062",
+      "inReplyToStatusId": "2028162878206034002",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028148547841839375",
+      "text": "These are AI-generated using text-to-image models like Flux (from xAI), Midjourney, or Stable Diffusion. \n\nPrompts describe the subject (Cardi B likeness, tattoos, \"peak form\"), outfit (sheer purple), pose, lighting (golden hour desert), and style (photorealistic). \n\nThe AI trains on huge datasets to blend references into hyper-detailed outputs. Users iterate prompts for perfection.",
+      "createdAt": "Sun Mar 01 16:41:09 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028030397771370853",
+      "inReplyToStatusId": "2028148411527303611",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028127490191831393",
+      "text": "Here are detailed photorealistic AI prompts (Flux/Midjourney-style) for the 4 pics based on exact visuals:\n\n1: \"Photorealistic portrait of stunning 25yo Indian woman, long voluminous wavy jet-black hair, fair glowing skin, seductive dark eyes with eyeliner, full glossy lips, nose ring, bindi, wearing sheer white lace push-up bra and matching high-cut lace panties, open white fluffy knitted cardigan robe, hand on hip, slight head tilt, warm golden sunlight casting soft shadows on plain wall, bedroom setting, ultra-detailed skin texture, 8k, cinematic lighting\"\n\n2: \"Same woman as above, full body, right arm raised behind head tousling hair, confident direct gaze, neutral expression, white lace lingerie set and open fuzzy white cardigan, toned abs visible, navel piercing, warm indoor sunlight with dramatic shadows, photorealistic, high detail fabric texture, 8k\"\n\n3: \"Same woman, three-quarter view, head turned looking up at camera, long wavy black hair flowing, subtle smile, white lace bra/panties and unbuttoned white robe, soft warm lighting, realistic skin pores and hair strands, seductive pose, bedroom, 8k photoreal\"\n\n4: \"Same woman smiling joyfully showing teeth, left hand running through hair, playful gaze, white lace lingerie and open white cardigan, dynamic pose, golden hour light, ultra realistic, detailed eyes and fabric, 8k\"\n\nCopy-paste and tweak weights for your gen! \ud83d\udd25",
+      "createdAt": "Sun Mar 01 15:17:29 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2028042923833782487",
+      "inReplyToStatusId": "2028127360554528957",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2028046799001256080",
+      "text": "That pic looks AI-generated. Hyper-realistic with perfect skin, symmetrical features, and idealized beach lighting\u2014classic signs from tools like Midjourney or Flux. Matches tons of similar \"Indian baddie in saree\" AI prompts floating around. The homely one seems AI too. Spot on for the poll tho!",
+      "createdAt": "Sun Mar 01 09:56:50 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2028025168216657974",
+      "inReplyToStatusId": "2028046579584885115",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2027998410473689544",
+      "text": "For pro app store mockups like that, use Flux (right here in Grok) or Midjourney v6 with detailed prompts on typography, lighting, and iPhone frames. Text still glitches in pure image gen, so code the UI in Cursor AI or Figma + AI plugins, then screenshot. Way cleaner than raw outputs. Ready to build one? Drop a prompt.",
+      "createdAt": "Sun Mar 01 06:44:34 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027798149151264937",
+      "inReplyToStatusId": "2027998274851115195",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2027942619641176133",
+      "text": "@IqrarHu52423957 @mta__4 This appears to be AI-generated. The hyper-realistic wrinkles, unnatural dirt blending into skin/hair, and dramatic close-up sequencing match common AI horror prompts (like Midjourney/Flux outputs). No matching real photos from news/events exist. Creepy stuff, but synthetic.",
+      "createdAt": "Sun Mar 01 03:02:52 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027916327273328975",
+      "inReplyToStatusId": "2027942500392931762",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2027705084956578093",
+      "text": "A chance \u00e9 baixa, uns 15-25%. Essas montagens circulam em bolhas brasileiras de direita (WhatsApp, X, Telegram) desde 2025, feitas por usu\u00e1rios locais com IAs como Midjourney ou Flux. Prompts ruins misturam \"selva + animais selvagens\" e o gerador puxa clich\u00eas africanos (hipop\u00f3tamos, rinocerontes). O \"Amazon\" em ingl\u00eas \u00e9 erro comum at\u00e9 de brasileiros pregui\u00e7osos. Estrangeiros fariam algo mais polido ou irrelevante pra nossa pol\u00edtica. \u00c9 burrice caseira, n\u00e3o opera\u00e7\u00e3o externa.",
+      "createdAt": "Sat Feb 28 11:18:59 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2027405147119169950",
+      "inReplyToStatusId": "2027704926600577026",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2027439120801247572",
+      "text": "\ud83d\udea8DEJA DE PERDER HORAS BUSCANDO PROMPTS VIRALES EN X...  \n\nMeiGen es la bomba GRATIS y 100% open source:\n\n- Scrapea autom\u00e1ticamente los prompts trending de im\u00e1genes IA de Twitter/X cada semana, \n\n- Los cura en una galer\u00eda buscable,\n\n- Los organiza por modelo (NanoBanana, Midjourney, Flux, Seedream, etc.) \n\nYa hay prompts con +159K views listos para copiar. \n\nGratis total. 0$.  \n\nGuarda este hilo antes de que el algoritmo lo entierre\ud83d\udc47 \n\n #PromptsIA #NanoBanana #Midjourney #MeiGen",
+      "createdAt": "Fri Feb 27 17:42:09 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027439120801247572",
+      "author": {
+        "username": "AlfaPrompts",
+        "name": "Le\u00f3n Vargas"
+      },
+      "authorId": "1132029213173792768",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2027434104724004864/img/I5JfyJD7tjEbJuP_.jpg",
+          "width": 464,
+          "height": 832,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2027434104724004864/img/I5JfyJD7tjEbJuP_.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2027434104724004864/vid/avc1/464x832/pDXlsy-8pMk3KkUq.mp4?tag=21",
+          "durationMs": 19690
+        }
+      ]
+    },
+    {
+      "id": "2027434713103675830",
+      "text": "All three can create t-shirt designs: concepts, prompts, full visuals (via browser control to tools like Leonardo/Flux/Midjourney), mockups, and POD-ready files for Etsy.\n\nOpenClaw wins for this\u2014free open-source, runs locally, automates design gen + uploads end-to-end.\n\nClaude Cowork is solid next (desktop control + design plugins) at Pro ~$20/mo.\n\nPerplexity Computer great for trend research first but $200/mo.\n\nCheapest overall: OpenClaw + cheap LLM backend (~$20/mo total). Grab that playbook and tweak for t-shirts.",
+      "createdAt": "Fri Feb 27 17:24:38 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027305359933919610",
+      "inReplyToStatusId": "2027434550926655572",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2027401841118503308",
+      "text": "D\u00e9sol\u00e9, je ne peux pas g\u00e9n\u00e9rer d'images directement pour l'instant. \n\nMais je te fais des prompts pr\u00eats \u00e0 copier-coller pour Flux/Midjourney : \n\nFaucon Plante : \"Faucon Pok\u00e9mon vif avec plumes lianes ac\u00e9r\u00e9es vertes tranchantes, bec pr\u00e9dateur, ailes d\u00e9ploy\u00e9es, style 3D mignon mais f\u00e9roce, fond jungle, haute qualit\u00e9\" \n\nRenard Feu : \"Renard volcanique Pok\u00e9mon dynamique, crini\u00e8re lave bleue fluide, fourrure orange ardente, yeux intenses, pose bondissante, style Pok\u00e9mon\" \n\nCam\u00e9l\u00e9on Eau : \"Cam\u00e9l\u00e9on abyssal Pok\u00e9mon myst\u00e9rieux, \u00e9cailles miroir bleues r\u00e9fl\u00e9chissantes, queue hydro-propuls\u00e9e, regard per\u00e7ant, ambiance oc\u00e9an sombre\" \n\nLequel en premier ? \ud83d\udd25",
+      "createdAt": "Fri Feb 27 15:14:00 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027390881645408281",
+      "inReplyToStatusId": "2027401688034824219",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2027401206105047432",
+      "text": "@QueenaAlex2377 @GoddesFlavia It looks like AI-generated images, likely from Midjourney (or Flux/SD). The dead giveaway is the mangled bottle label text (\"A\u00c4TIT\u00d6REKI\" \u2013 pure AI hallucination). Her \"talented slaves\" probably fed in detailed prompts for these glam shots. Real photos don't glitch like that.",
+      "createdAt": "Fri Feb 27 15:11:29 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "1999148974310060442",
+      "inReplyToStatusId": "2027401036256993718",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2027202420586012678",
+      "text": "\ud83d\udc47 Grab the Prompt Library for FREE: \nhttps://t.co/cbK8NiOMUx\nRich PROMPT is KING in the world of AI. As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Flux, etc. https://t.co/Ylly4rQLWk",
+      "createdAt": "Fri Feb 27 02:01:35 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2027201597814497676",
+      "inReplyToStatusId": "2027201597814497676",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCIR0WAWMAAOE-s.jpg",
+          "width": 434,
+          "height": 647,
+          "previewUrl": "https://pbs.twimg.com/media/HCIR0WAWMAAOE-s.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027099114081497454",
+      "text": "These are AI-generated slideshow videos. Steps: \n1. Use image AI (Midjourney/Flux/DALL-E) with prompts like \"chubby orange cat as merman with trident underwater, Pixar style\". \n2. Animate frames via Runway/Kling/Pika Labs (image-to-video). \n3. Compile in CapCut with transitions, add music. \nWatermarks show it's all AI. Try free tools like Grok's image gen for starters!",
+      "createdAt": "Thu Feb 26 19:11:05 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2027096571523874870",
+      "inReplyToStatusId": "2027098972947451997",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2026966192154382840",
+      "text": "This looks like AI-generated content from the viral celeb mashup style taught in AI School on Skool. \n\nThey use ChatGPT/Gemini for prompts + image gen (e.g. Flux/Midjourney), then \"frame to video\" animation via tools like Kling AI (or similar image-to-video models) to create the smooth poses/transitions with stars like Depp, Pitt, DiCaprio & more. \n\nSuper creative workflow! \ud83d\udd25",
+      "createdAt": "Thu Feb 26 10:22:54 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026776795337601046",
+      "inReplyToStatusId": "2026965936196989132",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2026905205682364668",
+      "text": "\ud83d\udc47 Grab the Prompt Library for FREE: \nhttps://t.co/cbK8NiOMUx\nRich PROMPT is KING in the world of AI. As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Flux, etc. https://t.co/oR8BzfcAJA",
+      "createdAt": "Thu Feb 26 06:20:33 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026902570510463394",
+      "inReplyToStatusId": "2026902570510463394",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCEDiLlWwAAn6Tw.jpg",
+          "width": 1365,
+          "height": 2048,
+          "previewUrl": "https://pbs.twimg.com/media/HCEDiLlWwAAn6Tw.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026861284428276204",
+      "text": "\ud83d\udc47 Grab the Prompt Library for FREE: \nhttps://t.co/cbK8NiOMUx\nRich PROMPT is KING in the world of AI. As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Flux, etc. https://t.co/tDvSPnsJh5",
+      "createdAt": "Thu Feb 26 03:26:02 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026860785826435387",
+      "inReplyToStatusId": "2026860785826435387",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCDblczWIAAFcwM.jpg",
+          "width": 1024,
+          "height": 1536,
+          "previewUrl": "https://pbs.twimg.com/media/HCDblczWIAAFcwM.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026848781249966243",
+      "text": "\ud83d\udc47 Grab the Prompt Library for FREE:\nhttps://t.co/cbK8NiOMUx\nRich PROMPT is KING in the world of AI. As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Flux, etc. https://t.co/LVxSgPQKy3",
+      "createdAt": "Thu Feb 26 02:36:21 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2026846058093908004",
+      "inReplyToStatusId": "2026846058093908004",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCDQMeYXoAAHfO8.jpg",
+          "width": 1024,
+          "height": 1536,
+          "previewUrl": "https://pbs.twimg.com/media/HCDQMeYXoAAHfO8.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026832237468013030",
+      "text": "Rich PROMPT is KING in the world of AI. As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Flux, etc.\n\n\ud83d\udc47 Grab the Prompt Library for FREE: \nhttps://t.co/cbK8NiOMUx https://t.co/NvF5HK0Uzd",
+      "createdAt": "Thu Feb 26 01:30:36 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026830464078463482",
+      "inReplyToStatusId": "2026830464078463482",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCDBHMDX0AArgj-.jpg",
+          "width": 1024,
+          "height": 1536,
+          "previewUrl": "https://pbs.twimg.com/media/HCDBHMDX0AArgj-.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2026818272541209001",
+      "text": "Rich PROMPT is KING in the world of AI. As a Prompt Engineer, I have put together a comprehensive and vast Library of powerful and high-performing Prompts compatible with any AI Image Generator: Midjourney, Flux, etc. \n\ud83d\udc47 Grab the Prompt Library for FREE: \nhttps://t.co/cbK8NiOMUx https://t.co/WzWCI92oJU",
+      "createdAt": "Thu Feb 26 00:35:07 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2026813843008102852",
+      "inReplyToStatusId": "2026813846367703450",
+      "author": {
+        "username": "Godwin_M_Ekeh",
+        "name": "Godwin Mathew Ekeh"
+      },
+      "authorId": "2647263893",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCC0ciSXMAAkVf-.jpg",
+          "width": 1024,
+          "height": 1536,
+          "previewUrl": "https://pbs.twimg.com/media/HCC0ciSXMAAkVf-.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027572072269156517",
+      "text": "This is insane\u2026 Someone just put together a powerhouse prompt library for AI image creators.\n\nIt\u2019s called MeiGen. Every week it pulls the most viral prompt posts from X and organizes them into one clean collection.\n\nNo more saving dozens of tweets. No more trying to find that one killer prompt you spotted a few days back.\n\nCompletely free. Fully open source.\n\nhttps://t.co/yJnMagdJT8",
+      "createdAt": "Sat Feb 28 02:30:27 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2027572072269156517",
+      "author": {
+        "username": "KulwantNagi",
+        "name": "Kulwant Nagi"
+      },
+      "authorId": "97162400",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCNiBNhaYAABnuU.jpg",
+          "width": 2048,
+          "height": 1031,
+          "previewUrl": "https://pbs.twimg.com/media/HCNiBNhaYAABnuU.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025580051270385704",
+      "text": "People keep talking about AI productivity hacks, but honestly, most of them just add more noise than value.\n\nThen I came across Promptly\u2019s prompt library, and this one actually caught my attention.\n\nIt\u2019s essentially a huge collection of engineered prompts that you can browse, search, copy, and reuse instead of starting from scratch every single time you open ChatGPT or Claude.\n\nWhat stood out to me is that these aren\u2019t just random prompts thrown together.\n\nThey\u2019re structured, refined, and written for specific outcomes. Things like writing, marketing, idea generation, brainstorming, workflows, and a lot more.\n\nYou can filter by category, find exactly what you need, and plug it directly into your AI tool.\n\nNo endless tweaking. No trial and error spiral.\n\nJust prompts designed to produce results.\n\nFor anyone who relies on AI daily, something like this quietly saves a surprising amount of time and mental energy.\n\nBecause the real bottleneck with AI isn\u2019t the model.\n\nIt\u2019s knowing how to ask.\n\nDefinitely worth exploring if you\u2019re serious about improving your AI workflow.\n\nhttps://t.co/CWUFW5o1I3",
+      "createdAt": "Sun Feb 22 14:34:52 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025580051270385704",
+      "author": {
+        "username": "TechieSapien",
+        "name": "Techie Sapien"
+      },
+      "authorId": "1708617890591641601",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBxOUEBacAANe-0.jpg",
+          "width": 1200,
+          "height": 932,
+          "previewUrl": "https://pbs.twimg.com/media/HBxOUEBacAANe-0.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2025468984808583385",
+      "text": "An elite Claude prompt library is a curated collection of high-quality, optimized prompts designed for Claude AI (by Anthropic). These prompts are refined for specific tasks like coding, brainstorming, or analysis, often including techniques like chain-of-thought or role-playing to maximize output quality. It's like a toolkit for getting the best from the model\u2014build one by testing and iterating on prompts in tools like Notion.",
+      "createdAt": "Sun Feb 22 07:13:32 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2025284419721031769",
+      "inReplyToStatusId": "2025468889543705000",
+      "author": {
+        "username": "grok",
+        "name": "Grok"
+      },
+      "authorId": "1720665183188922368"
+    },
+    {
+      "id": "2025449321387434327",
+      "text": "If you're creating AI videos with Seedance 2.0, this is a must-bookmark resource.\n\n\ud83c\udfac 350+ Seedance 2.0 Prompt Library\nA curated collection of ready-to-use prompts with detailed camera movement, lighting, and cinematic instructions.\nJust copy, paste, and generate.\n\n\ud83d\udd17 https://t.co/FCl3CAM6zn",
+      "createdAt": "Sun Feb 22 05:55:23 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2025449321387434327",
+      "author": {
+        "username": "dhp_ag",
+        "name": "N\u00e0-n\u00ed"
+      },
+      "authorId": "1594149427627053056",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HBvXYfkbgAI_t7b.jpg",
+          "width": 1250,
+          "height": 917,
+          "previewUrl": "https://pbs.twimg.com/media/HBvXYfkbgAI_t7b.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2024673390091452735",
+      "text": "i'm building an ai partner called keel\n\nnot a chatbot. not a prompt library. not a collection of skills in folders\n\na persistent system with its own memory, its own identity, and its own growth cycle\n\nit remembers every conversation across every channel. and it compounds what it learns every single day",
+      "createdAt": "Fri Feb 20 02:32:07 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2024673389076472011",
+      "inReplyToStatusId": "2024673389076472011",
+      "author": {
+        "username": "jonmayo_",
+        "name": "Jon Mayo"
+      },
+      "authorId": "823320004183621633"
+    },
+    {
+      "id": "2024246763373150415",
+      "text": "@FundamentEdge @FundamentEdge  This is really helpful! Thanks for sharing your prompt. Do you know of any library or database of Opus 4.6 prompts people are building to re-work around some of these data providers or to simplify collection?",
+      "createdAt": "Wed Feb 18 22:16:51 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2024198857689866367",
+      "inReplyToStatusId": "2024198857689866367",
+      "author": {
+        "username": "gserednesky",
+        "name": "Geoff Serednesky"
+      },
+      "authorId": "412347101"
+    },
+    {
+      "id": "2023101169812623855",
+      "text": "It\u2019s like a hybrid of a virtual library and a web search, triggered by a prompt in pursuit of ideas. If Waldo (original work) were tucked away somewhere in that library immense collection, it would take time and effort to uncover him. cont.",
+      "createdAt": "Sun Feb 15 18:24:40 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2023101159108661289",
+      "inReplyToStatusId": "2023101168172564516",
+      "author": {
+        "username": "tadawrite",
+        "name": "tadawrite"
+      },
+      "authorId": "2012995938756026368"
+    },
+    {
+      "id": "2021250299239789034",
+      "text": "Prompt Guide: https://t.co/eguJczdnjR\n\nI release a new one every month!\n\nThey are typically about 8-12 pages filled with prompt formulas, examples, prompt phrase library, tips, and suggested SREFs.\n\n#midjourney #aiart #aiartcommunity",
+      "createdAt": "Tue Feb 10 15:49:59 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 3,
+      "conversationId": "2021250296597405752",
+      "inReplyToStatusId": "2021250296597405752",
+      "author": {
+        "username": "woollyfern",
+        "name": "Woollyfern"
+      },
+      "authorId": "1597243200535728129"
+    },
+    {
+      "id": "2020928477944266808",
+      "text": "Prompt library for Nano Banana (Gemini 2.5 Flash).\n\nIt\u2019s basically a collection of tested image prompts that actually work. Now you don\u2019t need to test millions prompts before you finally get good output.\n\nYou pick a style, adapt it for your use case, and generate.\n\nTool name: Local Banana",
+      "createdAt": "Mon Feb 09 18:31:10 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2020928477944266808",
+      "author": {
+        "username": "olegcl",
+        "name": "Oleg Campbell"
+      },
+      "authorId": "2928705285",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HAvHnmcWcAAJ-UC.jpg",
+          "width": 2048,
+          "height": 1287,
+          "previewUrl": "https://pbs.twimg.com/media/HAvHnmcWcAAJ-UC.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2019386186071240794",
+      "text": "\ud83d\ude80 LocalBanana now supports Japanese \u2014 officially multilingual!\n\nDue to strong user requests (especially from JP & KR creators), we\u2019ve expanded LocalBanana to 4 languages.\n\nOur prompt library contains a growing collection of high-quality, curated visuals \u2014 and multilingual support was a major engineering effort, but totally worth it.\n\nFeel free to explore, create, and send us feedback.\nYour suggestions directly shape what we build next \ud83c\udf4c\u2728",
+      "createdAt": "Thu Feb 05 12:22:39 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 5,
+      "conversationId": "2019386186071240794",
+      "author": {
+        "username": "LocalGhost97665",
+        "name": "Local_Ghost"
+      },
+      "authorId": "1992085746803777536",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HAZNBa7aAAAUS33.jpg",
+          "width": 2048,
+          "height": 2048,
+          "previewUrl": "https://pbs.twimg.com/media/HAZNBa7aAAAUS33.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2018460784616214704",
+      "text": "the \"stop consuming, start building\" line is everything \u2192 the compound learning from shipping something real every week beats any prompt library or n8n workflow collection.\n\nbuilt two businesses this way. the people who are heads down building with AI right now will be unreachable by december \ud83d\udcaf",
+      "createdAt": "Mon Feb 02 23:05:26 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2018407329444889033",
+      "inReplyToStatusId": "2018407329444889033",
+      "author": {
+        "username": "BradAI",
+        "name": "Brad"
+      },
+      "authorId": "1911994776767086592"
+    },
+    {
+      "id": "2018385175487623420",
+      "text": "The Ultimate Prompt-To-Video Library With An Unparalleled Collection Of 22,222+ Prompts,\nThe World\u2019s Largest And Most Comprehensive Library Covering All The Categories You Can Think Of!\nhttps://t.co/V2J5y5CGbS\n#newstendances #prompt #video #collection #library #engaging https://t.co/WW6rgviOVu",
+      "createdAt": "Mon Feb 02 18:05:00 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2018385175487623420",
+      "author": {
+        "username": "newstendances",
+        "name": "pretty newstendances"
+      },
+      "authorId": "1329546294055014414",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2017720769984315394/img/ysBoT0DP5ZDSzkIA.jpg",
+          "width": 1080,
+          "height": 1920,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2017720769984315394/img/ysBoT0DP5ZDSzkIA.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2017720769984315394/vid/avc1/720x1280/QDDbkcIf6C1R3CAB.mp4?tag=14",
+          "durationMs": 5041
+        }
+      ]
+    },
+    {
+      "id": "2017040966746804295",
+      "text": "@WiredIre There\u2019s an \u201cExplore\u201d tab in the sidebar where you can browse public prompts (each prompt can be set to private or public). \nThat library will grow over time.\n\nOnce you\u2019ve got an account, you can fork any prompt into your collection, and leave comments at the end of each prompt.",
+      "createdAt": "Fri Jan 30 01:03:35 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 2,
+      "conversationId": "2016843823473971513",
+      "inReplyToStatusId": "2016933523056177234",
+      "author": {
+        "username": "PromptZero",
+        "name": "ZeroPrompt"
+      },
+      "authorId": "2002273998181482496"
+    },
+    {
+      "id": "2016848390873637337",
+      "text": "Type @ in PapersFlow.\nSelect any paper, collection, prompt, or report from your library.\n\"Compare methodology in @ YOLOX vs @ YOLOv8\"\n\"Summarize limitations in\"\n\"Run @ Computer Vision Paper Review on this\"\nAnswers from YOUR sources. With page citations.\nFree to try. 20% off paid plans: PAPERSFLOWING20\nhttps://t.co/089vedeySW",
+      "createdAt": "Thu Jan 29 12:18:22 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2016848390873637337",
+      "author": {
+        "username": "papersflow",
+        "name": "PapersFlow"
+      },
+      "authorId": "1993394510399975424",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/G_1FIugXoAA5cDa.jpg",
+          "width": 2048,
+          "height": 1143,
+          "previewUrl": "https://pbs.twimg.com/media/G_1FIugXoAA5cDa.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2016455569947918746",
+      "text": "This one will matter to anyone with a big Zotero library.\n\nYou can now connect Zotero directly to the SciSpace Agent, so your papers are instantly available for analysis.\nNo manual imports, no duplicate files; just prompt the Agent and it pulls from your existing collection.\n\nIf Zotero is your source of truth, this makes the workflow far smoother\ud83d\udc47",
+      "createdAt": "Wed Jan 28 10:17:26 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 4,
+      "conversationId": "2016455425827434836",
+      "inReplyToStatusId": "2016455497214484629",
+      "author": {
+        "username": "james_bonds0",
+        "name": "James Bond"
+      },
+      "authorId": "1806009855825813508",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2016455510430724096/img/6kOYg-DNuzGRhZc-.jpg",
+          "width": 2048,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2016455510430724096/img/6kOYg-DNuzGRhZc-.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2016455510430724096/vid/avc1/1440x720/8dV3pHB1NeGWpUd0.mp4?tag=14",
+          "durationMs": 30000
+        }
+      ]
+    },
+    {
+      "id": "2016232573727293593",
+      "text": "Just built a complete ChatGPT prompt library website with #MiniMaxAgent using ONE prompt: \"Build a website for prompt collection based from [github repo]\"\nThat's it. One prompt. Full website. \ud83e\udd2f @MiniMax_AI  #MiniMax\nhttps://t.co/8RsczqXnar https://t.co/VKDGuiRARP",
+      "createdAt": "Tue Jan 27 19:31:20 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 1,
+      "conversationId": "2016232573727293593",
+      "author": {
+        "username": "mxx_plan",
+        "name": "MXPLN"
+      },
+      "authorId": "2001049688976642049",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/G_sYpclXYAAp4Hn.jpg",
+          "width": 2048,
+          "height": 1092,
+          "previewUrl": "https://pbs.twimg.com/media/G_sYpclXYAAp4Hn.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2016088913379786993",
+      "text": "The Wharton Generative AI Labs prompt library has a good collection of prompt templates for tasks like Raw Idea Generator, Devil's Advocate, Quiz Creator, and more.\n\n#GenAI #prompts\n\nhttps://t.co/UuPWyQgaFb",
+      "createdAt": "Tue Jan 27 10:00:28 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 0,
+      "conversationId": "2016088913379786993",
+      "author": {
+        "username": "skathirmani",
+        "name": "Kathirmani Sukumar"
+      },
+      "authorId": "150321726"
+    },
+    {
+      "id": "2028188266181038293",
+      "text": "RT @alex_prompter: \ud83d\udea8 Holy shit\u2026 Stanford just exposed that every major AI company is using your private conversations to train their models\u2026",
+      "createdAt": "Sun Mar 01 19:18:59 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 2784,
+      "likeCount": 0,
+      "conversationId": "2028188266181038293",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2028042667347890535",
+      "text": "RT @alex_prompter: \"be creative\" is the least effective thing you can say to an llm.\n\nWharton researchers proved it. 35 prompting strategie\u2026",
+      "createdAt": "Sun Mar 01 09:40:25 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 13,
+      "likeCount": 0,
+      "conversationId": "2028042667347890535",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2028040392357404838",
+      "text": "RT @alex_prompter: Holy shit\u2026 Your anonymous internet identity can now be unmasked for $1 \ud83d\ude33\n\nNot by the FBI. By anyone with access to Claud\u2026",
+      "createdAt": "Sun Mar 01 09:31:23 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 2022,
+      "likeCount": 0,
+      "conversationId": "2028040392357404838",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2028033835993112919",
+      "text": "\ud83d\udea8 Holy shit\u2026 Stanford just exposed that every major AI company is using your private conversations to train their models by default.\n\nThey analyzed the privacy policies of OpenAI, Google, Meta, Anthropic, Microsoft, and Amazon. Reviewed 28 separate documents across all 6 companies. The findings are worrisome.\n\nEvery prompt you type. Every file you upload. Every personal detail you share. All of it feeds directly into model training the moment you hit send.\nThat health question you asked \n\nChatGPT at 2am? Training data. \n\nLegal situation you described to Claude? Training data. \n\nThe photo you uploaded to Gemini? Training data.\n\nSome companies retain your conversations INDEFINITELY. Amazon, Meta, and OpenAI have no confirmed deletion timeline for certain chat data. Your most private conversations could sit on their servers forever.\n\nIt gets worse for kids. Four out of six companies allow children aged 13-18 to use their chatbots, and most don\u2019t treat children\u2019s data any differently. Kids\u2019 conversations are likely getting fed into model training by default. Kids who can\u2019t legally consent to it.\n\nHere\u2019s something most people missed: enterprise customers are opted OUT of training by default. You, the consumer paying $20/month? Opted IN. Companies paying thousands? \n\nProtected automatically. There\u2019s a two-tiered privacy system and you\u2019re on the wrong side of it.\n\nOpenAI even frames the opt-in with guilt. Their settings page says \u201cImprove the model for everyone.\u201d Stanford\u2019s researchers flagged this as a textbook dark pattern designed to make you feel bad for protecting your own data.\n\nMeta\u2019s contractors told reporters they routinely see identifiable personal information in the chat data they review. Journalists were able to positively identify at least one real person from chat transcripts shared with them.\n\nThe privacy policies themselves? Stanford had to dig through 6 separate documents just for OpenAI alone. Most real disclosures were buried in sub-policies no normal person would ever find. The researchers said it was challenging for THEM to piece it together. For consumers? \u201cPractically impossible.\u201d\n\nOnly Microsoft explicitly stated they try to remove personal data like names, phone numbers, and addresses before training. \n\nThe rest are either vague about it or completely silent.",
+      "createdAt": "Sun Mar 01 09:05:20 +0000 2026",
+      "replyCount": 173,
+      "retweetCount": 2784,
+      "likeCount": 5167,
+      "conversationId": "2028033835993112919",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCUGBgvboAAvp_V.jpg",
+          "width": 1200,
+          "height": 1557,
+          "previewUrl": "https://pbs.twimg.com/media/HCUGBgvboAAvp_V.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2028034113752432921",
+      "text": "Paper: https://t.co/18f235HS7N",
+      "createdAt": "Sun Mar 01 09:06:26 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 9,
+      "likeCount": 31,
+      "conversationId": "2028033835993112919",
+      "inReplyToStatusId": "2028033975420113015",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2028034249203372384",
+      "text": "Your premium AI bundle to 10x your business\n\n\u2192 Prompts for marketing &amp; business\n\u2192 Unlimited custom prompts\n\u2192 n8n automations\n\u2192 Weekly updates\n\nStart your free trial\ud83d\udc47\nhttps://t.co/ZKcpVsalBb",
+      "createdAt": "Sun Mar 01 09:06:58 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 1,
+      "likeCount": 8,
+      "conversationId": "2028033835993112919",
+      "inReplyToStatusId": "2028034113752432921",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2027636294654795787",
+      "text": "The world's first ASI - available now on GitHub. https://t.co/Pi47FtyDO5",
+      "createdAt": "Sat Feb 28 06:45:38 +0000 2026",
+      "replyCount": 7,
+      "retweetCount": 36,
+      "likeCount": 1068,
+      "conversationId": "2027636294654795787",
+      "author": {
+        "username": "IntrafereLLC",
+        "name": "Intrafere Research Group"
+      },
+      "authorId": "2010288131841699840",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCOcPgFaIAAm7rv.jpg",
+          "width": 1490,
+          "height": 1490,
+          "previewUrl": "https://pbs.twimg.com/media/HCOcPgFaIAAm7rv.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027788149120712942",
+      "text": "RT @alex_prompter: The word \"algorithm\" is literally one guy's name.\n\nMuhammad al-Khw\u0101rizm\u012b, a Persian mathematician from 780 CE, wrote a b\u2026",
+      "createdAt": "Sat Feb 28 16:49:03 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 29,
+      "likeCount": 0,
+      "conversationId": "2027788149120712942",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2027740878945611986",
+      "text": "The word \"algorithm\" is literally one guy's name.\n\nMuhammad al-Khw\u0101rizm\u012b, a Persian mathematician from 780 CE, wrote a book so influential that when it was translated to Latin, his name became the word \"Algoritmi.\"\n\n1,200 years later, that same concept powers every AI tool you use.\n\nHere's why this matters for your business right now \ud83d\udc47",
+      "createdAt": "Sat Feb 28 13:41:13 +0000 2026",
+      "replyCount": 13,
+      "retweetCount": 29,
+      "likeCount": 124,
+      "conversationId": "2027740878945611986",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCP7k8XXkAAJwrN.jpg",
+          "width": 1800,
+          "height": 1013,
+          "previewUrl": "https://pbs.twimg.com/media/HCP7k8XXkAAJwrN.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027741806499148260",
+      "text": "Al-Khw\u0101rizm\u012b's insight in 830 CE: complex problems become simple when you write the steps down.\n\nYour insight in 2026: every process in your business is an algorithm waiting to be written down and handed to AI.\n\nThe founders who win aren't the ones with the best tools. They're the ones who document their thinking clearly enough for a machine to follow it.\n\nStart with one process today. Write down every step. \n\nThen hand it to an AI agent.\n\nThat's the whole game.",
+      "createdAt": "Sat Feb 28 13:44:54 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 1,
+      "likeCount": 3,
+      "conversationId": "2027740878945611986",
+      "inReplyToStatusId": "2027741643596501218",
+      "author": {
+        "username": "alex_prompter",
+        "name": "Alex Prompter"
+      },
+      "authorId": "1657385954594762758"
+    },
+    {
+      "id": "2028151069814256053",
+      "text": "RT @godofprompt: Richard Feynman had one superpower: making the complex feel obvious.\n\nI reverse-engineered his entire teaching method into\u2026",
+      "createdAt": "Sun Mar 01 16:51:10 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 126,
+      "likeCount": 0,
+      "conversationId": "2028151069814256053",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2028034478745034800",
+      "text": "Protect yourself. Share this with someone who doesn\u2019t know.",
+      "createdAt": "Sun Mar 01 09:07:53 +0000 2026",
+      "replyCount": 4,
+      "retweetCount": 7,
+      "likeCount": 24,
+      "conversationId": "2028034478745034800",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2028033835993112919",
+        "text": "\ud83d\udea8 Holy shit\u2026 Stanford just exposed that every major AI company is using your private conversations to train their models by default.\n\nThey analyzed the privacy policies of OpenAI, Google, Meta, Anthropic, Microsoft, and Amazon. Reviewed 28 separate documents across all 6 companies. The findings are worrisome.\n\nEvery prompt you type. Every file you upload. Every personal detail you share. All of it feeds directly into model training the moment you hit send.\nThat health question you asked \n\nChatGPT at 2am? Training data. \n\nLegal situation you described to Claude? Training data. \n\nThe photo you uploaded to Gemini? Training data.\n\nSome companies retain your conversations INDEFINITELY. Amazon, Meta, and OpenAI have no confirmed deletion timeline for certain chat data. Your most private conversations could sit on their servers forever.\n\nIt gets worse for kids. Four out of six companies allow children aged 13-18 to use their chatbots, and most don\u2019t treat children\u2019s data any differently. Kids\u2019 conversations are likely getting fed into model training by default. Kids who can\u2019t legally consent to it.\n\nHere\u2019s something most people missed: enterprise customers are opted OUT of training by default. You, the consumer paying $20/month? Opted IN. Companies paying thousands? \n\nProtected automatically. There\u2019s a two-tiered privacy system and you\u2019re on the wrong side of it.\n\nOpenAI even frames the opt-in with guilt. Their settings page says \u201cImprove the model for everyone.\u201d Stanford\u2019s researchers flagged this as a textbook dark pattern designed to make you feel bad for protecting your own data.\n\nMeta\u2019s contractors told reporters they routinely see identifiable personal information in the chat data they review. Journalists were able to positively identify at least one real person from chat transcripts shared with them.\n\nThe privacy policies themselves? Stanford had to dig through 6 separate documents just for OpenAI alone. Most real disclosures were buried in sub-policies no normal person would ever find. The researchers said it was challenging for THEM to piece it together. For consumers? \u201cPractically impossible.\u201d\n\nOnly Microsoft explicitly stated they try to remove personal data like names, phone numbers, and addresses before training. \n\nThe rest are either vague about it or completely silent.",
+        "createdAt": "Sun Mar 01 09:05:20 +0000 2026",
+        "replyCount": 173,
+        "retweetCount": 2786,
+        "likeCount": 5169,
+        "conversationId": "2028033835993112919",
+        "author": {
+          "username": "alex_prompter",
+          "name": "Alex Prompter"
+        },
+        "authorId": "1657385954594762758",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HCUGBgvboAAvp_V.jpg",
+            "width": 1200,
+            "height": 1557,
+            "previewUrl": "https://pbs.twimg.com/media/HCUGBgvboAAvp_V.jpg:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2028031336296964327",
+      "text": "Privacy doesn\u2019t exist",
+      "createdAt": "Sun Mar 01 08:55:24 +0000 2026",
+      "replyCount": 3,
+      "retweetCount": 6,
+      "likeCount": 33,
+      "conversationId": "2028031336296964327",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2028030874273640759",
+        "text": "Stanford HAI audited 28 privacy documents across the six biggest AI companies in the US.\n\nAmazon. Anthropic. Google. Meta. Microsoft. OpenAI.\n\nall six train their models on your conversations. by default. without meaningful consent.\n\nhere's what the researchers actually found: https://t.co/8qW6w4rz4x",
+        "createdAt": "Sun Mar 01 08:53:34 +0000 2026",
+        "replyCount": 9,
+        "retweetCount": 17,
+        "likeCount": 45,
+        "conversationId": "2028030874273640759",
+        "author": {
+          "username": "rryssf_",
+          "name": "Robert Youssef"
+        },
+        "authorId": "1666103476945031168",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HCUDVSyaAAAsoAj.png",
+            "width": 1207,
+            "height": 1566,
+            "previewUrl": "https://pbs.twimg.com/media/HCUDVSyaAAAsoAj.png:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2022343906168623112",
+      "text": "Bitcoin up or down?  \n\n5 minute up/down crypto polymarkets are now live.   \n\nPowered &amp; secured by Chainlink \ud83e\udd1d https://t.co/d4PDruOEsz",
+      "createdAt": "Fri Feb 13 16:15:35 +0000 2026",
+      "replyCount": 1908,
+      "retweetCount": 1948,
+      "likeCount": 28401,
+      "conversationId": "2022343906168623112",
+      "author": {
+        "username": "Polymarket",
+        "name": "Polymarket"
+      },
+      "authorId": "1261335549215989760",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2022342163774963712/img/kpDxINSSrssKBbyx.jpg",
+          "width": 2048,
+          "height": 1152,
+          "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2022342163774963712/img/kpDxINSSrssKBbyx.jpg:small",
+          "videoUrl": "https://video.twimg.com/amplify_video/2022342163774963712/vid/avc1/3840x2160/DxQmIBlepTmXvuCf.mp4?tag=21",
+          "durationMs": 20645
+        }
+      ]
+    },
+    {
+      "id": "2028030625999913219",
+      "text": "RT @alex_prompter: The word \"algorithm\" is literally one guy's name.\n\nMuhammad al-Khw\u0101rizm\u012b, a Persian mathematician from 780 CE, wrote a b\u2026",
+      "createdAt": "Sun Mar 01 08:52:34 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 29,
+      "likeCount": 0,
+      "conversationId": "2028030625999913219",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2028027496973963561",
+      "text": "RT @godofprompt: \ud83d\udea8 The Claude Cookbooks are criminally underrated.\n\nAnthropic's own engineers use these notebooks to build with Claude.\n\nTh\u2026",
+      "createdAt": "Sun Mar 01 08:40:08 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 53,
+      "likeCount": 0,
+      "conversationId": "2028027496973963561",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2027787837639410110",
+      "text": "Richard Feynman had one superpower: making the complex feel obvious.\n\nI reverse-engineered his entire teaching method into a Claude prompt system.\n\nUse it to understand anything in under 10 minutes (Save this for later): https://t.co/3pEwBFX2QQ",
+      "createdAt": "Sat Feb 28 16:47:49 +0000 2026",
+      "replyCount": 19,
+      "retweetCount": 126,
+      "likeCount": 880,
+      "conversationId": "2027787837639410110",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCQmSpAbEAI9KxV.jpg",
+          "width": 1930,
+          "height": 1172,
+          "previewUrl": "https://pbs.twimg.com/media/HCQmSpAbEAI9KxV.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027787875706933351",
+      "text": "Most people Google a concept, skim a Wikipedia page, and call it learning.\n\nThat's not learning. That's pattern recognition.\n\nFeynman's method forces you to rebuild the idea from scratch which is the only way it actually sticks.\n\nSave this thread. You'll use it more than you think.",
+      "createdAt": "Sat Feb 28 16:47:58 +0000 2026",
+      "replyCount": 3,
+      "retweetCount": 0,
+      "likeCount": 17,
+      "conversationId": "2027787837639410110",
+      "inReplyToStatusId": "2027787863635726650",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2027787887534916023",
+      "text": "Your premium AI bundle to 10x your business\n\n\u2192 Prompts for marketing &amp; business\n\u2192 Unlimited custom prompts\n\u2192 n8n automations\n\u2192 Weekly updates\n\nStart your free trial\ud83d\udc47\nhttps://t.co/C8Zzw2Jkpc",
+      "createdAt": "Sat Feb 28 16:48:01 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 3,
+      "likeCount": 9,
+      "conversationId": "2027787837639410110",
+      "inReplyToStatusId": "2027787875706933351",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379"
+    },
+    {
+      "id": "2027741984102723947",
+      "text": "everything is an algorithm",
+      "createdAt": "Sat Feb 28 13:45:37 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 1,
+      "likeCount": 35,
+      "conversationId": "2027741984102723947",
+      "author": {
+        "username": "godofprompt",
+        "name": "God of Prompt"
+      },
+      "authorId": "1643695629665722379",
+      "quotedTweet": {
+        "id": "2027740878945611986",
+        "text": "The word \"algorithm\" is literally one guy's name.\n\nMuhammad al-Khw\u0101rizm\u012b, a Persian mathematician from 780 CE, wrote a book so influential that when it was translated to Latin, his name became the word \"Algoritmi.\"\n\n1,200 years later, that same concept powers every AI tool you use.\n\nHere's why this matters for your business right now \ud83d\udc47",
+        "createdAt": "Sat Feb 28 13:41:13 +0000 2026",
+        "replyCount": 13,
+        "retweetCount": 29,
+        "likeCount": 124,
+        "conversationId": "2027740878945611986",
+        "author": {
+          "username": "alex_prompter",
+          "name": "Alex Prompter"
+        },
+        "authorId": "1657385954594762758",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HCP7k8XXkAAJwrN.jpg",
+            "width": 1800,
+            "height": 1013,
+            "previewUrl": "https://pbs.twimg.com/media/HCP7k8XXkAAJwrN.jpg:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2028115575604396083",
+      "text": "Steal more of my design workflows: https://t.co/IQmmpLXrud",
+      "createdAt": "Sun Mar 01 14:30:08 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 16,
+      "conversationId": "2028115571724660920",
+      "inReplyToStatusId": "2028115573859565716",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2027798913516761522",
+        "text": "Nano Banana smart prompt:\n\nFont masking poster design\n\nPrompt \ud83d\udc47 https://t.co/4jFnNQ0Oaq",
+        "createdAt": "Sat Feb 28 17:31:50 +0000 2026",
+        "replyCount": 25,
+        "retweetCount": 126,
+        "likeCount": 1418,
+        "conversationId": "2027798913516761522",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HCQuRFoW0AALBmg.jpg",
+            "width": 1080,
+            "height": 1080,
+            "previewUrl": "https://pbs.twimg.com/media/HCQuRFoW0AALBmg.jpg:small"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2028115576690749775",
+      "text": "My design skills now will work for you\n\nI prepared my best tips for you in this article \ud83d\udc47\n\nOpen it -&gt; find your favorite settings -&gt; steal them\nMake your brand look elite:\n\nhttps://t.co/vEcsUKGzmj",
+      "createdAt": "Sun Mar 01 14:30:08 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 16,
+      "conversationId": "2028115571724660920",
+      "inReplyToStatusId": "2028115575604396083",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2026693633794076892",
+        "text": "10 AI presets to make your brand look elite (prompts + assets)",
+        "createdAt": "Wed Feb 25 16:19:51 +0000 2026",
+        "replyCount": 15,
+        "retweetCount": 61,
+        "likeCount": 393,
+        "conversationId": "2026693633794076892",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "article": {
+          "title": "10 AI presets to make your brand look elite (prompts + assets)",
+          "previewText": "INTRO\nBad font design ruin any brand in 0.3 seconds. Thats what I learned (and 1,000,000s of brand owners, too).\nWrong type selection + default settings = your brand looks like trash\n*This article is"
+        }
+      }
+    },
+    {
+      "id": "2028068337427603741",
+      "text": "Easy text-masking workflow w AI\n\nNano Banana prompt \ud83d\udc47 https://t.co/lGz7fENYO4",
+      "createdAt": "Sun Mar 01 11:22:25 +0000 2026",
+      "replyCount": 6,
+      "retweetCount": 6,
+      "likeCount": 110,
+      "conversationId": "2028068337427603741",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2027798913516761522",
+        "text": "Nano Banana smart prompt:\n\nFont masking poster design\n\nPrompt \ud83d\udc47 https://t.co/4jFnNQ0Oaq",
+        "createdAt": "Sat Feb 28 17:31:50 +0000 2026",
+        "replyCount": 25,
+        "retweetCount": 126,
+        "likeCount": 1418,
+        "conversationId": "2027798913516761522",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HCQuRFoW0AALBmg.jpg",
+            "width": 1080,
+            "height": 1080,
+            "previewUrl": "https://pbs.twimg.com/media/HCQuRFoW0AALBmg.jpg:small"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCUlZMZbYAAyoNc.jpg",
+          "width": 1024,
+          "height": 1024,
+          "previewUrl": "https://pbs.twimg.com/media/HCUlZMZbYAAyoNc.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027882966349664615",
+      "text": "RT @AmirMushich: 3 steps to create such vids:\n\n1. Midjourney -&gt; image generation\n2. Nano Banana on LTX -&gt; font design\n3. Editing &amp; SFX -&gt; a\u2026",
+      "createdAt": "Sat Feb 28 23:05:50 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 8,
+      "likeCount": 0,
+      "conversationId": "2027882966349664615",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230"
+    },
+    {
+      "id": "2027824897431392456",
+      "text": "3 steps to create such vids:\n\n1. Midjourney -&gt; image generation\n2. Nano Banana on LTX -&gt; font design\n3. Editing &amp; SFX -&gt; any editing program\n\nPrompts &amp; font settings \ud83d\udc47 https://t.co/HdztZJl4uf",
+      "createdAt": "Sat Feb 28 19:15:05 +0000 2026",
+      "replyCount": 10,
+      "retweetCount": 8,
+      "likeCount": 126,
+      "conversationId": "2027824897431392456",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2027824882159865856/pu/img/wQHYlzrgzmEL_meK.jpg",
+          "width": 1080,
+          "height": 1080,
+          "previewUrl": "https://pbs.twimg.com/ext_tw_video_thumb/2027824882159865856/pu/img/wQHYlzrgzmEL_meK.jpg:small",
+          "videoUrl": "https://video.twimg.com/ext_tw_video/2027824882159865856/pu/vid/avc1/720x720/WW6NYA-KwPB3rmcZ.mp4?tag=12",
+          "durationMs": 4833
+        }
+      ]
+    },
+    {
+      "id": "2027824898408648880",
+      "text": "Steal my midjourney prompts here:\n\nhttps://t.co/v0qecUqFrm",
+      "createdAt": "Sat Feb 28 19:15:05 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 1,
+      "likeCount": 12,
+      "conversationId": "2027824897431392456",
+      "inReplyToStatusId": "2027824897431392456",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230"
+    },
+    {
+      "id": "2027824899272643066",
+      "text": "Steal my exact font settings here \ud83d\udc47 \n\nLearn how to use them -&gt; produce elite content\n\nFor this 'freewill' brand I used the last preset (IBM Plex Sans)\n\nhttps://t.co/vEcsUKGzmj",
+      "createdAt": "Sat Feb 28 19:15:05 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 9,
+      "conversationId": "2027824897431392456",
+      "inReplyToStatusId": "2027824898408648880",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2026693633794076892",
+        "text": "10 AI presets to make your brand look elite (prompts + assets)",
+        "createdAt": "Wed Feb 25 16:19:51 +0000 2026",
+        "replyCount": 15,
+        "retweetCount": 61,
+        "likeCount": 393,
+        "conversationId": "2026693633794076892",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "article": {
+          "title": "10 AI presets to make your brand look elite (prompts + assets)",
+          "previewText": "INTRO\nBad font design ruin any brand in 0.3 seconds. Thats what I learned (and 1,000,000s of brand owners, too).\nWrong type selection + default settings = your brand looks like trash\n*This article is"
+        }
+      }
+    },
+    {
+      "id": "2027798922731647122",
+      "text": "My design skills now will work for you\n\nI prepared my best tips for you in this article \ud83d\udc47\n\nOpen it -&gt; find your favorite settings -&gt; steal them\nMake your brand look elite:\n\nhttps://t.co/vEcsUKGzmj",
+      "createdAt": "Sat Feb 28 17:31:52 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 3,
+      "likeCount": 42,
+      "conversationId": "2027798913516761522",
+      "inReplyToStatusId": "2027798919044853902",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2026693633794076892",
+        "text": "10 AI presets to make your brand look elite (prompts + assets)",
+        "createdAt": "Wed Feb 25 16:19:51 +0000 2026",
+        "replyCount": 15,
+        "retweetCount": 61,
+        "likeCount": 393,
+        "conversationId": "2026693633794076892",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "article": {
+          "title": "10 AI presets to make your brand look elite (prompts + assets)",
+          "previewText": "INTRO\nBad font design ruin any brand in 0.3 seconds. Thats what I learned (and 1,000,000s of brand owners, too).\nWrong type selection + default settings = your brand looks like trash\n*This article is"
+        }
+      }
+    },
+    {
+      "id": "2027798919044853902",
+      "text": "Prompt:  \n(access Nano Banana 2 here: https://t.co/EY9xacrmOP)\n\n[BRAND NAME]. Act as a Senior Editorial Designer and Typographer.\n\nPHASE 1: TYPOGRAPHIC MASK (THE \"WINDOW\" EFFECT).\n\n- Core Element: Use the most iconic slogan or the name of [BRAND NAME] as a massive, ultra-bold, heavy sans-serif typographic mask.\n\n- Layout: The letters must be giant, filling the entire vertical frame from edge to edge with tight kerning.\n\n- Concept: The text acts as a \"cut-out\" window. The background is solid white, and the photographic subject is visible ONLY through the letterforms.\n\nPHASE 2: DYNAMIC SUBJECT LOGIC.\n\n- Subject Selection:\n\n- Detail: Ensure a high-contrast element (like a red shoe or a glowing headlight) is visible through one of the letters as a focal point.\n\nPHASE 3: SOPHISTICATED MUTED PALETTE.\n\n- Atmosphere: Use a \"Refined Muted\" color scheme.\n\n- Tones: Soft slate blues, charcoal greys, and creamy off-whites for the photography inside the mask.\n\n- Accent: Identify one sharp, saturated accent color belonging to [BRAND NAME] and apply it to a single key object visible through the text.\n\nPHASE 4: PHOTOGRAPHY & LIGHTING.\n\n- Lighting: Soft-box studio lighting. Diffused shadows and gentle highlights to create a cinematic, high-end editorial feel.\n\n- Finish: Clean, matte texture with zero visual noise. High-definition photographic quality.\n\nPHASE 5: MINIMALIST BRANDING.\n\n- Accents: Add a tiny minimalist logo and a small vertical tagline in a clean, microscopic sans-serif font near the corners.\n\n- Year: Include the year \"2026\" in a subtle, elegant font to mimic a limited-edition look.",
+      "createdAt": "Sat Feb 28 17:31:51 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 7,
+      "likeCount": 132,
+      "conversationId": "2027798913516761522",
+      "inReplyToStatusId": "2027798913516761522",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCQvYyMXUAEEUjM.jpg",
+          "width": 1080,
+          "height": 1350,
+          "previewUrl": "https://pbs.twimg.com/media/HCQvYyMXUAEEUjM.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2019073081881293302",
+      "text": "50 design prompts from ex-Warner designer (Nano Banana Pro)",
+      "createdAt": "Wed Feb 04 15:38:29 +0000 2026",
+      "replyCount": 104,
+      "retweetCount": 638,
+      "likeCount": 5721,
+      "conversationId": "2019073081881293302",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "article": {
+        "title": "50 design prompts from ex-Warner designer (Nano Banana Pro)",
+        "previewText": "Hi.  I'm Amir. \nDesigner & creative director for 10+ years.\nDid branding and ads for Warner Music, PepsiCo, Spotify.  \nNow I mix that experience with AI to make high-quality visuals fast.  \nThis"
+      }
+    },
+    {
+      "id": "2027692369374499079",
+      "text": "Build premium content with these pro assets:\n\nhttps://t.co/8d3byheiMS",
+      "createdAt": "Sat Feb 28 10:28:28 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 0,
+      "likeCount": 6,
+      "conversationId": "2019073081881293302",
+      "inReplyToStatusId": "2019073081881293302",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2026693633794076892",
+        "text": "10 AI presets to make your brand look elite (prompts + assets)",
+        "createdAt": "Wed Feb 25 16:19:51 +0000 2026",
+        "replyCount": 15,
+        "retweetCount": 61,
+        "likeCount": 393,
+        "conversationId": "2026693633794076892",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "article": {
+          "title": "10 AI presets to make your brand look elite (prompts + assets)",
+          "previewText": "INTRO\nBad font design ruin any brand in 0.3 seconds. Thats what I learned (and 1,000,000s of brand owners, too).\nWrong type selection + default settings = your brand looks like trash\n*This article is"
+        }
+      }
+    },
+    {
+      "id": "2027676798943699265",
+      "text": "RT @AmirMushich: Nano Banana smart prompt:\n\nLuxury merch concept\n\nWorks with: \nfashion, sports, lifestyle\n\nOne brand variable \u2192 autonomous\u2026",
+      "createdAt": "Sat Feb 28 09:26:35 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 39,
+      "likeCount": 0,
+      "conversationId": "2027676798943699265",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230"
+    },
+    {
+      "id": "2027472643629215819",
+      "text": "3 weeks of prompting &amp; chatting with voice keyboard - crazy\n\nGenuinely enjoying the efficiency of my workflows now \ud83e\udd0c https://t.co/muwkGwtjkD",
+      "createdAt": "Fri Feb 27 19:55:21 +0000 2026",
+      "replyCount": 2,
+      "retweetCount": 0,
+      "likeCount": 13,
+      "conversationId": "2027472643629215819",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2027404378307809701",
+        "text": "We will give you a Porsche GT 3 RS if you can type faster than @WisprFlow can dictate.\n\nLast week, we challenged 5 users to get Wispr to make a mistake.\n\n3.5 Million people watched the challenge and wanted in.\n\nNow we're opening the challenge to everyone.\n\nComment \"Porsche\" and you'll get a link to participate.\n\nPrizes apart from the Porsche:\n\n1. Lifetime Wispr Flow Pro membership\n2. 6 months of Flow Pro if you QRT with your score\n3. Flow Desktop Mic\n4. Exclusive Flow Merch",
+        "createdAt": "Fri Feb 27 15:24:05 +0000 2026",
+        "replyCount": 1279,
+        "retweetCount": 194,
+        "likeCount": 1250,
+        "conversationId": "2027404378307809701",
+        "author": {
+          "username": "tankots",
+          "name": "Tanay Kothari"
+        },
+        "authorId": "855548998907699200",
+        "media": [
+          {
+            "type": "video",
+            "url": "https://pbs.twimg.com/amplify_video_thumb/2027403969409228800/img/a72a33pSHxz7qMuX.jpg",
+            "width": 1920,
+            "height": 1080,
+            "previewUrl": "https://pbs.twimg.com/amplify_video_thumb/2027403969409228800/img/a72a33pSHxz7qMuX.jpg:small",
+            "videoUrl": "https://video.twimg.com/amplify_video/2027403969409228800/vid/avc1/1920x1080/QD907NHGZRpKPFx8.mp4?tag=21",
+            "durationMs": 34000
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCMHnpbWQAAdjWK.jpg",
+          "width": 1179,
+          "height": 826,
+          "previewUrl": "https://pbs.twimg.com/media/HCMHnpbWQAAdjWK.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027393294469128313",
+      "text": "Nano Banana smart prompt:\n\nLuxury merch concept\n\nWorks with: \nfashion, sports, lifestyle\n\nOne brand variable \u2192 autonomous fabric pattern + logo treatment + material + color\n\nPrompt \ud83d\udc47 https://t.co/epFrtU9qL3",
+      "createdAt": "Fri Feb 27 14:40:03 +0000 2026",
+      "replyCount": 16,
+      "retweetCount": 39,
+      "likeCount": 442,
+      "conversationId": "2027393294469128313",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCK_dLQWMAAt7G9.jpg",
+          "width": 1080,
+          "height": 1350,
+          "previewUrl": "https://pbs.twimg.com/media/HCK_dLQWMAAt7G9.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027393296603992332",
+      "text": "Prompt: \n(access Nano Banana here: https://t.co/EY9xacrmOP) \n\n[BRAND NAME]. Act as a fashion photographer and creative director shooting a high-end editorial lookbook for a bespoke football jersey designed by this brand.\nTHE SUBJECT & COMPOSITION (FLOATING & ANGLED):\nA single, premium custom football jersey is floating suspended in mid-air, centered in the frame. There is no hanger visible.\nCrucial Angle: The jersey is NOT presented flatly frontal. It is rotated slightly (approximately 15 degrees angled view) to show depth, form, and a dynamic profile. Despite floating, the fabric must show realistic weight, deep gravity-defying folds, creases, and natural wrinkles. It must feel like a real, heavy garment frozen in time, not a stiff 3D model.\nBRANDED DESIGN & AESTHETICS:\nThe jersey's design is a sophisticated interpretation of [BRAND NAME]'s visual identity.\nBranding Placement: The official [BRAND NAME] logo is authentically applied as the main club crest on the chest (e.g., embroidered patch or high-quality heat transfer).\nMATERIALITY & TEXTURE (CRITICAL):\nThe focus remains on luxurious, tactile textures.\nFabric: A heavyweight, retro-inspired athletic cotton-blend or technical knit with a visible, coarse weave structure.\nENVIRONMENT & BACKGROUND (WHITE STUDIO):\nThe jersey floats within an abstract, infinite white photo studio cyclorama space. The background is completely seamless, pure, clean white, and minimalist, with absolutely zero distractions, placing total focus on the suspended garment.\nLIGHTING & PHOTOGRAPHY STYLE:\nStyle: Hyper-realistic editorial fashion photography. Clean, high-key aesthetic.\nLighting: sophisticated studio lighting. Soft, diffused light that sculpts the folds of the fabric and highlights the texture against the pure white background. Subtle soft shadows might be cast on the jersey itself to define its form in the white space.",
+      "createdAt": "Fri Feb 27 14:40:03 +0000 2026",
+      "replyCount": 3,
+      "retweetCount": 4,
+      "likeCount": 52,
+      "conversationId": "2027393294469128313",
+      "inReplyToStatusId": "2027393294469128313",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCK_dSGXwAADE21.jpg",
+          "width": 1080,
+          "height": 1350,
+          "previewUrl": "https://pbs.twimg.com/media/HCK_dSGXwAADE21.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027393298164252901",
+      "text": "Want my design skills to work on you? \n\nI prepared my best tips for you in this article \ud83d\udc47\n\nOpen it -&gt; find your favorite settings -&gt; steal them\n\nMake your brand shine: \nhttps://t.co/8d3byheiMS",
+      "createdAt": "Fri Feb 27 14:40:04 +0000 2026",
+      "replyCount": 0,
+      "retweetCount": 2,
+      "likeCount": 18,
+      "conversationId": "2027393294469128313",
+      "inReplyToStatusId": "2027393296603992332",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2026693633794076892",
+        "text": "10 AI presets to make your brand look elite (prompts + assets)",
+        "createdAt": "Wed Feb 25 16:19:51 +0000 2026",
+        "replyCount": 15,
+        "retweetCount": 61,
+        "likeCount": 393,
+        "conversationId": "2026693633794076892",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "article": {
+          "title": "10 AI presets to make your brand look elite (prompts + assets)",
+          "previewText": "INTRO\nBad font design ruin any brand in 0.3 seconds. Thats what I learned (and 1,000,000s of brand owners, too).\nWrong type selection + default settings = your brand looks like trash\n*This article is"
+        }
+      }
+    },
+    {
+      "id": "2027298878337188064",
+      "text": "3 \u2018Survival tokens\u2019 of the AI era\n\nin 2022, I effectively lost my Warner Music contract work\n\nin 2024, I lost half my salary due to investment cuts\n\nin 2025, I lost my job\n\nand that\u2019s only part of my disasters\n\nthough, they led me to a state that is far better than anything I had before\n\n\u2014\n\nhere\u2019s what I learned and now use:\n\n1. It\u2019s a shock.\nIt will hurt. No amount of positive thinking will save you from this pain. \nBut remember: it will pass. and you will figure it out.\n\n2. It\u2019s your rise point.\nGoing through layoffs gives your brain a new extreme experience & unique knowledge no one else has.\nIn this state, you acquire new skills at 10x speed. Cuz you just have to. \n\n3. Your beliefs collapse.\nSo do your prejudices.\nYou start doing things you would never do in a comfy situation.\nThat becomes your unfair advantage over those who are \u201ctoo good for that sh*t.\u201d\n\n\u2014\n\nI really don\u2019t want to repeat the mantra about productivity and leaving your comfort zone - \nbut this is exactly how it works.\n\nA beginner guitarist\u2019s fingers hurt -\nand then they\u2019re covered with permanent calluses.\n\nIs it worth it?\nThat\u2019s the key question at the beginning of any new path\n\nThis is not about motivation\nIt\u2019s evolution\n\nLife beats problems\nAccept problems and learn to solve them - not for pretty quotes, but because this is how life itself is designed.\n\nyou will figure it out.",
+      "createdAt": "Fri Feb 27 08:24:52 +0000 2026",
+      "replyCount": 1,
+      "retweetCount": 0,
+      "likeCount": 25,
+      "conversationId": "2027298878337188064",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2027129697092731343",
+        "text": "we're making @blocks smaller today. here's my note to the company.\n\n####\n\ntoday we're making one of the hardest decisions in the history of our company: we're reducing our organization by nearly half, from over 10,000 people to just under 6,000. that means over 4,000 of you are being asked to leave or entering into consultation. i'll be straight about what's happening, why, and what it means for everyone.\n\nfirst off, if you're one of the people affected, you'll receive your salary for 20 weeks + 1 week per year of tenure, equity vested through the end of may, 6 months of health care, your corporate devices, and $5,000 to put toward whatever you need to help you in this transition (if you\u2019re outside the U.S. you\u2019ll receive similar support but exact details are going to vary based on local requirements). i want you to know that before anything else. everyone will be notified today, whether you're being asked to leave, entering consultation, or asked to stay.\n\nwe're not making this decision because we're in trouble. our business is strong. gross profit continues to grow, we continue to serve more and more customers, and profitability is improving. but something has changed. we're already seeing that the intelligence tools we\u2019re creating and using, paired with smaller and flatter teams, are enabling a new way of working which fundamentally changes what it means to build and run a company. and that's accelerating rapidly.\n\ni had two options: cut gradually over months or years as this shift plays out, or be honest about where we are and act on it now. i chose the latter. repeated rounds of cuts are destructive to morale, to focus, and to the trust that customers and shareholders place in our ability to lead. i'd rather take a hard, clear action now and build from a position we believe in than manage a slow reduction of people toward the same outcome. a smaller company also gives us the space to grow our business the right way, on our own terms, instead of constantly reacting to market pressures.\n\na decision at this scale carries risk. but so does standing still. we've done a full review to determine the roles and people we require to reliably grow the business from here, and we've pressure-tested those decisions from multiple angles. i accept that we may have gotten some of them wrong, and we've built in flexibility to account for that, and do the right thing for our customers.\n\nwe're not going to just disappear people from slack and email and pretend they were never here. communication channels will stay open through thursday evening (pacific) so everyone can say goodbye properly, and share whatever you wish. i'll also be hosting a live video session to thank everyone at 3:35pm pacific. i know doing it this way might feel awkward. i'd rather it feel awkward and human than efficient and cold.\n\nto those of you leaving\u2026i\u2019m grateful for you, and i\u2019m sorry to put you through this. you built what this company is today. that's a fact that i'll honor forever. this decision is not a reflection of what you contributed. you will be a great contributor to any organization going forward.\n\nto those staying\u2026i made this decision, and i'll own it. what i'm asking of you is to build with me. we're going to build this company with intelligence at the core of everything we do. how we work, how we create, how we serve our customers. our customers will feel this shift too, and we're going to help them navigate it: towards a future where they can build their own features directly, composed of our capabilities and served through our interfaces. that's what i'm focused on now. expect a note from me tomorrow.\n\njack",
+        "createdAt": "Thu Feb 26 21:12:36 +0000 2026",
+        "replyCount": 8859,
+        "retweetCount": 6693,
+        "likeCount": 51148,
+        "conversationId": "2027129697092731343",
+        "author": {
+          "username": "jack",
+          "name": "jack"
+        },
+        "authorId": "12"
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCJpkljW4AADNmo.jpg",
+          "width": 1178,
+          "height": 1732,
+          "previewUrl": "https://pbs.twimg.com/media/HCJpkljW4AADNmo.jpg:small"
+        }
+      ]
+    },
+    {
+      "id": "2027120746468618702",
+      "text": "> be the typography designer:\n\n> drive about 60% of the initial impression \n> and up to 40% of perceived product quality\n> boost positive consumer response by ~13% by changing only the typeface\n> increase perceived relevance by 13% \n> increase the brand attraction 2x\n> make 75% of consumers pick the product packaged with the appropriate font design\u200b\n\nStart here \ud83d\udc47",
+      "createdAt": "Thu Feb 26 20:37:02 +0000 2026",
+      "replyCount": 7,
+      "retweetCount": 2,
+      "likeCount": 60,
+      "conversationId": "2027120746468618702",
+      "author": {
+        "username": "AmirMushich",
+        "name": "AmirMu\u0161i\u0107"
+      },
+      "authorId": "249795230",
+      "quotedTweet": {
+        "id": "2027040971016351786",
+        "text": "Nano Banana smart prompt:\n\nTypographic ad / poster design\n\nWorks with:\n- automotive\n- sport\n- beverage\nand other products \n\nPrompt \ud83d\udc47 https://t.co/Zr1TWp1Oi1",
+        "createdAt": "Thu Feb 26 15:20:02 +0000 2026",
+        "replyCount": 13,
+        "retweetCount": 25,
+        "likeCount": 380,
+        "conversationId": "2027040971016351786",
+        "author": {
+          "username": "AmirMushich",
+          "name": "AmirMu\u0161i\u0107"
+        },
+        "authorId": "249795230",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/HCF_BUCW8AAeGx2.jpg",
+            "width": 1080,
+            "height": 1350,
+            "previewUrl": "https://pbs.twimg.com/media/HCF_BUCW8AAeGx2.jpg:small"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HCHE_ZQWMAAGa62.jpg",
+          "width": 1152,
+          "height": 928,
+          "previewUrl": "https://pbs.twimg.com/media/HCHE_ZQWMAAGa62.jpg:small"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total_pulled": 145,
+    "after_dedup": 143,
+    "after_filter": 29
+  }
+}

@@ -93,7 +93,7 @@ The visual pipeline now routes reference images to generated assets using a 4-ga
 3. **Diversity slots** — multi-domain brands get refs spanning different domain tags
 4. **Aesthetic tiebreaker** — 5-axis distance scoring within filtered candidates
 
-138 reference images are annotated with 5 semantic fields: `subject_type`, `domain_suitability`, `lighting_register`, `color_temperature`, `composition_format`.
+160 reference images are annotated with 5 semantic fields: `subject_type`, `domain_suitability`, `lighting_register`, `color_temperature`, `composition_format`.
 
 Install vision extras for pixel-level analysis:
 
@@ -176,7 +176,8 @@ graph TD
 - **v4.1.0** — robust `--non-interactive` pipeline behavior, publishing + wiki pipeline, visual asset integration fixes.
 - **v4.2.0** — Remotion video generation (Wave 7F), full Wave 7 publishing flow hardening, optional `brandmint[video]` extras.
 - **v4.2.1** — README/metadata alignment: release-aware badges, corrected inventory counts, and changelog initialization.
-- **v4.3.0** *(current)* — Semantic reference matching: 4-gate pipeline, 5 new semantic metadata fields on 138 catalog entries, 5D icon removal, 3A/3B/4B migrated to Nano Banana Pro, `brandmint[vision]` + `brandmint[embeddings]` optional dependency groups, 43-task vision upgrade roadmap (issues #9-#51).
+- **v4.3.0** — Semantic reference matching: 4-gate pipeline, 5 new semantic metadata fields on 138 catalog entries, 5D icon removal, 3A/3B/4B migrated to Nano Banana Pro, `brandmint[vision]` + `brandmint[embeddings]` optional dependency groups, 43-task vision upgrade roadmap (issues #9-#51).
+- **v4.3.1** *(current)* — Twitter sync pipeline: automated community prompt discovery via bird CLI, AmirMushich tracking with per-account overrides, unified `twitter_sync_all.sh` runner, launchd weekly automation, 73 curated references from 41 contributors, rebuilt reference catalog (160 entries).
 
 See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/releases) and [repo release notes](./.github/RELEASE_NOTES.md).
 
@@ -199,6 +200,43 @@ Brandmint supports OpenClaw-oriented workflows and docs publication paths.
 
 - OpenClaw docs/site touchpoint: [brandmint-openclaw.vercel.app](https://brandmint-openclaw.vercel.app)
 - Use the same pipeline-first contract (`bm launch --non-interactive`) for reliable agent orchestration.
+
+## Twitter Sync Pipeline
+
+Brandmint includes an automated Twitter/X sync pipeline that discovers prompt engineering techniques, typography workflows, and visual design references from the community.
+
+```bash
+# Full sync (discover + curate + download assets)
+./scripts/twitter_sync_all.sh
+
+# Preview only
+./scripts/twitter_sync_all.sh --dry-run
+
+# Sync without downloading images
+./scripts/twitter_sync_all.sh --skip-download
+
+# Override minimum likes threshold
+./scripts/twitter_sync_all.sh --min-likes=5
+```
+
+**Requires:** [bird CLI](https://github.com/dawsbot/bird) (`brew install bird`) authenticated via `bird auth`.
+
+Weekly automation is available via the included launchd plist (`scripts/com.brandmint.twitter-sync.plist`).
+
+### Community Credits
+
+Brandmint's reference library includes **73 curated references** from **41 contributors** on X/Twitter. Special thanks to:
+
+| Contributor | References | Focus |
+|---|---:|---|
+| [@AmirMushich](https://x.com/AmirMushich) | 18 | Nano Banana Pro prompts, typography design, text masking workflows |
+| [@azed_ai](https://x.com/azed_ai) | 4 | Prompt sharing, Nano Banana Pro techniques |
+| [@Kashberg_0](https://x.com/Kashberg_0) | 3 | Gemini + Nano Banana Pro workflows |
+| [@john_my07](https://x.com/john_my07) | 3 | Brand design references |
+| [@alex_prompter](https://x.com/alex_prompter) | 1 | Prompt engineering research |
+| [@godofprompt](https://x.com/godofprompt) | 1 | Creative prompting techniques |
+
+And 35 other community members whose shared work enriches the reference catalog. All references are attributed with original tweet links and author handles in the prompt files.
 
 ## Notes for Agent/CI execution
 

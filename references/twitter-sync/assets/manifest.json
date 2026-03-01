@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-24T02:06:25.454400+00:00",
-  "total_assets": 44,
+  "generated_at": "2026-03-01T20:32:39.729908+00:00",
+  "total_assets": 73,
   "entries": [
     {
       "seq": 8,
@@ -1145,6 +1145,534 @@
       ],
       "tags": [
         "brand-design"
+      ]
+    },
+    {
+      "seq": 199,
+      "tweet_id": "2027953432326197508",
+      "author": "VadimStrizheus",
+      "slug": "what-company-looks-like-2026",
+      "relevance_score": 1.0,
+      "likes": 4034,
+      "prompt_file": "ref-tw-199-VadimStrizheus-what-company-looks-like-2026.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-199-VadimStrizheus-what-company-looks-like-2026.jpg",
+          "url": "https://pbs.twimg.com/media/HCS85dlXAAA2RSd.jpg",
+          "width": 986,
+          "height": 1865
+        }
+      ],
+      "tags": [
+        "claude"
+      ]
+    },
+    {
+      "seq": 200,
+      "tweet_id": "2028115571724660920",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 1.0,
+      "likes": 1136,
+      "prompt_file": "ref-tw-200-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-200-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCVQXVhW8AEdEVy.jpg",
+          "width": 1080,
+          "height": 1080
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ]
+    },
+    {
+      "seq": 201,
+      "tweet_id": "2027798913516761522",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt-font",
+      "relevance_score": 1.0,
+      "likes": 1418,
+      "prompt_file": "ref-tw-201-AmirMushich-nano-banana-smart-prompt-font.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-201-AmirMushich-nano-banana-smart-prompt-font.jpg",
+          "url": "https://pbs.twimg.com/media/HCQuRFoW0AALBmg.jpg",
+          "width": 1080,
+          "height": 1080
+        }
+      ],
+      "tags": [
+        "nano-banana",
+        "typography"
+      ]
+    },
+    {
+      "seq": 202,
+      "tweet_id": "2027470188644626803",
+      "author": "Arminn_Ai",
+      "slug": "commercial-tear-reveal-concept",
+      "relevance_score": 1.0,
+      "likes": 569,
+      "prompt_file": "ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept.jpg",
+          "url": "https://pbs.twimg.com/media/HCMFWoWXAAA3De6.jpg",
+          "width": 1638,
+          "height": 2048
+        }
+      ],
+      "tags": [
+        "nano-banana",
+        "brand-design",
+        "typography",
+        "logo"
+      ]
+    },
+    {
+      "seq": 203,
+      "tweet_id": "2027336259040133499",
+      "author": "_vmlops",
+      "slug": "check-out-antigravity-awesome",
+      "relevance_score": 1.0,
+      "likes": 1284,
+      "prompt_file": "ref-tw-203-_vmlops-check-out-antigravity-awesome.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-203-_vmlops-check-out-antigravity-awesome.jpg",
+          "url": "https://pbs.twimg.com/media/HCKLkyTasAALLgA.jpg",
+          "width": 1059,
+          "height": 1011
+        }
+      ],
+      "tags": [
+        "claude",
+        "workflow"
+      ]
+    },
+    {
+      "seq": 204,
+      "tweet_id": "2027021107015143498",
+      "author": "azed_ai",
+      "slug": "nano-banana-pro-prompt-share",
+      "relevance_score": 1.0,
+      "likes": 556,
+      "prompt_file": "ref-tw-204-azed_ai-nano-banana-pro-prompt-share.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-204-azed_ai-nano-banana-pro-prompt-share.jpg",
+          "url": "https://pbs.twimg.com/media/HCFs9FpaIAA9R0p.jpg",
+          "width": 1080,
+          "height": 1080
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ]
+    },
+    {
+      "seq": 205,
+      "tweet_id": "2027155305378074960",
+      "author": "OdinLovis",
+      "slug": "celebrate-nano-banana-2",
+      "relevance_score": 1.0,
+      "likes": 1139,
+      "prompt_file": "ref-tw-205-OdinLovis-celebrate-nano-banana-2.prompt.md",
+      "images": [],
+      "tags": [
+        "image-gen",
+        "workflow"
+      ]
+    },
+    {
+      "seq": 206,
+      "tweet_id": "2026801420872093708",
+      "author": "Hesamation",
+      "slug": "obsidian-ai-new-hot-combo",
+      "relevance_score": 1.0,
+      "likes": 3111,
+      "prompt_file": "ref-tw-206-Hesamation-obsidian-ai-new-hot-combo.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-206-Hesamation-obsidian-ai-new-hot-combo.jpg",
+          "url": "https://pbs.twimg.com/media/HCClJmHXQAARvP7.jpg",
+          "width": 1178,
+          "height": 1026
+        }
+      ],
+      "tags": [
+        "claude"
+      ]
+    },
+    {
+      "seq": 207,
+      "tweet_id": "2026461256677245131",
+      "author": "internetvin",
+      "slug": "here-22-commands-am-using",
+      "relevance_score": 1.0,
+      "likes": 1307,
+      "prompt_file": "ref-tw-207-internetvin-here-22-commands-am-using.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-207-internetvin-here-22-commands-am-using.jpg",
+          "url": "https://pbs.twimg.com/media/HB9vY85WMAAn0hy.jpg",
+          "width": 794,
+          "height": 2048
+        }
+      ],
+      "tags": [
+        "claude"
+      ]
+    },
+    {
+      "seq": 208,
+      "tweet_id": "2026264341419528643",
+      "author": "ihtesham2005",
+      "slug": "someone-just-built-tool-turns",
+      "relevance_score": 1.0,
+      "likes": 3285,
+      "prompt_file": "ref-tw-208-ihtesham2005-someone-just-built-tool-turns.prompt.md",
+      "images": [],
+      "tags": [
+        "workflow"
+      ]
+    },
+    {
+      "seq": 209,
+      "tweet_id": "2026189291085607181",
+      "author": "MengTo",
+      "slug": "can-talk-about-how-insane",
+      "relevance_score": 1.0,
+      "likes": 5259,
+      "prompt_file": "ref-tw-209-MengTo-can-talk-about-how-insane.prompt.md",
+      "images": [],
+      "tags": []
+    },
+    {
+      "seq": 210,
+      "tweet_id": "2026335537888702627",
+      "author": "DataChaz",
+      "slug": "powerpoint-officially-dead",
+      "relevance_score": 1.0,
+      "likes": 462,
+      "prompt_file": "ref-tw-210-DataChaz-powerpoint-officially-dead.prompt.md",
+      "images": [],
+      "tags": []
+    },
+    {
+      "seq": 211,
+      "tweet_id": "2028033835993112919",
+      "author": "alex_prompter",
+      "slug": "holy-shit-stanford-just",
+      "relevance_score": 1.0,
+      "likes": 5188,
+      "prompt_file": "ref-tw-211-alex_prompter-holy-shit-stanford-just.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-211-alex_prompter-holy-shit-stanford-just.jpg",
+          "url": "https://pbs.twimg.com/media/HCUGBgvboAAvp_V.jpg",
+          "width": 1200,
+          "height": 1557
+        }
+      ],
+      "tags": [
+        "claude"
+      ]
+    },
+    {
+      "seq": 212,
+      "tweet_id": "2027787837639410110",
+      "author": "godofprompt",
+      "slug": "richard-feynman-had-one",
+      "relevance_score": 1.0,
+      "likes": 880,
+      "prompt_file": "ref-tw-212-godofprompt-richard-feynman-had-one.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-212-godofprompt-richard-feynman-had-one.jpg",
+          "url": "https://pbs.twimg.com/media/HCQmSpAbEAI9KxV.jpg",
+          "width": 1930,
+          "height": 1172
+        }
+      ],
+      "tags": [
+        "claude"
+      ]
+    },
+    {
+      "seq": 213,
+      "tweet_id": "2019073081881293302",
+      "author": "AmirMushich",
+      "slug": "50-design-prompts-from",
+      "relevance_score": 1.0,
+      "likes": 5721,
+      "prompt_file": "ref-tw-213-AmirMushich-50-design-prompts-from.prompt.md",
+      "images": [],
+      "tags": [
+        "nano-banana"
+      ]
+    },
+    {
+      "seq": 214,
+      "tweet_id": "2027393294469128313",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 1.0,
+      "likes": 442,
+      "prompt_file": "ref-tw-214-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-214-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCK_dLQWMAAt7G9.jpg",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "tags": [
+        "nano-banana",
+        "logo"
+      ]
+    },
+    {
+      "seq": 215,
+      "tweet_id": "2026270010814136482",
+      "author": "Kashberg_0",
+      "slug": "google-gemini-nano-banana-pro",
+      "relevance_score": 0.956,
+      "likes": 190,
+      "prompt_file": "ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro.jpg",
+          "url": "https://pbs.twimg.com/media/HB7B08PbkAATvmK.jpg",
+          "width": 1200,
+          "height": 1200
+        },
+        {
+          "file": "ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-2.jpg",
+          "url": "https://pbs.twimg.com/media/HB7B08SagAAtcXZ.jpg",
+          "width": 1200,
+          "height": 1200
+        },
+        {
+          "file": "ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-3.jpg",
+          "url": "https://pbs.twimg.com/media/HB7B08PaIAAMUnn.jpg",
+          "width": 1200,
+          "height": 1200
+        },
+        {
+          "file": "ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-4.jpg",
+          "url": "https://pbs.twimg.com/media/HB7B08PbwAA-t02.jpg",
+          "width": 1200,
+          "height": 1200
+        }
+      ],
+      "tags": [
+        "nano-banana",
+        "brand-design"
+      ]
+    },
+    {
+      "seq": 216,
+      "tweet_id": "2027393296603992332",
+      "author": "AmirMushich",
+      "slug": "prompt-access-nano-banana-here",
+      "relevance_score": 0.86,
+      "likes": 52,
+      "prompt_file": "ref-tw-216-AmirMushich-prompt-access-nano-banana-here.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-216-AmirMushich-prompt-access-nano-banana-here.jpg",
+          "url": "https://pbs.twimg.com/media/HCK_dSGXwAADE21.jpg",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "tags": [
+        "nano-banana",
+        "brand-design",
+        "logo"
+      ]
+    },
+    {
+      "seq": 217,
+      "tweet_id": "2027798919044853902",
+      "author": "AmirMushich",
+      "slug": "prompt-access-nano-banana-here",
+      "relevance_score": 0.846,
+      "likes": 132,
+      "prompt_file": "ref-tw-217-AmirMushich-prompt-access-nano-banana-here.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-217-AmirMushich-prompt-access-nano-banana-here.jpg",
+          "url": "https://pbs.twimg.com/media/HCQvYyMXUAEEUjM.jpg",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "tags": [
+        "nano-banana",
+        "brand-design",
+        "typography",
+        "logo"
+      ]
+    },
+    {
+      "seq": 218,
+      "tweet_id": "2027645181538025847",
+      "author": "Sheldon056",
+      "slug": "nano-banana-pro-kling-prompt",
+      "relevance_score": 0.815,
+      "likes": 249,
+      "prompt_file": "ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCOkdQtaoAAkqjK.jpg",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ]
+    },
+    {
+      "seq": 219,
+      "tweet_id": "2027824897431392456",
+      "author": "AmirMushich",
+      "slug": "steps-create-such-vids",
+      "relevance_score": 0.742,
+      "likes": 126,
+      "prompt_file": "ref-tw-219-AmirMushich-steps-create-such-vids.prompt.md",
+      "images": [],
+      "tags": [
+        "image-gen",
+        "midjourney",
+        "nano-banana",
+        "typography"
+      ]
+    },
+    {
+      "seq": 220,
+      "tweet_id": "2027120746468618702",
+      "author": "AmirMushich",
+      "slug": "be-typography-designer-drive",
+      "relevance_score": 0.664,
+      "likes": 60,
+      "prompt_file": "ref-tw-220-AmirMushich-be-typography-designer-drive.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-220-AmirMushich-be-typography-designer-drive.jpg",
+          "url": "https://pbs.twimg.com/media/HCHE_ZQWMAAGa62.jpg",
+          "width": 1152,
+          "height": 928
+        }
+      ],
+      "tags": [
+        "typography"
+      ]
+    },
+    {
+      "seq": 221,
+      "tweet_id": "2028068337427603741",
+      "author": "AmirMushich",
+      "slug": "easy-text-masking-workflow-ai",
+      "relevance_score": 0.622,
+      "likes": 110,
+      "prompt_file": "ref-tw-221-AmirMushich-easy-text-masking-workflow-ai.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-221-AmirMushich-easy-text-masking-workflow-ai.jpg",
+          "url": "https://pbs.twimg.com/media/HCUlZMZbYAAyoNc.jpg",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "tags": [
+        "nano-banana",
+        "workflow"
+      ]
+    },
+    {
+      "seq": 222,
+      "tweet_id": "2027798922731647122",
+      "author": "AmirMushich",
+      "slug": "design-skills-now-will-work",
+      "relevance_score": 0.548,
+      "likes": 42,
+      "prompt_file": "ref-tw-222-AmirMushich-design-skills-now-will-work.prompt.md",
+      "images": [],
+      "tags": []
+    },
+    {
+      "seq": 223,
+      "tweet_id": "2027393298164252901",
+      "author": "AmirMushich",
+      "slug": "want-design-skills-work",
+      "relevance_score": 0.522,
+      "likes": 18,
+      "prompt_file": "ref-tw-223-AmirMushich-want-design-skills-work.prompt.md",
+      "images": [],
+      "tags": []
+    },
+    {
+      "seq": 224,
+      "tweet_id": "2028115575604396083",
+      "author": "AmirMushich",
+      "slug": "steal-more-design-workflows",
+      "relevance_score": 0.516,
+      "likes": 16,
+      "prompt_file": "ref-tw-224-AmirMushich-steal-more-design-workflows.prompt.md",
+      "images": [],
+      "tags": [
+        "workflow"
+      ]
+    },
+    {
+      "seq": 225,
+      "tweet_id": "2028115576690749775",
+      "author": "AmirMushich",
+      "slug": "design-skills-now-will-work",
+      "relevance_score": 0.516,
+      "likes": 16,
+      "prompt_file": "ref-tw-225-AmirMushich-design-skills-now-will-work.prompt.md",
+      "images": [],
+      "tags": []
+    },
+    {
+      "seq": 226,
+      "tweet_id": "2027824898408648880",
+      "author": "AmirMushich",
+      "slug": "steal-midjourney-prompts-here",
+      "relevance_score": 0.514,
+      "likes": 12,
+      "prompt_file": "ref-tw-226-AmirMushich-steal-midjourney-prompts-here.prompt.md",
+      "images": [],
+      "tags": [
+        "midjourney"
+      ]
+    },
+    {
+      "seq": 227,
+      "tweet_id": "2027472643629215819",
+      "author": "AmirMushich",
+      "slug": "weeks-prompting-amp-chatting",
+      "relevance_score": 0.413,
+      "likes": 13,
+      "prompt_file": "ref-tw-227-AmirMushich-weeks-prompting-amp-chatting.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-227-AmirMushich-weeks-prompting-amp-chatting.jpg",
+          "url": "https://pbs.twimg.com/media/HCMHnpbWQAAdjWK.jpg",
+          "width": 1179,
+          "height": 826
+        }
+      ],
+      "tags": [
+        "workflow"
       ]
     }
   ]
