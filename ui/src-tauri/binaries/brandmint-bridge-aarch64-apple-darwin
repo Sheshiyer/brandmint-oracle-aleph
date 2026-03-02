@@ -1,0 +1,48 @@
+#!/bin/bash
+# Brandmint Bridge Sidecar
+# Spawns the Python HTTP bridge that serves the Brandmint API
+# This script is launched by Tauri as a sidecar process
+
+set -euo pipefail
+
+# Ensure common tool paths are available
+export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:$PATH"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Find repo root by walking up from script dir looking for pyproject.toml
+find_repo_root() {
+    local dir="$SCRIPT_DIR"
+    for _ in 1 2 3 4 5 6 7 8; do
+        if [ -f "$dir/pyproject.toml" ] && [ -d "$dir/scripts" ]; then
+            echo "$dir"
+            return 0
+        fi
+        dir="$(dirname "$dir")"
+    done
+    return 1
+}
+
+# Try to find bridge script
+BRIDGE_SCRIPT=""
+if REPO_ROOT="$(find_repo_root)"; then
+    BRIDGE_SCRIPT="$REPO_ROOT/scripts/ui_backend_bridge.py"
+elif [ -f "$SCRIPT_DIR/ui_backend_bridge.py" ]; then
+    # Prod mode: bundled alongside this script
+    BRIDGE_SCRIPT="$SCRIPT_DIR/ui_backend_bridge.py"
+fi
+
+if [ -z "$BRIDGE_SCRIPT" ] || [ ! -f "$BRIDGE_SCRIPT" ]; then
+    echo "ERROR: Cannot find ui_backend_bridge.py (searched from $SCRIPT_DIR)" >&2
+    exit 1
+fi
+
+# Load environment variables
+if [ -n "${REPO_ROOT:-}" ] && [ -f "$REPO_ROOT/.env" ]; then
+    set -a; source "$REPO_ROOT/.env"; set +a
+fi
+if [ -f "$HOME/.claude/.env" ]; then
+    set -a; source "$HOME/.claude/.env"; set +a
+fi
+
+exec python3 "$BRIDGE_SCRIPT"

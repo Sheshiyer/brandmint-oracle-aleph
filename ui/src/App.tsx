@@ -169,7 +169,9 @@ type PageKind =
   | "handoff"
   | "publish-notebooklm"
   | "wiki-handoff"
-  | "astro-build";
+  | "astro-build"
+  | "history"
+  | "output-viewer";
 
 type ProcessPage = {
   id: string;
@@ -193,6 +195,50 @@ type CommandAction = {
   run: () => void;
 };
 
+type Toast = {
+  id: number;
+  message: string;
+  kind: "success" | "error" | "info";
+  exiting?: boolean;
+};
+
+type RunHistoryEntry = {
+  id: string;
+  scenario: string;
+  waves: string;
+  startedAt: string;
+  duration: number;
+  status: "success" | "failed" | "aborted";
+  projectName: string;
+  configPath: string;
+};
+
+type RecentProject = {
+  name: string;
+  path: string;
+  lastOpened: string;
+  scenario: string;
+};
+
+type AppPreferences = {
+  fontSize: "default" | "large" | "xlarge";
+  sidebarWidth: number;
+  autoSave: boolean;
+  showNotifications: boolean;
+  logRetention: number;
+};
+
+const DEFAULT_PREFERENCES: AppPreferences = {
+  fontSize: "large",
+  sidebarWidth: 280,
+  autoSave: true,
+  showNotifications: true,
+  logRetention: 500,
+};
+
+const HISTORY_KEY = "brandmint-run-history";
+const PROJECTS_KEY = "brandmint-recent-projects";
+const PREFS_KEY = "brandmint-preferences";
 const DRAFT_KEY = "brandmint-process-studio-v3";
 const DEFAULT_TASK_PROMPT =
   "Generate a markdown update for this brand run with completed work, risks, and next steps.";
@@ -492,6 +538,8 @@ function buildProcessPages(): ProcessPage[] {
     { id: "process-notebooklm", title: "Wave 7B · NotebookLM Publish", track: "Publishing & Docs Waves", kind: "publish-notebooklm", objective: "Run NotebookLM deliverable generation as part of publishing.", focus: ["bm publish notebooklm", "audio + notebook", "publish logs"] },
     { id: "process-wiki-handoff", title: "Wave 8A · Wiki Docs Handoff", track: "Publishing & Docs Waves", kind: "wiki-handoff", objective: "Prepare wiki docs generation handoff from .brandmint outputs.", focus: ["wiki-doc-generator", "parallel agents", "handoff checklist"] },
     { id: "process-astro-build", title: "Wave 8B · Astro Build Handoff", track: "Publishing & Docs Waves", kind: "astro-build", objective: "Prepare markdown-to-astro conversion and Astro build handoff.", focus: ["markdown-to-astro-wiki", "content mapping", "site build"] },
+    { id: "process-history", title: "Run History", track: "Launch & Operations", kind: "history", objective: "Browse past pipeline runs with duration, status, and configuration.", focus: ["Past runs", "Duration", "Status"] },
+    { id: "process-output-viewer", title: "Output Viewer", track: "Launch & Operations", kind: "output-viewer", objective: "Inspect skill output JSON files with syntax highlighting.", focus: ["JSON tree", "Collapsible", "Search"] },
     { id: "journey-21", title: "Logo Direction Studio", track: "Visual Creation Surfaces", kind: "journey", objective: "Explore and shortlist logo directions aligned to extracted brand intent.", focus: ["Wordmark options", "Icon variants", "Keep/discard"] },
     { id: "journey-22", title: "Typography Pairing Studio", track: "Visual Creation Surfaces", kind: "journey", objective: "Preview and compare font pairings for readability and brand voice.", focus: ["Primary font", "Secondary font", "Readability"] },
     { id: "journey-23", title: "Palette Application Board", track: "Visual Creation Surfaces", kind: "journey", objective: "Apply palette options to key UI and campaign mock blocks.", focus: ["Primary palette", "Accent behavior", "Contrast"] },
@@ -526,10 +574,16 @@ function waveForPage(page: ProcessPage): { id: string; label: string } {
     return { id: "wave-3", label: "Wave 3 · Generation Prep" };
   }
   if (
+    page.kind === "settings" ||
+    page.kind === "history" ||
+    page.kind === "output-viewer"
+  ) {
+    return { id: "wave-app", label: "App" };
+  }
+  if (
     page.kind === "launch" ||
     page.kind === "activity" ||
     page.kind === "triage" ||
-    page.kind === "settings" ||
     page.kind === "runner-workbench" ||
     page.kind === "runner-matrix"
   ) {
@@ -577,6 +631,9 @@ export default function App() {
   const [referencesLoading, setReferencesLoading] = useState(false);
   const [selectedReferenceIds, setSelectedReferenceIds] = useState<string[]>([]);
   const [referenceLimit, setReferenceLimit] = useState(30);
+  const [refPage, setRefPage] = useState(1);
+  const [refPerPage, setRefPerPage] = useState(24);
+  const [refSearchQuery, setRefSearchQuery] = useState("");
 
   const [runners, setRunners] = useState<RunnerInfo[]>(FALLBACK_RUNNERS);
   const [selectedRunner, setSelectedRunner] = useState("bm");
@@ -593,8 +650,29 @@ export default function App() {
   const [showAdvancedLaunch, setShowAdvancedLaunch] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [commandQuery, setCommandQuery] = useState("");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // ── Native App State ──
+  const [toasts, setToasts] = useState<Toast[]>([]);
+  const [runHistory, setRunHistory] = useState<RunHistoryEntry[]>([]);
+  const [recentProjects, setRecentProjects] = useState<RecentProject[]>([]);
+  const [preferences, setPreferences] = useState<AppPreferences>(DEFAULT_PREFERENCES);
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [logSearchQuery, setLogSearchQuery] = useState("");
+  const [updateAvailable, setUpdateAvailable] = useState<string | null>(null);
+  const [pageTransitionKey, setPageTransitionKey] = useState(0);
+  const [selectedOutputFile, setSelectedOutputFile] = useState<string | null>(null);
+  const [outputViewerData, setOutputViewerData] = useState<Record<string, unknown> | null>(null);
+  const [outputCollapsed, setOutputCollapsed] = useState<Record<string, boolean>>({});
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    try { return Number(window.localStorage.getItem("brandmint-sidebar-width")) || 280; } catch { return 280; }
+  });
+  const [isResizingSidebar, setIsResizingSidebar] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; pageId: string } | null>(null);
+  const runStartTimeRef = useRef<number | null>(null);
 
   const lastLogIdRef = useRef(0);
+  const outputAbortRef = useRef<AbortController | null>(null);
 
   const processPages = useMemo(() => buildProcessPages(), []);
 
@@ -649,29 +727,96 @@ export default function App() {
   }, [extraction, configDraft]);
 
   const rankedReferences = useMemo(() => {
+    // Build a searchable text blob for each reference
+    const signalSet = new Set(synthesisSignals);
+
+    // Brand-semantic keyword categories with weights
+    const semanticBuckets: Record<string, string[]> = {
+      branding: ["brand", "logo", "identity", "wordmark", "monogram", "seal", "emblem", "badge"],
+      typography: ["typography", "type", "font", "lettering", "serif", "sans", "display", "heading"],
+      color: ["palette", "color", "gradient", "swatch", "hue", "tone", "contrast", "scheme"],
+      layout: ["layout", "grid", "composition", "bento", "card", "hero", "section", "poster"],
+      visual: ["visual", "style", "aesthetic", "mood", "texture", "pattern", "surface", "glass", "morph"],
+      product: ["product", "mockup", "packaging", "label", "box", "bottle", "render", "showcase"],
+      campaign: ["campaign", "ad", "social", "banner", "story", "reel", "post", "marketing"],
+      photography: ["photo", "portrait", "lifestyle", "editorial", "studio", "shot", "film"],
+    };
+
+    // Determine which buckets the brand cares about from extraction + config
+    const brandText = [
+      extraction.productName, extraction.category, extraction.audience,
+      extraction.valueProposition, extraction.differentiators, extraction.voiceTone,
+      configDraft.brand.domain, configDraft.visual.paletteMood,
+      configDraft.visual.typography, configDraft.visual.surfaceStyle,
+    ].join(" ").toLowerCase();
+
+    const activeBuckets = new Set<string>();
+    for (const [bucket, keywords] of Object.entries(semanticBuckets)) {
+      if (keywords.some((kw) => brandText.includes(kw))) activeBuckets.add(bucket);
+    }
+    // Always activate branding + visual as baseline
+    activeBuckets.add("branding");
+    activeBuckets.add("visual");
+
     return references
       .map((ref) => {
-        let score = ref.priority;
+        let score = ref.priority; // base: 100 primary, 90 reuse, 75 twitter, 70 alt, 65 style, 55 demo, 40 untagged
         const refTags = new Set(ref.tags.map((tag) => tag.toLowerCase()));
-        for (const signal of synthesisSignals) {
-          if (refTags.has(signal)) score += 8;
-          if (signal.includes("brand") && refTags.has("brand-design")) score += 5;
-          if (signal.includes("palette") && refTags.has("color-palette")) score += 5;
-          if (signal.includes("logo") && refTags.has("logo")) score += 5;
-          if (signal.includes("typography") && refTags.has("typography")) score += 4;
+        const refText = `${ref.name} ${ref.description} ${ref.tags.join(" ")}`.toLowerCase();
+
+        // 1. Direct signal→tag match (strongest)
+        for (const signal of signalSet) {
+          if (refTags.has(signal)) score += 12;
+          // Fuzzy: signal appears in name or description
+          if (refText.includes(signal)) score += 6;
         }
-        if (ref.sources.includes("primary")) score += 20;
-        if (ref.sources.includes("twitter")) score += 5;
+
+        // 2. Semantic bucket matching — boost refs that align with brand categories
+        for (const [bucket, keywords] of Object.entries(semanticBuckets)) {
+          const bucketHits = keywords.filter((kw) => refTags.has(kw) || refText.includes(kw)).length;
+          if (bucketHits > 0) {
+            const weight = activeBuckets.has(bucket) ? 10 : 3; // much higher for brand-relevant buckets
+            score += Math.min(bucketHits, 3) * weight;
+          }
+        }
+
+        // 3. Source-type boosts
+        if (ref.sources.includes("primary")) score += 25;
+        if (ref.sources.includes("reuse")) score += 15;
+        if (ref.sources.includes("style")) score += 12;
+        if (ref.sources.includes("twitter")) score += 8;
+
+        // 4. Asset linkage boost (mapped to actual pipeline assets)
+        if (ref.assetIds.length > 0) score += 10 + ref.assetIds.length * 3;
+
+        // 5. Description richness bonus (richer metadata = more curated)
+        if (ref.description.length > 20) score += 5;
+        if (ref.description.length > 80) score += 5;
+
         return { ...ref, score };
       })
       .sort((a, b) => b.score - a.score);
-  }, [references, synthesisSignals]);
+  }, [references, synthesisSignals, extraction, configDraft]);
 
   const topThirtyReferences = useMemo(() => rankedReferences.slice(0, 30), [rankedReferences]);
   const visibleReferences = useMemo(() => rankedReferences.slice(0, referenceLimit), [rankedReferences, referenceLimit]);
   const selectedReferences = useMemo(
     () => rankedReferences.filter((item) => selectedReferenceIds.includes(item.id)),
     [rankedReferences, selectedReferenceIds],
+  );
+
+  // Paginated reference library
+  const filteredLibraryRefs = useMemo(() => {
+    if (!refSearchQuery.trim()) return rankedReferences;
+    const q = refSearchQuery.toLowerCase();
+    return rankedReferences.filter(
+      (r) => r.name.toLowerCase().includes(q) || r.description.toLowerCase().includes(q) || r.tags.some((t) => t.toLowerCase().includes(q)),
+    );
+  }, [rankedReferences, refSearchQuery]);
+  const refTotalPages = Math.max(1, Math.ceil(filteredLibraryRefs.length / refPerPage));
+  const paginatedRefs = useMemo(
+    () => filteredLibraryRefs.slice((refPage - 1) * refPerPage, refPage * refPerPage),
+    [filteredLibraryRefs, refPage, refPerPage],
   );
 
   const triageCards = useMemo(() => {
@@ -742,6 +887,10 @@ export default function App() {
         status = wikiHandoffDone ? "done" : "pending";
       } else if (page.kind === "astro-build") {
         status = astroHandoffDone ? "done" : "pending";
+      } else if (page.kind === "history") {
+        status = runHistory.length ? "done" : "pending";
+      } else if (page.kind === "output-viewer") {
+        status = artifacts.length ? "done" : "pending";
       }
       map[page.id] = status;
     }
@@ -889,6 +1038,35 @@ export default function App() {
     if (!commandPaletteOpen) setCommandQuery("");
   }, [commandPaletteOpen]);
 
+  // ── Refresh helper for Cmd+R ──
+  async function fetchHealth() {
+    try {
+      const stateRes = await fetch("/api/state");
+      if (stateRes.ok) {
+        const state = await stateRes.json();
+        setBridgeOnline(true);
+        if (["idle", "running", "retrying", "aborted"].includes(state.state)) {
+          setRunState(state.state as RunState);
+        }
+      } else {
+        setBridgeOnline(false);
+      }
+      const artRes = await fetch("/api/artifacts?limit=400");
+      if (artRes.ok) {
+        const data = await artRes.json();
+        setArtifacts((data.artifacts || []) as ArtifactItem[]);
+      }
+      const refRes = await fetch("/api/references?limit=1000");
+      if (refRes.ok) {
+        const data = await refRes.json();
+        setReferences((data.references || []) as ReferenceImage[]);
+      }
+    } catch {
+      setBridgeOnline(false);
+      showToast("Bridge unreachable", "error");
+    }
+  }
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
@@ -899,12 +1077,62 @@ export default function App() {
         setCommandPaletteOpen((prev) => !prev);
         return;
       }
+      // #9 Cmd+, for settings
+      if ((event.metaKey || event.ctrlKey) && event.key === ",") {
+        event.preventDefault();
+        setSelectedPageId("process-settings");
+        return;
+      }
+      // #9 Cmd+[ / Cmd+] for prev/next page
+      if ((event.metaKey || event.ctrlKey) && event.key === "[") {
+        event.preventDefault();
+        if (selectedPageIndex > 0) setSelectedPageId(processPages[selectedPageIndex - 1].id);
+        return;
+      }
+      if ((event.metaKey || event.ctrlKey) && event.key === "]") {
+        event.preventDefault();
+        if (selectedPageIndex < processPages.length - 1) setSelectedPageId(processPages[selectedPageIndex + 1].id);
+        return;
+      }
+      // #9 Cmd+B toggle sidebar
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "b") {
+        event.preventDefault();
+        setSidebarCollapsed((prev) => !prev);
+        return;
+      }
+      // QoL: Cmd+R refresh all data
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "r") {
+        event.preventDefault();
+        fetchHealth();
+        showToast("Refreshing data…", "info");
+        return;
+      }
+      // QoL: Cmd+W close window
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "w") {
+        event.preventDefault();
+        (async () => {
+          try {
+            const { getCurrentWindow } = await import("@tauri-apps/api/window");
+            getCurrentWindow().close();
+          } catch { /* browser fallback: no-op */ }
+        })();
+        return;
+      }
       if (event.key === "Escape") {
         setCommandPaletteOpen(false);
         return;
       }
       if (inField || commandPaletteOpen) return;
 
+      // #9 Arrow key page nav
+      if (event.key === "ArrowUp" && selectedPageIndex > 0) {
+        event.preventDefault();
+        setSelectedPageId(processPages[selectedPageIndex - 1].id);
+      }
+      if (event.key === "ArrowDown" && selectedPageIndex < processPages.length - 1) {
+        event.preventDefault();
+        setSelectedPageId(processPages[selectedPageIndex + 1].id);
+      }
       if (event.key === "ArrowLeft" && selectedPageIndex > 0) {
         event.preventDefault();
         setSelectedPageId(processPages[selectedPageIndex - 1].id);
@@ -917,6 +1145,75 @@ export default function App() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [commandPaletteOpen, processPages, selectedPageIndex]);
+
+  // QoL: Sidebar resize via drag
+  useEffect(() => {
+    if (!isResizingSidebar) return;
+    const onMove = (e: MouseEvent) => {
+      const newWidth = Math.max(200, Math.min(500, e.clientX));
+      setSidebarWidth(newWidth);
+    };
+    const onUp = () => {
+      setIsResizingSidebar(false);
+      try { window.localStorage.setItem("brandmint-sidebar-width", String(sidebarWidth)); } catch { /* noop */ }
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, [isResizingSidebar, sidebarWidth]);
+
+  // QoL: Dismiss context menu on click
+  useEffect(() => {
+    if (!contextMenu) return;
+    const dismiss = () => setContextMenu(null);
+    window.addEventListener("click", dismiss);
+    window.addEventListener("contextmenu", dismiss);
+    return () => {
+      window.removeEventListener("click", dismiss);
+      window.removeEventListener("contextmenu", dismiss);
+    };
+  }, [contextMenu]);
+
+  // QoL: Window position memory
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null;
+    (async () => {
+      try {
+        const { getCurrentWindow } = await import("@tauri-apps/api/window");
+        const win = getCurrentWindow();
+        const saved = window.localStorage.getItem("brandmint-window-pos");
+        if (saved) {
+          try {
+            const { x, y, w, h } = JSON.parse(saved);
+            if (w > 400 && h > 300) {
+              win.setPosition(new (await import("@tauri-apps/api/dpi")).LogicalPosition(x, y));
+              win.setSize(new (await import("@tauri-apps/api/dpi")).LogicalSize(w, h));
+            }
+          } catch {
+            window.localStorage.removeItem("brandmint-window-pos");
+          }
+        }
+        const savePos = async () => {
+          try {
+            const pos = await win.outerPosition();
+            const size = await win.outerSize();
+            window.localStorage.setItem("brandmint-window-pos", JSON.stringify({
+              x: pos.x, y: pos.y, w: size.width, h: size.height,
+            }));
+          } catch { /* noop */ }
+        };
+        interval = setInterval(savePos, 5000);
+      } catch { /* browser mode — no-op */ }
+    })();
+    return () => { if (interval) clearInterval(interval); };
+  }, []);
 
   useEffect(() => {
     if (!selectedPage && processPages[0]) {
@@ -954,30 +1251,206 @@ export default function App() {
     }
   }, []);
 
+  // ── Load run history, recent projects, preferences ──
+  useEffect(() => {
+    try {
+      const h = localStorage.getItem(HISTORY_KEY);
+      if (h) setRunHistory(JSON.parse(h));
+    } catch { /* noop */ }
+    try {
+      const p = localStorage.getItem(PROJECTS_KEY);
+      if (p) setRecentProjects(JSON.parse(p));
+    } catch { /* noop */ }
+    try {
+      const pr = localStorage.getItem(PREFS_KEY);
+      if (pr) setPreferences({ ...DEFAULT_PREFERENCES, ...JSON.parse(pr) });
+    } catch { /* noop */ }
+  }, []);
+
+  // ── Save preferences on change ──
+  useEffect(() => {
+    try { localStorage.setItem(PREFS_KEY, JSON.stringify(preferences)); } catch { /* noop */ }
+  }, [preferences]);
+
+  // ── #15 Auto-update check ──
+  useEffect(() => {
+    const checkUpdate = async () => {
+      try {
+        const res = await fetch("https://api.github.com/repos/Sheshiyer/brandmint-oracle-aleph/releases/latest", {
+          headers: { Accept: "application/vnd.github.v3+json" },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const latest = (data.tag_name || "").replace(/^v/, "");
+        const current = "4.3.1";
+        if (latest && latest !== current && latest > current) {
+          setUpdateAvailable(latest);
+        }
+      } catch { /* noop */ }
+    };
+    checkUpdate();
+  }, []);
+
+  // ── #7 Native file dialog helper ──
+  async function openFileDialog(title: string, filters: { name: string; extensions: string[] }[]) {
+    try {
+      const { open } = await import("@tauri-apps/plugin-dialog");
+      const result = await open({ title, filters, multiple: false, directory: false });
+      return result as string | null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function openFolderDialog(title: string) {
+    try {
+      const { open } = await import("@tauri-apps/plugin-dialog");
+      const result = await open({ title, multiple: false, directory: true });
+      return result as string | null;
+    } catch {
+      return null;
+    }
+  }
+
+  // ── #6 Notify on run state changes ──
+  const prevRunStateRef = useRef<RunState>("idle");
+  useEffect(() => {
+    const prev = prevRunStateRef.current;
+    prevRunStateRef.current = runState;
+    if (prev === "running" && runState === "idle") {
+      showToast("Pipeline run completed", "success");
+      addRunToHistory("success");
+      // #6 Native notification
+      (async () => {
+        try {
+          const { sendNotification } = await import("@tauri-apps/plugin-notification");
+          if (preferences.showNotifications) {
+            sendNotification({ title: "Brandmint", body: "Pipeline run completed successfully." });
+          }
+        } catch { /* noop - browser mode */ }
+      })();
+    } else if (prev === "running" && runState === "aborted") {
+      showToast("Pipeline run aborted", "error");
+      addRunToHistory("aborted");
+    } else if (runState === "running" && prev !== "running") {
+      runStartTimeRef.current = Date.now();
+      trackRecentProject();
+    }
+  }, [runState]);
+
+  // ── #11 Page transition trigger ──
+  useEffect(() => {
+    setPageTransitionKey((prev) => prev + 1);
+  }, [selectedPageId]);
+
+  // ── #8 Drag & Drop ──
+  useEffect(() => {
+    const onDragOver = (e: DragEvent) => { e.preventDefault(); setIsDraggingOver(true); };
+    const onDragLeave = (e: DragEvent) => {
+      if (e.relatedTarget === null || !(e.currentTarget as Node)?.contains(e.relatedTarget as Node)) {
+        setIsDraggingOver(false);
+      }
+    };
+    const onDrop = (e: DragEvent) => {
+      e.preventDefault();
+      setIsDraggingOver(false);
+      const files = e.dataTransfer?.files;
+      if (!files?.length) return;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const name = file.name.toLowerCase();
+        if (name.endsWith(".yaml") || name.endsWith(".yml")) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            setConfigPath(file.name);
+            showToast(`Loaded config: ${file.name}`, "success");
+          };
+          reader.onerror = () => showToast(`Failed to read ${file.name}`, "error");
+          reader.readAsText(file);
+        } else if (name.endsWith(".md")) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            setProductMdText(reader.result as string);
+            setProductMdPath(file.name);
+            showToast(`Loaded product doc: ${file.name}`, "success");
+          };
+          reader.onerror = () => showToast(`Failed to read ${file.name}`, "error");
+          reader.readAsText(file);
+        } else if (name.endsWith(".json")) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const data = JSON.parse(reader.result as string);
+              setOutputViewerData(data);
+              setSelectedOutputFile(file.name);
+              showToast(`Loaded JSON: ${file.name}`, "info");
+            } catch {
+              showToast(`Invalid JSON: ${file.name}`, "error");
+            }
+          };
+          reader.onerror = () => showToast(`Failed to read ${file.name}`, "error");
+          reader.readAsText(file);
+        }
+      }
+    };
+    window.addEventListener("dragover", onDragOver);
+    window.addEventListener("dragleave", onDragLeave);
+    window.addEventListener("drop", onDrop);
+    return () => {
+      window.removeEventListener("dragover", onDragOver);
+      window.removeEventListener("dragleave", onDragLeave);
+      window.removeEventListener("drop", onDrop);
+    };
+  }, []);
+
+  // ── Bridge offline notification ──
+  const prevBridgeOnlineRef = useRef(true);
+  useEffect(() => {
+    if (prevBridgeOnlineRef.current && !bridgeOnline) {
+      showToast("Bridge disconnected", "error");
+      (async () => {
+        try {
+          const { sendNotification } = await import("@tauri-apps/plugin-notification");
+          if (preferences.showNotifications) {
+            sendNotification({ title: "Brandmint", body: "Bridge connection lost." });
+          }
+        } catch { /* noop */ }
+      })();
+    } else if (!prevBridgeOnlineRef.current && bridgeOnline) {
+      showToast("Bridge reconnected", "success");
+    }
+    prevBridgeOnlineRef.current = bridgeOnline;
+  }, [bridgeOnline]);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const payload = {
-      projectName,
-      brandFolder,
-      scenario,
-      waves,
-      publishStage,
-      configPath,
-      productMdPath,
-      productMdText,
-      extraction,
-      extractionConfirmed,
-      wizardStep,
-      configDraft,
-      selectedReferenceIds,
-      selectedPageId,
-      exportedAt,
-      dryRunMode,
-      wikiHandoffDone,
-      astroHandoffDone,
-    };
-    window.localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
-    setLastSavedAt(new Date().toLocaleTimeString());
+    const timer = setTimeout(() => {
+      try {
+        const payload = {
+          projectName,
+          brandFolder,
+          scenario,
+          waves,
+          publishStage,
+          configPath,
+          productMdPath,
+          productMdText,
+          extraction,
+          extractionConfirmed,
+          wizardStep,
+          configDraft,
+          selectedReferenceIds,
+          selectedPageId,
+          exportedAt,
+          dryRunMode,
+          wikiHandoffDone,
+          astroHandoffDone,
+        };
+        window.localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
+        setLastSavedAt(new Date().toLocaleTimeString());
+      } catch { /* storage full or private mode */ }
+    }, 1500);
+    return () => clearTimeout(timer);
   }, [
     configDraft,
     brandFolder,
@@ -1009,6 +1482,130 @@ export default function App() {
         message,
       },
     ]);
+  }
+
+  // ── #10 Toast System ──
+  function showToast(message: string, kind: Toast["kind"] = "info") {
+    const id = Date.now() + Math.floor(Math.random() * 10000);
+    setToasts((prev) => [...prev.slice(-4), { id, message, kind }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, exiting: true } : t)));
+      setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 220);
+    }, 3500);
+  }
+
+  function dismissToast(id: number) {
+    setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, exiting: true } : t)));
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 220);
+  }
+
+  // ── #5 Run History ──
+  function addRunToHistory(status: RunHistoryEntry["status"]) {
+    const entry: RunHistoryEntry = {
+      id: `run-${Date.now()}`,
+      scenario,
+      waves,
+      startedAt: new Date().toISOString(),
+      duration: runStartTimeRef.current ? Math.round((Date.now() - runStartTimeRef.current) / 1000) : 0,
+      status,
+      projectName,
+      configPath,
+    };
+    setRunHistory((prev) => {
+      const next = [entry, ...prev].slice(0, 50);
+      try { localStorage.setItem(HISTORY_KEY, JSON.stringify(next)); } catch { /* noop */ }
+      return next;
+    });
+    runStartTimeRef.current = null;
+  }
+
+  // ── #6 Recent Projects ──
+  function trackRecentProject() {
+    const proj: RecentProject = { name: projectName, path: brandFolder, lastOpened: new Date().toISOString(), scenario };
+    setRecentProjects((prev) => {
+      const filtered = prev.filter((p) => p.path !== proj.path);
+      const next = [proj, ...filtered].slice(0, 10);
+      try { localStorage.setItem(PROJECTS_KEY, JSON.stringify(next)); } catch { /* noop */ }
+      return next;
+    });
+  }
+
+  // ── #12 Output Viewer ──
+  function renderJsonTree(data: unknown, depth: number = 0, path: string = "root"): JSX.Element {
+    if (data === null) return <span className="json-null">null</span>;
+    if (typeof data === "boolean") return <span className="json-boolean">{String(data)}</span>;
+    if (typeof data === "number") return <span className="json-number">{data}</span>;
+    if (typeof data === "string") {
+      const display = data.length > 120 ? data.slice(0, 120) + "..." : data;
+      return <span className="json-string">&quot;{display}&quot;</span>;
+    }
+    if (Array.isArray(data)) {
+      const isCollapsed = outputCollapsed[path];
+      if (data.length === 0) return <span className="json-bracket">[]</span>;
+      return (
+        <span>
+          <button className="json-toggle" onClick={() => setOutputCollapsed((prev) => ({ ...prev, [path]: !prev[path] }))}>
+            {isCollapsed ? "+" : "-"}
+          </button>
+          <span className="json-bracket">[</span>
+          {isCollapsed ? <span className="json-null"> {data.length} items </span> : (
+            <div style={{ paddingLeft: 16 }}>
+              {data.map((item, i) => (
+                <div key={i}>{renderJsonTree(item, depth + 1, `${path}[${i}]`)}{i < data.length - 1 ? "," : ""}</div>
+              ))}
+            </div>
+          )}
+          <span className="json-bracket">]</span>
+        </span>
+      );
+    }
+    if (typeof data === "object") {
+      const entries = Object.entries(data as Record<string, unknown>);
+      const isCollapsed = outputCollapsed[path];
+      if (entries.length === 0) return <span className="json-bracket">{"{}"}</span>;
+      return (
+        <span>
+          {depth > 0 && (
+            <button className="json-toggle" onClick={() => setOutputCollapsed((prev) => ({ ...prev, [path]: !prev[path] }))}>
+              {isCollapsed ? "+" : "-"}
+            </button>
+          )}
+          <span className="json-bracket">{"{"}</span>
+          {isCollapsed ? <span className="json-null"> {entries.length} keys </span> : (
+            <div style={{ paddingLeft: 16 }}>
+              {entries.map(([key, val], i) => (
+                <div key={key}>
+                  <span className="json-key">&quot;{key}&quot;</span>: {renderJsonTree(val, depth + 1, `${path}.${key}`)}
+                  {i < entries.length - 1 ? "," : ""}
+                </div>
+              ))}
+            </div>
+          )}
+          <span className="json-bracket">{"}"}</span>
+        </span>
+      );
+    }
+    return <span>{String(data)}</span>;
+  }
+
+  // ── #13 Log Search ──
+  const searchFilteredLogs = useMemo(() => {
+    const needle = logSearchQuery.trim().toLowerCase();
+    const base = logLevelFilter === "all" ? bridgeLogs : bridgeLogs.filter((row) => row.level === logLevelFilter);
+    if (!needle) return base;
+    return base.filter((row) => row.message.toLowerCase().includes(needle));
+  }, [bridgeLogs, logLevelFilter, logSearchQuery]);
+
+  function exportLogs() {
+    const text = searchFilteredLogs.map((row) => `[${row.ts}] [${row.level}] ${row.message}`).join("\n");
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `brandmint-logs-${new Date().toISOString().slice(0, 10)}.log`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Logs exported", "success");
   }
 
   async function postJson(path: string, body: Record<string, unknown> = {}) {
@@ -1203,19 +1800,20 @@ export default function App() {
           return;
         }
         setRunners(catalog);
-        const preferred = catalog.find((row) => row.id === selectedRunner && row.available);
-        if (!preferred) {
+        setSelectedRunner((current) => {
+          const preferred = catalog.find((row) => row.id === current && row.available);
+          if (preferred) return current;
           const configured = catalog.find((row) => row.id === integrationSettings.defaults.preferredRunner && row.available);
           const fallback = configured ?? catalog.find((row) => row.available) ?? catalog[0];
-          if (fallback) setSelectedRunner(fallback.id);
-        }
+          return fallback ? fallback.id : current;
+        });
       } catch {
         setRunners(FALLBACK_RUNNERS);
       }
     };
 
     loadRunners();
-  }, [integrationSettings.defaults.preferredRunner, selectedRunner]);
+  }, [integrationSettings.defaults.preferredRunner]);
 
   useEffect(() => {
     if (selectedReferenceIds.length || !topThirtyReferences.length) return;
@@ -1279,9 +1877,7 @@ export default function App() {
   }
 
   function clearDraft() {
-    if (typeof window !== "undefined") {
-      window.localStorage.removeItem(DRAFT_KEY);
-    }
+    try { window.localStorage.removeItem(DRAFT_KEY); } catch { /* noop */ }
     setProjectName("brandmint");
     setBrandFolder("./brandmint");
     setScenario("focused");
@@ -1761,11 +2357,15 @@ export default function App() {
             <p>Start here. If Product MD is not provided, set the brand folder and load `product.md` from it.</p>
             <label className="field">
               Brand folder
-              <input value={brandFolder} onChange={(e) => setBrandFolder(e.target.value)} placeholder="./my-brand" />
+              <div style={{ display: "flex", gap: 8 }}>
+                <input style={{ flex: 1 }} value={brandFolder} onChange={(e) => setBrandFolder(e.target.value)} placeholder="./my-brand" />
+                <button className="btn" onClick={async () => { const f = await openFolderDialog("Select brand folder"); if (f) { setBrandFolder(f); showToast(`Brand folder: ${f}`, "success"); } }}>Browse</button>
+              </div>
             </label>
             <div className="controls-row">
               <input type="file" accept=".md,.txt" onChange={handleFileUpload} />
               <button className="btn" onClick={() => void loadFromBrandFolder()}>Load From Brand Folder</button>
+              <button className="btn" onClick={async () => { const f = await openFileDialog("Select product.md", [{ name: "Markdown", extensions: ["md", "txt"] }]); if (f) { setProductMdPath(f); showToast(`Product doc: ${f}`, "info"); } }}>Open File</button>
               <button className="btn" onClick={loadDemoDryRun}>Load Demo Dry Run</button>
               <button className="btn" onClick={clearDraft}>Clear Draft</button>
             </div>
@@ -1924,9 +2524,9 @@ export default function App() {
               </label>
             </div>
             <div className="controls-row">
-              <button className="btn btn-primary" onClick={startRun}>Start Launch</button>
-              <button className="btn" onClick={retryRun}>Retry on 4188</button>
-              <button className="btn" onClick={abortRun}>Stop Run</button>
+              <button className="btn btn-primary" onClick={startRun} disabled={runState === "running"}>Start Launch</button>
+              <button className="btn" onClick={retryRun} disabled={runState === "running"}>Retry on 4188</button>
+              <button className="btn" onClick={abortRun} disabled={runState !== "running"}>Stop Run</button>
               <button className="btn" onClick={() => setSelectedPageId("process-settings")}>Provider Settings</button>
               <button className="btn" onClick={() => setShowAdvancedLaunch((prev) => !prev)}>
                 {showAdvancedLaunch ? "Hide Advanced" : "More Options"}
@@ -1949,7 +2549,7 @@ export default function App() {
                     <option value="video">video</option>
                   </select>
                 </label>
-                <button className="btn" onClick={() => void startPublishStage()}>Run bm publish</button>
+                <button className="btn" onClick={() => void startPublishStage()} disabled={runState === "running"}>Run bm publish</button>
               </div>
               </div>
             )}
@@ -1971,7 +2571,8 @@ export default function App() {
               <span>warn {logLevelCounts.warn}</span>
               <span>error {logLevelCounts.error}</span>
             </div>
-            <div className="controls-row">
+            <div className="log-toolbar">
+              <input value={logSearchQuery} onChange={(e) => setLogSearchQuery(e.target.value)} placeholder="Search logs..." />
               <label className="field compact">
                 Level
                 <select value={logLevelFilter} onChange={(e) => setLogLevelFilter(e.target.value as "all" | "info" | "warn" | "error")}>
@@ -1982,18 +2583,20 @@ export default function App() {
                 </select>
               </label>
               <button className={`btn ${compactLogs ? "btn-primary" : ""}`} onClick={() => setCompactLogs((prev) => !prev)}>
-                {compactLogs ? "Compact On" : "Compact Off"}
+                {compactLogs ? "Compact" : "Full"}
               </button>
+              <button className="btn" onClick={exportLogs}>Export .log</button>
+              <span className="log-count">{searchFilteredLogs.length} entries</span>
             </div>
             <div className={`log-feed ${compactLogs ? "compact" : ""}`}>
-              {filteredBridgeLogs.slice(-240).map((log) => (
+              {searchFilteredLogs.slice(-240).map((log) => (
                 <div key={log.id} className={`log-row ${log.level}`}>
                   <span>{formatTime(log.ts)}</span>
                   <strong>{log.level}</strong>
                   <p>{log.message}</p>
                 </div>
               ))}
-              {!filteredBridgeLogs.length && renderEmptyState("No logs in this filter", "Try a different log level or run a workflow action.")}
+              {!searchFilteredLogs.length && renderEmptyState("No logs match", "Try a different filter or search term.")}
             </div>
           </section>
         );
@@ -2025,169 +2628,231 @@ export default function App() {
 
       case "settings":
         return (
-          <section className="content-block">
-            <h3>Provider Settings</h3>
-            <p>Configure keys and model routing for API-backed runners without breaking pipeline defaults.</p>
-            <div className="metric-grid">
-              <article className="metric-card">
-                <span>OpenRouter key</span>
-                <strong>{integrationSettings.openrouter.hasApiKey ? integrationSettings.openrouter.apiKeyMasked : "not set"}</strong>
-              </article>
-              <article className="metric-card">
-                <span>OpenRouter model</span>
-                <strong>{integrationSettings.openrouter.model}</strong>
-              </article>
-              <article className="metric-card">
-                <span>NBrain key</span>
-                <strong>{integrationSettings.nbrain.hasApiKey ? integrationSettings.nbrain.apiKeyMasked : "not set"}</strong>
-              </article>
-              <article className="metric-card">
-                <span>Preferred runner</span>
-                <strong>{integrationSettings.defaults.preferredRunner}</strong>
-              </article>
+          <>
+            {/* Appearance Section */}
+            <div className="settings-section">
+              <h4>Appearance</h4>
+              <div className="settings-row">
+                <div>
+                  <div className="settings-row-label">Notifications</div>
+                  <div className="settings-row-desc">Show native OS notifications for run events</div>
+                </div>
+                <div className="settings-row-control">
+                  <select value={preferences.showNotifications ? "on" : "off"} onChange={(e) => setPreferences((prev) => ({ ...prev, showNotifications: e.target.value === "on" }))}>
+                    <option value="on">On</option>
+                    <option value="off">Off</option>
+                  </select>
+                </div>
+              </div>
+              <div className="settings-row">
+                <div>
+                  <div className="settings-row-label">Auto-save drafts</div>
+                  <div className="settings-row-desc">Automatically persist work to local storage</div>
+                </div>
+                <div className="settings-row-control">
+                  <select value={preferences.autoSave ? "on" : "off"} onChange={(e) => setPreferences((prev) => ({ ...prev, autoSave: e.target.value === "on" }))}>
+                    <option value="on">On</option>
+                    <option value="off">Off</option>
+                  </select>
+                </div>
+              </div>
+              <div className="settings-row">
+                <div>
+                  <div className="settings-row-label">Log retention</div>
+                  <div className="settings-row-desc">Maximum number of log entries to keep in memory</div>
+                </div>
+                <div className="settings-row-control">
+                  <select value={preferences.logRetention} onChange={(e) => setPreferences((prev) => ({ ...prev, logRetention: Number(e.target.value) }))}>
+                    <option value="200">200</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
-            <div className="page-form-grid">
-              <label className="field">
-                OpenRouter API key
-                <input
-                  type="password"
-                  value={openrouterApiKeyInput}
-                  onChange={(e) => setOpenrouterApiKeyInput(e.target.value)}
-                  placeholder={integrationSettings.openrouter.hasApiKey ? "•••••••• (set new to rotate)" : "sk-or-v1-..."}
-                />
-              </label>
-              <label className="field">
-                OpenRouter model
-                <input
-                  value={integrationSettings.openrouter.model}
-                  onChange={(e) =>
-                    setIntegrationSettings((prev) => ({
-                      ...prev,
-                      openrouter: { ...prev.openrouter, model: e.target.value },
-                    }))
-                  }
-                />
-              </label>
-              <label className="field">
-                Model router mode
-                <select
-                  value={integrationSettings.openrouter.routeMode}
-                  onChange={(e) =>
-                    setIntegrationSettings((prev) => ({
-                      ...prev,
-                      openrouter: { ...prev.openrouter, routeMode: e.target.value },
-                    }))
-                  }
-                >
-                  <option value="balanced">balanced</option>
-                  <option value="quality">quality</option>
-                  <option value="speed">speed</option>
-                </select>
-              </label>
-              <label className="field">
-                OpenRouter endpoint
-                <input
-                  value={integrationSettings.openrouter.endpoint}
-                  onChange={(e) =>
-                    setIntegrationSettings((prev) => ({
-                      ...prev,
-                      openrouter: { ...prev.openrouter, endpoint: e.target.value },
-                    }))
-                  }
-                />
-              </label>
-            </div>
-
-            <h4>NBrain Scaffold</h4>
-            <div className="page-form-grid">
-              <label className="field">
-                Enable NBrain settings
-                <select
-                  value={integrationSettings.nbrain.enabled ? "enabled" : "disabled"}
-                  onChange={(e) =>
-                    setIntegrationSettings((prev) => ({
-                      ...prev,
-                      nbrain: { ...prev.nbrain, enabled: e.target.value === "enabled" },
-                    }))
-                  }
-                >
-                  <option value="disabled">disabled</option>
-                  <option value="enabled">enabled</option>
-                </select>
-              </label>
-              <label className="field">
-                NBrain API key
-                <input
-                  type="password"
-                  value={nbrainApiKeyInput}
-                  onChange={(e) => setNbrainApiKeyInput(e.target.value)}
-                  placeholder={integrationSettings.nbrain.hasApiKey ? "•••••••• (set new to rotate)" : "nb-..."}
-                />
-              </label>
-              <label className="field">
-                NBrain model
-                <input
-                  value={integrationSettings.nbrain.model}
-                  onChange={(e) =>
-                    setIntegrationSettings((prev) => ({
-                      ...prev,
-                      nbrain: { ...prev.nbrain, model: e.target.value },
-                    }))
-                  }
-                />
-              </label>
-              <label className="field">
-                NBrain endpoint
-                <input
-                  value={integrationSettings.nbrain.endpoint}
-                  onChange={(e) =>
-                    setIntegrationSettings((prev) => ({
-                      ...prev,
-                      nbrain: { ...prev.nbrain, endpoint: e.target.value },
-                    }))
-                  }
-                />
-              </label>
-              <label className="field">
-                Preferred runner
-                <select
-                  value={integrationSettings.defaults.preferredRunner}
-                  onChange={(e) =>
-                    setIntegrationSettings((prev) => ({
-                      ...prev,
-                      defaults: { ...prev.defaults, preferredRunner: e.target.value },
-                    }))
-                  }
-                >
-                  {runners.map((runner) => (
-                    <option key={runner.id} value={runner.id}>
-                      {runner.label}
-                    </option>
+            {/* Recent Projects */}
+            {recentProjects.length > 0 && (
+              <div className="settings-section">
+                <h4>Recent Projects</h4>
+                <div className="project-grid">
+                  {recentProjects.map((proj) => (
+                    <div key={proj.path} className="project-card" onClick={() => { setBrandFolder(proj.path); setProjectName(proj.name); setScenario(proj.scenario); showToast(`Loaded project: ${proj.name}`, "info"); }}>
+                      <h4>{proj.name}</h4>
+                      <p>{proj.path}</p>
+                      <p style={{ marginTop: 4 }}>{proj.scenario} &middot; {new Date(proj.lastOpened).toLocaleDateString()}</p>
+                    </div>
                   ))}
-                </select>
-              </label>
+                </div>
+              </div>
+            )}
+
+            {/* Provider Integrations */}
+            <div className="settings-section">
+              <h4>Provider Integrations</h4>
+              <div className="metric-grid">
+                <article className="metric-card">
+                  <span>OpenRouter key</span>
+                  <strong>{integrationSettings.openrouter.hasApiKey ? integrationSettings.openrouter.apiKeyMasked : "not set"}</strong>
+                </article>
+                <article className="metric-card">
+                  <span>OpenRouter model</span>
+                  <strong>{integrationSettings.openrouter.model}</strong>
+                </article>
+                <article className="metric-card">
+                  <span>NBrain key</span>
+                  <strong>{integrationSettings.nbrain.hasApiKey ? integrationSettings.nbrain.apiKeyMasked : "not set"}</strong>
+                </article>
+                <article className="metric-card">
+                  <span>Preferred runner</span>
+                  <strong>{integrationSettings.defaults.preferredRunner}</strong>
+                </article>
+              </div>
+              <div className="page-form-grid">
+                <label className="field">
+                  OpenRouter API key
+                  <input type="password" value={openrouterApiKeyInput} onChange={(e) => setOpenrouterApiKeyInput(e.target.value)} placeholder={integrationSettings.openrouter.hasApiKey ? "set new to rotate" : "sk-or-v1-..."} />
+                </label>
+                <label className="field">
+                  OpenRouter model
+                  <input value={integrationSettings.openrouter.model} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, openrouter: { ...prev.openrouter, model: e.target.value } }))} />
+                </label>
+                <label className="field">
+                  Model router mode
+                  <select value={integrationSettings.openrouter.routeMode} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, openrouter: { ...prev.openrouter, routeMode: e.target.value } }))}>
+                    <option value="balanced">balanced</option>
+                    <option value="quality">quality</option>
+                    <option value="speed">speed</option>
+                  </select>
+                </label>
+                <label className="field">
+                  Preferred runner
+                  <select value={integrationSettings.defaults.preferredRunner} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, defaults: { ...prev.defaults, preferredRunner: e.target.value } }))}>
+                    {runners.map((runner) => (<option key={runner.id} value={runner.id}>{runner.label}</option>))}
+                  </select>
+                </label>
+              </div>
+              <div className="controls-row">
+                <button className="btn btn-primary" onClick={() => { void saveIntegrationSettings(); showToast("Settings saved", "success"); }} disabled={settingsSaving}>{settingsSaving ? "Saving..." : "Save Settings"}</button>
+                <button className="btn" onClick={() => void loadIntegrationSettings()}>Reload</button>
+                <button className="btn btn-danger" onClick={() => void saveIntegrationSettings({ clearOpenrouter: true })}>Clear OpenRouter Key</button>
+              </div>
             </div>
 
-            <div className="controls-row">
-              <button className="btn btn-primary" onClick={() => void saveIntegrationSettings()} disabled={settingsSaving}>
-                {settingsSaving ? "Saving…" : "Save Settings"}
-              </button>
-              <button className="btn" onClick={() => void loadIntegrationSettings()}>Reload</button>
-              <button className="btn" onClick={() => void saveIntegrationSettings({ clearOpenrouter: true })}>Clear OpenRouter Key</button>
-              <button className="btn" onClick={() => void saveIntegrationSettings({ clearNbrain: true })}>Clear NBrain Key</button>
+            {/* About */}
+            <div className="settings-section">
+              <h4>About</h4>
+              <div className="settings-row">
+                <div>
+                  <div className="settings-row-label">Version</div>
+                  <div className="settings-row-desc">Brandmint Desktop v4.3.1</div>
+                </div>
+                {updateAvailable && <span className="update-badge" onClick={() => window.open("https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest", "_blank")}>v{updateAvailable} available</span>}
+              </div>
+              <div className="settings-row">
+                <div>
+                  <div className="settings-row-label">Keyboard shortcuts</div>
+                  <div className="settings-row-desc">Cmd+K command palette &middot; Cmd+, settings &middot; Cmd+B sidebar &middot; Cmd+[/] prev/next &middot; Arrows navigate</div>
+                </div>
+              </div>
             </div>
+          </>
+        );
+
+      case "history":
+        return (
+          <section className="content-block">
+            <h3>Run History</h3>
+            <p>Past pipeline runs stored locally on this machine.</p>
+            {runHistory.length === 0 ? (
+              renderEmptyState("No runs yet", "Start a pipeline run and it will appear here.")
+            ) : (
+              <div className="history-list">
+                {runHistory.map((entry) => (
+                  <div key={entry.id} className={`history-card ${entry.status}`}>
+                    <div>
+                      <p className="history-title">{entry.projectName} &middot; {entry.scenario}</p>
+                      <p className="history-subtitle">Waves {entry.waves} &middot; {entry.duration > 0 ? `${Math.floor(entry.duration / 60)}m ${entry.duration % 60}s` : "< 1s"}</p>
+                    </div>
+                    <div className="history-meta">
+                      <span>{entry.status}</span>
+                      <span>{new Date(entry.startedAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {runHistory.length > 0 && (
+              <div className="controls-row">
+                <button className="btn btn-danger" onClick={() => { setRunHistory([]); try { localStorage.removeItem(HISTORY_KEY); } catch { /* noop */ } showToast("History cleared", "info"); }}>Clear History</button>
+              </div>
+            )}
           </section>
         );
 
-      case "reference-curation":
+      case "output-viewer":
+        return (
+          <section className="content-block">
+            <h3>Output Viewer</h3>
+            <p>Inspect pipeline skill outputs as collapsible JSON trees.</p>
+            <div className="controls-row">
+              {artifacts.filter((a) => a.extension === ".json" && a.group === "outputs").map((art) => (
+                <button key={art.name} className={`btn ${selectedOutputFile === art.name ? "btn-primary" : ""}`} onClick={async () => {
+                  if (outputAbortRef.current) outputAbortRef.current.abort();
+                  const controller = new AbortController();
+                  outputAbortRef.current = controller;
+                  setSelectedOutputFile(art.name);
+                  try {
+                    const res = await fetch(`/api/artifacts/read?path=${encodeURIComponent(art.relativePath)}`, { signal: controller.signal });
+                    if (controller.signal.aborted) return;
+                    if (res.ok) {
+                      const data = await res.json();
+                      setOutputViewerData(data);
+                      setOutputCollapsed({});
+                    } else {
+                      showToast(`Failed to load ${art.name}`, "error");
+                    }
+                  } catch (err) {
+                    if ((err as Error).name === "AbortError") return;
+                    showToast(`Failed to load ${art.name}`, "error");
+                  }
+                }}>{art.name.replace(".json", "")}</button>
+              ))}
+              <button className="btn" onClick={async () => {
+                const f = await openFileDialog("Open JSON output", [{ name: "JSON", extensions: ["json"] }]);
+                if (f) { setSelectedOutputFile(f); showToast(`Selected: ${f}`, "info"); }
+              }}>Open File</button>
+            </div>
+            {outputViewerData ? (
+              <div className="output-viewer" style={{ marginTop: 12 }}>
+                <div className="output-viewer-header">
+                  <h4>{selectedOutputFile}</h4>
+                  <button className="btn" onClick={() => { setOutputCollapsed({}); }}>Expand All</button>
+                </div>
+                <div className="json-tree">{renderJsonTree(outputViewerData)}</div>
+              </div>
+            ) : (
+              renderEmptyState("No output selected", "Click an output file above or drop a JSON file into the window.")
+            )}
+          </section>
+        );
+
+      case "reference-curation": {
+        const topScore = topThirtyReferences[0]?.score ?? 0;
+        const hasSignals = synthesisSignals.length > 0;
         return (
           <section className="content-block">
             <h3>Reference Curation — Top 30</h3>
+            <p style={{ color: "var(--fg-secondary)", fontSize: 13, margin: "0 0 12px" }}>
+              {hasSignals
+                ? `Ranked by semantic match to brand signals (${synthesisSignals.slice(0, 6).join(", ")}${synthesisSignals.length > 6 ? "…" : ""}). Top score: ${topScore}.`
+                : "Fill in Product MD Intake or Brand Config to activate semantic ranking. Currently sorted by source priority."}
+            </p>
             <div className="controls-row">
               <button className="btn" onClick={() => setSelectedReferenceIds(topThirtyReferences.map((row) => row.id))}>Select Top 30</button>
               <button className="btn" onClick={() => setSelectedReferenceIds([])}>Clear Selection</button>
               <span className="status-chip">selected {selectedReferenceIds.length}</span>
+              <span className="status-chip">{references.length} total assets</span>
             </div>
             {referencesLoading
               ? renderReferenceSkeleton(10)
@@ -2196,23 +2861,72 @@ export default function App() {
                 : renderEmptyState("No references found", "Add references to /references and refresh this page.")}
           </section>
         );
+      }
 
-      case "reference-library":
+      case "reference-library": {
+        const pageNumbers: number[] = [];
+        const maxVisible = 7;
+        if (refTotalPages <= maxVisible) {
+          for (let i = 1; i <= refTotalPages; i++) pageNumbers.push(i);
+        } else {
+          pageNumbers.push(1);
+          const start = Math.max(2, refPage - 1);
+          const end = Math.min(refTotalPages - 1, refPage + 1);
+          if (start > 2) pageNumbers.push(-1); // ellipsis
+          for (let i = start; i <= end; i++) pageNumbers.push(i);
+          if (end < refTotalPages - 1) pageNumbers.push(-2); // ellipsis
+          pageNumbers.push(refTotalPages);
+        }
         return (
           <section className="content-block">
             <h3>Reference Library</h3>
-            <div className="controls-row">
-              <span className="status-chip">showing {visibleReferences.length} / {rankedReferences.length}</span>
-              <button className="btn" onClick={() => setReferenceLimit((prev) => Math.min(prev + 30, rankedReferences.length))}>Show 30 More</button>
-              <button className="btn" onClick={() => setReferenceLimit(30)}>Reset to 30</button>
+
+            {/* Search + per-page controls */}
+            <div className="ref-toolbar">
+              <input
+                className="ref-search-input"
+                value={refSearchQuery}
+                onChange={(e) => { setRefSearchQuery(e.target.value); setRefPage(1); }}
+                placeholder="Search by name, tag, or description…"
+              />
+              <span className="status-chip">{filteredLibraryRefs.length} assets</span>
+              <select className="ref-per-page" value={refPerPage} onChange={(e) => { setRefPerPage(Number(e.target.value)); setRefPage(1); }}>
+                <option value={12}>12 / page</option>
+                <option value={24}>24 / page</option>
+                <option value={48}>48 / page</option>
+                <option value={96}>96 / page</option>
+              </select>
             </div>
+
+            {/* Grid */}
             {referencesLoading
-              ? renderReferenceSkeleton(12)
-              : visibleReferences.length
-                ? renderReferenceGrid(visibleReferences)
-                : renderEmptyState("Reference library empty", "No images available to display yet.")}
+              ? renderReferenceSkeleton(refPerPage)
+              : paginatedRefs.length
+                ? renderReferenceGrid(paginatedRefs)
+                : renderEmptyState("No matches", "Try a different search query.")}
+
+            {/* Pagination bar */}
+            {refTotalPages > 1 && (
+              <div className="ref-pagination">
+                <button className="ref-page-btn" disabled={refPage <= 1} onClick={() => setRefPage((p) => p - 1)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                {pageNumbers.map((n, i) =>
+                  n < 0 ? (
+                    <span key={`ell-${i}`} className="ref-page-ellipsis">&hellip;</span>
+                  ) : (
+                    <button key={n} className={`ref-page-btn${n === refPage ? " active" : ""}`} onClick={() => setRefPage(n)}>{n}</button>
+                  ),
+                )}
+                <button className="ref-page-btn" disabled={refPage >= refTotalPages} onClick={() => setRefPage((p) => p + 1)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <span className="ref-page-info">Page {refPage} of {refTotalPages}</span>
+              </div>
+            )}
           </section>
         );
+      }
 
       case "fal-dry-run":
         return (
@@ -2284,7 +2998,7 @@ export default function App() {
               <textarea className="field-textarea short" value={taskPrompt} onChange={(e) => setTaskPrompt(e.target.value)} />
             </label>
             <div className="controls-row">
-              <button className="btn btn-primary" onClick={runTaskWithRunner} disabled={!selectedRunnerInfo?.available}>
+              <button className="btn btn-primary" onClick={runTaskWithRunner} disabled={!selectedRunnerInfo?.available || runState === "running"}>
                 Run with {selectedRunnerInfo?.label}
               </button>
               <button className="btn" onClick={() => setTaskPrompt(DEFAULT_TASK_PROMPT)}>Reset Prompt</button>
@@ -2485,65 +3199,78 @@ cd my-wiki && bun run build`}
 
   return (
     <div className="studio-shell frame-shell">
-      <div className="ui-decor-grid" />
-      <div className="ui-scanlines" />
-      <div className="ui-crosshair ch-tl" />
-      <div className="ui-crosshair ch-tr" />
-      <div className="ui-crosshair ch-bl" />
-      <div className="ui-crosshair ch-br" />
 
       <header className="studio-header hud-header">
-        <div className="hud-cell">
-          <span className="hud-label">Brandmint OS</span>
-          <strong>Experience Engine</strong>
-        </div>
-        <div className="hud-cell hud-cell-mid">
-          <span className="hud-label">Current Surface</span>
+        <button className="sidebar-toggle-btn" onClick={() => setSidebarCollapsed((prev) => !prev)} title={sidebarCollapsed ? "Show sidebar" : "Hide sidebar"}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {sidebarCollapsed ? (
+              <><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>
+            ) : (
+              <><rect x="3" y="3" width="7" height="18" rx="1"/><line x1="14" y1="6" x2="21" y2="6"/><line x1="14" y1="12" x2="21" y2="12"/><line x1="14" y1="18" x2="21" y2="18"/></>
+            )}
+          </svg>
+        </button>
+        <div className="header-breadcrumb">
+          <strong>Brandmint</strong>
+          <span style={{ color: "var(--fg-tertiary)" }}>/</span>
           <strong>{selectedPage?.title}</strong>
         </div>
-        <div className="header-meta hud-cell hud-cell-right">
+        <div className="hud-cell-right">
           <span className={`status-pill ${bridgeOnline ? "ok" : "warn"}`}>
             <span className={`status-dot ${bridgeOnline ? "pulse" : "danger"}`} />
-            bridge {bridgeOnline ? "synced" : "offline"}
+            {bridgeOnline ? "online" : "offline"}
           </span>
           <span className={`status-pill ${runState === "running" || runState === "retrying" ? "ok" : ""}`}>
             <span className={`status-dot ${runState === "running" || runState === "retrying" ? "pulse" : ""}`} />
-            run {runState}
+            {runState}
           </span>
-          <span className={`status-pill ${integrationSettings.openrouter.hasApiKey ? "ok" : "warn"}`}>
-            <span className={`status-dot ${integrationSettings.openrouter.hasApiKey ? "pulse" : "danger"}`} />
-            openrouter {integrationSettings.openrouter.hasApiKey ? "ready" : "key missing"}
-          </span>
-          <span className="status-pill">save {lastSavedAt || "-"}</span>
-          <button className={`btn ${dryRunMode ? "btn-primary" : ""}`} onClick={() => setDryRunMode((prev) => !prev)}>
-            {dryRunMode ? "Dry Run On" : "Dry Run Off"}
+          <button className="header-icon-btn" onClick={() => setSelectedPageId("process-history")} title="Run History">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </button>
+          <button className="header-icon-btn" onClick={() => setSelectedPageId("process-settings")} title="Settings (⌘,)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          </button>
+          <button className="btn" onClick={() => setCommandPaletteOpen(true)} title="Command palette (⌘K)">⌘K</button>
         </div>
       </header>
 
-      <section className="timeline-strip">
-        <div className="timeline-fill-track" aria-hidden="true">
-          <div className="timeline-fill" style={{ width: `${progressSummary.percent}%` }} />
-        </div>
-        <div
-          className="timeline-markers"
-          style={{ gridTemplateColumns: `repeat(${processPages.length}, minmax(8px, 1fr))` }}
-        >
-          {processPages.map((page, idx) => (
-            <button
-              key={page.id}
-              className={`timeline-marker ${pageStatusMap[page.id] || "pending"} ${page.id === selectedPage?.id ? "selected" : ""}`}
-              onClick={() => setSelectedPageId(page.id)}
-              title={`${idx + 1}. ${page.title}`}
-            >
-              <span className="visually-hidden">{`${idx + 1}. ${page.title}`}</span>
+      <div className={`studio-grid ${sidebarCollapsed ? "sidebar-collapsed" : ""}`} style={!sidebarCollapsed ? { gridTemplateColumns: `${sidebarWidth}px 1fr` } as React.CSSProperties : undefined}>
+        <aside className="process-sidebar" style={{ position: "relative" }}>
+          <div className={`sidebar-resize-handle${isResizingSidebar ? " dragging" : ""}`} onMouseDown={() => setIsResizingSidebar(true)} />
+          {/* Quick-access app section */}
+          <div className="sidebar-quick-access">
+            <button className={`quick-access-btn${selectedPage?.kind === "settings" ? " active" : ""}`} onClick={() => setSelectedPageId("process-settings")}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+              Settings
             </button>
-          ))}
-        </div>
-      </section>
+            <button className={`quick-access-btn${selectedPage?.kind === "history" ? " active" : ""}`} onClick={() => setSelectedPageId("process-history")}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              History
+            </button>
+            <button className={`quick-access-btn${selectedPage?.kind === "output-viewer" ? " active" : ""}`} onClick={() => setSelectedPageId("process-output-viewer")}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Outputs
+            </button>
+          </div>
 
-      <div className="studio-grid">
-        <aside className="process-sidebar">
+          {recentProjects.length > 0 && (
+            <div className="sidebar-recent-projects">
+              <small className="sidebar-section-label">Recent Projects</small>
+              {recentProjects.slice(0, 3).map((proj) => (
+                <button key={proj.path} className="quick-access-btn project-btn" onClick={() => {
+                  setConfigPath(proj.path);
+                  setProjectName(proj.name);
+                  setScenario(proj.scenario);
+                  showToast(`Loaded project: ${proj.name}`, "info");
+                }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                  <span>{proj.name}</span>
+                  <small>{proj.scenario}</small>
+                </button>
+              ))}
+            </div>
+          )}
+
           <label className="field">
             Find page
             <input value={pageSearch} onChange={(e) => setPageSearch(e.target.value)} placeholder="search page, track, objective" />
@@ -2578,6 +3305,7 @@ cd my-wiki && bun run build`}
                         key={page.id}
                         className={`page-link ${page.id === selectedPage?.id ? "active" : ""}`}
                         onClick={() => setSelectedPageId(page.id)}
+                        onContextMenu={(e) => { e.preventDefault(); setContextMenu({ x: Math.min(e.clientX, window.innerWidth - 180), y: Math.min(e.clientY, window.innerHeight - 120), pageId: page.id }); }}
                       >
                         <span>{processPages.findIndex((row) => row.id === page.id) + 1}</span>
                         <div>
@@ -2596,55 +3324,39 @@ cd my-wiki && bun run build`}
 
         <main className="process-content">
           <section className="page-hero">
-            <p className="page-index">Page {selectedPageIndex + 1} of {processPages.length}</p>
+            <p className="page-index">{selectedPage ? waveForPage(selectedPage).label : ""} &middot; Page {selectedPageIndex + 1} of {processPages.length}</p>
             <h2>{selectedPage?.title}</h2>
             <p>{selectedPage?.objective}</p>
-            <div className="chip-row">
+            <div className="chip-row" style={{ marginTop: 8 }}>
               {selectedPage?.focus.map((item) => <span key={item}>{item}</span>)}
-              <span>{projectName}</span>
-              <span>{scenario}</span>
-            </div>
-            <div className="controls-row">
-              <button className="btn" disabled={selectedPageIndex <= 0} onClick={() => setSelectedPageId(processPages[selectedPageIndex - 1].id)}>Previous</button>
-              <button className="btn" disabled={selectedPageIndex >= processPages.length - 1} onClick={() => setSelectedPageId(processPages[selectedPageIndex + 1].id)}>Next</button>
-              <button className="btn" onClick={() => setCommandPaletteOpen(true)}>Command (⌘K)</button>
             </div>
           </section>
 
-          <div className="content-main-layout">
-            <div>
-              {selectedPage ? renderProcessPage(selectedPage) : <p>No page selected.</p>}
-            </div>
-            <aside className="context-rail">
-              <h4>Current Wave</h4>
-              <p>{selectedPage ? waveForPage(selectedPage).label : "—"}</p>
-              <h4>Quick Guidance</h4>
-              <ul>
-                {selectedPage?.focus.map((item) => (
-                  <li key={`tip-${item}`}>{item}</li>
-                ))}
-              </ul>
-              <h4>Workflow Health</h4>
-              <div className="rail-metrics">
-                <span>Readiness {handoffReadiness}%</span>
-                <span>Errors {logLevelCounts.error}</span>
-                <span>Selected refs {selectedReferenceIds.length}</span>
+          <div key={pageTransitionKey} className="content-main-layout page-transition-enter page-transition-active">
+            {!bridgeOnline && !selectedPage?.kind?.startsWith("settings") && !selectedPage?.kind?.startsWith("history") ? (
+              <div style={{ padding: 24 }}>
+                <div className="skeleton skeleton-block" />
+                <div className="skeleton skeleton-line" style={{ width: "80%" }} />
+                <div className="skeleton skeleton-line" style={{ width: "55%" }} />
+                <div className="skeleton skeleton-line" />
+                <div className="skeleton skeleton-block" style={{ marginTop: 16 }} />
               </div>
-            </aside>
+            ) : selectedPage ? renderProcessPage(selectedPage) : <p>No page selected.</p>}
           </div>
         </main>
       </div>
 
       <footer className="studio-footer">
         <span>{statusMessage}</span>
-        <span>project: {projectName}</span>
-        <span>brand folder: {brandFolder}</span>
-        <span>scenario: {scenario}</span>
-        <span>waves: {waves}</span>
-        <span>selected refs: {selectedReferenceIds.length}</span>
-        <span>pages: {processPages.length}</span>
-        <span>progress: {progressSummary.percent}%</span>
-        <span>attention: {progressSummary.attention}</span>
+        <span>{projectName}</span>
+        <span>{scenario}</span>
+        <span>{progressSummary.percent}% complete</span>
+        {progressSummary.attention > 0 && <span style={{ color: "var(--accent-error)" }}>{progressSummary.attention} attention</span>}
+        {updateAvailable && (
+          <span className="update-badge" title={`Update available: ${updateAvailable}`}>
+            v{updateAvailable}
+          </span>
+        )}
       </footer>
 
       {commandPaletteOpen && (
@@ -2668,6 +3380,60 @@ cd my-wiki && bun run build`}
           </div>
         </div>
       )}
+
+      {/* Toast notifications */}
+      {toasts.length > 0 && (
+        <div className="toast-container">
+          {toasts.map((t) => (
+            <div key={t.id} className={`toast ${t.kind}${t.exiting ? " exiting" : ""}`}>
+              <span className="toast-icon">{t.kind === "success" ? "\u2713" : t.kind === "error" ? "\u2717" : "\u2139"}</span>
+              <span className="toast-message">{t.message}</span>
+              <button className="toast-dismiss" onClick={() => dismissToast(t.id)}>&times;</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Drag-drop overlay */}
+      {isDraggingOver && (
+        <div className="drop-overlay">
+          <div className="drop-overlay-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" strokeWidth="1.5">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <p>Drop config file to load</p>
+            <small>.yaml &middot; .md &middot; .json</small>
+          </div>
+        </div>
+      )}
+
+      {/* Context menu */}
+      {contextMenu && (() => {
+        const ctxPage = processPages.find((p) => p.id === contextMenu.pageId);
+        return (
+          <div className="context-menu" style={{ left: contextMenu.x, top: contextMenu.y }}>
+            <button className="context-menu-item" onClick={() => { if (ctxPage) setSelectedPageId(ctxPage.id); setContextMenu(null); }}>
+              Open <small>Enter</small>
+            </button>
+            <button className="context-menu-item" onClick={() => { if (ctxPage) navigator.clipboard.writeText(ctxPage.title); setContextMenu(null); showToast("Copied title", "info"); }}>
+              Copy title <small>⌘C</small>
+            </button>
+            <div className="context-menu-divider" />
+            <button className="context-menu-item" onClick={() => {
+              if (ctxPage) {
+                const status = pageStatusMap[ctxPage.id];
+                pushLocalLog("info", `Marked "${ctxPage.title}" as ${status === "done" ? "pending" : "done"}`);
+                showToast(`${ctxPage.title}: ${status === "done" ? "reset" : "marked done"}`, "success");
+              }
+              setContextMenu(null);
+            }}>
+              {pageStatusMap[contextMenu.pageId] === "done" ? "Mark pending" : "Mark done"}
+            </button>
+          </div>
+        );
+      })()}
     </div>
   );
 }
