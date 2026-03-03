@@ -331,6 +331,7 @@ def publish_notebooklm(
     no_synthesize: bool = typer.Option(False, "--no-synthesize", help="Skip LLM prose synthesis, use mechanical rendering"),
     synthesis_model: str = typer.Option("", "--synthesis-model", help="OpenRouter model for prose synthesis (default: claude-3.5-haiku)"),
     clear_prose_cache: bool = typer.Option(False, "--clear-prose-cache", help="Clear cached synthesized prose before building"),
+    max_parallel: int = typer.Option(3, "--max-parallel", help="Max parallel artifact workers (default: 3)"),
 ):
     """Publish brand intelligence to NotebookLM and generate artifacts."""
     from .publish import run_notebooklm_publish
@@ -343,6 +344,7 @@ def publish_notebooklm(
         no_synthesize=no_synthesize,
         synthesis_model=synthesis_model,
         clear_prose_cache=clear_prose_cache,
+        max_parallel=max_parallel,
     )
 
 

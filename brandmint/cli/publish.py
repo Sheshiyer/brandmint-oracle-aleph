@@ -37,6 +37,7 @@ def run_notebooklm_publish(
     no_synthesize: bool = False,
     synthesis_model: str = "",
     clear_prose_cache: bool = False,
+    max_parallel: int = 3,
 ) -> None:
     """Publish brand intelligence to NotebookLM."""
     config, cfg, brand_dir = _load_config(config)
@@ -76,6 +77,7 @@ def run_notebooklm_publish(
         max_sources=max_sources,
         synthesize=not no_synthesize,
         synthesis_model=synthesis_model,
+        max_parallel=max_parallel,
     )
 
     if dry_run:

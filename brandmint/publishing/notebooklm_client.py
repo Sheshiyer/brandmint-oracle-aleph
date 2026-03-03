@@ -27,7 +27,7 @@ MAX_RETRIES = 3
 RETRY_BASE_DELAY = 30  # seconds
 
 TIMEOUT_SOURCE = 600    # 10 min per source
-TIMEOUT_ARTIFACT = 1200 # 20 min per artifact
+TIMEOUT_ARTIFACT = 1800 # 30 min per artifact (video can take 20+ min)
 TIMEOUT_COMMAND = 120   # 2 min for quick commands
 
 

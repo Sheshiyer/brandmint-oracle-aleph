@@ -4,6 +4,10 @@ artifact generation, and download.
 
 This is the main entry point called by the Wave 7 post_hook in executor.py
 or by ``bm publish notebooklm`` standalone CLI command.
+
+Generates all 9 NotebookLM artifact types with multiple variations (~25
+artifacts per project) using a 5-phase execution strategy:
+  instant → slow-start → parallel-1 → parallel-2 → slow-poll
 """
 from __future__ import annotations
 
@@ -18,7 +22,14 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from .instruction_templates import ARTIFACT_DEFINITIONS
+from .instruction_templates import (
+    DEFAULT_ARTIFACT_DEFINITIONS,
+    LEGACY_ID_MAP,
+    ext_for_type,
+    estimate_for_type,
+    phase_for_type,
+    resolve_video_style,
+)
 from .notebooklm_client import NotebookLMClient
 from .source_builder import build_source_documents
 from .source_curator import SourceCurator, SourceCandidate
@@ -62,6 +73,7 @@ class NotebookLMPublisher:
         max_sources: int = 50,
         synthesize: bool = True,
         synthesis_model: str = "",
+        max_parallel: int = 3,
     ):
         self.brand_dir = Path(brand_dir)
         self.config = config
@@ -72,6 +84,15 @@ class NotebookLMPublisher:
         self.max_sources = max_sources
         self.synthesize = synthesize
         self.synthesis_model = synthesis_model
+
+        # NotebookLM config overrides from brand-config.yaml
+        nb_config = config.get("notebooklm", {})
+        artifacts_config = nb_config.get("artifacts", {})
+        self.max_parallel = nb_config.get("max_parallel_workers", max_parallel)
+        self.inter_artifact_delay = nb_config.get("inter_artifact_delay", 2.0)
+        self.video_style_override = artifacts_config.get("video_style")
+        self.disabled_artifacts: Set[str] = set(artifacts_config.get("disabled", []))
+        self.custom_artifacts: List[dict] = artifacts_config.get("custom", [])
 
         # Derived paths
         self.outputs_dir = self.brand_dir / ".brandmint" / "outputs"
@@ -91,12 +112,15 @@ class NotebookLMPublisher:
     def publish(self) -> bool:
         """Run the full publish pipeline. Returns True on success."""
         started = time.time()
+        artifact_defs = self._build_artifact_defs()
+
         self.console.print(
             Panel(
                 f"[bold]NotebookLM Publisher[/bold]\n"
                 f"Brand: {self.brand_name}\n"
                 f"Outputs: {self.outputs_dir}\n"
-                f"Deliverables: {self.deliverables_dir}",
+                f"Deliverables: {self.deliverables_dir}\n"
+                f"Artifacts: {len(artifact_defs)} configured",
                 title="[cyan]Wave 7: Publishing[/cyan]",
                 border_style="cyan",
             )
@@ -123,32 +147,30 @@ class NotebookLMPublisher:
         # Step 5: Wait for source indexing
         self._wait_for_indexing(notebook_id)
 
-        # Step 6: Generate artifacts
-        self._generate_artifacts(notebook_id)
-
-        # Step 7: Wait for artifacts
+        # Step 6-8: Generate, wait, download artifacts
+        self._generate_artifacts(notebook_id, artifact_defs)
         self._wait_for_artifacts(notebook_id)
-
-        # Step 8: Download artifacts
-        self._download_artifacts(notebook_id)
+        self._download_artifacts(notebook_id, artifact_defs)
 
         # Step 9: Save report
         elapsed = time.time() - started
-        self._save_report(elapsed)
+        self._save_report(elapsed, artifact_defs)
         self.state["updated_at"] = datetime.now().isoformat()
         _save_state(self.state, self.state_path)
 
         # Summary
-        self._print_summary(elapsed)
+        self._print_summary(elapsed, artifact_defs)
         return True
 
     def dry_run(self) -> None:
         """Show what would be done without executing."""
+        artifact_defs = self._build_artifact_defs()
         self.console.print(
             Panel(
                 f"[bold]NotebookLM Publisher — Dry Run[/bold]\n"
                 f"Brand: {self.brand_name}\n"
-                f"Source budget: {self.max_sources}",
+                f"Source budget: {self.max_sources}\n"
+                f"Artifacts: {len(artifact_defs)} configured",
                 title="[yellow]Dry Run[/yellow]",
                 border_style="yellow",
             )
@@ -186,25 +208,112 @@ class NotebookLMPublisher:
         curator.curate()
         self.console.print(f"\n{curator.report()}")
 
-        # Artifacts
-        defs = self._filtered_artifact_defs()
-        self.console.print(f"\n[bold]Artifacts to generate:[/bold] {len(defs)}")
-        for adef in defs:
-            self.console.print(
-                f"  - {adef['id']}: {adef['type']} → {adef['output_filename']} "
-                f"(~{adef['estimated_minutes']} min)"
-            )
+        # Artifacts by phase
+        self.console.print(f"\n[bold]Artifacts to generate:[/bold] {len(artifact_defs)}")
+        phase_order = ["instant", "slow", "parallel-1", "parallel-2"]
+        for phase in phase_order:
+            phase_defs = [d for d in artifact_defs if d["phase"] == phase]
+            if not phase_defs:
+                continue
+            self.console.print(f"\n  [bold]{phase}[/bold] ({len(phase_defs)} artifacts):")
+            for adef in phase_defs:
+                extra = " ".join(adef.get("extra_args", []))
+                desc = adef.get("description", "")
+                self.console.print(
+                    f"    - {adef['id']}: {adef['type']} → {adef['output_filename']} "
+                    f"(~{adef['estimated_minutes']} min)"
+                    f"{f'  [{extra}]' if extra else ''}"
+                )
 
-        total_min = sum(d["estimated_minutes"] for d in defs if d["phase"] != "instant")
-        # Parallel cuts it roughly in half
-        parallel_min = max(
-            sum(d["estimated_minutes"] for d in defs if d["phase"] == "parallel") / 3,
-            max((d["estimated_minutes"] for d in defs if d["phase"] == "sequential"), default=0),
+        # Time estimation
+        slow_max = max(
+            (d["estimated_minutes"] for d in artifact_defs if d["phase"] == "slow"),
+            default=0,
         )
+        p1_total = sum(d["estimated_minutes"] for d in artifact_defs if d["phase"] == "parallel-1")
+        p2_total = sum(d["estimated_minutes"] for d in artifact_defs if d["phase"] == "parallel-2")
+        parallel_est = (p1_total / self.max_parallel) + (p2_total / self.max_parallel)
+        # Slow artifacts run concurrently with parallel phases
+        wall_clock = max(slow_max, parallel_est) + 5  # +5 for instant + overhead
+        sequential_total = sum(d["estimated_minutes"] for d in artifact_defs)
         self.console.print(
-            f"\n[bold]Estimated time:[/bold] ~{int(parallel_min + 5)} min "
-            f"(parallel execution) / ~{total_min} min (sequential)"
+            f"\n[bold]Estimated time:[/bold] ~{int(wall_clock)} min "
+            f"(5-phase execution, {self.max_parallel} workers) / "
+            f"~{sequential_total} min (sequential)"
         )
+
+    # -- Artifact definition builder ----------------------------------------
+
+    def _build_artifact_defs(self) -> List[dict]:
+        """Build artifact definitions from defaults + config overrides.
+
+        1. Start with DEFAULT_ARTIFACT_DEFINITIONS
+        2. Remove disabled artifacts
+        3. Add custom artifacts from brand-config.yaml
+        4. Resolve video style from brand archetype or config override
+        5. Apply artifact filter (--artifacts CLI flag)
+        """
+        defs = list(DEFAULT_ARTIFACT_DEFINITIONS)
+
+        # Remove disabled
+        if self.disabled_artifacts:
+            defs = [d for d in defs if d["id"] not in self.disabled_artifacts]
+
+        # Add custom artifacts
+        for custom in self.custom_artifacts:
+            ctype = custom.get("type", "")
+            defs.append({
+                "id": custom["id"],
+                "type": ctype,
+                "instructions_fn": None,  # custom uses description as instructions
+                "output_filename": f"{custom['id']}.{ext_for_type(ctype)}",
+                "download_type": ctype,
+                "estimated_minutes": estimate_for_type(ctype),
+                "phase": phase_for_type(ctype),
+                "extra_args": custom.get("extra_args", []),
+                "group": ctype,
+                "description": custom.get("description", ""),
+            })
+
+        # Resolve video style
+        video_style = self.video_style_override or resolve_video_style(self.config)
+        if video_style and video_style != "auto":
+            for d in defs:
+                if d["type"] == "video":
+                    args = list(d.get("extra_args", []))
+                    if "--style" in args:
+                        idx = args.index("--style")
+                        args[idx + 1] = video_style
+                    else:
+                        args.extend(["--style", video_style])
+                    d["extra_args"] = args
+
+        # Apply artifact filter
+        return self._apply_filter(defs)
+
+    def _apply_filter(self, defs: List[dict]) -> List[dict]:
+        """Filter artifact definitions by --artifacts CLI flag.
+
+        Supports:
+        - Exact ID match: ``deck-detailed-full``
+        - Type match: ``slide-deck`` (all slide-deck variations)
+        - Group match: ``slide-deck`` (via group field)
+        - Legacy alias: ``brand-overview-deck`` → ``deck-detailed-full``
+        """
+        if not self.artifact_filter:
+            return defs
+
+        # Resolve legacy aliases
+        resolved_filter: Set[str] = set()
+        for f in self.artifact_filter:
+            resolved_filter.add(LEGACY_ID_MAP.get(f, f))
+
+        return [
+            d for d in defs
+            if d["id"] in resolved_filter
+            or d["type"] in resolved_filter
+            or d.get("group") in resolved_filter
+        ]
 
     # -- Internal steps ----------------------------------------------------
 
@@ -222,7 +331,6 @@ class NotebookLMPublisher:
                 )
                 return False
 
-            # Re-check after install
             if not self.client.check_installed():
                 self.console.print(
                     "[red]notebooklm CLI still not found after install.[/red]\n"
@@ -284,11 +392,7 @@ class NotebookLMPublisher:
             return None
 
     def _build_sources(self) -> List[SourceCandidate]:
-        """Build prose docs, then curate optimal source set.
-
-        Returns a list of :class:`SourceCandidate` objects ordered by score.
-        """
-        # Step 1: Build the 5 prose source documents (synthesis or mechanical)
+        """Build prose docs, then curate optimal source set."""
         self.console.print("\n[bold]Building prose source documents...[/bold]")
         prose_paths = build_source_documents(
             outputs_dir=self.outputs_dir,
@@ -304,7 +408,6 @@ class NotebookLMPublisher:
             size_kb = path.stat().st_size / 1024
             self.console.print(f"  [green]✓[/green] {gid}.md ({size_kb:.1f} KB)")
 
-        # Step 2: Curate from all available sources
         self.console.print("\n[bold]Curating sources...[/bold]")
         curator = SourceCurator(
             brand_dir=self.brand_dir,
@@ -314,7 +417,6 @@ class NotebookLMPublisher:
         )
         selected = curator.curate()
 
-        # Print curator summary
         self.console.print(
             f"  [green]✓[/green] Selected {len(selected)} sources "
             f"(budget: {self.max_sources})"
@@ -337,10 +439,7 @@ class NotebookLMPublisher:
         sources_state: dict = self.state.setdefault("sources", {})
 
         for candidate in curated:
-            # Use filename as unique key
             key = candidate.path.name
-
-            # Skip if already uploaded
             existing = sources_state.get(key, {})
             if existing.get("status") == "indexed" and not self.force:
                 self.console.print(
@@ -408,42 +507,91 @@ class NotebookLMPublisher:
 
         _save_state(self.state, self.state_path)
 
-    def _generate_artifacts(self, notebook_id: str) -> None:
-        """Generate all configured artifacts."""
-        self.console.print("\n[bold]Generating artifacts...[/bold]")
+    # -- Artifact generation (5-phase) ------------------------------------
+
+    def _generate_artifacts(
+        self, notebook_id: str, artifact_defs: List[dict],
+    ) -> None:
+        """Generate all configured artifacts using 5-phase execution.
+
+        Phase 1 (instant):    Mind map — synchronous, inline
+        Phase 2 (slow-start): Video + audio — kicked off early, polled later
+        Phase 3 (parallel-1): Decks + reports — parallel batch
+        Phase 4 (parallel-2): Quiz, flashcards, infographic, data-table — parallel batch
+        Phase 5 (slow-poll):  Handled by ``_wait_for_artifacts()``
+        """
+        self.console.print(
+            f"\n[bold]Generating {len(artifact_defs)} artifacts "
+            f"({self.max_parallel} workers)...[/bold]"
+        )
         artifacts_state: dict = self.state.setdefault("artifacts", {})
-        defs = self._filtered_artifact_defs()
 
-        # Phase 1: Instant artifacts (mind map)
-        for adef in defs:
-            if adef["phase"] != "instant":
-                continue
-            self._generate_single(adef, notebook_id, artifacts_state)
+        # Phase 1: instant (mind-map)
+        for adef in artifact_defs:
+            if adef["phase"] == "instant":
+                self._generate_single(adef, notebook_id, artifacts_state)
 
-        # Phase 2: Parallel artifacts (decks + report)
-        parallel = [a for a in defs if a["phase"] == "parallel"]
-        if parallel:
-            with ThreadPoolExecutor(max_workers=3) as executor:
-                futures = {
-                    executor.submit(
-                        self._generate_single, adef, notebook_id, artifacts_state,
-                    ): adef["id"]
-                    for adef in parallel
-                }
-                for future in as_completed(futures):
-                    aid = futures[future]
-                    try:
-                        future.result()
-                    except Exception as e:
-                        self.console.print(
-                            f"  [red]✗ {aid} generation failed: {e}[/red]"
-                        )
+        # Phase 2: kick off slow artifacts (video + audio) — fire and continue
+        slow = [a for a in artifact_defs if a["phase"] == "slow"]
+        if slow:
+            self.console.print(
+                f"\n  [bold]Phase 2:[/bold] Starting {len(slow)} slow artifacts "
+                f"(video + audio)..."
+            )
+            for i, adef in enumerate(slow):
+                self._generate_single(adef, notebook_id, artifacts_state)
+                if i < len(slow) - 1:
+                    time.sleep(5)  # Stagger to avoid burst rate limit
 
-        # Phase 3: Sequential artifacts (audio)
-        for adef in defs:
-            if adef["phase"] != "sequential":
-                continue
-            self._generate_single(adef, notebook_id, artifacts_state)
+        # Phase 3: parallel batch 1 (decks + reports)
+        parallel_1 = [a for a in artifact_defs if a["phase"] == "parallel-1"]
+        if parallel_1:
+            self.console.print(
+                f"\n  [bold]Phase 3:[/bold] Generating {len(parallel_1)} decks + reports..."
+            )
+            self._run_parallel_batch(parallel_1, notebook_id, artifacts_state)
+
+        # Cooldown between batches
+        if parallel_1 and any(a["phase"] == "parallel-2" for a in artifact_defs):
+            time.sleep(10)
+
+        # Phase 4: parallel batch 2 (quiz, flashcards, infographic, data-table)
+        parallel_2 = [a for a in artifact_defs if a["phase"] == "parallel-2"]
+        if parallel_2:
+            self.console.print(
+                f"\n  [bold]Phase 4:[/bold] Generating {len(parallel_2)} "
+                f"quiz + flashcards + infographic + tables..."
+            )
+            self._run_parallel_batch(parallel_2, notebook_id, artifacts_state)
+
+        _save_state(self.state, self.state_path)
+
+    def _run_parallel_batch(
+        self,
+        defs: List[dict],
+        notebook_id: str,
+        artifacts_state: dict,
+    ) -> None:
+        """Run a batch of artifacts with controlled parallelism."""
+        if not defs:
+            return
+        with ThreadPoolExecutor(max_workers=self.max_parallel) as executor:
+            futures = {}
+            for i, adef in enumerate(defs):
+                if i > 0:
+                    time.sleep(self.inter_artifact_delay)
+                future = executor.submit(
+                    self._generate_single, adef, notebook_id, artifacts_state,
+                )
+                futures[future] = adef["id"]
+            for future in as_completed(futures):
+                aid = futures[future]
+                try:
+                    future.result()
+                except Exception as e:
+                    self.console.print(
+                        f"  [red]✗ {aid} generation failed: {e}[/red]"
+                    )
 
     def _generate_single(
         self,
@@ -464,8 +612,16 @@ class NotebookLMPublisher:
         instructions = ""
         if adef["instructions_fn"]:
             instructions = adef["instructions_fn"](self.config)
+        elif adef.get("description"):
+            # Custom artifacts use description as instructions
+            instructions = adef["description"]
 
-        # Mind-map is returned inline by notebooklm CLI (not as async artifact).
+        # Resolve extra_args
+        extra_args = adef.get("extra_args", [])
+        if callable(extra_args):
+            extra_args = extra_args(self.config)
+
+        # Mind-map is returned inline by notebooklm CLI (not as async artifact)
         if adef["type"] == "mind-map":
             self.console.print(f"  ⏳ Generating {aid} ({adef['type']})...")
             try:
@@ -492,13 +648,15 @@ class NotebookLMPublisher:
             return
 
         self.console.print(
-            f"  ⏳ Generating {aid} ({adef['type']})..."
+            f"  ⏳ Generating {aid} ({adef['type']}"
+            f"{' ' + ' '.join(extra_args) if extra_args else ''})..."
         )
         try:
             artifact_id = self.client.generate_artifact(
                 artifact_type=adef["type"],
                 notebook_id=notebook_id,
                 instructions=instructions,
+                extra_args=extra_args or None,
             )
             artifacts_state[aid] = {
                 "artifact_id": artifact_id,
@@ -515,7 +673,7 @@ class NotebookLMPublisher:
             self.console.print(f"  [red]✗ {aid} failed: {e}[/red]")
 
     def _wait_for_artifacts(self, notebook_id: str) -> None:
-        """Wait for all pending artifacts to complete."""
+        """Wait for all pending artifacts to complete (Phase 5: slow-poll)."""
         artifacts_state: dict = self.state.get("artifacts", {})
         pending = {
             aid: info["artifact_id"]
@@ -527,14 +685,17 @@ class NotebookLMPublisher:
             return
 
         self.console.print(
-            f"\n[bold]Waiting for {len(pending)} artifacts to complete...[/bold]"
+            f"\n[bold]Phase 5:[/bold] Waiting for {len(pending)} artifacts "
+            f"to complete..."
         )
 
         def _wait_one(aid: str, artifact_id: str) -> tuple:
             ok = self.client.wait_for_artifact(artifact_id, notebook_id)
             return aid, ok
 
-        with ThreadPoolExecutor(max_workers=len(pending)) as executor:
+        # Cap workers at max_parallel to avoid overwhelming the API
+        workers = min(len(pending), self.max_parallel)
+        with ThreadPoolExecutor(max_workers=workers) as executor:
             futures = {
                 executor.submit(_wait_one, aid, art_id): aid
                 for aid, art_id in pending.items()
@@ -553,14 +714,15 @@ class NotebookLMPublisher:
 
         _save_state(self.state, self.state_path)
 
-    def _download_artifacts(self, notebook_id: str) -> None:
+    def _download_artifacts(
+        self, notebook_id: str, artifact_defs: List[dict],
+    ) -> None:
         """Download all completed artifacts."""
         self.console.print("\n[bold]Downloading artifacts...[/bold]")
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
         artifacts_state: dict = self.state.get("artifacts", {})
-        defs = self._filtered_artifact_defs()
 
-        for adef in defs:
+        for adef in artifact_defs:
             aid = adef["id"]
             info = artifacts_state.get(aid, {})
             if info.get("status") != "completed":
@@ -594,7 +756,7 @@ class NotebookLMPublisher:
 
         _save_state(self.state, self.state_path)
 
-    def _save_report(self, elapsed: float) -> None:
+    def _save_report(self, elapsed: float, artifact_defs: List[dict]) -> None:
         """Write the publish execution report."""
         self.deliverables_dir.mkdir(parents=True, exist_ok=True)
         report = {
@@ -602,12 +764,13 @@ class NotebookLMPublisher:
             "notebook_id": self.state.get("notebook_id"),
             "sources": self.state.get("sources", {}),
             "artifacts": self.state.get("artifacts", {}),
+            "artifact_count": len(artifact_defs),
             "elapsed_seconds": round(elapsed, 1),
             "completed_at": datetime.now().isoformat(),
         }
         self.report_path.write_text(json.dumps(report, indent=2))
 
-    def _print_summary(self, elapsed: float) -> None:
+    def _print_summary(self, elapsed: float, artifact_defs: List[dict]) -> None:
         """Print a final summary table."""
         table = Table(
             title="NotebookLM Publishing Summary",
@@ -615,11 +778,12 @@ class NotebookLMPublisher:
             header_style="bold cyan",
         )
         table.add_column("Artifact")
+        table.add_column("Type")
         table.add_column("Status")
         table.add_column("File")
 
         artifacts_state = self.state.get("artifacts", {})
-        for adef in self._filtered_artifact_defs():
+        for adef in artifact_defs:
             aid = adef["id"]
             info = artifacts_state.get(aid, {})
             status = info.get("status", "skipped")
@@ -631,7 +795,7 @@ class NotebookLMPublisher:
             fpath = info.get("path", "—")
             if fpath != "—":
                 fpath = Path(fpath).name
-            table.add_row(aid, style, fpath)
+            table.add_row(aid, adef["type"], style, fpath)
 
         self.console.print()
         self.console.print(table)
@@ -639,12 +803,3 @@ class NotebookLMPublisher:
         self.console.print(
             f"  Deliverables: {self.deliverables_dir}"
         )
-
-    def _filtered_artifact_defs(self) -> List[dict]:
-        """Return artifact definitions, optionally filtered."""
-        if self.artifact_filter:
-            return [
-                d for d in ARTIFACT_DEFINITIONS
-                if d["id"] in self.artifact_filter
-            ]
-        return list(ARTIFACT_DEFINITIONS)
