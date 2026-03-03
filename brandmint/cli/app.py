@@ -334,50 +334,6 @@ def publish_notebooklm(
     run_notebooklm_publish(config, artifacts=artifacts, force=force, dry_run=dry_run, max_sources=max_sources)
 
 
-@publish_app.command("decks")
-def publish_decks(
-    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
-    decks: Optional[str] = typer.Option(None, "--decks", "-d", help="Comma-separated deck IDs (default: all)"),
-    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all decks"),
-):
-    """Generate branded PDF slide decks using Marp CLI."""
-    from .publish import run_decks_publish
-    run_decks_publish(config, decks=decks, force=force)
-
-
-@publish_app.command("reports")
-def publish_reports(
-    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
-    reports: Optional[str] = typer.Option(None, "--reports", "-r", help="Comma-separated report IDs (default: all)"),
-    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all reports"),
-):
-    """Generate branded PDF reports using Typst."""
-    from .publish import run_reports_publish
-    run_reports_publish(config, reports=reports, force=force)
-
-
-@publish_app.command("diagrams")
-def publish_diagrams(
-    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
-    diagrams: Optional[str] = typer.Option(None, "--diagrams", "-d", help="Comma-separated diagram IDs (default: all)"),
-    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all diagrams"),
-):
-    """Generate mind maps and diagrams using Markmap and Mermaid CLI."""
-    from .publish import run_diagrams_publish
-    run_diagrams_publish(config, diagrams=diagrams, force=force)
-
-
-@publish_app.command("video")
-def publish_video(
-    config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
-    videos: Optional[str] = typer.Option(None, "--videos", "-v", help="Comma-separated video IDs (default: all)"),
-    force: bool = typer.Option(False, "--force", "-f", help="Regenerate all videos"),
-):
-    """Generate branded MP4 videos using Remotion."""
-    from .publish import run_video_publish
-    run_video_publish(config, videos=videos, force=force)
-
-
 def main():
     """Entry point for both `brandmint` and `bm` commands."""
     app()

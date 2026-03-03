@@ -154,19 +154,14 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
         "depends_on": [5],
     },
     7: {
-        "name": "Publishing & Deliverables",
-        "description": "Brand theme export, NotebookLM, slide decks, reports, diagrams",
+        "name": "Publishing",
+        "description": "NotebookLM notebook, sources, and artifact generation",
         "text_skills": [],
         "visual_assets": [],
         "depends_on": [6],
         "post_hook": "publishing",
         "sub_steps": [
-            {"id": "7A", "name": "Brand Theme Export", "hook": "theme_export"},
             {"id": "7B", "name": "NotebookLM Publishing", "hook": "notebooklm"},
-            {"id": "7C", "name": "Slide Decks (Marp)", "hook": "marp_decks"},
-            {"id": "7D", "name": "Reports (Typst)", "hook": "typst_reports"},
-            {"id": "7E", "name": "Mind Maps & Diagrams", "hook": "diagrams"},
-            {"id": "7F", "name": "Video Overviews (Remotion)", "hook": "remotion"},
         ],
     },
 }
