@@ -7,13 +7,23 @@
     "dev": "vite --host 127.0.0.1 --port 4188 --strictPort",
     "dev:guard": "python3 ../scripts/localhost_port_guard.py --port 4188 --retries 2 -- npm run dev",
     "build": "tsc -b && vite build",
-    "preview": "vite preview --host 127.0.0.1 --port 4188 --strictPort"
+    "preview": "vite preview --host 127.0.0.1 --port 4188 --strictPort",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "dependencies": {
+    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/plugin-dialog": "^2.6.0",
+    "@tauri-apps/plugin-fs": "^2.4.5",
+    "@tauri-apps/plugin-notification": "^2.3.3",
+    "@tauri-apps/plugin-process": "^2.3.1",
+    "@tauri-apps/plugin-shell": "^2.3.5",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2.10.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",

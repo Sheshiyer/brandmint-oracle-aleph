@@ -30,3 +30,11 @@ configs/
 deliverables/
 .brandmint/
 .remotion-workspace/
+
+# Tauri build artifacts
+ui/src-tauri/target/
+ui/src-tauri/gen/
+ui/dist/
+
+# KEEP Tauri app icons (override *.png rule)
+!ui/src-tauri/icons/**
