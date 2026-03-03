@@ -339,26 +339,27 @@ def _select_supp_refs_keyword(catalog, brand_tags, max_per_pid=3):
 def build_ref_images_block(ref_images_dict):
     """Build the REF_IMAGES block for embedding in generated scripts.
 
-    Returns a template-escaped string ({{ for literal braces) suitable
-    for inclusion in SCRIPT_HEADER before .format_map() rendering.
+    Returns a plain Python dict literal string.  Replacement values
+    injected via .format_map() are NOT re-processed, so we use single
+    braces here (NOT escaped doubles).
     """
-    lines = ["REF_IMAGES = {{"]
+    lines = ["REF_IMAGES = {"]
     for pid in sorted(ref_images_dict.keys(), key=_sort_pid):
         lines.append(f'    "{pid}": "{ref_images_dict[pid]}",')
-    lines.append("}}")
+    lines.append("}")
     return "\n".join(lines)
 
 
 def build_supp_refs_block(supp_refs_dict):
     """Build the SUPP_REFS block for embedding in generated scripts.
 
-    Returns a template-escaped string suitable for SCRIPT_HEADER.
+    Returns a plain Python dict literal string (single braces).
     """
-    lines = ["SUPP_REFS = {{"]
+    lines = ["SUPP_REFS = {"]
     for pid in sorted(supp_refs_dict.keys(), key=_sort_pid):
         files = [e["file"] for e in supp_refs_dict[pid]]
         lines.append(f'    "{pid}": {files!r},')
-    lines.append("}}")
+    lines.append("}")
     return "\n".join(lines)
 
 
