@@ -34,9 +34,23 @@ def run_notebooklm_publish(
     force: bool = False,
     dry_run: bool = False,
     max_sources: int = 50,
+    no_synthesize: bool = False,
+    synthesis_model: str = "",
+    clear_prose_cache: bool = False,
 ) -> None:
     """Publish brand intelligence to NotebookLM."""
     config, cfg, brand_dir = _load_config(config)
+
+    # Clear prose synthesis cache if requested
+    if clear_prose_cache:
+        cache_dir = brand_dir / ".brandmint" / "prose-cache"
+        from ..publishing.prose_synthesizer import ProseSynthesizer
+        count = ProseSynthesizer.clear_cache(cache_dir)
+        console.print(
+            f"  [green]\u2713[/green] Cleared {count} cached prose file(s)"
+            if count > 0
+            else "  [dim]Prose cache already empty[/dim]"
+        )
 
     artifact_filter: Optional[Set[str]] = None
     if artifacts:
@@ -60,6 +74,8 @@ def run_notebooklm_publish(
         artifact_filter=artifact_filter,
         force=force,
         max_sources=max_sources,
+        synthesize=not no_synthesize,
+        synthesis_model=synthesis_model,
     )
 
     if dry_run:

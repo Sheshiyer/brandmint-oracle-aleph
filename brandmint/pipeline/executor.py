@@ -319,9 +319,7 @@ class WaveExecutor:
 
         Returns True on success.
         """
-        if hook_name == "notebooklm":
-            return self._hook_notebooklm()
-        elif hook_name == "publishing":
+        if hook_name in ("notebooklm", "publishing"):
             return self._hook_publishing_pipeline(wave_number)
         else:
             self.console.print(
@@ -329,40 +327,29 @@ class WaveExecutor:
             )
             return False
 
-    def _hook_notebooklm(self) -> bool:
-        """Run NotebookLM publishing sub-step."""
-        try:
-            from ..publishing.notebooklm_publisher import NotebookLMPublisher
-        except ImportError:
-            self.console.print(
-                "[red]NotebookLM publishing requires notebooklm-py.[/red]\n"
-                "Install with: [bold]pip install notebooklm-py[/bold]"
-            )
-            return False
-
-        publisher = NotebookLMPublisher(
-            brand_dir=self.brand_dir,
-            config=self.config,
-            config_path=self.config_path,
-            console=self.console,
-        )
-        return publisher.publish()
-
     def _hook_publishing_pipeline(self, wave_number: int) -> bool:
         """Run Wave 7 publishing — NotebookLM only.
 
         Creates a notebook, uploads brand sources, and generates all
         artifacts (mind-map, slide decks, report, audio overview).
-        Waits for all artifacts to complete before returning.
+        Reads synthesis config from brand-config.yaml ``publishing:`` section.
         """
         self.console.print("\n  [bold cyan]Wave 7: NotebookLM Publishing[/bold cyan]")
         try:
             from ..publishing.notebooklm_publisher import NotebookLMPublisher
+
+            # Read synthesis config from brand-config.yaml publishing section
+            pub_config = self.config.get("publishing", {})
+            synthesize = pub_config.get("synthesize", True)
+            synthesis_model = pub_config.get("synthesis_model", "")
+
             publisher = NotebookLMPublisher(
                 brand_dir=self.brand_dir,
                 config=self.config,
                 config_path=self.config_path,
                 console=self.console,
+                synthesize=synthesize,
+                synthesis_model=synthesis_model,
             )
             if not publisher.publish():
                 self.console.print(

@@ -46,7 +46,7 @@ visual_app = typer.Typer(help="Visual asset pipeline (generate, execute, preview
 registry_app = typer.Typer(help="Unified skill registry management", no_args_is_help=True)
 install_app = typer.Typer(help="Installation and setup utilities", no_args_is_help=True)
 cache_app = typer.Typer(help="Prompt and asset cache management", no_args_is_help=True)
-publish_app = typer.Typer(help="Post-pipeline publishing (NotebookLM, decks, reports, diagrams, videos)", no_args_is_help=True)
+publish_app = typer.Typer(help="Post-pipeline publishing (NotebookLM)", no_args_is_help=True)
 
 app.add_typer(plan_app, name="plan")
 app.add_typer(visual_app, name="visual")
@@ -328,10 +328,22 @@ def publish_notebooklm(
     force: bool = typer.Option(False, "--force", "-f", help="Recreate notebook from scratch"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show plan without executing"),
     max_sources: int = typer.Option(50, "--max-sources", "-m", help="Max sources to upload (default: 50, NotebookLM Standard plan limit)"),
+    no_synthesize: bool = typer.Option(False, "--no-synthesize", help="Skip LLM prose synthesis, use mechanical rendering"),
+    synthesis_model: str = typer.Option("", "--synthesis-model", help="OpenRouter model for prose synthesis (default: claude-3.5-haiku)"),
+    clear_prose_cache: bool = typer.Option(False, "--clear-prose-cache", help="Clear cached synthesized prose before building"),
 ):
     """Publish brand intelligence to NotebookLM and generate artifacts."""
     from .publish import run_notebooklm_publish
-    run_notebooklm_publish(config, artifacts=artifacts, force=force, dry_run=dry_run, max_sources=max_sources)
+    run_notebooklm_publish(
+        config,
+        artifacts=artifacts,
+        force=force,
+        dry_run=dry_run,
+        max_sources=max_sources,
+        no_synthesize=no_synthesize,
+        synthesis_model=synthesis_model,
+        clear_prose_cache=clear_prose_cache,
+    )
 
 
 def main():

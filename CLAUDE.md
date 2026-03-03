@@ -56,15 +56,29 @@ Can also be run standalone:
 bm publish notebooklm --config <path>/brand-config.yaml
 bm publish notebooklm --config <path>/brand-config.yaml --force
 bm publish notebooklm --config <path>/brand-config.yaml --dry-run
+bm publish notebooklm --config <path>/brand-config.yaml --no-synthesize
+bm publish notebooklm --config <path>/brand-config.yaml --clear-prose-cache
+bm publish notebooklm --config <path>/brand-config.yaml --synthesis-model anthropic/claude-sonnet-4
 ```
 
 **What it does:**
 1. Creates a NotebookLM notebook for the brand
-2. Builds prose source documents from skill outputs (strategy, visuals, campaigns)
-3. Uploads all sources (prose + images) with smart curation
-4. Waits for all sources to index
-5. Generates artifacts: mind-map, slide decks, brand report, audio overview
-6. Downloads all artifacts to `deliverables/notebooklm/`
+2. Synthesizes prose source documents from skill outputs using LLM (OpenRouter)
+3. Falls back to mechanical rendering if `OPENROUTER_API_KEY` is not set
+4. Uploads all sources (prose + images) with smart curation
+5. Waits for all sources to index
+6. Generates artifacts: mind-map, slide decks, brand report, audio overview
+7. Downloads all artifacts to `deliverables/notebooklm/`
+
+**Prose Synthesis:** Source documents are transformed from raw JSON into narrative prose
+written *as* the brand using the voice-and-tone skill output. Requires `OPENROUTER_API_KEY`.
+Can be configured in brand-config.yaml:
+
+```yaml
+publishing:
+  synthesize: true          # default: true (set false to disable)
+  synthesis_model: ""       # default: anthropic/claude-3.5-haiku
+```
 
 **Requires:** `pip install 'brandmint[publishing]'` (installs notebooklm-py)
 
@@ -95,6 +109,7 @@ Run `process-markdown.sh` with `--images <generated-dir>` to include visual asse
 - Prompts: `<brand-dir>/.brandmint/prompts/`
 - Outputs: `<brand-dir>/.brandmint/outputs/`
 - Visual assets: `<brand-dir>/<brand-slug>/generated/`
+- Prose cache: `<brand-dir>/.brandmint/prose-cache/`
 - Pipeline state: `<brand-dir>/.brandmint/state.json`
 - Deliverables: `<brand-dir>/deliverables/notebooklm/`
 - NotebookLM state: `<brand-dir>/.brandmint/notebooklm-state.json`

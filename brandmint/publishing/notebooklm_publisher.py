@@ -60,6 +60,8 @@ class NotebookLMPublisher:
         artifact_filter: Optional[Set[str]] = None,
         force: bool = False,
         max_sources: int = 50,
+        synthesize: bool = True,
+        synthesis_model: str = "",
     ):
         self.brand_dir = Path(brand_dir)
         self.config = config
@@ -68,6 +70,8 @@ class NotebookLMPublisher:
         self.artifact_filter = artifact_filter
         self.force = force
         self.max_sources = max_sources
+        self.synthesize = synthesize
+        self.synthesis_model = synthesis_model
 
         # Derived paths
         self.outputs_dir = self.brand_dir / ".brandmint" / "outputs"
@@ -164,6 +168,9 @@ class NotebookLMPublisher:
             config_path=self.config_path,
             brand_dir=self.brand_dir,
             output_dir=self.sources_dir,
+            synthesize=self.synthesize,
+            model=self.synthesis_model,
+            console=self.console,
         )
         for gid, path in prose_paths.items():
             size_kb = path.stat().st_size / 1024
@@ -281,7 +288,7 @@ class NotebookLMPublisher:
 
         Returns a list of :class:`SourceCandidate` objects ordered by score.
         """
-        # Step 1: Build the 5 prose source documents (existing pipeline)
+        # Step 1: Build the 5 prose source documents (synthesis or mechanical)
         self.console.print("\n[bold]Building prose source documents...[/bold]")
         prose_paths = build_source_documents(
             outputs_dir=self.outputs_dir,
@@ -289,6 +296,9 @@ class NotebookLMPublisher:
             config_path=self.config_path,
             brand_dir=self.brand_dir,
             output_dir=self.sources_dir,
+            synthesize=self.synthesize,
+            model=self.synthesis_model,
+            console=self.console,
         )
         for gid, path in prose_paths.items():
             size_kb = path.stat().st_size / 1024

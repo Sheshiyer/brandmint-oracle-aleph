@@ -3,8 +3,12 @@ Source builder — transforms brandmint JSON outputs into NotebookLM-optimised
 markdown source documents.
 
 NotebookLM generates dramatically better artifacts from readable prose than
-from raw JSON. This module converts each skill's structured output into
-natural language sections grouped into 5 thematic documents.
+from raw JSON. This module supports two rendering modes:
+
+1. **Synthesized** (default) — LLM-powered prose synthesis via OpenRouter that
+   transforms raw skill JSON into narrative brand prose written *as* the brand.
+2. **Mechanical** (fallback) — Direct JSON-to-markdown conversion used when
+   no OPENROUTER_API_KEY is set or ``--no-synthesize`` is passed.
 """
 from __future__ import annotations
 
@@ -13,7 +17,7 @@ import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import yaml
+from rich.console import Console
 
 
 # ---------------------------------------------------------------------------
@@ -270,6 +274,10 @@ def build_source_documents(
     config_path: Path,
     brand_dir: Path,
     output_dir: Path,
+    *,
+    synthesize: bool = True,
+    model: str = "",
+    console: Optional[Console] = None,
 ) -> Dict[str, Path]:
     """Build all source markdown documents and write to output_dir.
 
@@ -279,10 +287,15 @@ def build_source_documents(
         config_path: Path to brand-config.yaml file.
         brand_dir: Root brand directory (parent of .brandmint/).
         output_dir: Where to write the markdown source documents.
+        synthesize: If True (default), use LLM prose synthesis when API key is
+            available. Falls back to mechanical rendering otherwise.
+        model: OpenRouter model ID override (default: claude-3.5-haiku).
+        console: Rich console for progress output.
 
     Returns:
         Dict mapping group_id to the written file path.
     """
+    _console = console or Console()
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Load all available skill outputs
@@ -295,9 +308,47 @@ def build_source_documents(
             except (json.JSONDecodeError, OSError):
                 pass
 
+    # ── Synthesis path ────────────────────────────────────────────────
+    synthesized: Dict[str, str] = {}
+
+    if synthesize:
+        from .prose_synthesizer import ProseSynthesizer, DEFAULT_MODEL
+
+        # Load voice-and-tone config for system prompt injection
+        voice_config = skill_outputs.get("voice-and-tone", {})
+
+        synth = ProseSynthesizer(
+            voice_config=voice_config,
+            brand_config=config,
+            model=model or DEFAULT_MODEL,
+            cache_dir=brand_dir / ".brandmint" / "prose-cache",
+            console=_console,
+        )
+
+        if synth.available:
+            synthesized = synth.synthesize_all(
+                groups=SOURCE_GROUPS,
+                skill_outputs=skill_outputs,
+                config=config,
+            )
+        else:
+            _console.print(
+                "  [yellow]OPENROUTER_API_KEY not set — "
+                "falling back to mechanical rendering[/yellow]"
+            )
+
+    # ── Write documents ───────────────────────────────────────────────
     result: Dict[str, Path] = {}
 
     for group_id, group_def in SOURCE_GROUPS.items():
+        # If synthesis produced prose for this group, use it
+        if group_id in synthesized:
+            doc_path = output_dir / f"{group_id}.md"
+            doc_path.write_text(synthesized[group_id])
+            result[group_id] = doc_path
+            continue
+
+        # Mechanical fallback: direct JSON-to-markdown rendering
         parts: List[str] = []
 
         # Header
