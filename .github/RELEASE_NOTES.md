@@ -1,5 +1,57 @@
 # Release Notes
 
+## What's New in v4.4.0
+
+### Full NotebookLM Artifact Matrix (23 artifacts)
+- **All 9 artifact types** — Expanded from 5 artifacts to 23 across every NotebookLM type: slide decks, videos, audio, reports, quiz, flashcards, infographics, data tables, and mind maps
+- **Slide Decks (4)** — Format (detailed/presenter) x length (full/short) = 4 variations with brand-informed instructions
+- **Video (2)** — Explainer + brief with brand archetype-matched visual style (12 archetypes mapped: e.g., "outlaw" to retro-print, "sage" to classic)
+- **Audio (3)** — Deep-dive (long), brief (short), and debate formats
+- **Reports (3)** — Briefing doc, blog post, and study guide
+- **Quiz (2)** — Medium and hard difficulty
+- **Flashcards (2)** — Standard and detailed
+- **Infographic (3)** — Landscape, portrait, and square orientations
+- **Data Tables (3)** — Competitive analysis, product features, persona matrices
+- **Mind Map (1)** — Auto-generated from all sources
+
+### LLM Prose Synthesis
+- **Narrative source documents** — Skill outputs are transformed from raw JSON into rich prose optimized for NotebookLM ingestion
+- **OpenRouter integration** — Uses Claude 3.5 Haiku by default, configurable via `--synthesis-model`
+- **Per-document caching** — Synthesized prose is cached; clear with `--clear-prose-cache`
+- **Graceful fallback** — Falls back to mechanical rendering if synthesis fails or is disabled (`--no-synthesize`)
+
+### 5-Phase Parallel Execution Engine
+- **Phase 1 (instant)** — Mind map generated synchronously (~1 min)
+- **Phase 2 (slow-start)** — Video + audio kicked off early with staggered delays
+- **Phase 3 (parallel-1)** — Decks + reports generated in parallel (configurable workers)
+- **Phase 4 (parallel-2)** — Quiz + flashcards + infographic + data tables in parallel
+- **Phase 5 (slow-poll)** — Wait for video/audio completion
+- **~35 min wall clock** vs ~4 hours sequential execution
+- **`--max-parallel`** — Control worker count (default: 3)
+
+### Publishing Streamlining
+- **Removed local generators** — Marp decks, Typst reports, Markmap diagrams, and Remotion videos removed in favor of NotebookLM-native artifact generation
+- **Wave 7 simplified** — Single `bm publish notebooklm` command replaces 5 separate publish subcommands
+- **Enhanced filtering** — `--artifacts` supports type-level (`slide-deck`), group-level, and individual ID matching
+- **Legacy compatibility** — Old artifact IDs (`brand-overview-deck`, `audio-overview`, etc.) mapped to new IDs via alias system
+
+### brand-config.yaml Overrides
+```yaml
+notebooklm:
+  artifacts:
+    disabled: [quiz-hard, flashcards-detailed]
+    video_style: heritage
+  max_parallel_workers: 2
+  inter_artifact_delay: 5
+```
+
+### Other Changes
+- **Tauri v2 Phase 1** — Shell and sidecar prototype for desktop app
+- **Pipeline fix** — Single braces in generated pipeline scripts (was double-brace causing Python format errors)
+- **Timeout bump** — Artifact generation timeout increased to 30 min (was 20) for long video renders
+
+---
+
 ## What's New in v4.3.0
 
 ### Semantic Reference Matching
