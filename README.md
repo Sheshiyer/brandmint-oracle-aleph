@@ -12,12 +12,13 @@
   <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.4.0-6f42c1?style=flat-square"></a>
   <a href="https://brandmint-openclaw.vercel.app"><img alt="OpenClaw Integration" src="https://img.shields.io/badge/OpenClaw-Integrated-0ea5e9?style=flat-square&logo=github&logoColor=white"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/pkgs/container/brandmint"><img alt="GHCR Package" src="https://img.shields.io/badge/GHCR-package-blue?style=flat-square&logo=docker&logoColor=white"></a>
+  <a href="./ui/"><img alt="Desktop App" src="https://img.shields.io/badge/Desktop-Tauri_v2-FFC131?style=flat-square&logo=tauri&logoColor=white"></a>
 </p>
 <!-- readme-gen:end:badges -->
 
 <!-- readme-gen:start:tech-stack -->
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=py,nodejs,react,ts,docker&theme=dark" alt="Tech stack" />
+  <img src="https://skillicons.dev/icons?i=py,rust,tauri,react,ts,docker&theme=dark" alt="Tech stack" />
 </p>
 <!-- readme-gen:end:tech-stack -->
 
@@ -217,6 +218,24 @@ See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/relea
 | Docs | `README.md`, `CLAUDE.md`, `.github/RELEASE_NOTES.md`, `docs/` |
 | State/Reports | execution state + report pipeline implemented |
 <!-- readme-gen:end:health -->
+
+## Desktop App (Tauri v2)
+
+Brandmint includes a native desktop app built with **Tauri v2** (Rust backend + React/TypeScript frontend). The app provides a local GUI for pipeline orchestration, replacing the need for terminal-only workflows.
+
+**Phase 1 (current):** Shell and sidecar prototype — Tauri window embeds the `bm` CLI as a sidecar process, with a React UI for config loading, wave selection, and live pipeline output streaming.
+
+```bash
+# Development
+cd ui && npm run tauri dev
+
+# Build (macOS universal)
+cd ui && npm run tauri build
+```
+
+**Requires:** Rust toolchain (`rustup`), Node.js 18+, and Xcode Command Line Tools (macOS).
+
+> Phase 2 will add real-time artifact previews, drag-and-drop config editing, and NotebookLM artifact gallery.
 
 ## OpenClaw Integration
 
