@@ -24,6 +24,9 @@ generated/
 # KEEP reference images (composition refs sent to FAL.AI with prompts)
 !references/images/*.jpg
 
+# KEEP README showcase assets
+!docs/assets/showcase/*.jpg
+
 # Output directories (user brand data, not product code)
 brands/
 configs/

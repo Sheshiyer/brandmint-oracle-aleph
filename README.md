@@ -25,6 +25,10 @@
 > Build complete brand systems from one config file.
 > **Brandmint** orchestrates strategy, messaging, visual assets, campaigns, and publishing deliverables through a wave-based pipeline.
 
+<div align="center">
+<img src="./docs/assets/showcase/hero-pitch.jpg" alt="Mint Your Brand Identity" width="100%" />
+</div>
+
 <img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=0,1,12,13&height=2" width="100%" />
 
 ## Why Brandmint
@@ -178,6 +182,50 @@ graph TD
     I --> J[📊 23 Artifacts]
 ```
 <!-- readme-gen:end:architecture -->
+
+## Sample Output
+
+Every pipeline run generates a complete brand asset suite. Here's what a single `bm launch --waves 1-7` produces:
+
+<!-- readme-gen:start:showcase -->
+<div align="center">
+
+<table>
+<tr>
+<td align="center" width="60%">
+<img src="./docs/assets/showcase/brand-kit-bento.jpg" alt="Brand Kit Bento — visual identity system" width="100%" />
+<br /><sub><b>Brand Kit Bento</b> — Visual identity system (Nano Banana Pro)</sub>
+</td>
+<td align="center" width="40%">
+<img src="./docs/assets/showcase/brand-seal.jpg" alt="Brand Seal" width="100%" />
+<br /><sub><b>Brand Seal</b> — Identity mark (Flux 2 Pro)</sub>
+<br /><br />
+<img src="./docs/assets/showcase/heritage-engraving.jpg" alt="Heritage Engraving" width="100%" />
+<br /><sub><b>Heritage Engraving</b> — Print asset (Recraft)</sub>
+</td>
+</tr>
+<tr>
+<td align="center" colspan="2">
+<img src="./docs/assets/showcase/campaign-grid.jpg" alt="Campaign Grid — multi-format campaign assets" width="100%" />
+<br /><sub><b>Campaign Grid</b> — Multi-format campaign assets (Nano Banana Pro)</sub>
+</td>
+</tr>
+<tr>
+<td align="center">
+<img src="./docs/assets/showcase/seeker-poster.jpg" alt="Archetype Poster — The Seeker" width="100%" />
+<br /><sub><b>Archetype Poster</b> — Brand persona visualization (Nano Banana Pro)</sub>
+</td>
+<td align="center">
+<img src="./docs/assets/showcase/art-panel.jpg" alt="Art Panel — editorial illustration" width="100%" />
+<br /><sub><b>Art Panel</b> — Editorial illustration (Recraft)</sub>
+</td>
+</tr>
+</table>
+
+<sub>All assets generated from a single <code>brand-config.yaml</code> — no manual design work required.</sub>
+
+</div>
+<!-- readme-gen:end:showcase -->
 
 ## Skills Inventory (repo reality)
 
