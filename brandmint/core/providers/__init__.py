@@ -2,7 +2,7 @@
 Brandmint Image Provider Factory.
 
 Multi-provider abstraction layer for image generation.
-Supports FAL.AI (default), OpenRouter, OpenAI, and Replicate.
+Supports FAL.AI (default), OpenRouter, OpenAI, Replicate, and Inference.
 
 Usage:
     from brandmint.core.providers import get_provider, get_available_providers
@@ -18,7 +18,7 @@ Usage:
         prompt="...",
         model="flux-2-pro",
         output_path="output.png",
-        fallback_chain=["fal", "openrouter", "replicate"],
+        fallback_chain=["fal", "openrouter", "replicate", "inference"],
     )
 """
 
@@ -30,6 +30,7 @@ from .fal_provider import FalProvider
 from .openrouter_provider import OpenRouterProvider
 from .openai_provider import OpenAIProvider
 from .replicate_provider import ReplicateProvider
+from .inference_provider import InferenceProvider
 from .model_mapping import (
     get_model_id,
     get_cost_estimate,
@@ -49,6 +50,7 @@ __all__ = [
     "OpenRouterProvider", 
     "OpenAIProvider",
     "ReplicateProvider",
+    "InferenceProvider",
     # Factory functions
     "get_provider",
     "get_available_providers",
@@ -68,17 +70,18 @@ PROVIDERS: Dict[str, Type[ImageProvider]] = {
     "openrouter": OpenRouterProvider,
     "openai": OpenAIProvider,
     "replicate": ReplicateProvider,
+    "inference": InferenceProvider,
 }
 
 # Default fallback order
-DEFAULT_FALLBACK_CHAIN = ["fal", "openrouter", "replicate", "openai"]
+DEFAULT_FALLBACK_CHAIN = ["fal", "openrouter", "replicate", "openai", "inference"]
 
 
 def get_provider(name: Optional[str] = None) -> ImageProvider:
     """Get an image provider instance by name.
     
     Args:
-        name: Provider name ("fal", "openrouter", "openai", "replicate").
+        name: Provider name ("fal", "openrouter", "openai", "replicate", "inference").
               If None or "auto", returns first available provider.
               
     Returns:
@@ -103,7 +106,7 @@ def get_provider(name: Optional[str] = None) -> ImageProvider:
         
         raise ValueError(
             "No image provider available. Set one of: "
-            "FAL_KEY, OPENROUTER_API_KEY, OPENAI_API_KEY, or REPLICATE_API_TOKEN"
+            "FAL_KEY, OPENROUTER_API_KEY, OPENAI_API_KEY, REPLICATE_API_TOKEN, or INFERENCE_API_KEY"
         )
     
     name = name.lower()
@@ -120,6 +123,7 @@ def get_provider(name: Optional[str] = None) -> ImageProvider:
             "openrouter": "OPENROUTER_API_KEY",
             "openai": "OPENAI_API_KEY",
             "replicate": "REPLICATE_API_TOKEN",
+            "inference": "INFERENCE_API_KEY",
         }.get(name, "API_KEY")
         raise ValueError(f"Provider {name} requires {env_var} to be set")
     

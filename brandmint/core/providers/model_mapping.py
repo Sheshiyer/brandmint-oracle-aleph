@@ -18,10 +18,10 @@ LOGICAL_MODELS = {
 # Format: logical_model -> provider_model_id
 MODEL_MAPPING: Dict[str, Dict[str, str]] = {
     "fal": {
-        "nano-banana-pro": "fal-ai/nano-banana",
-        "flux-2-pro": "fal-ai/flux-pro/v1.1",
+        "nano-banana-pro": "fal-ai/nano-banana-pro",
+        "flux-2-pro": "fal-ai/flux-2-pro",
         "flux-dev": "fal-ai/flux/dev",
-        "recraft-v3": "fal-ai/recraft-v3",
+        "recraft-v3": "fal-ai/recraft/v3/text-to-image",
     },
     "openrouter": {
         # OpenRouter uses standard model paths
@@ -43,6 +43,14 @@ MODEL_MAPPING: Dict[str, Dict[str, str]] = {
         "flux-2-pro": "black-forest-labs/flux-1.1-pro",
         "flux-dev": "black-forest-labs/flux-dev",
         "recraft-v3": "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
+    },
+    "inference": {
+        # Inference apps are provider-routed via app + input model hints.
+        # Override with INFERENCE_IMAGE_APP for production routing.
+        "nano-banana-pro": "infsh-ai-image-generation",
+        "flux-2-pro": "infsh-ai-image-generation",
+        "flux-dev": "infsh-ai-image-generation",
+        "recraft-v3": "infsh-ai-image-generation",
     },
 }
 
@@ -77,6 +85,12 @@ PROVIDER_CAPABILITIES = {
         "max_prompt_length": 4096,
         "supported_aspects": ["1:1", "16:9", "9:16", "3:4", "4:3"],
     },
+    "inference": {
+        "supports_image_reference": True,
+        "supports_negative_prompt": True,
+        "max_prompt_length": 8192,
+        "supported_aspects": ["1:1", "16:9", "9:16", "3:4", "4:3"],
+    },
 }
 
 # Cost estimates per image (USD)
@@ -105,6 +119,12 @@ COST_ESTIMATES = {
         "flux-dev": 0.03,
         "recraft-v3": 0.04,
     },
+    "inference": {
+        "nano-banana-pro": 0.05,
+        "flux-2-pro": 0.05,
+        "flux-dev": 0.04,
+        "recraft-v3": 0.05,
+    },
 }
 
 
@@ -112,7 +132,7 @@ def get_model_id(provider: str, logical_model: str) -> str:
     """Get provider-specific model ID for a logical model name.
     
     Args:
-        provider: Provider name (fal, openrouter, openai, replicate)
+        provider: Provider name (fal, inference, openrouter, openai, replicate)
         logical_model: Brandmint logical model name
         
     Returns:

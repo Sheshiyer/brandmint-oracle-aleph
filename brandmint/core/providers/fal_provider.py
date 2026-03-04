@@ -9,12 +9,12 @@ import json
 import os
 import sys
 import time
-import urllib.request
 import urllib.error
+import urllib.request
 from typing import Any, Optional
 
 from .base import ImageProvider, GenerationResult, ProviderName
-from .model_mapping import get_model_id, PROVIDER_CAPABILITIES
+from .model_mapping import get_model_id
 
 
 class FalProvider(ImageProvider):
@@ -139,6 +139,99 @@ class FalProvider(ImageProvider):
         with urllib.request.urlopen(req, timeout=60) as resp:
             with open(output_path, "wb") as f:
                 f.write(resp.read())
+
+    def _upload_reference(self, value: str) -> str:
+        """Upload local paths to FAL file storage; pass through remote URLs."""
+        if value.startswith("http://") or value.startswith("https://"):
+            return value
+        if not os.path.exists(value):
+            return value
+        try:
+            import fal_client
+        except ImportError as exc:
+            raise RuntimeError(
+                "fal_client is required for local reference uploads. Install: pip install fal-client"
+            ) from exc
+        return fal_client.upload_file(value)
+
+    def _build_arguments(
+        self,
+        *,
+        model_id: str,
+        prompt: str,
+        width: int,
+        height: int,
+        image_url: Optional[str],
+        negative_prompt: str,
+        guidance_scale: float,
+        num_steps: int,
+        **kwargs: Any,
+    ) -> dict:
+        """Build model-aware payloads matching legacy generated-script behavior."""
+        seed = kwargs.get("seed")
+
+        if "nano-banana" in model_id:
+            arguments: dict[str, Any] = {
+                "prompt": prompt,
+                "aspect_ratio": kwargs.get("aspect_ratio", "1:1"),
+                "resolution": kwargs.get("resolution", "2K"),
+                "output_format": kwargs.get("output_format", "png"),
+                "num_images": kwargs.get("num_images", 1),
+            }
+            if seed is not None:
+                arguments["seed"] = seed
+
+            image_urls = kwargs.get("image_urls")
+            uploaded_urls: list[str] = []
+            if isinstance(image_urls, list):
+                for ref in image_urls:
+                    sval = str(ref).strip()
+                    if not sval:
+                        continue
+                    uploaded_urls.append(self._upload_reference(sval))
+            elif image_url:
+                uploaded_urls.append(self._upload_reference(image_url))
+
+            if uploaded_urls:
+                arguments["image_urls"] = uploaded_urls
+            if negative_prompt:
+                arguments["negative_prompt"] = negative_prompt
+            return arguments
+
+        if "recraft" in model_id:
+            arguments = {
+                "prompt": prompt,
+                "image_size": kwargs.get("image_size", "square"),
+                "style": kwargs.get("style", "digital_illustration"),
+            }
+            if seed is not None:
+                arguments["seed"] = seed
+            colors = kwargs.get("colors")
+            if isinstance(colors, list) and colors:
+                arguments["colors"] = [{"rgb": str(c)} for c in colors if str(c).strip()]
+            if negative_prompt:
+                arguments["negative_prompt"] = negative_prompt
+            return arguments
+
+        # Flux and fallback defaults.
+        arguments = {
+            "prompt": prompt,
+            "image_size": kwargs.get("image_size", {"width": width, "height": height}),
+            "num_images": kwargs.get("num_images", 1),
+            "num_inference_steps": num_steps,
+            "guidance_scale": guidance_scale,
+            "safety_tolerance": "2",
+        }
+        if isinstance(arguments["image_size"], str):
+            # Keep aspect token support (e.g., landscape_16_9) used by legacy scripts.
+            pass
+        if seed is not None:
+            arguments["seed"] = seed
+        if negative_prompt:
+            arguments["negative_prompt"] = negative_prompt
+        if image_url:
+            arguments["image_url"] = self._upload_reference(image_url)
+        return arguments
     
     def generate(
         self,
@@ -165,21 +258,25 @@ class FalProvider(ImageProvider):
             )
         
         model_id = self.get_model_id(model)
-        
-        arguments = {
-            "prompt": prompt,
-            "image_size": {"width": width, "height": height},
-            "num_inference_steps": num_steps,
-            "guidance_scale": guidance_scale,
-            "safety_tolerance": "2",
-        }
-        
-        if negative_prompt:
-            arguments["negative_prompt"] = negative_prompt
-        
-        # Image reference support (Nano Banana Pro style anchor)
-        if image_url and "nano-banana" in model_id:
-            arguments["image_url"] = image_url
+        try:
+            arguments = self._build_arguments(
+                model_id=model_id,
+                prompt=prompt,
+                width=width,
+                height=height,
+                image_url=image_url,
+                negative_prompt=negative_prompt,
+                guidance_scale=guidance_scale,
+                num_steps=num_steps,
+                **kwargs,
+            )
+        except Exception as e:
+            return GenerationResult(
+                success=False,
+                error=f"Failed preparing FAL arguments: {e}",
+                model_used=model_id,
+                provider=self.display_name,
+            )
         
         try:
             print(f"  [{self.display_name}] Generating with {model_id}...", file=sys.stderr)

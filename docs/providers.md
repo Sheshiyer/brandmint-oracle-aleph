@@ -1,15 +1,16 @@
 # Image Provider Configuration
 
-Brandmint supports multiple image generation providers. This allows you to choose the best provider for your needs, budget, and availability.
+Brandmint supports multiple image generation providers. This allows you to choose the best provider for your workload and availability requirements.
 
 ## Supported Providers
 
-| Provider | Models | Style Anchor Support | Cost (per image) |
-|----------|--------|---------------------|------------------|
-| **FAL.AI** (default) | Nano Banana Pro, Flux 2 Pro, Recraft V3 | ✅ Yes | $0.04-0.08 |
-| **OpenRouter** | Flux 1.1 Pro, SDXL | ❌ No | $0.03-0.05 |
-| **OpenAI** | DALL-E 3, GPT-Image-1 | ⚠️ Limited | $0.04-0.08 |
-| **Replicate** | Flux 1.1 Pro, SDXL | ⚠️ Limited | $0.03-0.05 |
+| Provider | Models | Style Anchor Support |
+|----------|--------|----------------------|
+| **FAL.AI** (default) | Nano Banana Pro, Flux 2 Pro, Recraft V3 | ✅ Full |
+| **Inference** | infsh-ai-image-generation (app-routed) | ✅ Full |
+| **OpenRouter** | Flux 1.1 Pro, SDXL | ⚠️ Limited |
+| **OpenAI** | DALL-E 3, GPT-Image-1 | ⚠️ Limited |
+| **Replicate** | Flux 1.1 Pro, SDXL | ⚠️ Limited |
 
 ## Quick Setup
 
@@ -18,6 +19,7 @@ Brandmint supports multiple image generation providers. This allows you to choos
    - OpenRouter: https://openrouter.ai/keys
    - OpenAI: https://platform.openai.com/api-keys
    - Replicate: https://replicate.com/account/api-tokens
+   - Inference: https://app.inference.sh
 
 2. **Set the environment variable** in your `.env` file:
    ```bash
@@ -30,7 +32,7 @@ Brandmint supports multiple image generation providers. This allows you to choos
 
 3. **Optionally set a default provider**:
    ```bash
-   IMAGE_PROVIDER=fal  # or: openrouter, openai, replicate
+   IMAGE_PROVIDER=fal  # or: inference, openrouter, openai, replicate
    ```
 
 ## Configuration
@@ -38,7 +40,7 @@ Brandmint supports multiple image generation providers. This allows you to choos
 ### Environment Variables
 
 ```bash
-# Primary provider selection (auto | fal | openrouter | openai | replicate)
+# Primary provider selection (auto | fal | inference | openrouter | openai | replicate)
 IMAGE_PROVIDER=auto
 
 # Provider API keys (only need one)
@@ -46,6 +48,7 @@ FAL_KEY=key_...
 OPENROUTER_API_KEY=sk-or-...
 OPENAI_API_KEY=sk-...
 REPLICATE_API_TOKEN=r8_...
+INFERENCE_API_KEY=inf_...
 ```
 
 ### Brand Config Override
@@ -55,18 +58,53 @@ You can also set the provider in your `brand-config.yaml`:
 ```yaml
 generation:
   output_dir: generated
-  provider: fal  # or: openrouter, openai, replicate, auto
+  provider: fal  # or: inference, openrouter, openai, replicate, auto
+  visual_backend: scripts  # or: inference (writes asset-level inference scaffolds)
+  inference_endpoint: https://api.inference.sh
+  inference_rollout_mode: ring0  # ring0|ring1|ring2
+  inference_skill_policy:
+    # Image-generation skills only (inference scaffold backend)
+    # Optional relative/absolute path (default ships in repo)
+    allowlist_file: skills/external/inference-sh/normalized/allowlist.yaml
+    fallback_to_scripts: true
+    default:
+      scaffold_skill_id: infsh-llm-models
+      media_skill_id: infsh-ai-image-generation
+    semantic_routing:
+      enabled: true
+      rules_file: config/inference-semantic-routing.v1.yaml
+      domain_pack: ""  # optional override; auto-inferred from brand domain tags
+      browser_assets: [APP-SCREENSHOT]
+      browser_keywords: [screenshot, ui, interface, dashboard, app store]
+    batch_overrides: {}
+    asset_overrides:
+      APP-SCREENSHOT:
+        media_skill_id: infsh-agentic-browser
 ```
+
+### Visual Backend Mode
+
+`generation.visual_backend` controls *how* visual batches are executed:
+
+- `scripts` (default): existing generated-script pipeline execution
+- `inference`: writes per-asset Inference agent scaffolds + runbook files under:
+  - `.brandmint/inference-agent-scaffolds/<batch>/`
+  - `<asset>.json` (execution contract)
+  - `<asset>.md` (agent prompt scaffold)
+  - `runbook.json` (batch manifest)
+  - Uses `INFERENCE_API_KEY` (or `generation.inference_api_key`) for authenticated execution paths.
 
 ## Model Mapping
 
 When you specify a logical model (like `nano-banana-pro`), Brandmint maps it to the appropriate model on your chosen provider:
 
-| Logical Model | FAL.AI | OpenRouter | OpenAI | Replicate |
-|---------------|--------|------------|--------|-----------|
-| `nano-banana-pro` | fal-ai/nano-banana | flux-1.1-pro | gpt-image-1 | flux-1.1-pro |
-| `flux-2-pro` | fal-ai/flux-pro/v1.1 | flux-1.1-pro | dall-e-3 | flux-1.1-pro |
-| `recraft-v3` | fal-ai/recraft-v3 | sdxl | dall-e-3 | sdxl |
+| Logical Model | FAL.AI | Inference | OpenRouter | OpenAI | Replicate |
+|---------------|--------|-----------|------------|--------|-----------|
+| `nano-banana-pro` | `fal-ai/nano-banana-pro` | `infsh-ai-image-generation`* | `black-forest-labs/flux-1.1-pro` | `gpt-image-1` | `black-forest-labs/flux-1.1-pro` |
+| `flux-2-pro` | `fal-ai/flux-2-pro` | `infsh-ai-image-generation`* | `black-forest-labs/flux-1.1-pro` | `dall-e-3` | `black-forest-labs/flux-1.1-pro` |
+| `recraft-v3` | `fal-ai/recraft/v3/text-to-image` | `infsh-ai-image-generation`* | `stabilityai/stable-diffusion-xl-base-1.0` | `dall-e-3` | `stability-ai/sdxl:...` |
+
+\* Override app routing with `INFERENCE_IMAGE_APP` or `generation.inference_app`.
 
 ## Style Anchor Cascade
 
@@ -75,11 +113,11 @@ The **style anchor cascade** is Brandmint's key feature for visual consistency. 
 1. Generating the **2A Bento Grid** first (the "style anchor")
 2. Using that image as a reference for all subsequent assets
 
-**⚠️ Important:** Only **FAL.AI's Nano Banana Pro** fully supports image references. Other providers generate with text-only prompts, which means:
+**⚠️ Important:** Full style-anchor behavior is strongest on **FAL.AI** and **Inference** paths. Text-only or model-limited providers may reduce cascade fidelity, which means:
 
 - Assets will still match your brand colors and typography
 - But visual style consistency may be lower
-- Consider using FAL.AI for the anchor batch, then switching providers for other assets
+- Consider using FAL.AI/Inference for the anchor batch, then switching providers for other assets if needed
 
 ## Provider-Specific Notes
 
@@ -88,6 +126,12 @@ The **style anchor cascade** is Brandmint's key feature for visual consistency. 
 - Fastest queue times
 - Recraft V3 produces actual SVG files
 - **Best for:** Full brand generation with maximum consistency
+
+### Inference
+- Adapter-backed runtime execution for `generation.provider=inference`
+- Supports app-level routing via `INFERENCE_IMAGE_APP`
+- Works with both generated scripts and inference scaffold backend
+- **Best for:** Inference-first production routing and app-based orchestration
 
 ### OpenRouter
 - Unified API for multiple models
@@ -109,13 +153,51 @@ The **style anchor cascade** is Brandmint's key feature for visual consistency. 
 
 ## Fallback Chain
 
-When `IMAGE_PROVIDER=auto`, Brandmint tries providers in this order:
+Brandmint currently has **two provider execution paths**:
+
+1. **Core provider API** (`brandmint.core.providers.generate_with_fallback`)
+   - Supports explicit fallback order and retry across providers.
+2. **Launch visual pipeline** (`bm launch` -> generated scripts via `scripts/run_pipeline.py`)
+   - Uses a single selected provider per run.
+   - Does **not** automatically hop to the next provider on runtime failure.
+
+Default core fallback order is:
 1. FAL.AI
 2. OpenRouter
 3. Replicate
 4. OpenAI
+5. Inference
 
-If a provider fails, it automatically tries the next one.
+If you need fallback semantics today, use the core provider API path or rerun launch with a different provider.
+
+## Imported Inference Skills (Image Generation Scope)
+
+Imported skills from `inference-sh/skills` are used in Brandmint only for the inference visual scaffold path (`generation.visual_backend=inference`).
+
+- Current equivalence mapping (image pipeline):
+  - Brandmint prompt scaffolding role -> `infsh-llm-models`
+  - Brandmint image generation role -> `infsh-ai-image-generation`
+  - Brandmint app screenshot capture role -> `infsh-agentic-browser`
+
+- Default allowlist file:
+  - `skills/external/inference-sh/normalized/allowlist.yaml`
+- Configure image skill mapping with:
+  - `generation.inference_skill_policy.default`
+  - `generation.inference_skill_policy.semantic_routing` (meta-semantic selector)
+  - `generation.inference_skill_policy.batch_overrides`
+  - `generation.inference_skill_policy.asset_overrides`
+
+Safety behavior:
+- If an override skill is not in the allowlist, Brandmint falls back to default image skill mapping.
+- If an override skill is missing on disk, Brandmint falls back to default image skill mapping.
+- Semantic routing rules are externalized in `config/inference-semantic-routing.v1.yaml` with domain packs.
+- Rollout control is supported through `generation.inference_rollout_mode` (`ring0|ring1|ring2`).
+
+Operational commands:
+- `bm inference doctor --config <brand-config.yaml>`
+- `bm inference route-test --config <brand-config.yaml> --batch products --assets APP-SCREENSHOT,3A`
+- `bm visual diff --left <runbook-a.json> --right <runbook-b.json>`
+- `bm visual contract-verify --runbook <runbook.json>`
 
 ## Programmatic Usage
 
@@ -135,19 +217,6 @@ result = generate_with_fallback(
     prompt="A brand logo...",
     model="flux-2-pro",
     output_path="output.png",
-    fallback_chain=["fal", "openrouter", "replicate"],
+    fallback_chain=["fal", "openrouter", "replicate", "openai", "inference"],
 )
 ```
-
-## Cost Estimation
-
-Run a preview to see estimated costs before generating:
-
-```bash
-python scripts/run_pipeline.py preview --config ./brand-config.yaml --json
-```
-
-This shows:
-- Number of assets per model
-- Cost per provider
-- Recommended provider based on your config

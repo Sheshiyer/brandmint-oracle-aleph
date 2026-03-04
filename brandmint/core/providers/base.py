@@ -88,6 +88,7 @@ class ProviderName(str, Enum):
     OPENROUTER = "openrouter"
     OPENAI = "openai"
     REPLICATE = "replicate"
+    INFERENCE = "inference"
 
 
 @dataclass

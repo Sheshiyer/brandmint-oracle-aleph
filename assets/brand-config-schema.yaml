@@ -197,7 +197,28 @@ generation:
   resolution: "2K"            # Resolution for Nano Banana Pro
   output_format: "png"        # Primary output format
   env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
+  provider: "fal"             # fal | openrouter | openai | replicate | inference | auto
+  visual_backend: "scripts"   # scripts | inference (writes inference scaffolds)
+  inference_endpoint: "https://api.inference.sh"
+  inference_app: "infsh-ai-image-generation" # Optional app override for generation.provider=inference
+  inference_rollout_mode: "ring0" # ring0|ring1|ring2 (ring0 keeps scripts as recommended executor)
   reference_overrides: {}     # Override default ref images: {"2B": "ref-alt-chrome-logos.jpg"}
+  inference_skill_policy:     # Optional image-skill mapping (inference scaffold backend only)
+    allowlist_file: "skills/external/inference-sh/normalized/allowlist.yaml"
+    fallback_to_scripts: true
+    default:
+      scaffold_skill_id: "infsh-llm-models"
+      media_skill_id: "infsh-ai-image-generation"
+    semantic_routing:          # Meta-semantic selector ("brain" layer)
+      enabled: true
+      rules_file: "config/inference-semantic-routing.v1.yaml"
+      domain_pack: ""          # optional override; auto-inferred from brand.domain_tags/domain
+      browser_assets: ["APP-SCREENSHOT"]
+      browser_keywords: ["screenshot", "ui", "interface", "dashboard", "app store"]
+    batch_overrides: {}       # e.g. {"posters": {"media_skill_id": "infsh-ai-image-generation"}}
+    asset_overrides:          # Fine-grained image skill overrides per asset
+      APP-SCREENSHOT:
+        media_skill_id: "infsh-agentic-browser"
   supplementary_refs:           # Dynamic supplementary composition reference settings
     max_per_prompt: 3           # Max supp refs per Nano Banana call (default 3)
     boost_types: ["style"]      # Ref types to boost in scoring
