@@ -12,7 +12,7 @@
 
 version: '1.0'
 generated_at: '2026-03-01T20:33:00.897880+00:00'
-total_entries: 160
+total_entries: 252
 entries:
   ref-2A-bento-grid:
     file: ref-2A-bento-grid.jpg
@@ -1235,7 +1235,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type": "luxury b...'
+    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt":
+      {     "product": {       "type": "luxury b...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -1275,7 +1276,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type": "luxury b...'
+    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt":
+      {     "product": {       "type": "luxury b...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -1299,7 +1301,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Graphic design smart prompt  Generate ad posters in Nano Banana  This prompt generates: • POV low-angle photo (pointi...'
+    description: 'Graphic design smart prompt  Generate ad posters in Nano Banana  This
+      prompt generates: • POV low-angle photo (pointi...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -1336,7 +1339,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: My recipe, powered by Google Nano Banana Pro + Kling AI 🎥   → Pure taste → Smart creation  → Cooking, upgraded by AI...
+    description: My recipe, powered by Google Nano Banana Pro + Kling AI 🎥   → Pure
+      taste → Smart creation  → Cooking, upgraded by AI...
     subject_type: layout
     domain_suitability:
     - saas
@@ -1366,7 +1370,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'Nano Banana Pro has improved after the Gemini 3.1 Pro update 🔥  Prompt: A cinematic, high-contrast profile portrait o...'
+    description: 'Nano Banana Pro has improved after the Gemini 3.1 Pro update 🔥  Prompt:
+      A cinematic, high-contrast profile portrait o...'
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -1391,7 +1396,8 @@ entries:
     - gpt-image-1
     asset_compatibility:
     - 8A
-    description: 'GPT image 1.5 on ChatGPT  Prompt: Transform the input photo into a refined monochromatic ink portrait on a pure white...'
+    description: 'GPT image 1.5 on ChatGPT  Prompt: Transform the input photo into
+      a refined monochromatic ink portrait on a pure white...'
     subject_type: person
     domain_suitability: []
     lighting_register: studio
@@ -1416,7 +1422,8 @@ entries:
     - gpt-image-1
     asset_compatibility:
     - 8A
-    description: 'GPT image 1.5 on ChatGPT  Prompt: Transform the input photo into a refined monochromatic ink portrait on a pure white...'
+    description: 'GPT image 1.5 on ChatGPT  Prompt: Transform the input photo into
+      a refined monochromatic ink portrait on a pure white...'
     subject_type: person
     domain_suitability: []
     lighting_register: studio
@@ -1449,7 +1456,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: 'Google Gemini Nano Banana Pro   Prompt 1:  Ultra-realistic commercial product photography of a caramel frappuccino in...'
+    description: 'Google Gemini Nano Banana Pro   Prompt 1:  Ultra-realistic commercial
+      product photography of a caramel frappuccino in...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -1482,7 +1490,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: 'Google Gemini Nano Banana Pro   Prompt 1:  Ultra-realistic commercial product photography of a caramel frappuccino in...'
+    description: 'Google Gemini Nano Banana Pro   Prompt 1:  Ultra-realistic commercial
+      product photography of a caramel frappuccino in...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -1512,7 +1521,8 @@ entries:
     - 2A
     - 5B
     - 8A
-    description: Google Gemini Nano Banana Pro   Prompt 1 (Male Portrait – Blue & Pink Neon Lighting)  Ultra-realistic studio portrait...
+    description: Google Gemini Nano Banana Pro   Prompt 1 (Male Portrait – Blue &
+      Pink Neon Lighting)  Ultra-realistic studio portrait...
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -1542,7 +1552,8 @@ entries:
     - 2A
     - 5B
     - 8A
-    description: Google Gemini Nano Banana Pro   Prompt 1 (Male Portrait – Blue & Pink Neon Lighting)  Ultra-realistic studio portrait...
+    description: Google Gemini Nano Banana Pro   Prompt 1 (Male Portrait – Blue &
+      Pink Neon Lighting)  Ultra-realistic studio portrait...
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -1576,7 +1587,8 @@ entries:
     - 4A
     - 4B
     - 9A
-    description: Tried my Infographic prompt with Gemini Nano Banana Pro imagine on @SocialSight 🧾  Prompt - Simply replace [OBJECT]...
+    description: Tried my Infographic prompt with Gemini Nano Banana Pro imagine on
+      @SocialSight 🧾  Prompt - Simply replace [OBJECT]...
     subject_type: multi-product
     domain_suitability:
     - saas
@@ -1607,7 +1619,8 @@ entries:
     - 2A
     - 5B
     - 8A
-    description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic studio portrait of a man match...
+    description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic
+      studio portrait of a man match...
     subject_type: person
     domain_suitability: []
     lighting_register: studio
@@ -1636,7 +1649,8 @@ entries:
     - 2A
     - 5B
     - 8A
-    description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic studio portrait of a man match...
+    description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic
+      studio portrait of a man match...
     subject_type: person
     domain_suitability: []
     lighting_register: studio
@@ -1665,7 +1679,8 @@ entries:
     - 2A
     - 5B
     - 8A
-    description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic studio portrait of a man match...
+    description: Studio photoshoot using Google Nano Banana Pro on Gemini App.  Prompt;  Photorealistic
+      studio portrait of a man match...
     subject_type: person
     domain_suitability: []
     lighting_register: studio
@@ -1696,7 +1711,8 @@ entries:
     - 2A
     - 5B
     - 8A
-    description: 'Gemini Nano Banana Pro   Prompt:  A cinematic golden hour portrait of a stylish man leaning against a textured stone...'
+    description: 'Gemini Nano Banana Pro   Prompt:  A cinematic golden hour portrait
+      of a stylish man leaning against a textured stone...'
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -1735,7 +1751,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "master_prompt": {     "product": {       "type": "l...'
+    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "master_prompt":
+      {     "product": {       "type": "l...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -1774,7 +1791,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "master_prompt": {     "product": {       "type": "l...'
+    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "master_prompt":
+      {     "product": {       "type": "l...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -1800,7 +1818,8 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 5A
-    description: Smart illustration in Nano Banana  Branded venue in minimalist vector style  Grab the prompt 👇 https://t.co/d8VJp8zxsN
+    description: Smart illustration in Nano Banana  Branded venue in minimalist vector
+      style  Grab the prompt 👇 https://t.co/d8VJp8zxsN
     subject_type: illustration
     domain_suitability: []
     lighting_register: studio
@@ -1827,7 +1846,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'Gemini Nano Banana Pro  Prompt:  A Cinematic Night Photo On A Dimly Lit Urban Overpass With A View Of The City Skylin...'
+    description: 'Gemini Nano Banana Pro  Prompt:  A Cinematic Night Photo On A Dimly
+      Lit Urban Overpass With A View Of The City Skylin...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -1865,7 +1885,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: 'Nano Banana Pro 3D Neuro Chromatic FX  🔴 Prompt  {   "action": "image_generation",   "input_parameters": {     "promp...'
+    description: 'Nano Banana Pro 3D Neuro Chromatic FX  🔴 Prompt  {   "action": "image_generation",   "input_parameters":
+      {     "promp...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -1891,7 +1912,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through a [landscape]...'
+    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking
+      shot of a [subject] sprinting through a [landscape]...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -1917,7 +1939,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through a [landscape]...'
+    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking
+      shot of a [subject] sprinting through a [landscape]...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -1943,7 +1966,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through a [landscape]...'
+    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking
+      shot of a [subject] sprinting through a [landscape]...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -1969,7 +1993,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking shot of a [subject] sprinting through a [landscape]...'
+    description: 'Prompt share: Cinematic Motion Scene  💬Prompt: A dynamic tracking
+      shot of a [subject] sprinting through a [landscape]...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -1994,7 +2019,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers. It generates...
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik,
+      and it's clearly built for designers. It generates...
     subject_type: logo
     domain_suitability: []
     lighting_register: studio
@@ -2019,7 +2045,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers. It generates...
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik,
+      and it's clearly built for designers. It generates...
     subject_type: logo
     domain_suitability: []
     lighting_register: studio
@@ -2044,7 +2071,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers. It generates...
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik,
+      and it's clearly built for designers. It generates...
     subject_type: logo
     domain_suitability: []
     lighting_register: studio
@@ -2069,7 +2097,8 @@ entries:
     model_affinity:
     - recraft-v3
     asset_compatibility: []
-    description: Recraft V4 is extremely good  I've been testing it inside Freepik, and it's clearly built for designers. It generates...
+    description: Recraft V4 is extremely good  I've been testing it inside Freepik,
+      and it's clearly built for designers. It generates...
     subject_type: logo
     domain_suitability: []
     lighting_register: studio
@@ -2107,7 +2136,8 @@ entries:
     - 5A
     - 5B
     - 8A
-    description: 'Nano Banana pro on Gemini   Prompt   {   "prompt": {     "subject": "Ultra-realistic high-energy commercial product p...'
+    description: 'Nano Banana pro on Gemini   Prompt   {   "prompt": {     "subject":
+      "Ultra-realistic high-energy commercial product p...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -2143,7 +2173,8 @@ entries:
     - 7A
     - 8A
     - 9A
-    description: Minimalist Fashion Scrapbook   With Nano Banana Pro on @higgsfield_creo   Prompt 👇 Masterpiece, best quality, high re...
+    description: Minimalist Fashion Scrapbook   With Nano Banana Pro on @higgsfield_creo   Prompt
+      👇 Masterpiece, best quality, high re...
     subject_type: person
     domain_suitability: []
     lighting_register: studio
@@ -2176,7 +2207,8 @@ entries:
     - 4A
     - 4B
     - 8A
-    description: 'Google Nano Banana Pro on Gemini App.  watch_model: "L’Élévation" brand: "Genève Horlogerie" render_engine: "High-End...'
+    description: 'Google Nano Banana Pro on Gemini App.  watch_model: "L’Élévation"
+      brand: "Genève Horlogerie" render_engine: "High-End...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: studio
@@ -2209,7 +2241,8 @@ entries:
     - 4A
     - 4B
     - 8A
-    description: 'Google Nano Banana Pro on Gemini App.  watch_model: "L’Élévation" brand: "Genève Horlogerie" render_engine: "High-End...'
+    description: 'Google Nano Banana Pro on Gemini App.  watch_model: "L’Élévation"
+      brand: "Genève Horlogerie" render_engine: "High-End...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: studio
@@ -2244,7 +2277,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: 'Gemini Nano Banana Pro.  Prompt: Ultra-realistic commercial product  photography of a beauty collagen shot bottle lab...'
+    description: 'Gemini Nano Banana Pro.  Prompt: Ultra-realistic commercial product  photography
+      of a beauty collagen shot bottle lab...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -2279,7 +2313,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: 'Gemini Nano Banana Pro.  Prompt: Ultra-realistic commercial product  photography of a beauty collagen shot bottle lab...'
+    description: 'Gemini Nano Banana Pro.  Prompt: Ultra-realistic commercial product  photography
+      of a beauty collagen shot bottle lab...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -2307,7 +2342,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
+    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt:
+      Do this for Asimov:   1. The Analysis:...'
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -2335,7 +2371,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
+    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt:
+      Do this for Asimov:   1. The Analysis:...'
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -2363,7 +2400,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
+    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt:
+      Do this for Asimov:   1. The Analysis:...'
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -2391,7 +2429,8 @@ entries:
     asset_compatibility:
     - 5B
     - 8A
-    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt: Do this for Asimov:   1. The Analysis:...'
+    description: 'A Nano Banana prompt for visionaries. Works great for 16:9.   Prompt:
+      Do this for Asimov:   1. The Analysis:...'
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -2423,7 +2462,8 @@ entries:
     - 5B
     - 7A
     - 8A
-    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing on a glowing...'
+    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave
+      scene featuring a [subject] standing on a glowing...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2455,7 +2495,8 @@ entries:
     - 5B
     - 7A
     - 8A
-    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing on a glowing...'
+    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave
+      scene featuring a [subject] standing on a glowing...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2487,7 +2528,8 @@ entries:
     - 5B
     - 7A
     - 8A
-    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing on a glowing...'
+    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave
+      scene featuring a [subject] standing on a glowing...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2519,7 +2561,8 @@ entries:
     - 5B
     - 7A
     - 8A
-    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave scene featuring a [subject] standing on a glowing...'
+    description: 'Prompt share: Synthwave Cinematics  💬Prompt: A cinematic synthwave
+      scene featuring a [subject] standing on a glowing...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2554,7 +2597,8 @@ entries:
     - 2C
     - 5B
     - 8A
-    description: 'Nano Banana Pro @astronomerozge1  Prompt: 💚  {   "generation_request": {     "meta_data": {       "tool": "NanoBanana...'
+    description: 'Nano Banana Pro @astronomerozge1  Prompt: 💚  {   "generation_request":
+      {     "meta_data": {       "tool": "NanoBanana...'
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -2582,7 +2626,8 @@ entries:
     - 2B
     - 5B
     - 8A
-    description: 'Midnight dominance by the BMW M4 (G82) — “THE BEAST” unleashed in neon blue, shot and styled with ChatGPT.  Prompt: F...'
+    description: 'Midnight dominance by the BMW M4 (G82) — “THE BEAST” unleashed in
+      neon blue, shot and styled with ChatGPT.  Prompt: F...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2610,7 +2655,8 @@ entries:
     - 2B
     - 5B
     - 8A
-    description: 'Midnight dominance by the BMW M4 (G82) — “THE BEAST” unleashed in neon blue, shot and styled with ChatGPT.  Prompt: F...'
+    description: 'Midnight dominance by the BMW M4 (G82) — “THE BEAST” unleashed in
+      neon blue, shot and styled with ChatGPT.  Prompt: F...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2647,7 +2693,8 @@ entries:
     - 4B
     - 5B
     - 7A
-    description: 'Home Fragrance Advertisement  Prompt:  {   "Objective": "Create a refined 2×2 grid advertisement for the luxury home...'
+    description: 'Home Fragrance Advertisement  Prompt:  {   "Objective": "Create
+      a refined 2×2 grid advertisement for the luxury home...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: studio
@@ -2670,7 +2717,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 🚨 Alibaba just quietly dropped a vector database that destroys Pinecone, Chroma, and Weaviate.  It's called Zvec and...
+    description: 🚨 Alibaba just quietly dropped a vector database that destroys Pinecone,
+      Chroma, and Weaviate.  It's called Zvec and...
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -2739,7 +2787,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type": "l...'
+    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt":
+      {     "product": {       "type": "l...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -2783,7 +2832,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt": {     "product": {       "type": "l...'
+    description: 'Google Nano Banana Pro on Gemini and GPT Image 1.5  Prompt;  {   "master_prompt":
+      {     "product": {       "type": "l...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: cinematic
@@ -2807,7 +2857,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of delicate [co...'
+    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring
+      a [subject] built from an array of delicate [co...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -2831,7 +2882,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of delicate [co...'
+    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring
+      a [subject] built from an array of delicate [co...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -2855,7 +2907,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of delicate [co...'
+    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring
+      a [subject] built from an array of delicate [co...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -2879,7 +2932,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring a [subject] built from an array of delicate [co...'
+    description: 'Prompt share: Mosaic  💬Prompt: A dynamic mosaic composition featuring
+      a [subject] built from an array of delicate [co...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -2934,7 +2988,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic digital poster of a floating miniature island s...
+    description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic
+      digital poster of a floating miniature island s...
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2963,7 +3018,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic digital poster of a floating miniature island s...
+    description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic
+      digital poster of a floating miniature island s...
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -2992,7 +3048,8 @@ entries:
     - 5B
     - 8A
     - 9A
-    description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic digital poster of a floating miniature island s...
+    description: GPT image 1.5 on ChatGPT  Prompt： Create an ultra-HD, hyper-realistic
+      digital poster of a floating miniature island s...
     subject_type: abstract
     domain_suitability: []
     lighting_register: cinematic
@@ -3018,7 +3075,8 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 9A
-    description: 3D Caricature Characters by Nano Banana Pro on @SocialSight 🎭✨  Prompt👇🏻 https://t.co/CJLlT1QM18
+    description: 3D Caricature Characters by Nano Banana Pro on @SocialSight 🎭✨  Prompt👇🏻
+      https://t.co/CJLlT1QM18
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3043,7 +3101,8 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 9A
-    description: 'Prompt:  {   "prompt": "A hyper-realistic {{object}} rendered as a sculptural object carved entirely from solid, opti...'
+    description: 'Prompt:  {   "prompt": "A hyper-realistic {{object}} rendered as
+      a sculptural object carved entirely from solid, opti...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3067,7 +3126,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: PSA to everyone building browser agents with @openclaw  give it a copy of your chrome profile   now it's logged into...
+    description: PSA to everyone building browser agents with @openclaw  give it a
+      copy of your chrome profile   now it's logged into...
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3097,7 +3157,8 @@ entries:
     asset_compatibility:
     - 5D
     - 9A
-    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama visualizi...'
+    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create
+      a clean isometric miniature 3D diorama visualizi...'
     subject_type: layout
     domain_suitability:
     - saas
@@ -3129,7 +3190,8 @@ entries:
     asset_compatibility:
     - 5D
     - 9A
-    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama visualizi...'
+    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create
+      a clean isometric miniature 3D diorama visualizi...'
     subject_type: layout
     domain_suitability:
     - saas
@@ -3161,7 +3223,8 @@ entries:
     asset_compatibility:
     - 5D
     - 9A
-    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama visualizi...'
+    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create
+      a clean isometric miniature 3D diorama visualizi...'
     subject_type: layout
     domain_suitability:
     - saas
@@ -3193,7 +3256,8 @@ entries:
     asset_compatibility:
     - 5D
     - 9A
-    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create a clean isometric miniature 3D diorama visualizi...'
+    description: 'Timeline Evolution Dioramas  Gemini Nano Banana Pro Prompt:  “Create
+      a clean isometric miniature 3D diorama visualizi...'
     subject_type: layout
     domain_suitability:
     - saas
@@ -3231,7 +3295,8 @@ entries:
     - 5A
     - 5B
     - 8A
-    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
+    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings":
+      {     "resolution": "8K ultra-high-defin...'
     subject_type: illustration
     domain_suitability: []
     lighting_register: cinematic
@@ -3267,7 +3332,8 @@ entries:
     - 5A
     - 5B
     - 8A
-    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
+    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings":
+      {     "resolution": "8K ultra-high-defin...'
     subject_type: illustration
     domain_suitability: []
     lighting_register: cinematic
@@ -3303,7 +3369,8 @@ entries:
     - 5A
     - 5B
     - 8A
-    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
+    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings":
+      {     "resolution": "8K ultra-high-defin...'
     subject_type: illustration
     domain_suitability: []
     lighting_register: cinematic
@@ -3339,7 +3406,8 @@ entries:
     - 5A
     - 5B
     - 8A
-    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings": {     "resolution": "8K ultra-high-defin...'
+    description: 'Nano Banana Pro on Gemini and GPT Image 1.5  Prompt:  {   "global_settings":
+      {     "resolution": "8K ultra-high-defin...'
     subject_type: illustration
     domain_suitability: []
     lighting_register: cinematic
@@ -3364,7 +3432,8 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 8A
-    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
+    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task":
+      "image_style_transfer_3d_cha...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3389,7 +3458,8 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 8A
-    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
+    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task":
+      "image_style_transfer_3d_cha...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3414,7 +3484,8 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 8A
-    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
+    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task":
+      "image_style_transfer_3d_cha...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3439,7 +3510,8 @@ entries:
     - nano-banana-pro
     asset_compatibility:
     - 8A
-    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task": "image_style_transfer_3d_cha...'
+    description: 'Amazing prompt from @egeberkina ♥️  Stranger Things avatar edition  Prompt:  {   "task":
+      "image_style_transfer_3d_cha...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3473,7 +3545,8 @@ entries:
     - 7A
     - 8A
     - 9A
-    description: Prompt  High-resolution Editorial Angle Reference Sheet. Perfect 3x3 grid. Aspect ratio 4:5. Strictly use attached se...
+    description: Prompt  High-resolution Editorial Angle Reference Sheet. Perfect
+      3x3 grid. Aspect ratio 4:5. Strictly use attached se...
     subject_type: person
     domain_suitability: []
     lighting_register: cinematic
@@ -3497,7 +3570,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space, cross-sec...'
+    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A
+      single [DISH] suspended in space, cross-sec...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3521,7 +3595,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space, cross-sec...'
+    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A
+      single [DISH] suspended in space, cross-sec...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3545,7 +3620,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space, cross-sec...'
+    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A
+      single [DISH] suspended in space, cross-sec...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3569,7 +3645,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A single [DISH] suspended in space, cross-sec...'
+    description: 'Prompt Studio: Archaeology of Flavor, with Nano Banana Pro, in Firefly  A
+      single [DISH] suspended in space, cross-sec...'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3601,7 +3678,8 @@ entries:
     - 4A
     - 4B
     - 9A
-    description: 'Nano Banana Pro Glass Prismatic Tech  Prompt 👇  {   "image_generation_request": {     "subject": "[INSERT PRODUCT HER...'
+    description: 'Nano Banana Pro Glass Prismatic Tech  Prompt 👇  {   "image_generation_request":
+      {     "subject": "[INSERT PRODUCT HER...'
     subject_type: multi-product
     domain_suitability: []
     lighting_register: studio
@@ -3628,7 +3706,8 @@ entries:
     asset_compatibility:
     - 2A
     - 5B
-    description: 'Nano Banana smart prompt:  Editorial fashion campaign   Prompt 👇 https://t.co/SCb5gqiVhi'
+    description: 'Nano Banana smart prompt:  Editorial fashion campaign   Prompt 👇
+      https://t.co/SCb5gqiVhi'
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3663,7 +3742,8 @@ entries:
     - 4A
     - 4B
     - 5B
-    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping Mask” jar...
+    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product
+      photograph of a pink “LANEIGE Lip Sleeping Mask” jar...
     subject_type: multi-product
     domain_suitability: []
     lighting_register: studio
@@ -3698,7 +3778,8 @@ entries:
     - 4A
     - 4B
     - 5B
-    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping Mask” jar...
+    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product
+      photograph of a pink “LANEIGE Lip Sleeping Mask” jar...
     subject_type: multi-product
     domain_suitability: []
     lighting_register: studio
@@ -3733,7 +3814,8 @@ entries:
     - 4A
     - 4B
     - 5B
-    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product photograph of a pink “LANEIGE Lip Sleeping Mask” jar...
+    description: Gemini Nano Banana Pro.  Prompt:A hyper-realistic beauty product
+      photograph of a pink “LANEIGE Lip Sleeping Mask” jar...
     subject_type: multi-product
     domain_suitability: []
     lighting_register: studio
@@ -3759,7 +3841,8 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
+    description: Started with a few images I found by searching on Midjourney, then
+      cleaned them up with Nano Banana. https://t.co/hjZ...
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3785,7 +3868,8 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
+    description: Started with a few images I found by searching on Midjourney, then
+      cleaned them up with Nano Banana. https://t.co/hjZ...
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3811,7 +3895,8 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
+    description: Started with a few images I found by searching on Midjourney, then
+      cleaned them up with Nano Banana. https://t.co/hjZ...
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3837,7 +3922,8 @@ entries:
     - midjourney
     - nano-banana-pro
     asset_compatibility: []
-    description: Started with a few images I found by searching on Midjourney, then cleaned them up with Nano Banana. https://t.co/hjZ...
+    description: Started with a few images I found by searching on Midjourney, then
+      cleaned them up with Nano Banana. https://t.co/hjZ...
     subject_type: abstract
     domain_suitability: []
     lighting_register: studio
@@ -3872,7 +3958,8 @@ entries:
     - 5A
     - 5D
     - 7A
-    description: '[Bonus] 8. Elysia: premium fashion e-commerce  (I persoanlly didn''t like this one that much, but it is a different st...'
+    description: '[Bonus] 8. Elysia: premium fashion e-commerce  (I persoanlly didn''t
+      like this one that much, but it is a different st...'
     subject_type: layout
     domain_suitability: []
     lighting_register: studio
@@ -3907,7 +3994,8 @@ entries:
     - 5A
     - 5D
     - 7A
-    description: '[Bonus] 8. Elysia: premium fashion e-commerce  (I persoanlly didn''t like this one that much, but it is a different st...'
+    description: '[Bonus] 8. Elysia: premium fashion e-commerce  (I persoanlly didn''t
+      like this one that much, but it is a different st...'
     subject_type: layout
     domain_suitability: []
     lighting_register: studio
@@ -3931,7 +4019,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: this is what a company looks like in 2026.  not people. not offices. not salaries.  a folder.  .claude/agents/ engine...
+    description: this is what a company looks like in 2026.  not people. not offices.
+      not salaries.  a folder.  .claude/agents/ engine...
   ref-tw-200-AmirMushich-nano-banana-smart-prompt:
     file: ref-tw-200-AmirMushich-nano-banana-smart-prompt.jpg
     type: community
@@ -3957,7 +4046,8 @@ entries:
     - 7A
     - 8A
     - 9A
-    description: 'Nano Banana smart prompt:  Modular typographic brand poster design   Prompt 👇 https://t.co/zmUPOdHLzr'
+    description: 'Nano Banana smart prompt:  Modular typographic brand poster design   Prompt
+      👇 https://t.co/zmUPOdHLzr'
   ref-tw-201-AmirMushich-nano-banana-smart-prompt-font:
     file: ref-tw-201-AmirMushich-nano-banana-smart-prompt-font.jpg
     type: community
@@ -3981,7 +4071,8 @@ entries:
     - 2B
     - 8A
     - 9A
-    description: 'Nano Banana smart prompt:  Font masking poster design  Prompt 👇 https://t.co/4jFnNQ0Oaq'
+    description: 'Nano Banana smart prompt:  Font masking poster design  Prompt 👇
+      https://t.co/4jFnNQ0Oaq'
   ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept:
     file: ref-tw-202-Arminn_Ai-commercial-tear-reveal-concept.jpg
     type: community
@@ -4016,7 +4107,8 @@ entries:
     - 5A
     - 5B
     - 8A
-    description: Commercial Tear Reveal Concept  With Nano Banana 2 on @higgsfield_creo  Prompt 👇 A photorealistic, highly detailed co...
+    description: Commercial Tear Reveal Concept  With Nano Banana 2 on @higgsfield_creo  Prompt
+      👇 A photorealistic, highly detailed co...
   ref-tw-203-_vmlops-check-out-antigravity-awesome:
     file: ref-tw-203-_vmlops-check-out-antigravity-awesome.jpg
     type: community
@@ -4036,7 +4128,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: Check out Antigravity Awesome Skills - a massive library with 900+ AI agent skills for Claude, Copilot, Gemini, Curso...
+    description: Check out Antigravity Awesome Skills - a massive library with 900+
+      AI agent skills for Claude, Copilot, Gemini, Curso...
   ref-tw-204-azed_ai-nano-banana-pro-prompt-share:
     file: ref-tw-204-azed_ai-nano-banana-pro-prompt-share.jpg
     type: community
@@ -4055,7 +4148,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: Nano Banana Pro prompt share  Create cool ads using this prompt 👇 created using @LeonardoAI https://t.co/QbYPszfM9q
+    description: Nano Banana Pro prompt share  Create cool ads using this prompt 👇
+      created using @LeonardoAI https://t.co/QbYPszfM9q
   ref-tw-206-Hesamation-obsidian-ai-new-hot-combo:
     file: ref-tw-206-Hesamation-obsidian-ai-new-hot-combo.jpg
     type: community
@@ -4074,7 +4168,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: this Obsidian + AI is the new hot combo. few people know that the CEO of Obsidian @kepano has made multiples skills f...
+    description: this Obsidian + AI is the new hot combo. few people know that the
+      CEO of Obsidian @kepano has made multiples skills f...
   ref-tw-207-internetvin-here-22-commands-am-using:
     file: ref-tw-207-internetvin-here-22-commands-am-using.jpg
     type: community
@@ -4093,7 +4188,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: Here's 22 of the commands I am using with Obsidian and Claude Code with descriptions.   I will turn this into somethi...
+    description: Here's 22 of the commands I am using with Obsidian and Claude Code
+      with descriptions.   I will turn this into somethi...
   ref-tw-211-alex_prompter-holy-shit-stanford-just:
     file: ref-tw-211-alex_prompter-holy-shit-stanford-just.jpg
     type: community
@@ -4117,7 +4213,8 @@ entries:
     asset_compatibility:
     - 8A
     - 9A
-    description: 🚨 Holy shit… Stanford just exposed that every major AI company is using your private conversations to train their mod...
+    description: 🚨 Holy shit… Stanford just exposed that every major AI company is
+      using your private conversations to train their mod...
   ref-tw-212-godofprompt-richard-feynman-had-one:
     file: ref-tw-212-godofprompt-richard-feynman-had-one.jpg
     type: community
@@ -4136,7 +4233,8 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 'Richard Feynman had one superpower: making the complex feel obvious.  I reverse-engineered his entire teaching method...'
+    description: 'Richard Feynman had one superpower: making the complex feel obvious.  I
+      reverse-engineered his entire teaching method...'
   ref-tw-214-AmirMushich-nano-banana-smart-prompt:
     file: ref-tw-214-AmirMushich-nano-banana-smart-prompt.jpg
     type: community
@@ -4162,7 +4260,8 @@ entries:
     - 3A
     - 3B
     - 4A
-    description: 'Nano Banana smart prompt:  Luxury merch concept  Works with:  fashion, sports, lifestyle  One brand variable → autono...'
+    description: 'Nano Banana smart prompt:  Luxury merch concept  Works with:  fashion,
+      sports, lifestyle  One brand variable → autono...'
   ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro:
     file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro.jpg
     type: community
@@ -4193,7 +4292,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography of...
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare
+      Product  Minimalist studio product photography of...
   ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-2:
     file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-2.jpg
     type: community
@@ -4224,7 +4324,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography of...
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare
+      Product  Minimalist studio product photography of...
   ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-3:
     file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-3.jpg
     type: community
@@ -4255,7 +4356,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography of...
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare
+      Product  Minimalist studio product photography of...
   ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-4:
     file: ref-tw-215-Kashberg_0-google-gemini-nano-banana-pro-4.jpg
     type: community
@@ -4286,7 +4388,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare Product  Minimalist studio product photography of...
+    description: Google Gemini Nano Banana Pro   Prompt 1 – Minimal Luxury Skincare
+      Product  Minimalist studio product photography of...
   ref-tw-216-AmirMushich-prompt-access-nano-banana-here:
     file: ref-tw-216-AmirMushich-prompt-access-nano-banana-here.jpg
     type: community
@@ -4314,7 +4417,8 @@ entries:
     - 2C
     - 5B
     - 9A
-    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND NAME]. Act as a fashion photographer and creativ...'
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND
+      NAME]. Act as a fashion photographer and creativ...'
   ref-tw-217-AmirMushich-prompt-access-nano-banana-here:
     file: ref-tw-217-AmirMushich-prompt-access-nano-banana-here.jpg
     type: community
@@ -4343,7 +4447,8 @@ entries:
     - 2C
     - 5B
     - 8A
-    description: 'Prompt:   (access Nano Banana 2 here: https://t.co/EY9xacrmOP)  [BRAND NAME]. Act as a Senior Editorial Designer and...'
+    description: 'Prompt:   (access Nano Banana 2 here: https://t.co/EY9xacrmOP)  [BRAND
+      NAME]. Act as a Senior Editorial Designer and...'
   ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt:
     file: ref-tw-218-Sheldon056-nano-banana-pro-kling-prompt.jpg
     type: community
@@ -4371,7 +4476,8 @@ entries:
     - 4B
     - 5B
     - 8A
-    description: 'Nano Banana Pro + Kling 3.0 on @yapper_so   Prompt: Luxury skincare commercial, ultra-premium aesthetic. Use the prov...'
+    description: 'Nano Banana Pro + Kling 3.0 on @yapper_so   Prompt: Luxury skincare
+      commercial, ultra-premium aesthetic. Use the prov...'
   ref-tw-220-AmirMushich-be-typography-designer-drive:
     file: ref-tw-220-AmirMushich-be-typography-designer-drive.jpg
     type: community
@@ -4398,7 +4504,8 @@ entries:
     - 4A
     - 4B
     - 8A
-    description: '> be the typography designer:  > drive about 60% of the initial impression  > and up to 40% of perceived product qual...'
+    description: '> be the typography designer:  > drive about 60% of the initial
+      impression  > and up to 40% of perceived product qual...'
   ref-tw-221-AmirMushich-easy-text-masking-workflow-ai:
     file: ref-tw-221-AmirMushich-easy-text-masking-workflow-ai.jpg
     type: community
@@ -4437,4 +4544,1929 @@ entries:
     model_affinity:
     - nano-banana-pro
     asset_compatibility: []
-    description: 3 weeks of prompting &amp; chatting with voice keyboard - crazy  Genuinely enjoying the efficiency of my workflows no...
+    description: 3 weeks of prompting &amp; chatting with voice keyboard - crazy  Genuinely
+      enjoying the efficiency of my workflows no...
+  ref-tw-228-AmirMushich-style-factory-workflow:
+    file: ref-tw-228-AmirMushich-style-factory-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1978207029232898373'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: '5-step "Style factory" workflow in Nano Banana:  1️⃣ Open Gemini
+      app 2️⃣ Upload your photo 3️⃣ Enter the base prompt (ch...'
+  ref-tw-229-AmirMushich-brand-logos-made-with-a-crowd:
+    file: ref-tw-229-AmirMushich-brand-logos-made-with-a-crowd.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1979641387734945797'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Example 4 - McDonald’s Everyone knows these iconic Golden Arches.  Reimagined
+      with people, they gain fresh emotion and v...
+  ref-tw-230-AmirMushich-movie-poster-8-images-input:
+    file: ref-tw-230-AmirMushich-movie-poster-8-images-input.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1991589113976304068'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana Pro test: 8 images input + prompts 👇  Google''s top
+      image model is out  And I''m stress-testing it: • 8 images...'
+  ref-tw-231-AmirMushich-sticker-bombed-3d-logos:
+    file: ref-tw-231-AmirMushich-sticker-bombed-3d-logos.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1993958206960234837'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana prompt: (generate for free - see the comments)  A hyper-realistic
+      3D physical object shaped like the [INSERT...'
+  ref-tw-232-AmirMushich-swiss-design-logos-reimagine-any-brand:
+    file: ref-tw-232-AmirMushich-swiss-design-logos-reimagine-any-brand.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1995398229421420954'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Swiss design geometric logo stylization  Prompt
+      below👇 (generate for free - read the thread till the...
+  ref-tw-233-AmirMushich-glass-logos:
+    file: ref-tw-233-AmirMushich-glass-logos.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1995542490049290680'
+      likes: 0
+      confidence: low
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: '👉 Prompt: (change [BRAND] and [COLOR])  3D embossed glossy contour
+      render of center-aligned [BRAND] on a flat surface, p...'
+  ref-tw-234-AmirMushich-embossed-logos-text:
+    file: ref-tw-234-AmirMushich-embossed-logos-text.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1996113438334967913'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Embossed logos  Prompt below 👇 https://t.co/YRLBMgS5BC
+  ref-tw-235-AmirMushich-tactile-wax-seal-logos:
+    file: ref-tw-235-AmirMushich-tactile-wax-seal-logos.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1998766162033713370'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Tactile wax seal logos  Prompt below👇 https://t.co/DR8DpqcyRM
+  ref-tw-236-AmirMushich-swiss-design-typographic-poster:
+    file: ref-tw-236-AmirMushich-swiss-design-typographic-poster.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1999038204692083196'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Swiss design poster  Prompt below👇 https://t.co/GjBF3DZpsw
+  ref-tw-237-AmirMushich-creative-product-designer-prompt:
+    file: ref-tw-237-AmirMushich-creative-product-designer-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1999517713840894224'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Step 1 Paste this system prompt in any LLM:   SYSTEM PROMPT: The
+      Viral Product Architect ROLE:You are a world-class Conc...'
+  ref-tw-238-AmirMushich-branded-grillz-design:
+    file: ref-tw-238-AmirMushich-branded-grillz-design.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1999737307780317544'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Tactile wax seal logos  Prompt below👇 https://t.co/6XczZkolg9
+  ref-tw-239-AmirMushich-hyper-minimal-product-mockup:
+    file: ref-tw-239-AmirMushich-hyper-minimal-product-mockup.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '1999845536849920426'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME], visualized as a single, defining product
+      container in a severe ultra-minimalist, monochromatic "g...'
+  ref-tw-240-AmirMushich-logo-retexturing-workflow:
+    file: ref-tw-240-AmirMushich-logo-retexturing-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2000301364354961613'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Step 1: Create your base logo (fake 3D)  Go to Nano Banana in any
+      platform (I use @LTXStudio) and type in this prompt:  ...'
+  ref-tw-241-AmirMushich-dark-metallic-logos:
+    file: ref-tw-241-AmirMushich-dark-metallic-logos.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2000614012422136108'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME], the official trademark logo rendered strictly
+      as a solid 3D object, maintaining the exact origina...'
+  ref-tw-242-AmirMushich-modern-sport-poster-design:
+    file: ref-tw-242-AmirMushich-modern-sport-poster-design.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2000932708684304623'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Modern sport poster design  Prompt below👇 https://t.co/vbAcBIalqr
+  ref-tw-243-AmirMushich-branded-boxing-gloves:
+    file: ref-tw-243-AmirMushich-branded-boxing-gloves.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2001186860115153355'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME], conceptualized as a pair of premium, professional-grade
+      leather boxing gloves. The design is a co...'
+  ref-tw-244-AmirMushich-frame-by-frame-text-animation:
+    file: ref-tw-244-AmirMushich-frame-by-frame-text-animation.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2001396051974979858'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Frame-by-frame animation with Flux.2 Max  5-step tutorial: 1️⃣ Go
+      to @LTXStudio 2️⃣ Get my 12 prompts (grab below) 3️⃣ G...'
+  ref-tw-245-AmirMushich-branded-souvenirs-capsule-collection:
+    file: ref-tw-245-AmirMushich-branded-souvenirs-capsule-collection.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2001560723173052612'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME], conceptualized as a cohesive, premium "capsule
+      collection" of branded merchandise and functional ...'
+  ref-tw-246-AmirMushich-creative-product-concepts:
+    file: ref-tw-246-AmirMushich-creative-product-concepts.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2002029348132721016'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Just change [BRAND NAME] and enjoy the endless, high-end ideas visualized
+      as it was a concept magazine  👉 Prompt:  [BRAN...'
+  ref-tw-247-AmirMushich-duffle-mockup:
+    file: ref-tw-247-AmirMushich-duffle-mockup.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2002274024408191033'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME] luxury leather duffle bag, high-end editorial
+      studio photograph. The duffle bag, designed with a u...'
+  ref-tw-248-AmirMushich-premium-beverage-by-any-brand:
+    file: ref-tw-248-AmirMushich-premium-beverage-by-any-brand.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2002793794975273279'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Grab your prompt: (change the brand name & enjoy)  [BRAND NAME]
+      is launching a new functional wellness elixir (e.g., ada...'
+  ref-tw-249-AmirMushich-branded-passport-cover:
+    file: ref-tw-249-AmirMushich-branded-passport-cover.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2003372834941468680'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Which citizenship would you choose?  Prompt below👇
+      https://t.co/4M5llyCg4N
+  ref-tw-250-AmirMushich-dieline-to-3d-visualization:
+    file: ref-tw-250-AmirMushich-dieline-to-3d-visualization.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2004241867085406717'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  The dieline-to-3D visualization  Prompt 👇 https://t.co/5w9ooOXBgb
+  ref-tw-251-AmirMushich-mixed-media-collage:
+    file: ref-tw-251-AmirMushich-mixed-media-collage.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2005003170318352538'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt: (access Nano Banana here: https://t.co/kL4xQfP8U1)  A surreal
+      mixed-media portrait of [PERSON], set against a cl...'
+  ref-tw-252-AmirMushich-fast-food-leather-bag:
+    file: ref-tw-252-AmirMushich-fast-food-leather-bag.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2005288633839096050'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/kL4xQfP8U1)  [BRAND
+      NAME]. A high-end conceptual leather clutch designed...'
+  ref-tw-253-AmirMushich-calligraphic-monogram:
+    file: ref-tw-253-AmirMushich-calligraphic-monogram.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2005670356745322759'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Turn any logo into a calligraphic monogram  Use
+      this prompt 👇 (access Nano Banana here: https...'
+  ref-tw-254-AmirMushich-minimalist-characters-icons:
+    file: ref-tw-254-AmirMushich-minimalist-characters-icons.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2006092994835804617'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Minimalist vector icon of any character  Prompt
+      👇 (access Nano Banana here: https://t.co/0aVP...'
+  ref-tw-255-AmirMushich-christmas-branded-gifts-tree:
+    file: ref-tw-255-AmirMushich-christmas-branded-gifts-tree.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2006795197087207618'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Branded gifts postcard  Prompt 👇 (access
+      Nano Banana here: https://t.co/0aVP27tHsF)  [A charm...'
+  ref-tw-256-AmirMushich-notion-styled-icons-pt-1:
+    file: ref-tw-256-AmirMushich-notion-styled-icons-pt-1.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2007535691157143563'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Notion-styled minimalist illustrations  Prompt
+      👇 (access Nano Banana here: https://t.co/O4HWg...'
+  ref-tw-257-AmirMushich-photo-campaign-for-any-brand:
+    file: ref-tw-257-AmirMushich-photo-campaign-for-any-brand.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2007890867626057901'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Hi-end photo campaigns for any brand  Prompt
+      👇 (access Nano Banana here: https://t.co/O4HWgQ7...'
+  ref-tw-258-AmirMushich-american-retro-lettering:
+    file: ref-tw-258-AmirMushich-american-retro-lettering.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2008176822551216467'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  A bold, vibrant, retro-American vector lettering design
+      displaying the name "Figma".  TYPOGRAPHY STYLE (FAT SCR...'
+  ref-tw-259-AmirMushich-branded-souvenirs-creative-concepts:
+    file: ref-tw-259-AmirMushich-branded-souvenirs-creative-concepts.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2008635332950888619'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME].  Act as a creative director curating a wide-ranging,
+      eclectic collection of "recontextualized eve...'
+  ref-tw-260-AmirMushich-photo-grid-tribute-poster:
+    file: ref-tw-260-AmirMushich-photo-grid-tribute-poster.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2008976966255337666'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Photo-grid tribute poster design  Prompt
+      👇 https://t.co/6uQzOquGdX'
+  ref-tw-261-AmirMushich-retro-typographic-rebranding:
+    file: ref-tw-261-AmirMushich-retro-typographic-rebranding.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2009341341226942853'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME].  Act as a master engraver creating a refined,
+      minimalist "19th Century Heritage" logomark. STYLE ...'
+  ref-tw-262-AmirMushich-premium-beverage-package-design:
+    file: ref-tw-262-AmirMushich-premium-beverage-package-design.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2009635875953488106'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME].  Act as a world-class product photographer
+      creating an ultra-high-end editorial shot of a luxury ...'
+  ref-tw-263-AmirMushich-custom-branded-sticker-pack:
+    file: ref-tw-263-AmirMushich-custom-branded-sticker-pack.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2009717451710509473'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME]. Act as a vector illustrator designing a trendy,
+      high-end "Sticker Sheet" set. THE TASK: Deconstru...'
+  ref-tw-264-AmirMushich-premium-sport-jersey:
+    file: ref-tw-264-AmirMushich-premium-sport-jersey.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2010426555843871121'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME]. Act as a fashion photographer and creative
+      director shooting a high-end editorial lookbook for a ...'
+  ref-tw-265-AmirMushich-brands-as-sport-clubs:
+    file: ref-tw-265-AmirMushich-brands-as-sport-clubs.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2010789281300701307'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  [BRAND NAME].  Act as a professional sports brand identity
+      designer creating a viral "Football Club Concept Kit...'
+  ref-tw-266-AmirMushich-grid-poster-design:
+    file: ref-tw-266-AmirMushich-grid-poster-design.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2011079586465935747'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Asymmetric grid poster design  Prompt
+      👇  (get more here: https://t.co/QSgZr4r6h6 )  _________...'
+  ref-tw-267-AmirMushich-branded-crumpled-stickers:
+    file: ref-tw-267-AmirMushich-branded-crumpled-stickers.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2011878056755966363'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  A sharp, top-down macro photograph of a single,  heavily
+      crumpled circular vinyl sticker featuring the official...'
+  ref-tw-268-AmirMushich-pro-character-sketch:
+    file: ref-tw-268-AmirMushich-pro-character-sketch.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2012223385607028761'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana prompt    Turn any person into a pro sketch in &lt;60
+      seconds  Prompt below 👇  ---  (get more here: https://...'
+  ref-tw-269-AmirMushich-2000s-style-characters-gorillaz-vibed:
+    file: ref-tw-269-AmirMushich-2000s-style-characters-gorillaz-vibed.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2012607112766018019'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt: (access Nano Banana here: https://t.co/kL4xQfP8U1 )  [PERSON
+      / CHARACTER NAME].  Act as the lead character desig...'
+  ref-tw-270-AmirMushich-crocs-x-any-brand-collab-design:
+    file: ref-tw-270-AmirMushich-crocs-x-any-brand-collab-design.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2013325907843219831'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt (clean version): (access Nano Banana here: https://t.co/kL4xQfP8U1)  [Louis
+      Vuitton]. Act as a World-Class Footwe...'
+  ref-tw-271-AmirMushich-urban-photo-collage-caricature:
+    file: ref-tw-271-AmirMushich-urban-photo-collage-caricature.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2013701196016423313'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt: (access Nano Banana here: https://t.co/kL4xQfP8U1)   [CHARACTER
+      NAME]. Act as a radical contemporary mixed-media...'
+  ref-tw-272-AmirMushich-notion-styled-icons-pt-2-halftoned:
+    file: ref-tw-272-AmirMushich-notion-styled-icons-pt-2-halftoned.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2014418990018261493'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt: (access Nano Banana here: https://t.co/kL4xQfP8U1)   A minimalist,
+      black-and-white flat vector illustration port...'
+  ref-tw-273-AmirMushich-hypebeast-showroom:
+    file: ref-tw-273-AmirMushich-hypebeast-showroom.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2015862641311219772'
+      likes: 0
+      confidence: low
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/kL4xQfP8U1)   [BRAND
+      NAME]. Act as a Creative Director and Still Life Ph...'
+  ref-tw-274-AmirMushich-cross-branded-winter-outerwear:
+    file: ref-tw-274-AmirMushich-cross-branded-winter-outerwear.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2016245336948244946'
+      likes: 0
+      confidence: low
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt: (access Nano Banana here: https://t.co/kL4xQfP8U1)   [BRAND
+      NAME].  Act as a Creative Director for a technical o...'
+  ref-tw-275-AmirMushich-nano-banana-x-ltx-workflow:
+    file: ref-tw-275-AmirMushich-nano-banana-x-ltx-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2016562661324976439'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana x LTX workflow  Build any branded products in &lt;60
+      sec  Prompt &amp; workflow below 👇   __  Sponsored by @...
+  ref-tw-276-AmirMushich-product-branding-workflow:
+    file: ref-tw-276-AmirMushich-product-branding-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2016631038307418366'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Product branding workflow  👇   Nano Banana x LTX elements: Build
+      any branded products in &lt;60 sec  Prompt &amp; workfl...'
+  ref-tw-277-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-277-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2016962812841545929'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Brand x Sneakers prod. matchmaker  Prompt
+      👇 https://t.co/6jMK307o42'
+  ref-tw-278-AmirMushich-cross-brand-sneaker-collab:
+    file: ref-tw-278-AmirMushich-cross-brand-sneaker-collab.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2017248927326638210'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Creative design workflow inside 1 prompt  Change just one variable:
+      [BRAND NAME] to any brand  This prompt - understands...'
+  ref-tw-279-AmirMushich-nano-banana-auto-prompt:
+    file: ref-tw-279-AmirMushich-nano-banana-auto-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2017312815728488851'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana auto-prompt  Conceptual high-end product design  Prompt
+      below👇 https://t.co/b3hFWGu9gv
+  ref-tw-280-AmirMushich-nano-banana-auto-prompt:
+    file: ref-tw-280-AmirMushich-nano-banana-auto-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2017345945025822871'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana auto-prompt  Unexpected products designed by your fav
+      brands  Prompt below👇 https://t.co/BCGICT9GIA
+  ref-tw-281-AmirMushich-rt-amirmushich-nano-banana-auto-prompt:
+    file: ref-tw-281-AmirMushich-rt-amirmushich-nano-banana-auto-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2017500217709375754'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'RT @AmirMushich: Nano Banana auto-prompt  Unexpected products designed
+      by your fav brands  Prompt below👇 https://t.co/BC...'
+  ref-tw-282-AmirMushich-nano-banana-prompt:
+    file: ref-tw-282-AmirMushich-nano-banana-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2017682012987970042'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt   Futuristic products by modern brands  Prompt
+      below 👇 __  Sponsored by  @LTXstudio https://t.co/b2oh...
+  ref-tw-283-AmirMushich-nano-banana-smart-workflow:
+    file: ref-tw-283-AmirMushich-nano-banana-smart-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2017970754634068339'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart workflow  Futurist branded products concepting:  2
+      steps - Copy the {prompt below} - Enter {Brand Name...'
+  ref-tw-284-AmirMushich-brand-kit-from-one-prompt:
+    file: ref-tw-284-AmirMushich-brand-kit-from-one-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2018348054789640565'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: '👉 Prompt: (access Nano Banana here: https://t.co/RFHWM9RU0w)  _________________________________________________  [BRAND
+      ...'
+  ref-tw-285-AmirMushich-1-prompt-to-become-a-brand-history-exper:
+    file: ref-tw-285-AmirMushich-1-prompt-to-become-a-brand-history-exper.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2018449250406006985'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 1 prompt to become a brand history expert👀  The prompt below is your
+      guide to • design history • brands/products heritag...
+  ref-tw-286-AmirMushich-prompt:
+    file: ref-tw-286-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2018776000532717836'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: '👉 Prompt: (access Nano Banana here: https://t.co/kL4xQfP8U1)   [Lebron
+      James]. Act as a graphic designer specializing in...'
+  ref-tw-287-AmirMushich-rt-amirmushich-nano-banana-design-prompt:
+    file: ref-tw-287-AmirMushich-rt-amirmushich-nano-banana-design-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2018940478054686864'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'RT @AmirMushich: Nano Banana design prompt:  Vintage collage tribute
+      poster  Prompt 👇 https://t.co/YtLa21deL3'
+  ref-tw-288-AmirMushich-rt-amirmushich-nano-banana-smart-prompt:
+    file: ref-tw-288-AmirMushich-rt-amirmushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2020066569741889609'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'RT @AmirMushich: Nano Banana smart prompt:  Editorial fashion campaign   Prompt
+      👇 https://t.co/SCb5gqiVhi'
+  ref-tw-289-AmirMushich-nano-banana-prompt:
+    file: ref-tw-289-AmirMushich-nano-banana-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2020187141024669877'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana prompt  Custom branded gift packaging Generate a design
+      -&gt; print -&gt; wrap anything  Prompt below 👇 __  ...
+  ref-tw-290-AmirMushich-100-side-hustle-idea-in-nano-banana:
+    file: ref-tw-290-AmirMushich-100-side-hustle-idea-in-nano-banana.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2020542102287859712'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: '$100 side-hustle idea in Nano Banana  Custom branded sticker packs
+      with 1 prompt  Targer audience (who can buy): 1. Tele...'
+  ref-tw-291-AmirMushich-prompt:
+    file: ref-tw-291-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2020895358126002197'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND
+      NAME]. Act as a Social Media Art Director and Digit...'
+  ref-tw-292-AmirMushich-i-landed-big-design-clients-with-cold-ou:
+    file: ref-tw-292-AmirMushich-i-landed-big-design-clients-with-cold-ou.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2021258037273694533'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'I landed big design clients with cold outreach  You can try it too
+      - but it''s faster now, with AI:  - find 20-30 apparel...'
+  ref-tw-293-AmirMushich-prompt:
+    file: ref-tw-293-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2021588846849282513'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND
+      NAME]. Act as a Master of Material Science and Worl...'
+  ref-tw-294-AmirMushich-rt-amirmushich-nano-banana-prompt:
+    file: ref-tw-294-AmirMushich-rt-amirmushich-nano-banana-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2021836316434960409'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'RT @AmirMushich: Nano Banana prompt:  Natural element 3D logos  Prompt
+      👇 https://t.co/9xN7nF44BH'
+  ref-tw-295-AmirMushich-prompt:
+    file: ref-tw-295-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2021964350928359720'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)  [BRAND
+      NAME]. Act as a Product Photographer and Art Directo...'
+  ref-tw-296-AmirMushich-the-superbowl-capsule-collection:
+    file: ref-tw-296-AmirMushich-the-superbowl-capsule-collection.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2022024846709018797'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: The Superbowl capsule collection   Concept made by a single prompt
+      system in &lt;1 minute  Steal it here and try yoursel...
+  ref-tw-297-AmirMushich-prompt:
+    file: ref-tw-297-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2022325254333362419'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND
+      NAME]. Act as a Visionary Industrial Designer and M...'
+  ref-tw-298-AmirMushich-prompt:
+    file: ref-tw-298-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2022753970704286181'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND
+      NAME]. Act as a Creative Director and Brand Strateg...'
+  ref-tw-299-AmirMushich-multi-angle-fashion-lookbook-prompt:
+    file: ref-tw-299-AmirMushich-multi-angle-fashion-lookbook-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2023038084753834272'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Multi-angle fashion lookbook [PROMPT]  Practical application ideas:  👉Pre-production:  directional
+      references before bri...'
+  ref-tw-300-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-300-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2023079918830002551'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt   Practical applications:  - Fan merch
+      concepting: generate directional art before briefing an ...'
+  ref-tw-301-AmirMushich-rt-amirmushich-nano-banana-prompt:
+    file: ref-tw-301-AmirMushich-rt-amirmushich-nano-banana-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2023276240644243538'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'RT @AmirMushich: Nano Banana prompt:  Multi-angle fashion lookbook  Prompt
+      👇 https://t.co/fOywOVQmuV'
+  ref-tw-302-AmirMushich-smart-prompt-ai-workflow:
+    file: ref-tw-302-AmirMushich-smart-prompt-ai-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2023416743738143183'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Smart prompt / AI workflow:  3D Glass logos   Prompt 👇 https://t.co/WbqcQAgqVk'
+  ref-tw-303-AmirMushich-ai-graphic-design-stack-workflow:
+    file: ref-tw-303-AmirMushich-ai-graphic-design-stack-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2023802170379039187'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Ai + Graphic design stack workflow  2 variables to adjust: {"brand
+      name"} {"color"}  Get consistent results with any bra...'
+  ref-tw-304-AmirMushich-smart-prompt-ai-workflow:
+    file: ref-tw-304-AmirMushich-smart-prompt-ai-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2024198992750432543'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Smart prompt / AI workflow:  Branded premium packaging  Prompt 👇
+      https://t.co/d3AF0bQuni'
+  ref-tw-305-AmirMushich-prompt:
+    file: ref-tw-305-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2024487909416403052'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)   [BRAND
+      NAME] | [SUBJECT_TOGGLE]. Act as a Lead Graphic Des...'
+  ref-tw-306-AmirMushich-nano-banana-smart-workflow:
+    file: ref-tw-306-AmirMushich-nano-banana-smart-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2024880500725215549'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart workflow:  Tech product concepting  Swap the [BRAND
+      NAME] &amp; generate: - mult-angle views - tech ca...'
+  ref-tw-307-AmirMushich-prompt:
+    file: ref-tw-307-AmirMushich-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2025631713729106049'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:  (access Nano Banana here: https://t.co/EY9xacrmOP)  [PERSONE].
+      Act as a Senior Art Director.  PHASE 1: PHOTOGRA...'
+  ref-tw-308-AmirMushich-nano-banana-smart-workflow:
+    file: ref-tw-308-AmirMushich-nano-banana-smart-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2026020385305551182'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart workflow:  Photo-grid tribute poster design  I
+      prompted today’s images with my voice using Wispr Flow ...'
+  ref-tw-309-AmirMushich-100-side-hustle-ideas-for-this-workflow:
+    file: ref-tw-309-AmirMushich-100-side-hustle-ideas-for-this-workflow.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2026240070764683701'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: '$100 side-hustle ideas for this workflow:  Target customers to pay
+      for such designs  - event organizers (concert posters...'
+  ref-tw-310-AmirMushich-nano-banana-prompt:
+    file: ref-tw-310-AmirMushich-nano-banana-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2026316195977146728'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana prompt:  Social media ad template   Swap one variable
+      -&gt; get: - brand-specific tagline,  - key visual, - ...'
+  ref-tw-311-AmirMushich-scale-your-successful-generations:
+    file: ref-tw-311-AmirMushich-scale-your-successful-generations.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2026420277698244781'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Scale your successful generations   Let''s break down any image
+      into Semantic Tokens  What are Semantic Tokens: Usually, ...'
+  ref-tw-312-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-312-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2027040971016351786'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Typographic ad / poster design  Works
+      with: - automotive - sport - beverage and other product...'
+  ref-tw-313-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-313-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2028489707311464765'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  Dynamic branded ad banner (tryptich)  Prompt
+      👇 https://t.co/8dhSw6SGwS'
+  ref-tw-314-AmirMushich-5-years-ago-i-was-charging-100-for-a-ban:
+    file: ref-tw-314-AmirMushich-5-years-ago-i-was-charging-100-for-a-ban.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2028548199514788252'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 5 years ago, I was charging $100+ for a banner like this one  It’d
+      take - 2-3 years of design experience  - 3-6 hours of...
+  ref-tw-315-AmirMushich-rt-amirmushich-nano-banana-smart-prompt:
+    file: ref-tw-315-AmirMushich-rt-amirmushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2028575702694408613'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'RT @AmirMushich: Nano Banana smart prompt:  Dynamic branded ad banner
+      (tryptich)  Prompt 👇 https://t.co/8dhSw6SGwS'
+  ref-tw-316-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-316-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2028855440939856351'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Nano Banana smart prompt:  High-fashion campaign banner design  Photo
+      + typography system  Prompt 👇 https://t.co/MmdbmES...'
+  ref-tw-317-AmirMushich-nano-banana-designers-prompt:
+    file: ref-tw-317-AmirMushich-nano-banana-designers-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2028934699041935394'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: Nano Banana designer's prompt  Steal below, save for later 👇 https://t.co/PC8o1zrAsD
+  ref-tw-318-AmirMushich-nano-banana-smart-prompt:
+    file: ref-tw-318-AmirMushich-nano-banana-smart-prompt.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2029202749108236757'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: 'Prompt:   (access Nano Banana 2 here: https://t.co/EY9xacrmOP)   [BRAND
+      NAME]. Act as a Senior AI Visual Strategist & Cr...'
+  ref-tw-319-AmirMushich-you-dont-need-a-designer:
+    file: ref-tw-319-AmirMushich-you-dont-need-a-designer.jpg
+    type: community
+    source:
+      author: '@AmirMushich'
+      tweet_id: '2029294395384574292'
+      likes: 0
+      confidence: high
+    aesthetic:
+      composition_density: 0.5
+      temporal_register: 0.5
+      material_richness: 0.5
+      visual_boldness: 0.5
+      editorial_vs_commercial: 0.5
+    composition_tags:
+    - nano-banana
+    model_affinity:
+    - nano-banana-pro
+    asset_compatibility: []
+    description: You don’t need a designer  Not ‘at all’, but for  - countless iterations,  -
+      ad creatives mass generation  - and to sati...

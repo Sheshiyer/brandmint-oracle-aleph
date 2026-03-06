@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-03-01T20:32:39.729908+00:00",
-  "total_assets": 73,
+  "generated_at": "2026-03-06T03:46:22.481795+00:00",
+  "total_assets": 165,
   "entries": [
     {
       "seq": 8,
@@ -1674,6 +1674,2130 @@
       "tags": [
         "workflow"
       ]
+    },
+    {
+      "seq": 228,
+      "tweet_id": "1978207029232898373",
+      "author": "AmirMushich",
+      "slug": "style-factory-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-228-AmirMushich-style-factory-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-228-AmirMushich-style-factory-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/G3PgR4OWIAAXgSG.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 117849
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 229,
+      "tweet_id": "1979641387734945797",
+      "author": "AmirMushich",
+      "slug": "brand-logos-made-with-a-crowd",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-229-AmirMushich-brand-logos-made-with-a-crowd.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-229-AmirMushich-brand-logos-made-with-a-crowd.jpg",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/1979636196805410816/img/6uAeEAfdaXUXPIyy.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 177257
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 230,
+      "tweet_id": "1991589113976304068",
+      "author": "AmirMushich",
+      "slug": "movie-poster-8-images-input",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-230-AmirMushich-movie-poster-8-images-input.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-230-AmirMushich-movie-poster-8-images-input.jpg",
+          "url": "https://pbs.twimg.com/media/G6N0OubWoAAs_1O.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 150281
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 231,
+      "tweet_id": "1993958206960234837",
+      "author": "AmirMushich",
+      "slug": "sticker-bombed-3d-logos",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-231-AmirMushich-sticker-bombed-3d-logos.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-231-AmirMushich-sticker-bombed-3d-logos.jpg",
+          "url": "https://pbs.twimg.com/media/G6v1-mMWwAAQD3G.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 226227
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 232,
+      "tweet_id": "1995398229421420954",
+      "author": "AmirMushich",
+      "slug": "swiss-design-logos-reimagine-any-brand",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-232-AmirMushich-swiss-design-logos-reimagine-any-brand.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-232-AmirMushich-swiss-design-logos-reimagine-any-brand.jpg",
+          "url": "https://pbs.twimg.com/media/G7ESq1oXIAAi44N.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 98453
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 233,
+      "tweet_id": "1995542490049290680",
+      "author": "AmirMushich",
+      "slug": "glass-logos",
+      "relevance_score": 0.6,
+      "likes": 0,
+      "prompt_file": "ref-tw-233-AmirMushich-glass-logos.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-233-AmirMushich-glass-logos.jpg",
+          "url": "https://pbs.twimg.com/media/G7GW1EjWgAAgtWV.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 110951
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 234,
+      "tweet_id": "1996113438334967913",
+      "author": "AmirMushich",
+      "slug": "embossed-logos-text",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-234-AmirMushich-embossed-logos-text.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-234-AmirMushich-embossed-logos-text.jpg",
+          "url": "https://pbs.twimg.com/media/G7OelohXoAAk7D_.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 87058
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 235,
+      "tweet_id": "1998766162033713370",
+      "author": "AmirMushich",
+      "slug": "tactile-wax-seal-logos",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-235-AmirMushich-tactile-wax-seal-logos.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-235-AmirMushich-tactile-wax-seal-logos.jpg",
+          "url": "https://pbs.twimg.com/media/G70LO0WXQAIlvMY.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 115350
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 236,
+      "tweet_id": "1999038204692083196",
+      "author": "AmirMushich",
+      "slug": "swiss-design-typographic-poster",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-236-AmirMushich-swiss-design-typographic-poster.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-236-AmirMushich-swiss-design-typographic-poster.jpg",
+          "url": "https://pbs.twimg.com/media/G74B8zzW0AAmjve.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 98623
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 237,
+      "tweet_id": "1999517713840894224",
+      "author": "AmirMushich",
+      "slug": "creative-product-designer-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-237-AmirMushich-creative-product-designer-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-237-AmirMushich-creative-product-designer-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/G7-1PgtWkAYpYBn.png",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 124350
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 238,
+      "tweet_id": "1999737307780317544",
+      "author": "AmirMushich",
+      "slug": "branded-grillz-design",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-238-AmirMushich-branded-grillz-design.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-238-AmirMushich-branded-grillz-design.jpg",
+          "url": "https://pbs.twimg.com/media/G8B-e9CXQAQzi7u.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 153870
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 239,
+      "tweet_id": "1999845536849920426",
+      "author": "AmirMushich",
+      "slug": "hyper-minimal-product-mockup",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-239-AmirMushich-hyper-minimal-product-mockup.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-239-AmirMushich-hyper-minimal-product-mockup.jpg",
+          "url": "https://pbs.twimg.com/media/G8Dg6woWsAEnXwA.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 49112
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 240,
+      "tweet_id": "2000301364354961613",
+      "author": "AmirMushich",
+      "slug": "logo-retexturing-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-240-AmirMushich-logo-retexturing-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-240-AmirMushich-logo-retexturing-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/G8J51uXWcAcyPUq.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 30679
+        },
+        {
+          "file": "ref-tw-240-AmirMushich-logo-retexturing-workflow-2.jpg",
+          "url": "https://pbs.twimg.com/media/G8J86CnWoAI5sOy.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 67290
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 241,
+      "tweet_id": "2000614012422136108",
+      "author": "AmirMushich",
+      "slug": "dark-metallic-logos",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-241-AmirMushich-dark-metallic-logos.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-241-AmirMushich-dark-metallic-logos.jpg",
+          "url": "https://pbs.twimg.com/media/G8ObZn-W4AAJTnE.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 103515
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 242,
+      "tweet_id": "2000932708684304623",
+      "author": "AmirMushich",
+      "slug": "modern-sport-poster-design",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-242-AmirMushich-modern-sport-poster-design.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-242-AmirMushich-modern-sport-poster-design.jpg",
+          "url": "https://pbs.twimg.com/media/G8S9sdsWwAcPkbu.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 99470
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 243,
+      "tweet_id": "2001186860115153355",
+      "author": "AmirMushich",
+      "slug": "branded-boxing-gloves",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-243-AmirMushich-branded-boxing-gloves.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-243-AmirMushich-branded-boxing-gloves.jpg",
+          "url": "https://pbs.twimg.com/media/G8Wk2CYWgAEhZff.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 153398
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 244,
+      "tweet_id": "2001396051974979858",
+      "author": "AmirMushich",
+      "slug": "frame-by-frame-text-animation",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-244-AmirMushich-frame-by-frame-text-animation.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-244-AmirMushich-frame-by-frame-text-animation.jpg",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2001395590018572288/img/DkXCWaOzVK861G9j.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 43385
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 245,
+      "tweet_id": "2001560723173052612",
+      "author": "AmirMushich",
+      "slug": "branded-souvenirs-capsule-collection",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-245-AmirMushich-branded-souvenirs-capsule-collection.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-245-AmirMushich-branded-souvenirs-capsule-collection.jpg",
+          "url": "https://pbs.twimg.com/media/G8b4CygWkAAmCcH.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 140237
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 246,
+      "tweet_id": "2002029348132721016",
+      "author": "AmirMushich",
+      "slug": "creative-product-concepts",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-246-AmirMushich-creative-product-concepts.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-246-AmirMushich-creative-product-concepts.jpg",
+          "url": "https://pbs.twimg.com/media/G8iicQzWcAAHIH9.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 75452
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 247,
+      "tweet_id": "2002274024408191033",
+      "author": "AmirMushich",
+      "slug": "duffle-mockup",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-247-AmirMushich-duffle-mockup.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-247-AmirMushich-duffle-mockup.jpg",
+          "url": "https://pbs.twimg.com/media/G8mBnSzWMAAAEOL.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 137710
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 248,
+      "tweet_id": "2002793794975273279",
+      "author": "AmirMushich",
+      "slug": "premium-beverage-by-any-brand",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-248-AmirMushich-premium-beverage-by-any-brand.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-248-AmirMushich-premium-beverage-by-any-brand.jpg",
+          "url": "https://pbs.twimg.com/media/G8tZlg7WwAAyWGz.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 149117
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 249,
+      "tweet_id": "2003372834941468680",
+      "author": "AmirMushich",
+      "slug": "branded-passport-cover",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-249-AmirMushich-branded-passport-cover.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-249-AmirMushich-branded-passport-cover.jpg",
+          "url": "https://pbs.twimg.com/media/G81oAEyXMAEeIWA.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 108547
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 250,
+      "tweet_id": "2004241867085406717",
+      "author": "AmirMushich",
+      "slug": "dieline-to-3d-visualization",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-250-AmirMushich-dieline-to-3d-visualization.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-250-AmirMushich-dieline-to-3d-visualization.jpg",
+          "url": "https://pbs.twimg.com/media/G9B9986X0AAe5V4.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 69855
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 251,
+      "tweet_id": "2005003170318352538",
+      "author": "AmirMushich",
+      "slug": "mixed-media-collage",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-251-AmirMushich-mixed-media-collage.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-251-AmirMushich-mixed-media-collage.jpg",
+          "url": "https://pbs.twimg.com/media/G9MzFxGW0AAfDrh.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 168664
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 252,
+      "tweet_id": "2005288633839096050",
+      "author": "AmirMushich",
+      "slug": "fast-food-leather-bag",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-252-AmirMushich-fast-food-leather-bag.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-252-AmirMushich-fast-food-leather-bag.jpg",
+          "url": "https://pbs.twimg.com/media/G9Q3JtZXkAAVE3u.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 142448
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 253,
+      "tweet_id": "2005670356745322759",
+      "author": "AmirMushich",
+      "slug": "calligraphic-monogram",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-253-AmirMushich-calligraphic-monogram.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-253-AmirMushich-calligraphic-monogram.jpg",
+          "url": "https://pbs.twimg.com/media/G9WSTeBWoAA1Aa-.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 88680
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 254,
+      "tweet_id": "2006092994835804617",
+      "author": "AmirMushich",
+      "slug": "minimalist-characters-icons",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-254-AmirMushich-minimalist-characters-icons.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-254-AmirMushich-minimalist-characters-icons.jpg",
+          "url": "https://pbs.twimg.com/media/G9cSTAUXEAA27jE.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 89815
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 255,
+      "tweet_id": "2006795197087207618",
+      "author": "AmirMushich",
+      "slug": "christmas-branded-gifts-tree",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-255-AmirMushich-christmas-branded-gifts-tree.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-255-AmirMushich-christmas-branded-gifts-tree.jpg",
+          "url": "https://pbs.twimg.com/media/G9mRaMhWcAAQc6T.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 146840
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 256,
+      "tweet_id": "2007535691157143563",
+      "author": "AmirMushich",
+      "slug": "notion-styled-icons-pt-1",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-256-AmirMushich-notion-styled-icons-pt-1.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-256-AmirMushich-notion-styled-icons-pt-1.jpg",
+          "url": "https://pbs.twimg.com/media/G9wzEm_WUAAGK--.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 87173
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 257,
+      "tweet_id": "2007890867626057901",
+      "author": "AmirMushich",
+      "slug": "photo-campaign-for-any-brand",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-257-AmirMushich-photo-campaign-for-any-brand.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-257-AmirMushich-photo-campaign-for-any-brand.jpg",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2007888825012412416/img/kKgwt1_PjP9juXLv.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 154115
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 258,
+      "tweet_id": "2008176822551216467",
+      "author": "AmirMushich",
+      "slug": "american-retro-lettering",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-258-AmirMushich-american-retro-lettering.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-258-AmirMushich-american-retro-lettering.jpg",
+          "url": "https://pbs.twimg.com/media/G956LVpWcAIbZD4.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 145700
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 259,
+      "tweet_id": "2008635332950888619",
+      "author": "AmirMushich",
+      "slug": "branded-souvenirs-creative-concepts",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-259-AmirMushich-branded-souvenirs-creative-concepts.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-259-AmirMushich-branded-souvenirs-creative-concepts.jpg",
+          "url": "https://pbs.twimg.com/media/G-AanoSXkAAc4jC.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 115575
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 260,
+      "tweet_id": "2008976966255337666",
+      "author": "AmirMushich",
+      "slug": "photo-grid-tribute-poster",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-260-AmirMushich-photo-grid-tribute-poster.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-260-AmirMushich-photo-grid-tribute-poster.jpg",
+          "url": "https://pbs.twimg.com/media/G-FR54QW0AA9zaX.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 201266
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 261,
+      "tweet_id": "2009341341226942853",
+      "author": "AmirMushich",
+      "slug": "retro-typographic-rebranding",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-261-AmirMushich-retro-typographic-rebranding.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-261-AmirMushich-retro-typographic-rebranding.jpg",
+          "url": "https://pbs.twimg.com/media/G-KdTSdWMAAunee.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 133017
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 262,
+      "tweet_id": "2009635875953488106",
+      "author": "AmirMushich",
+      "slug": "premium-beverage-package-design",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-262-AmirMushich-premium-beverage-package-design.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-262-AmirMushich-premium-beverage-package-design.jpg",
+          "url": "https://pbs.twimg.com/media/G-OoqzrWEAE5Kb_.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 145926
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 263,
+      "tweet_id": "2009717451710509473",
+      "author": "AmirMushich",
+      "slug": "custom-branded-sticker-pack",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-263-AmirMushich-custom-branded-sticker-pack.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-263-AmirMushich-custom-branded-sticker-pack.jpg",
+          "url": "https://pbs.twimg.com/media/G-PzLvGWEAAUWsJ.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 149223
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 264,
+      "tweet_id": "2010426555843871121",
+      "author": "AmirMushich",
+      "slug": "premium-sport-jersey",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-264-AmirMushich-premium-sport-jersey.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-264-AmirMushich-premium-sport-jersey.jpg",
+          "url": "https://pbs.twimg.com/media/G-Z4SI4XgAA9xuG.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 154153
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 265,
+      "tweet_id": "2010789281300701307",
+      "author": "AmirMushich",
+      "slug": "brands-as-sport-clubs",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-265-AmirMushich-brands-as-sport-clubs.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-265-AmirMushich-brands-as-sport-clubs.jpg",
+          "url": "https://pbs.twimg.com/media/G-fCMdUXwAAmUHh.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 162848
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 266,
+      "tweet_id": "2011079586465935747",
+      "author": "AmirMushich",
+      "slug": "grid-poster-design",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-266-AmirMushich-grid-poster-design.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-266-AmirMushich-grid-poster-design.jpg",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2011079571831926784/pu/img/LZSD5OWWW8kwUaNn.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 90786
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 267,
+      "tweet_id": "2011878056755966363",
+      "author": "AmirMushich",
+      "slug": "branded-crumpled-stickers",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-267-AmirMushich-branded-crumpled-stickers.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-267-AmirMushich-branded-crumpled-stickers.jpg",
+          "url": "https://pbs.twimg.com/media/G-ugbiEWkAA1sWR.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 165003
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 268,
+      "tweet_id": "2012223385607028761",
+      "author": "AmirMushich",
+      "slug": "pro-character-sketch",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-268-AmirMushich-pro-character-sketch.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-268-AmirMushich-pro-character-sketch.jpg",
+          "url": "https://pbs.twimg.com/media/G-zagK2XUAAeWgi.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 95561
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 269,
+      "tweet_id": "2012607112766018019",
+      "author": "AmirMushich",
+      "slug": "2000s-style-characters-gorillaz-vibed",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-269-AmirMushich-2000s-style-characters-gorillaz-vibed.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-269-AmirMushich-2000s-style-characters-gorillaz-vibed.jpg",
+          "url": "https://pbs.twimg.com/media/G-43gOCWgAAQXhf.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 159135
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 270,
+      "tweet_id": "2013325907843219831",
+      "author": "AmirMushich",
+      "slug": "crocs-x-any-brand-collab-design",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-270-AmirMushich-crocs-x-any-brand-collab-design.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-270-AmirMushich-crocs-x-any-brand-collab-design.jpg",
+          "url": "https://pbs.twimg.com/media/G_DFPbyXcAA5HMQ.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 65424
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 271,
+      "tweet_id": "2013701196016423313",
+      "author": "AmirMushich",
+      "slug": "urban-photo-collage-caricature",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-271-AmirMushich-urban-photo-collage-caricature.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-271-AmirMushich-urban-photo-collage-caricature.jpg",
+          "url": "https://pbs.twimg.com/media/G_IakPEWwAAMHtL.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 195158
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 272,
+      "tweet_id": "2014418990018261493",
+      "author": "AmirMushich",
+      "slug": "notion-styled-icons-pt-2-halftoned",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-272-AmirMushich-notion-styled-icons-pt-2-halftoned.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-272-AmirMushich-notion-styled-icons-pt-2-halftoned.jpg",
+          "url": "https://pbs.twimg.com/media/G_SnZWCWoAE2gJr.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 140112
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 273,
+      "tweet_id": "2015862641311219772",
+      "author": "AmirMushich",
+      "slug": "hypebeast-showroom",
+      "relevance_score": 0.6,
+      "likes": 0,
+      "prompt_file": "ref-tw-273-AmirMushich-hypebeast-showroom.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-273-AmirMushich-hypebeast-showroom.jpg",
+          "url": "https://pbs.twimg.com/media/G_nIYzgXYAEvtSl.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 160133
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 274,
+      "tweet_id": "2016245336948244946",
+      "author": "AmirMushich",
+      "slug": "cross-branded-winter-outerwear",
+      "relevance_score": 0.6,
+      "likes": 0,
+      "prompt_file": "ref-tw-274-AmirMushich-cross-branded-winter-outerwear.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-274-AmirMushich-cross-branded-winter-outerwear.jpg",
+          "url": "https://pbs.twimg.com/media/G_skcsaWUAALVM3.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 151872
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 275,
+      "tweet_id": "2016562661324976439",
+      "author": "AmirMushich",
+      "slug": "nano-banana-x-ltx-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-275-AmirMushich-nano-banana-x-ltx-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-275-AmirMushich-nano-banana-x-ltx-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/G_xFCc2WgAAvVaY.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 114417
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 276,
+      "tweet_id": "2016631038307418366",
+      "author": "AmirMushich",
+      "slug": "product-branding-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-276-AmirMushich-product-branding-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-276-AmirMushich-product-branding-workflow.jpg",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2016630997563957249/pu/img/7A16hbjVcWoTNd8W.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 110338
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 277,
+      "tweet_id": "2016962812841545929",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-277-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-277-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/G_2w_S7WoAAZiCk.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 121886
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 278,
+      "tweet_id": "2017248927326638210",
+      "author": "AmirMushich",
+      "slug": "cross-brand-sneaker-collab",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-278-AmirMushich-cross-brand-sneaker-collab.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-278-AmirMushich-cross-brand-sneaker-collab.jpg",
+          "url": "https://pbs.twimg.com/media/G_6z_CXXUAEwEIT.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 92381
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 279,
+      "tweet_id": "2017312815728488851",
+      "author": "AmirMushich",
+      "slug": "nano-banana-auto-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-279-AmirMushich-nano-banana-auto-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-279-AmirMushich-nano-banana-auto-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/G_7vUKWWoAAEK7A.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 106087
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 280,
+      "tweet_id": "2017345945025822871",
+      "author": "AmirMushich",
+      "slug": "nano-banana-auto-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-280-AmirMushich-nano-banana-auto-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-280-AmirMushich-nano-banana-auto-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/G_8Mu6-X0AASHKb.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 85231
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 281,
+      "tweet_id": "2017500217709375754",
+      "author": "AmirMushich",
+      "slug": "rt-amirmushich-nano-banana-auto-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-281-AmirMushich-rt-amirmushich-nano-banana-auto-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-281-AmirMushich-rt-amirmushich-nano-banana-auto-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/G_8Mu6-X0AASHKb.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 85231
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 282,
+      "tweet_id": "2017682012987970042",
+      "author": "AmirMushich",
+      "slug": "nano-banana-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-282-AmirMushich-nano-banana-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-282-AmirMushich-nano-banana-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HAA_Fh0XsAA7Yf5.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 108676
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 283,
+      "tweet_id": "2017970754634068339",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-283-AmirMushich-nano-banana-smart-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-283-AmirMushich-nano-banana-smart-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/HAFFsh0WEAA2l_t.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 137571
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 284,
+      "tweet_id": "2018348054789640565",
+      "author": "AmirMushich",
+      "slug": "brand-kit-from-one-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-284-AmirMushich-brand-kit-from-one-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-284-AmirMushich-brand-kit-from-one-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HAKVPx-WAAAxvcf.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 104627
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 285,
+      "tweet_id": "2018449250406006985",
+      "author": "AmirMushich",
+      "slug": "1-prompt-to-become-a-brand-history-exper",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-285-AmirMushich-1-prompt-to-become-a-brand-history-exper.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-285-AmirMushich-1-prompt-to-become-a-brand-history-exper.jpg",
+          "url": "https://pbs.twimg.com/media/HAL2a9XWsAEiFwE.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 94239
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 286,
+      "tweet_id": "2018776000532717836",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-286-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-286-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HAQiEvOXUAA3qfN.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 174724
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 287,
+      "tweet_id": "2018940478054686864",
+      "author": "AmirMushich",
+      "slug": "rt-amirmushich-nano-banana-design-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-287-AmirMushich-rt-amirmushich-nano-banana-design-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-287-AmirMushich-rt-amirmushich-nano-banana-design-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HAQiEtEWUAAUVcF.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 204396
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 288,
+      "tweet_id": "2020066569741889609",
+      "author": "AmirMushich",
+      "slug": "rt-amirmushich-nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-288-AmirMushich-rt-amirmushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-288-AmirMushich-rt-amirmushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HAezKFXW0AE6EVR.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 169482
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 289,
+      "tweet_id": "2020187141024669877",
+      "author": "AmirMushich",
+      "slug": "nano-banana-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-289-AmirMushich-nano-banana-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-289-AmirMushich-nano-banana-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HAklfY8WgAAFxES.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 122576
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 290,
+      "tweet_id": "2020542102287859712",
+      "author": "AmirMushich",
+      "slug": "100-side-hustle-idea-in-nano-banana",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-290-AmirMushich-100-side-hustle-idea-in-nano-banana.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-290-AmirMushich-100-side-hustle-idea-in-nano-banana.jpg",
+          "url": "https://pbs.twimg.com/media/HApjj5UbUAExH4N.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 113823
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 291,
+      "tweet_id": "2020895358126002197",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-291-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-291-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HAupnjwW4AQpw6f.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 179723
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 292,
+      "tweet_id": "2021258037273694533",
+      "author": "AmirMushich",
+      "slug": "i-landed-big-design-clients-with-cold-ou",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-292-AmirMushich-i-landed-big-design-clients-with-cold-ou.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-292-AmirMushich-i-landed-big-design-clients-with-cold-ou.jpg",
+          "url": "https://pbs.twimg.com/media/HAzolpdXoAARHxC.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 246269
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 293,
+      "tweet_id": "2021588846849282513",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-293-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-293-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HA4gV17X0AAp2mQ.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 206191
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 294,
+      "tweet_id": "2021836316434960409",
+      "author": "AmirMushich",
+      "slug": "rt-amirmushich-nano-banana-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-294-AmirMushich-rt-amirmushich-nano-banana-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-294-AmirMushich-rt-amirmushich-nano-banana-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HA4gV6DX0AATYNr.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 155658
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 295,
+      "tweet_id": "2021964350928359720",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-295-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-295-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HA913EmWEAAX42E.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 177895
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 296,
+      "tweet_id": "2022024846709018797",
+      "author": "AmirMushich",
+      "slug": "the-superbowl-capsule-collection",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-296-AmirMushich-the-superbowl-capsule-collection.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-296-AmirMushich-the-superbowl-capsule-collection.jpg",
+          "url": "https://pbs.twimg.com/media/HA-s32YbsAETKxm.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 95247
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 297,
+      "tweet_id": "2022325254333362419",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-297-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-297-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HBC-GSWWAAAYgVX.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 214639
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 298,
+      "tweet_id": "2022753970704286181",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-298-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-298-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HBJEBDfWcAAuUyP.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 203219
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 299,
+      "tweet_id": "2023038084753834272",
+      "author": "AmirMushich",
+      "slug": "multi-angle-fashion-lookbook-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-299-AmirMushich-multi-angle-fashion-lookbook-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-299-AmirMushich-multi-angle-fashion-lookbook-prompt.jpg",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2023022237113290752/img/CqHvBlXB63h4VWU2.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 109758
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 300,
+      "tweet_id": "2023079918830002551",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-300-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-300-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HBNsdguXgAAQjU0.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 215996
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 301,
+      "tweet_id": "2023276240644243538",
+      "author": "AmirMushich",
+      "slug": "rt-amirmushich-nano-banana-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-301-AmirMushich-rt-amirmushich-nano-banana-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-301-AmirMushich-rt-amirmushich-nano-banana-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HBJEBEfWQAAYHc0.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 207510
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 302,
+      "tweet_id": "2023416743738143183",
+      "author": "AmirMushich",
+      "slug": "smart-prompt-ai-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-302-AmirMushich-smart-prompt-ai-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-302-AmirMushich-smart-prompt-ai-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/HBSezh9XQAEMtAo.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 136470
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 303,
+      "tweet_id": "2023802170379039187",
+      "author": "AmirMushich",
+      "slug": "ai-graphic-design-stack-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-303-AmirMushich-ai-graphic-design-stack-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-303-AmirMushich-ai-graphic-design-stack-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/HBX9SjjbUAAeTOM.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 120674
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 304,
+      "tweet_id": "2024198992750432543",
+      "author": "AmirMushich",
+      "slug": "smart-prompt-ai-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-304-AmirMushich-smart-prompt-ai-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-304-AmirMushich-smart-prompt-ai-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/HBdmQYpWMAASFyP.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 167740
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 305,
+      "tweet_id": "2024487909416403052",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-305-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-305-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HBhtBlUXAAEcWEl.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 144908
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 306,
+      "tweet_id": "2024880500725215549",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-306-AmirMushich-nano-banana-smart-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-306-AmirMushich-nano-banana-smart-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/HBnSFY9XMAA1axV.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 142654
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 307,
+      "tweet_id": "2025631713729106049",
+      "author": "AmirMushich",
+      "slug": "prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-307-AmirMushich-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-307-AmirMushich-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HBx9TQsWcAAGRqN.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 164202
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 308,
+      "tweet_id": "2026020385305551182",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-308-AmirMushich-nano-banana-smart-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-308-AmirMushich-nano-banana-smart-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/HB3exePXsAAWDvA.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 217704
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 309,
+      "tweet_id": "2026240070764683701",
+      "author": "AmirMushich",
+      "slug": "100-side-hustle-ideas-for-this-workflow",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-309-AmirMushich-100-side-hustle-ideas-for-this-workflow.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-309-AmirMushich-100-side-hustle-ideas-for-this-workflow.jpg",
+          "url": "https://pbs.twimg.com/media/HB6lmaqWkAAZvak.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 170289
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 310,
+      "tweet_id": "2026316195977146728",
+      "author": "AmirMushich",
+      "slug": "nano-banana-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-310-AmirMushich-nano-banana-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-310-AmirMushich-nano-banana-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HB7r12tWMAA1nTv.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 174759
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 311,
+      "tweet_id": "2026420277698244781",
+      "author": "AmirMushich",
+      "slug": "scale-your-successful-generations",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-311-AmirMushich-scale-your-successful-generations.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-311-AmirMushich-scale-your-successful-generations.jpg",
+          "url": "https://pbs.twimg.com/media/HB9Gk38WMAAWQKl.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 107477
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 312,
+      "tweet_id": "2027040971016351786",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-312-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-312-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCF_BUCW8AAeGx2.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 159039
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 313,
+      "tweet_id": "2028489707311464765",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-313-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-313-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCakoz0WgAAyydF.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 170163
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 314,
+      "tweet_id": "2028548199514788252",
+      "author": "AmirMushich",
+      "slug": "5-years-ago-i-was-charging-100-for-a-ban",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-314-AmirMushich-5-years-ago-i-was-charging-100-for-a-ban.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-314-AmirMushich-5-years-ago-i-was-charging-100-for-a-ban.jpg",
+          "url": "https://pbs.twimg.com/media/HCbZ0kyXAAE35Yq.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 204204
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 315,
+      "tweet_id": "2028575702694408613",
+      "author": "AmirMushich",
+      "slug": "rt-amirmushich-nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-315-AmirMushich-rt-amirmushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-315-AmirMushich-rt-amirmushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCakoz0WgAAyydF.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 170163
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 316,
+      "tweet_id": "2028855440939856351",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-316-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-316-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCfxRW4XwAAtpuU.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 148651
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 317,
+      "tweet_id": "2028934699041935394",
+      "author": "AmirMushich",
+      "slug": "nano-banana-designers-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-317-AmirMushich-nano-banana-designers-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-317-AmirMushich-nano-banana-designers-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCg5TEJawAEkTZk.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 169289
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 318,
+      "tweet_id": "2029202749108236757",
+      "author": "AmirMushich",
+      "slug": "nano-banana-smart-prompt",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-318-AmirMushich-nano-banana-smart-prompt.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-318-AmirMushich-nano-banana-smart-prompt.jpg",
+          "url": "https://pbs.twimg.com/media/HCktJOrXAAAdi3F.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 200351
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
+    },
+    {
+      "seq": 319,
+      "tweet_id": "2029294395384574292",
+      "author": "AmirMushich",
+      "slug": "you-dont-need-a-designer",
+      "relevance_score": 0.9,
+      "likes": 0,
+      "prompt_file": "ref-tw-319-AmirMushich-you-dont-need-a-designer.prompt.md",
+      "images": [
+        {
+          "file": "ref-tw-319-AmirMushich-you-dont-need-a-designer.jpg",
+          "url": "https://pbs.twimg.com/media/HCmAftVawAEhaU0.jpg",
+          "width": 0,
+          "height": 0,
+          "status": "downloaded",
+          "size_bytes": 186104
+        }
+      ],
+      "tags": [
+        "nano-banana"
+      ],
+      "source": "master_amir_nano_prompts.json"
     }
   ]
 }
