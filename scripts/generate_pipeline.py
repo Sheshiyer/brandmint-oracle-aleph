@@ -998,7 +998,8 @@ SKILL_REF_DIR = os.path.expanduser("~/.claude/skills/brandmint/references/images
 
 PROVIDER = os.environ.get("IMAGE_PROVIDER", "{provider}").lower()
 SUPPORTED_PROVIDERS = {{"fal", "openrouter", "openai", "replicate", "inference"}}
-if PROVIDER not in SUPPORTED_PROVIDERS:
+_USE_FALLBACK = PROVIDER == "auto"
+if not _USE_FALLBACK and PROVIDER not in SUPPORTED_PROVIDERS:
     print(f"WARNING: Unknown provider '{{PROVIDER}}', defaulting to FAL.")
     PROVIDER = "fal"
 
@@ -1011,17 +1012,24 @@ if INFERENCE_APP:
 
 try:
     from brandmint.core.providers import get_provider as _bm_get_provider
+    if _USE_FALLBACK:
+        from brandmint.core.providers import generate_with_fallback as _bm_generate_with_fallback
 except Exception as e:
     print(f"ERROR: Failed to import core provider adapters: {{e}}")
     sys.exit(1)
 
-try:
-    CORE_PROVIDER = _bm_get_provider(PROVIDER)
-except Exception as e:
-    print(f"ERROR: Provider '{{PROVIDER}}' is not available: {{e}}")
-    sys.exit(1)
+CORE_PROVIDER = None
+if not _USE_FALLBACK:
+    try:
+        CORE_PROVIDER = _bm_get_provider(PROVIDER)
+    except Exception as e:
+        print(f"ERROR: Provider '{{PROVIDER}}' is not available: {{e}}")
+        sys.exit(1)
 
-print(f"Using image provider: {{PROVIDER.upper()}}")
+if _USE_FALLBACK:
+    print("Using image provider: AUTO (fallback chain)")
+else:
+    print(f"Using image provider: {{PROVIDER.upper()}}")
 
 NEGATIVE = """{negative_prompt}"""
 
@@ -1155,28 +1163,42 @@ def gen_with_provider(
     negative_prompt="",
     **kwargs,
 ):
-    """Generate with core provider adapters only."""
-    if CORE_PROVIDER is None:
-        return False
-
+    """Generate with core provider adapters (single or auto-fallback)."""
     primary_ref = image_url
     if primary_ref is None and isinstance(image_urls, list) and image_urls:
         primary_ref = image_urls[0]
 
-    result = CORE_PROVIDER.generate(
-        prompt=prompt,
-        model=model,
-        output_path=output_path,
-        width=width,
-        height=height,
-        image_url=primary_ref,
-        negative_prompt=negative_prompt,
-        image_urls=image_urls,
-        **kwargs,
-    )
+    if _USE_FALLBACK:
+        result = _bm_generate_with_fallback(
+            prompt=prompt,
+            model=model,
+            output_path=output_path,
+            width=width,
+            height=height,
+            image_url=primary_ref,
+            negative_prompt=negative_prompt,
+            image_urls=image_urls,
+            **kwargs,
+        )
+    else:
+        if CORE_PROVIDER is None:
+            return False
+        result = CORE_PROVIDER.generate(
+            prompt=prompt,
+            model=model,
+            output_path=output_path,
+            width=width,
+            height=height,
+            image_url=primary_ref,
+            negative_prompt=negative_prompt,
+            image_urls=image_urls,
+            **kwargs,
+        )
+
     if not (result and result.success):
         err = result.error if result else "unknown adapter error"
-        print(f"  ERROR: generation failed for {{model}} via {{PROVIDER}}: {{err}}")
+        provider_label = "AUTO" if _USE_FALLBACK else PROVIDER
+        print(f"  ERROR: generation failed for {{model}} via {{provider_label}}: {{err}}")
         return False
 
     _normalize_png_if_needed(output_path)

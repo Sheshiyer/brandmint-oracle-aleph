@@ -22,7 +22,7 @@ DOCUMENT_PATTERNS = {
     },
     'buyer_persona': {
         'keywords': ['persona', 'buyer', 'avatar', 'customer profile', 'target audience'],
-        'skill': 'buyer-persona-generator',
+        'skill': 'buyer-persona',
         'wiki_section': 'audience',
         'priority': 1
     },
