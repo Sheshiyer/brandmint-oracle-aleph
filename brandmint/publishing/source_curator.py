@@ -169,6 +169,62 @@ class SourceCurator:
         self._selected = self._select_within_budget()
         return self._selected
 
+    def coverage_report(self) -> Dict[str, Any]:
+        """Dry-run coverage report — runs curate() and returns structured metadata.
+
+        Returns a dict with:
+        - total_candidates: int — how many source candidates were found
+        - selected_count: int — how many passed the budget cut
+        - by_type: dict — count of candidates grouped by source_type
+        - brand_materials: list — paths of brand-material candidates
+        - vision_descriptions: list — paths of visual-description candidates
+        - budget_remaining: int — max_sources minus selected_count
+        - excluded: list of dicts {path, type, score, reason}
+        """
+        # Run the full curate pipeline
+        self.curate()
+
+        selected_count = len(self._selected)
+
+        # Group candidates by source_type
+        by_type: Dict[str, int] = {}
+        for c in self._candidates:
+            by_type[c.source_type] = by_type.get(c.source_type, 0) + 1
+
+        # Collect brand material paths (all candidates, not just selected)
+        brand_materials = [
+            str(c.path) for c in self._candidates
+            if c.source_type == "brand-material"
+        ]
+
+        # Collect vision description paths (all candidates, not just selected)
+        vision_descriptions = [
+            str(c.path) for c in self._candidates
+            if c.source_type == "visual-description"
+        ]
+
+        # Build excluded list
+        excluded = [
+            {
+                "path": str(c.path),
+                "type": c.source_type,
+                "score": round(c.score, 2),
+                "reason": c.skip_reason or "below budget cutoff",
+            }
+            for c in self._candidates
+            if not c.selected
+        ]
+
+        return {
+            "total_candidates": len(self._candidates),
+            "selected_count": selected_count,
+            "by_type": by_type,
+            "brand_materials": brand_materials,
+            "vision_descriptions": vision_descriptions,
+            "budget_remaining": self.max_sources - selected_count,
+            "excluded": excluded,
+        }
+
     def report(self) -> str:
         """Human-readable selection report for dry-run / logging."""
         if not self._candidates:

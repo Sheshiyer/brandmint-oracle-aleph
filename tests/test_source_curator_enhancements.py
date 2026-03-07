@@ -595,3 +595,109 @@ class TestCurateEndToEnd:
         # 2A desc should have higher uniqueness since it complements the image
         if descs_2a and descs_other:
             assert descs_2a[0].uniqueness >= descs_other[0].uniqueness
+
+
+# ===========================================================================
+# NB-16: Dry-run brand material coverage report
+# ===========================================================================
+
+
+class TestCoverageReport:
+    """NB-16: coverage_report() returns a structured dict with selection metadata."""
+
+    def test_coverage_report_returns_dict(self, curator):
+        """coverage_report() should return a dict, not a list."""
+        result = curator.coverage_report()
+        assert isinstance(result, dict)
+
+    def test_coverage_report_has_required_keys(self, curator):
+        """Result must contain all documented keys."""
+        result = curator.coverage_report()
+        required_keys = {
+            "total_candidates",
+            "selected_count",
+            "by_type",
+            "brand_materials",
+            "vision_descriptions",
+            "budget_remaining",
+            "excluded",
+        }
+        assert required_keys.issubset(result.keys()), (
+            f"Missing keys: {required_keys - result.keys()}"
+        )
+
+    def test_coverage_report_total_candidates_count(self, curator):
+        """total_candidates should match the number of discovered candidates."""
+        result = curator.coverage_report()
+        assert result["total_candidates"] > 0
+        # Should equal the internal _candidates count
+        assert result["total_candidates"] == len(curator._candidates)
+
+    def test_coverage_report_selected_within_budget(self, curator):
+        """selected_count should never exceed max_sources."""
+        result = curator.coverage_report()
+        assert result["selected_count"] <= curator.max_sources
+        assert result["selected_count"] > 0
+
+    def test_coverage_report_budget_remaining_is_correct(self, curator):
+        """budget_remaining = max_sources - selected_count."""
+        result = curator.coverage_report()
+        assert result["budget_remaining"] == (
+            curator.max_sources - result["selected_count"]
+        )
+
+    def test_coverage_report_by_type_counts(self, curator):
+        """by_type should have counts per source_type."""
+        result = curator.coverage_report()
+        by_type = result["by_type"]
+        assert isinstance(by_type, dict)
+        # The test fixture has prose, config, image, visual-description, brand-material, wiki
+        assert "prose" in by_type
+        assert by_type["prose"] > 0
+
+    def test_coverage_report_brand_materials_list(self, curator, brand_dir):
+        """brand_materials should list paths of brand-material candidates."""
+        result = curator.coverage_report()
+        bm_list = result["brand_materials"]
+        assert isinstance(bm_list, list)
+        # The fixture has 3 brand materials (svg, pdf, png)
+        assert len(bm_list) >= 1
+        # All should be string paths
+        for p in bm_list:
+            assert isinstance(p, str)
+
+    def test_coverage_report_vision_descriptions_list(self, curator, brand_dir):
+        """vision_descriptions should list paths of visual-description candidates."""
+        result = curator.coverage_report()
+        vd_list = result["vision_descriptions"]
+        assert isinstance(vd_list, list)
+        assert len(vd_list) >= 2  # fixture has 3 vision cache files
+        for p in vd_list:
+            assert isinstance(p, str)
+
+    def test_coverage_report_excluded_items(self, curator):
+        """excluded list should contain dicts with path, type, score, reason."""
+        # Use a tiny budget so some candidates are excluded
+        curator.max_sources = 3
+        result = curator.coverage_report()
+        excluded = result["excluded"]
+        assert isinstance(excluded, list)
+
+        if excluded:
+            item = excluded[0]
+            assert "path" in item
+            assert "type" in item
+            assert "score" in item
+            assert "reason" in item
+            assert item["reason"]  # Should not be empty
+
+    def test_coverage_report_excluded_reason_below_cutoff(self, curator):
+        """Excluded items with enough budget should show 'below budget cutoff'."""
+        # Tiny budget forces exclusions
+        curator.max_sources = 2
+        result = curator.coverage_report()
+        excluded = result["excluded"]
+        reasons = {e["reason"] for e in excluded}
+        # Most should be budget-related
+        assert len(excluded) > 0
+        assert any("budget" in r or "over budget" in r for r in reasons)
