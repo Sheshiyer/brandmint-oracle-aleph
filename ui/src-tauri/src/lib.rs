@@ -1,8 +1,10 @@
+mod events;
 mod sidecar;
 
 use sidecar::SidecarState;
 use std::sync::Arc;
-use tauri::Emitter;
+use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
+use tauri::{Emitter, Manager};
 
 // ── Tauri Commands ──────────────────────────────────────────────
 
@@ -102,6 +104,84 @@ async fn restart_sidecar(
     Ok("Sidecar restarted".to_string())
 }
 
+#[tauri::command]
+async fn get_pipeline_events(
+    state: tauri::State<'_, Arc<SidecarState>>,
+    since: Option<String>,
+) -> Result<serde_json::Value, String> {
+    let events = state.event_store.get_events_since(since.as_deref());
+    serde_json::to_value(&events).map_err(|e| format!("Failed to serialize events: {}", e))
+}
+
+#[tauri::command]
+async fn subscribe_events(
+    _app: tauri::AppHandle,
+    state: tauri::State<'_, Arc<SidecarState>>,
+    event_types: Vec<String>,
+) -> Result<String, String> {
+    let sub_id = state.event_store.add_subscription(event_types);
+    Ok(sub_id)
+}
+
+// ── Window Management Commands ───────────────────────────────────
+
+#[tauri::command]
+async fn save_window_state(window: tauri::Window) -> Result<(), String> {
+    let pos = window.outer_position().map_err(|e| e.to_string())?;
+    let size = window.outer_size().map_err(|e| e.to_string())?;
+    let state = serde_json::json!({
+        "x": pos.x, "y": pos.y,
+        "width": size.width, "height": size.height,
+    });
+    let config_dir = dirs::config_dir()
+        .ok_or("No config dir")?
+        .join("com.brandmint.app");
+    std::fs::create_dir_all(&config_dir).map_err(|e| e.to_string())?;
+    std::fs::write(
+        config_dir.join("window-state.json"),
+        serde_json::to_string_pretty(&state).unwrap(),
+    )
+    .map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+async fn restore_window_state(window: tauri::Window) -> Result<(), String> {
+    let config_dir = dirs::config_dir()
+        .ok_or("No config dir")?
+        .join("com.brandmint.app");
+    let path = config_dir.join("window-state.json");
+    if path.exists() {
+        let data = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
+        let state: serde_json::Value =
+            serde_json::from_str(&data).map_err(|e| e.to_string())?;
+        if let (Some(x), Some(y)) = (state["x"].as_i64(), state["y"].as_i64()) {
+            let _ = window.set_position(tauri::Position::Physical(
+                tauri::PhysicalPosition {
+                    x: x as i32,
+                    y: y as i32,
+                },
+            ));
+        }
+        if let (Some(w), Some(h)) = (state["width"].as_u64(), state["height"].as_u64()) {
+            let _ = window.set_size(tauri::Size::Physical(tauri::PhysicalSize {
+                width: w as u32,
+                height: h as u32,
+            }));
+        }
+    }
+    Ok(())
+}
+
+#[tauri::command]
+async fn toggle_always_on_top(window: tauri::Window) -> Result<bool, String> {
+    let current = window.is_always_on_top().map_err(|e| e.to_string())?;
+    window
+        .set_always_on_top(!current)
+        .map_err(|e| e.to_string())?;
+    Ok(!current)
+}
+
 // ── App Entry Point ─────────────────────────────────────────────
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -124,6 +204,109 @@ pub fn run() {
                                 .level(log::LevelFilter::Info)
                                 .build(),
                         )?;
+                }
+
+                // ── Native macOS menu bar ──────────────────────────
+                let handle = app.handle();
+                let menu = Menu::with_items(
+                    handle,
+                    &[
+                        &Submenu::with_items(
+                            handle,
+                            "File",
+                            true,
+                            &[
+                                &MenuItem::with_id(handle, "open-brand", "Open Brand Folder…", true, Some("CmdOrCtrl+O"))?,
+                                &MenuItem::with_id(handle, "open-config", "Open Config File…", true, Some("CmdOrCtrl+Shift+O"))?,
+                                &PredefinedMenuItem::separator(handle)?,
+                                &PredefinedMenuItem::close_window(handle, None)?,
+                            ],
+                        )?,
+                        &Submenu::with_items(
+                            handle,
+                            "Pipeline",
+                            true,
+                            &[
+                                &MenuItem::with_id(handle, "start-pipeline", "Start Pipeline", true, Some("CmdOrCtrl+R"))?,
+                                &MenuItem::with_id(handle, "abort-pipeline", "Abort Pipeline", true, Some("CmdOrCtrl+."))?,
+                                &PredefinedMenuItem::separator(handle)?,
+                                &MenuItem::with_id(handle, "publish", "Publish to NotebookLM", true, Some("CmdOrCtrl+P"))?,
+                            ],
+                        )?,
+                        &Submenu::with_items(
+                            handle,
+                            "View",
+                            true,
+                            &[
+                                &MenuItem::with_id(handle, "view-launch", "Launch", true, Some("CmdOrCtrl+1"))?,
+                                &MenuItem::with_id(handle, "view-activity", "Activity Log", true, Some("CmdOrCtrl+2"))?,
+                                &MenuItem::with_id(handle, "view-artifacts", "Artifacts", true, Some("CmdOrCtrl+3"))?,
+                                &MenuItem::with_id(handle, "view-settings", "Settings", true, Some("CmdOrCtrl+4"))?,
+                                &PredefinedMenuItem::separator(handle)?,
+                                &MenuItem::with_id(handle, "toggle-sidebar", "Toggle Sidebar", true, Some("CmdOrCtrl+\\"))?,
+                            ],
+                        )?,
+                        &Submenu::with_items(
+                            handle,
+                            "Window",
+                            true,
+                            &[
+                                &PredefinedMenuItem::minimize(handle, None)?,
+                                &PredefinedMenuItem::maximize(handle, None)?,
+                                &MenuItem::with_id(handle, "always-on-top", "Always on Top", true, None::<&str>)?,
+                                &PredefinedMenuItem::separator(handle)?,
+                                &PredefinedMenuItem::fullscreen(handle, None)?,
+                            ],
+                        )?,
+                        &Submenu::with_items(
+                            handle,
+                            "Help",
+                            true,
+                            &[
+                                &MenuItem::with_id(handle, "docs", "Documentation", true, None::<&str>)?,
+                                &MenuItem::with_id(handle, "github", "GitHub Repository", true, None::<&str>)?,
+                            ],
+                        )?,
+                    ],
+                )?;
+                app.set_menu(menu)?;
+
+                // ── Restore saved window position/size ────────────
+                if let Some(main_window) = app.get_webview_window("main") {
+                    if let Some(config_dir) = dirs::config_dir() {
+                        let state_path =
+                            config_dir.join("com.brandmint.app").join("window-state.json");
+                        if state_path.exists() {
+                            if let Ok(data) = std::fs::read_to_string(&state_path) {
+                                if let Ok(ws) =
+                                    serde_json::from_str::<serde_json::Value>(&data)
+                                {
+                                    if let (Some(x), Some(y)) =
+                                        (ws["x"].as_i64(), ws["y"].as_i64())
+                                    {
+                                        let _ = main_window.set_position(
+                                            tauri::Position::Physical(
+                                                tauri::PhysicalPosition {
+                                                    x: x as i32,
+                                                    y: y as i32,
+                                                },
+                                            ),
+                                        );
+                                    }
+                                    if let (Some(w), Some(h)) =
+                                        (ws["width"].as_u64(), ws["height"].as_u64())
+                                    {
+                                        let _ = main_window.set_size(
+                                            tauri::Size::Physical(tauri::PhysicalSize {
+                                                width: w as u32,
+                                                height: h as u32,
+                                            }),
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // Spawn the Python bridge sidecar
@@ -164,11 +347,82 @@ pub fn run() {
                 Ok(())
             }
         })
+        .on_menu_event(|app, event| {
+            match event.id().as_ref() {
+                "open-brand" => {
+                    let _ = app.emit("menu-action", "open-brand");
+                }
+                "open-config" => {
+                    let _ = app.emit("menu-action", "open-config");
+                }
+                "start-pipeline" => {
+                    let _ = app.emit("menu-action", "start-pipeline");
+                }
+                "abort-pipeline" => {
+                    let _ = app.emit("menu-action", "abort-pipeline");
+                }
+                "publish" => {
+                    let _ = app.emit("menu-action", "publish");
+                }
+                "view-launch" => {
+                    let _ = app.emit("menu-action", "view-launch");
+                }
+                "view-activity" => {
+                    let _ = app.emit("menu-action", "view-activity");
+                }
+                "view-artifacts" => {
+                    let _ = app.emit("menu-action", "view-artifacts");
+                }
+                "view-settings" => {
+                    let _ = app.emit("menu-action", "view-settings");
+                }
+                "toggle-sidebar" => {
+                    let _ = app.emit("menu-action", "toggle-sidebar");
+                }
+                "always-on-top" => {
+                    if let Some(window) = app.get_webview_window("main") {
+                        if let Ok(current) = window.is_always_on_top() {
+                            let _ = window.set_always_on_top(!current);
+                        }
+                    }
+                }
+                "docs" => {
+                    let _ = app.emit("menu-action", "docs");
+                }
+                "github" => {
+                    let _ = app.emit("menu-action", "github");
+                }
+                _ => {}
+            }
+        })
         .on_window_event({
             let state = sidecar_state.clone();
-            move |_window, event| {
-                if let tauri::WindowEvent::Destroyed = event {
-                    state.shutdown();
+            move |window, event| {
+                match event {
+                    tauri::WindowEvent::CloseRequested { .. } => {
+                        // Save window position/size before closing
+                        if let (Ok(pos), Ok(size)) =
+                            (window.outer_position(), window.outer_size())
+                        {
+                            if let Some(config_dir) = dirs::config_dir() {
+                                let dir = config_dir.join("com.brandmint.app");
+                                let _ = std::fs::create_dir_all(&dir);
+                                let state_json = serde_json::json!({
+                                    "x": pos.x, "y": pos.y,
+                                    "width": size.width, "height": size.height,
+                                });
+                                let _ = std::fs::write(
+                                    dir.join("window-state.json"),
+                                    serde_json::to_string_pretty(&state_json)
+                                        .unwrap_or_default(),
+                                );
+                            }
+                        }
+                    }
+                    tauri::WindowEvent::Destroyed => {
+                        state.shutdown();
+                    }
+                    _ => {}
                 }
             }
         })
@@ -187,6 +441,11 @@ pub fn run() {
             start_publish,
             load_intake,
             restart_sidecar,
+            get_pipeline_events,
+            subscribe_events,
+            save_window_state,
+            restore_window_state,
+            toggle_always_on_top,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
