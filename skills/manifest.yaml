@@ -1,0 +1,345 @@
+# ============================================================================
+# Brandmint Skills Manifest
+# ============================================================================
+# All 29 text-generating skills organized by logical parts.
+# Adapted from the original claude-skills-workbench orchestrator manifest
+# with brandmint-specific file paths.
+#
+# Paths are relative to the repository root.
+# Each skill has: id, name, path (template), placeholder, required_keys, upstream
+# ============================================================================
+
+parts:
+  - id: part-1
+    name: Understanding the Market
+    status_placeholder: STATUS_PART_1
+    skills:
+      - id: niche-validator
+        name: Niche Validator
+        path: skills/text-strategy/niche-validator/templates/niche-viability-report.md
+        placeholder: PATH_NICHE_VALIDATOR
+        required_keys: []
+        upstream: []
+
+      - id: buyer-persona
+        name: Buyer Persona
+        path: skills/text-strategy/buyer-persona/templates/persona-dossier.md
+        placeholder: PATH_PERSONA
+        required_keys:
+          - meta_project.product_name
+          - meta_project.persona_name
+          - meta_project.tone_source
+          - voice_samples
+          - emotional_drivers
+        upstream: []
+
+      - id: competitor-analysis
+        name: Competitor Intelligence
+        path: skills/text-strategy/competitor-analysis/templates/competitor-intelligence.md
+        placeholder: PATH_COMPETITOR
+        required_keys:
+          - market_gaps
+          - verified_anxieties
+          - technical_benchmark.materials
+          - technical_benchmark.dimensions
+        upstream: []
+
+  - id: part-2
+    name: Product Detailing
+    status_placeholder: STATUS_PART_2
+    skills:
+      - id: detailed-product-description
+        name: Detailed Product Description
+        path: skills/campaign-copy/detailed-product-description/templates/detailed-product-description.md
+        placeholder: PATH_DPD
+        required_keys:
+          - product.name
+          - product.price
+          - specs.dimensions
+          - specs.materials
+        upstream:
+          - buyer-persona
+          - competitor-analysis
+
+      - id: product-positioning-summary
+        name: Product Positioning Summary
+        path: skills/text-strategy/product-positioning-summary/templates/product-positioning-summary.md
+        placeholder: PATH_POSITIONING
+        required_keys:
+          - cbbe.salience
+          - cbbe.performance
+          - cbbe.imagery
+          - cbbe.judgments
+          - cbbe.feelings
+          - cbbe.resonance
+        upstream:
+          - buyer-persona
+          - competitor-analysis
+
+      - id: mds-messaging-direction-summary
+        name: MDS
+        path: skills/text-strategy/mds-messaging-direction-summary/templates/mds.md
+        placeholder: PATH_MDS
+        required_keys:
+          - handoff.pitch
+          - handoff.usp
+          - handoff.objections
+          - handoff.emotions
+        upstream:
+          - product-positioning-summary
+
+      - id: voice-and-tone
+        name: Voice and Tone
+        path: skills/text-strategy/voice-and-tone/templates/voice-and-tone.md
+        placeholder: PATH_VOICE
+        required_keys:
+          - voice.tones
+          - voice.persona
+          - voice.culture
+          - voice.lingo
+          - voice.emotions
+        upstream:
+          - buyer-persona
+          - mds-messaging-direction-summary
+
+  - id: part-3
+    name: Crafting Compelling Copy
+    status_placeholder: STATUS_PART_3
+    skills:
+      - id: campaign-page-copy
+        name: Campaign Page Copy
+        path: skills/campaign-copy/campaign-page-copy/templates/campaign-page-copy.md
+        placeholder: PATH_CAMPAIGN_PAGE
+        alternate_placeholders:
+          - PATH_LP
+        required_keys:
+          - meta.product
+          - meta.brand
+        upstream:
+          - mds-messaging-direction-summary
+          - voice-and-tone
+          - product-positioning-summary
+
+      - id: pre-launch-ads
+        name: Pre-Launch Ads
+        path: skills/advertising/pre-launch-ads/templates/ad-campaign-dossier.md
+        placeholder: PATH_PRELAUNCH_ADS
+        required_keys: []
+        upstream:
+          - voice-and-tone
+          - mds-messaging-direction-summary
+
+  - id: part-4
+    name: Robust Email Strategy
+    status_placeholder: STATUS_PART_4
+    skills:
+      - id: welcome-email-sequence
+        name: Welcome Email Sequence
+        path: skills/email-sequences/welcome-email-sequence/templates/welcome-email-sequence.md
+        placeholder: PATH_WELCOME
+        required_keys:
+          - meta
+          - links
+        upstream:
+          - voice-and-tone
+          - mds-messaging-direction-summary
+
+      - id: pre-launch-email-sequence
+        name: Pre-Launch Email Sequence
+        path: skills/email-sequences/pre-launch-email-sequence/templates/pre-launch-email-sequence.md
+        placeholder: PATH_PRELAUNCH_EMAILS
+        required_keys:
+          - schedule
+          - segments
+          - links
+        upstream:
+          - voice-and-tone
+          - mds-messaging-direction-summary
+
+      - id: launch-email-sequence
+        name: Launch Email Sequence
+        path: skills/email-sequences/launch-email-sequence/templates/launch-email-sequence.md
+        placeholder: PATH_LAUNCH_EMAILS
+        required_keys:
+          - schedule
+          - vars
+        upstream:
+          - voice-and-tone
+          - mds-messaging-direction-summary
+
+  - id: part-5
+    name: Campaign Messaging
+    status_placeholder: STATUS_PART_5
+    skills:
+      - id: campaign-video-script
+        name: Campaign Video Script
+        path: skills/campaign-copy/campaign-video-script/templates/campaign-video-script.md
+        placeholder: PATH_VIDEO
+        required_keys:
+          - timing.total_seconds
+          - cta
+        upstream:
+          - campaign-page-copy
+
+  - id: part-6
+    name: Continual Interest
+    status_placeholder: STATUS_PART_6
+    skills:
+      - id: live-campaign-ads
+        name: Live Campaign Ads
+        path: skills/advertising/live-campaign-ads/templates/live-campaign-ads.md
+        placeholder: PATH_LIVE_ADS
+        required_keys:
+          - tokens.funding_percent
+          - tokens.backers
+          - tokens.end_date
+          - tokens.hours_left
+        upstream:
+          - pre-launch-ads
+          - campaign-page-copy
+
+      - id: press-release-copy
+        name: Press Release Copy
+        path: skills/campaign-copy/press-release-copy/templates/press-release-copy.md
+        placeholder: PATH_PR
+        required_keys: []
+        upstream:
+          - campaign-page-copy
+          - detailed-product-description
+
+      - id: competitive-ads-extractor
+        name: Competitive Ads Extractor
+        path: skills/advertising/competitive-ads-extractor/SKILL.md
+        placeholder: PATH_COMPETITIVE_ADS_EXTRACTOR
+        required_keys: []
+        upstream:
+          - competitor-analysis
+
+  - id: part-7
+    name: Brand Identity
+    status_placeholder: STATUS_PART_7
+    skills:
+      - id: brand-name-studio
+        name: Brand Name Studio
+        path: skills/text-strategy/brand-name-studio/templates/brand-name-options.md
+        placeholder: PATH_BRAND_NAME_STUDIO
+        required_keys: []
+        upstream:
+          - niche-validator
+
+      - id: logo-concept-architect
+        name: Logo Concept Architect
+        path: skills/visual-prompters/logo-concept-architect/templates/logo-prompts.md
+        placeholder: PATH_LOGO_CONCEPT_ARCHITECT
+        required_keys: []
+        upstream:
+          - brand-name-studio
+          - mds-messaging-direction-summary
+
+      - id: visual-identity-core
+        name: Visual Identity Core
+        path: skills/visual-prompters/visual-identity-core/templates/visual-identity-guide.md
+        placeholder: PATH_VISUAL_IDENTITY_CORE
+        required_keys: []
+        upstream:
+          - brand-name-studio
+          - mds-messaging-direction-summary
+          - logo-concept-architect
+
+      - id: brand-guidelines
+        name: Brand Guidelines
+        path: skills/brand-foundation/brand-guidelines/SKILL.md
+        placeholder: PATH_BRAND_GUIDELINES
+        required_keys: []
+        upstream:
+          - voice-and-tone
+          - visual-identity-core
+
+  - id: part-8
+    name: Social & Community
+    status_placeholder: STATUS_PART_8
+    skills:
+      - id: social-content-engine
+        name: Social Content Engine
+        path: skills/social-growth/social-content-engine/templates/social-content-calendar.md
+        placeholder: PATH_SOCIAL_CONTENT_ENGINE
+        required_keys: []
+        upstream: []
+
+      - id: community-manager-brain
+        name: Community Manager Brain
+        path: skills/social-growth/community-manager-brain/templates/community-engagement-plan.md
+        placeholder: PATH_COMMUNITY_MANAGER_BRAIN
+        required_keys: []
+        upstream: []
+
+      - id: short-form-hook-generator
+        name: Short Form Hook Generator
+        path: skills/campaign-copy/short-form-hook-generator/templates/viral-hooks.md
+        placeholder: PATH_SHORT_FORM_HOOK_GENERATOR
+        required_keys: []
+        upstream: []
+
+      - id: affiliate-program-designer
+        name: Affiliate Program Designer
+        path: skills/advertising/affiliate-program-designer/templates/affiliate-toolkit.md
+        placeholder: PATH_AFFILIATE_PROGRAM_DESIGNER
+        required_keys: []
+        upstream: []
+
+      - id: influencer-outreach-pro
+        name: Influencer Outreach Pro
+        path: skills/social-growth/influencer-outreach-pro/templates/influencer-outreach-scripts.md
+        placeholder: PATH_INFLUENCER_OUTREACH_PRO
+        required_keys: []
+        upstream: []
+
+      - id: review-response-strategist
+        name: Review Response Strategist
+        path: skills/social-growth/review-response-strategist/templates/review-response-playbook.md
+        placeholder: PATH_REVIEW_RESPONSE_STRATEGIST
+        required_keys: []
+        upstream: []
+
+  - id: part-9
+    name: Product Experience
+    status_placeholder: STATUS_PART_9
+    skills:
+      - id: packaging-experience-designer
+        name: Packaging Experience Designer
+        path: skills/brand-foundation/packaging-experience-designer/templates/packaging-design-brief.md
+        placeholder: PATH_PACKAGING_EXPERIENCE_DESIGNER
+        required_keys: []
+        upstream: []
+
+      - id: unboxing-journey-guide
+        name: Unboxing Journey Guide
+        path: skills/brand-foundation/unboxing-journey-guide/templates/unboxing-experience.md
+        placeholder: PATH_UNBOXING_JOURNEY_GUIDE
+        required_keys: []
+        upstream: []
+
+  - id: part-10
+    name: Strategy & Management
+    status_placeholder: STATUS_PART_10
+    skills:
+      - id: campaign-page-builder
+        name: Campaign Page Builder
+        path: skills/campaign-copy/campaign-page-builder/templates/campaign-page-layout.md
+        placeholder: PATH_CAMPAIGN_PAGE_BUILDER
+        required_keys: []
+        upstream: []
+
+      - id: update-strategy-sequencer
+        name: Update Strategy Sequencer
+        path: skills/social-growth/update-strategy-sequencer/templates/campaign-updates.md
+        placeholder: PATH_UPDATE_STRATEGY_SEQUENCER
+        required_keys: []
+        upstream: []
+
+      - id: campaign-orchestrator
+        name: Crowdfunding Campaign Orchestrator
+        path: skills/advertising/campaign-orchestrator/templates/orchestrator.md
+        placeholder: PATH_CAMPAIGN_ORCHESTRATOR
+        required_keys: []
+        upstream: []

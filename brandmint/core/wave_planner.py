@@ -89,19 +89,26 @@ VISUAL_ASSET_COSTS: Dict[str, float] = {
 WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
     1: {
         "name": "Foundation",
-        "description": "Market understanding + brand identity setup",
-        "text_skills": ["niche-validator", "buyer-persona", "competitor-analysis"],
+        "description": "Market understanding + brand identity groundwork",
+        "text_skills": [
+            "niche-validator",
+            "buyer-persona",
+            "competitor-analysis",
+            "brand-name-studio",
+        ],
         "visual_assets": [],
         "depends_on": [],
     },
     2: {
         "name": "Strategy",
-        "description": "Product positioning + messaging direction",
+        "description": "Product positioning, messaging direction, brand guidelines",
         "text_skills": [
             "detailed-product-description",
             "product-positioning-summary",
             "mds-messaging-direction-summary",
             "voice-and-tone",
+            "brand-guidelines",
+            "logo-concept-architect",
         ],
         "visual_assets": [],
         "depends_on": [1],
@@ -115,22 +122,26 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
     },
     4: {
         "name": "Products & Content",
-        "description": "Product visuals + campaign copy",
+        "description": "Product visuals, campaign copy, ad research",
         "text_skills": [
             "campaign-page-copy",
             "campaign-video-script",
             "pre-launch-ads",
+            "campaign-page-builder",
+            "competitive-ads-extractor",
         ],
         "visual_assets": ["3A", "3B", "3C", "4A", "4B", "APP-SCREENSHOT"],
         "depends_on": [3],
     },
     5: {
         "name": "Campaign Assets",
-        "description": "Campaign visuals + email sequences",
+        "description": "Email sequences, packaging, unboxing experience",
         "text_skills": [
             "welcome-email-sequence",
             "pre-launch-email-sequence",
             "launch-email-sequence",
+            "packaging-experience-designer",
+            "unboxing-journey-guide",
         ],
         "visual_assets": [
             "5A", "5B", "5C",
@@ -141,7 +152,7 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
     },
     6: {
         "name": "Distribution",
-        "description": "Launch amplification -- ads, press, social",
+        "description": "Launch amplification -- ads, press, social, community, affiliates",
         "text_skills": [
             "live-campaign-ads",
             "press-release-copy",
@@ -149,6 +160,10 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
             "short-form-hook-generator",
             "influencer-outreach-pro",
             "review-response-strategist",
+            "affiliate-program-designer",
+            "community-manager-brain",
+            "update-strategy-sequencer",
+            "campaign-orchestrator",
         ],
         "visual_assets": ["PITCH-HERO", "EMAIL-HERO"],
         "depends_on": [5],
