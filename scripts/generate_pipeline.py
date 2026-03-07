@@ -1031,6 +1031,16 @@ if _USE_FALLBACK:
 else:
     print(f"Using image provider: {{PROVIDER.upper()}}")
 
+# =============================================================================
+# ASSET MODE — composite / inpaint / hybrid post-processing
+# =============================================================================
+ASSET_MODE = os.environ.get("ASSET_MODE", "generate").lower()
+if ASSET_MODE not in ("generate", "composite", "inpaint", "hybrid"):
+    print(f"WARNING: Unknown asset mode '{{ASSET_MODE}}', defaulting to generate.")
+    ASSET_MODE = "generate"
+if ASSET_MODE != "generate":
+    print(f"Asset mode: {{ASSET_MODE.upper()}}")
+
 NEGATIVE = """{negative_prompt}"""
 
 # Brand logo file (for visual reference injection — empty if no logo configured)
@@ -1152,6 +1162,55 @@ def _normalize_png_if_needed(filepath):
         print(f"  WARNING: failed to normalize image payload at {{filepath}}: {{e}}")
 
 
+def _composite_post_pass(output_path, pid=""):
+    """Apply composite post-processing if ASSET_MODE != generate.
+
+    Overlays real brand logo onto AI-generated images using the compositor engine.
+    Saves the composited result as {{name}}-composited.png alongside the original.
+    """
+    if ASSET_MODE == "generate":
+        return
+    if not os.path.exists(output_path):
+        return
+
+    try:
+        from brandmint.core.asset_mode import AssetMode, route_asset
+        from brandmint.core.compositor import PostGenCompositor
+
+        mode = AssetMode(ASSET_MODE)
+        decision = route_asset(
+            asset_id=pid or os.path.basename(output_path),
+            global_mode=mode,
+            has_logo=bool(LOGO_PATH and os.path.exists(LOGO_PATH)),
+            has_product_images=bool(PRODUCT_REF_PATHS),
+        )
+
+        if not decision.needs_composite_pass:
+            return
+        if not LOGO_PATH or not os.path.exists(LOGO_PATH):
+            print(f"  SKIP composite: no logo file at {{LOGO_PATH}}")
+            return
+
+        # Build composited output path (preserve original)
+        base, ext = os.path.splitext(output_path)
+        composited_path = f"{{base}}-composited{{ext}}"
+
+        compositor = PostGenCompositor()
+        compositor.composite_pass_with_analysis(
+            generated_image_path=output_path,
+            logo_path=LOGO_PATH,
+            output_path=composited_path,
+        )
+
+        if os.path.exists(composited_path):
+            size_kb = os.path.getsize(composited_path) / 1024
+            print(f"  Composited: {{os.path.basename(composited_path)}} ({{size_kb:.0f}} KB)")
+    except ImportError as e:
+        print(f"  WARNING: composite pass unavailable (missing dependency): {{e}}")
+    except Exception as e:
+        print(f"  WARNING: composite post-pass failed: {{e}}")
+
+
 def gen_with_provider(
     prompt,
     model,
@@ -1205,6 +1264,10 @@ def gen_with_provider(
     if os.path.exists(output_path):
         size_kb = os.path.getsize(output_path) / 1024
         print(f"  Saved: {{os.path.basename(output_path)}} ({{size_kb:.0f}} KB)")
+
+    # Composite post-pass: overlay real logo/product if ASSET_MODE != generate
+    _composite_post_pass(output_path)
+
     return True
 
 '''

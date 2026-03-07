@@ -74,6 +74,8 @@ class NotebookLMPublisher:
         synthesize: bool = True,
         synthesis_model: str = "",
         max_parallel: int = 3,
+        include_brand_materials: bool = False,
+        vision_descriptions: bool = False,
     ):
         self.brand_dir = Path(brand_dir)
         self.config = config
@@ -84,6 +86,8 @@ class NotebookLMPublisher:
         self.max_sources = max_sources
         self.synthesize = synthesize
         self.synthesis_model = synthesis_model
+        self.include_brand_materials = include_brand_materials
+        self.vision_descriptions = vision_descriptions
 
         # NotebookLM config overrides from brand-config.yaml
         nb_config = config.get("notebooklm", {})

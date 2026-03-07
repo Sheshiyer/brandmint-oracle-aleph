@@ -38,6 +38,8 @@ def run_notebooklm_publish(
     synthesis_model: str = "",
     clear_prose_cache: bool = False,
     max_parallel: int = 3,
+    include_brand_materials: bool = False,
+    vision_descriptions: bool = False,
 ) -> None:
     """Publish brand intelligence to NotebookLM."""
     config, cfg, brand_dir = _load_config(config)
@@ -67,6 +69,11 @@ def run_notebooklm_publish(
         )
         raise SystemExit(1)
 
+    # Resolve brand material flags from config (CLI overrides config)
+    pub_config = cfg.get("publishing", {})
+    effective_brand_materials = include_brand_materials or pub_config.get("include_brand_materials", False)
+    effective_vision_descriptions = vision_descriptions or pub_config.get("vision_descriptions", False)
+
     publisher = NotebookLMPublisher(
         brand_dir=brand_dir,
         config=cfg,
@@ -78,6 +85,8 @@ def run_notebooklm_publish(
         synthesize=not no_synthesize,
         synthesis_model=synthesis_model,
         max_parallel=max_parallel,
+        include_brand_materials=effective_brand_materials,
+        vision_descriptions=effective_vision_descriptions,
     )
 
     if dry_run:
