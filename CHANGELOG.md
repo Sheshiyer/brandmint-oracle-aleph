@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.0.0] - 2026-03-07
+
+### Added
+
+#### Asset Fidelity Pipeline (Phase 1)
+- `brandmint/core/image_utils.py`: Image I/O, metadata extraction, logo analysis (transparency detection, bounding box, dominant colors).
+- `brandmint/core/compositor.py`: PIL compositing engine — LogoCompositor, ProductCompositor, PostGenCompositor, LayerStack with 9-grid positioning, blend modes, and opacity control.
+- `brandmint/core/asset_mode.py`: Provider routing with 4 modes (generate, composite, inpaint, hybrid) and per-asset override support.
+- `brandmint/core/asset_provenance.py`: Asset provenance tracking (provided/generated/composited) with JSON persistence.
+- FAL flux-fill inpainting provider (`fal-ai/flux-pro/v1/fill`) for masked logo region painting.
+- FAL flux-canny edge-guided generation provider (`fal-ai/flux-pro/v1/canny`) for structure-preserving generation.
+- `--asset-mode` CLI flag on `bm visual generate` and `bm visual execute`.
+- `generation.asset_mode` and `generation.composite_config` in brand config schema.
+- Composite post-pass wired into `generate_pipeline.py` code generator.
+
+#### NotebookLM Brand Sources (Phase 2)
+- `brandmint/publishing/vision_describer.py`: LLM vision integration for image description generation via OpenRouter multimodal API. Supports asset and logo-specific description modes with caching.
+- `brandmint/publishing/brand_asset_injector.py`: Extracts palette, typography, logo references, and aesthetic direction from brand config for instruction template injection.
+- `BrandStyleGuideBuilder`: Transforms brand config (palette, typography, aesthetic, theme) into narrative style guide source documents.
+- Source curator enhancements: `visual-description` source type (content_value 75), brand material scanning, priority scoring (+10 logo, +8 style guide, +5 complementary pairs).
+- Enhanced infographic and PDF report instruction templates with brand material references, color palette directives, logo placement, and typography instructions.
+- `coverage_report()` method on SourceCurator for dry-run brand material coverage analysis.
+- `--include-brand-materials` and `--vision-descriptions` CLI flags on `bm publish notebooklm`.
+- `publishing` section in brand config schema: `include_brand_materials`, `vision_descriptions`, `vision_model`, `max_sources`.
+
+#### Documentation
+- `docs/asset-fidelity.md`: Complete guide to asset fidelity modes, configuration, and cost impact.
+- `docs/notebooklm-brand-sources.md`: Guide to brand-aware NotebookLM source enrichment.
+
+#### Tests
+- 305 tests total (was ~20), including:
+  - 26 image utility tests, 12 asset provenance tests, 31 compositor tests
+  - 27 asset mode routing tests, 29 FAL provider tests, 11 visual regression tests
+  - 33 pipeline wiring tests, 12 E2E composite pipeline tests
+  - 20 vision describer tests, 59 source curator enhancement tests, 10 coverage report tests
+
+### Changed
+- Updated `brandmint/core/providers/base.py` with `supports_inpainting()` and `supports_edge_guided()` methods.
+- Updated `brandmint/core/providers/fal_provider.py` with flux-fill and flux-canny branches.
+- Updated `brandmint/core/providers/model_mapping.py` with flux-fill/flux-canny model entries.
+- Updated `brandmint/publishing/source_curator.py` with visual-description, brand material, and config section scanning.
+- Updated `brandmint/publishing/instruction_templates.py` with `inject_brand_context()` and brand embedding directives.
+- Updated `brandmint/publishing/notebooklm_publisher.py` to accept brand material and vision description parameters.
+- Architecture diagram updated with Asset Fidelity Engine and Brand Sources layers.
+
+### GitHub
+- 37 issues created and closed (#71-#107) across 2 milestones.
+- Milestone 7: Asset Fidelity Pipeline (20 issues).
+- Milestone 8: NotebookLM Brand Sources (17 issues).
+- Project #5: Brandmint v5 — Asset Fidelity & Brand Sources.
+
 ## [4.3.0] - 2026-02-28
 
 ### Added
