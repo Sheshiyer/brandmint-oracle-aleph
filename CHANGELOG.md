@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [5.1.0] - 2026-03-07
+
+### Added
+
+#### Full Skill Wiring
+- `skills/manifest.yaml`: Restored orchestrator manifest with all 31 text skills across 10 parts, including upstream dependencies, required_keys, and template paths.
+- 11 skills newly wired into `WAVE_DEFINITIONS`: brand-name-studio (W1), brand-guidelines (W2), logo-concept-architect (W2), campaign-page-builder (W4), competitive-ads-extractor (W4), packaging-experience-designer (W5), unboxing-journey-guide (W5), affiliate-program-designer (W6), community-manager-brain (W6), update-strategy-sequencer (W6), campaign-orchestrator (W6).
+- All 5 named scenarios updated with newly available skills: brand-genesis 8→10, crowdfunding-lean 12→13, crowdfunding-full 20→27, bootstrapped-dtc 9→11, enterprise-gtm 11→14.
+- Zero orphaned skills — every scenario skill now has a wave assignment.
+
+#### Tauri v2 Desktop App (Phases 2-6)
+- Event streaming system: `EventStore` with 1000-event ring buffer, typed channels (pipeline-log, state-changed, progress, sidecar-status), JSON line parsing from sidecar stdout.
+- 28-file component architecture: monolithic 3439-line App.tsx split into 6 Zustand stores, 8 page components, 5 UI components, 3 layout components.
+- Native file dialogs via `@tauri-apps/plugin-dialog`, drag-drop enhancement, system notifications with browser fallback.
+- macOS menu bar: 5 submenus (File, Pipeline, View, Window, Help) with keyboard shortcuts (⌘O, ⌘R, ⌘1-4).
+- Window state persistence: position/size saved on close to `~/Library/Application Support/com.brandmint.app/window-state.json`, restored on startup.
+- 18 IPC commands (13 original + 2 event + 3 window management).
+- 8 Rust unit tests for EventStore (ring buffer, since-filter, channel routing).
+- 48 Vitest component/store tests with Tauri API mocks (6 store suites + 4 component suites).
+- Vitest + @testing-library/react + jsdom test infrastructure.
+
+### Fixed
+- `Header.tsx` and `IntakePage.tsx`: Replaced CommonJS `require()` calls with ESM `import` — fixes blank screen crash on launch.
+
+### Changed
+- `WAVE_DEFINITIONS` expanded from 20 to 31 unique text skills across waves 1-6.
+- `tauri.conf.json` and `Cargo.toml` bumped to v5.0.0.
+- Window title updated to "Brandmint v5.0.0".
+
 ## [5.0.0] - 2026-03-07
 
 ### Added
