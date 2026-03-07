@@ -1,3 +1,4 @@
+use crate::events::EventStore;
 use log::{error, info, warn};
 use serde_json::Value;
 use std::io::{BufRead, BufReader};
@@ -20,6 +21,8 @@ pub struct SidecarState {
     child: Mutex<Option<Child>>,
     running: Arc<AtomicBool>,
     http_client: reqwest::Client,
+    /// Shared event buffer for structured pipeline events.
+    pub(crate) event_store: EventStore,
 }
 
 impl SidecarState {
@@ -32,6 +35,7 @@ impl SidecarState {
                 .timeout(HEALTH_CHECK_TIMEOUT)
                 .build()
                 .expect("Failed to create HTTP client"),
+            event_store: EventStore::new(),
         }
     }
 
@@ -215,8 +219,9 @@ pub fn spawn_sidecar(app: &AppHandle, state: &SidecarState) -> Result<(), String
     }
     state.running.store(true, Ordering::SeqCst);
 
-    // Forward stdout to Tauri events
+    // Forward stdout to structured Tauri events
     let app_stdout = app.clone();
+    let es_stdout = state.event_store.clone();
     if let Some(stdout) = stdout {
         std::thread::spawn(move || {
             let reader = BufReader::new(stdout);
@@ -224,13 +229,22 @@ pub fn spawn_sidecar(app: &AppHandle, state: &SidecarState) -> Result<(), String
                 match line {
                     Ok(line) => {
                         info!("[bridge] {}", line);
-                        let _ = app_stdout.emit(
-                            "sidecar-log",
-                            serde_json::json!({
-                                "level": "info",
-                                "message": line,
-                            }),
+
+                        // Try to parse as structured JSON with a "type" field
+                        if let Ok(parsed) = serde_json::from_str::<Value>(&line) {
+                            if let Some(evt_type) = parsed.get("type").and_then(|t| t.as_str()).map(String::from) {
+                                let event = EventStore::create_event(&evt_type, parsed);
+                                es_stdout.push_and_emit(&app_stdout, event);
+                                continue;
+                            }
+                        }
+
+                        // Plain text line → pipeline-log
+                        let event = EventStore::create_event(
+                            "log",
+                            serde_json::json!({ "message": line, "level": "info" }),
                         );
+                        es_stdout.push_and_emit(&app_stdout, event);
                     }
                     Err(_) => break,
                 }
@@ -238,9 +252,10 @@ pub fn spawn_sidecar(app: &AppHandle, state: &SidecarState) -> Result<(), String
         });
     }
 
-    // Forward stderr to Tauri events
+    // Forward stderr to structured Tauri events
     let app_stderr = app.clone();
     let running = state.running.clone();
+    let es_stderr = state.event_store.clone();
     if let Some(stderr) = stderr {
         std::thread::spawn(move || {
             let reader = BufReader::new(stderr);
@@ -248,23 +263,22 @@ pub fn spawn_sidecar(app: &AppHandle, state: &SidecarState) -> Result<(), String
                 match line {
                     Ok(line) => {
                         warn!("[bridge:err] {}", line);
-                        let _ = app_stderr.emit(
-                            "sidecar-log",
-                            serde_json::json!({
-                                "level": "error",
-                                "message": line,
-                            }),
+                        let event = EventStore::create_event(
+                            "log",
+                            serde_json::json!({ "message": line, "level": "error" }),
                         );
+                        es_stderr.push_and_emit(&app_stderr, event);
                     }
                     Err(_) => break,
                 }
             }
             // stderr closed → process likely died
             running.store(false, Ordering::SeqCst);
-            let _ = app_stderr.emit(
-                "sidecar-terminated",
-                serde_json::json!({ "code": -1 }),
+            let event = EventStore::create_event(
+                "sidecar_status",
+                serde_json::json!({ "status": "terminated", "code": -1 }),
             );
+            es_stderr.push_and_emit(&app_stderr, event);
         });
     }
 

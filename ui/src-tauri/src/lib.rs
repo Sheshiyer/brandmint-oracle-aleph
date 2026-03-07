@@ -1,3 +1,4 @@
+mod events;
 mod sidecar;
 
 use sidecar::SidecarState;
@@ -102,6 +103,25 @@ async fn restart_sidecar(
     Ok("Sidecar restarted".to_string())
 }
 
+#[tauri::command]
+async fn get_pipeline_events(
+    state: tauri::State<'_, Arc<SidecarState>>,
+    since: Option<String>,
+) -> Result<serde_json::Value, String> {
+    let events = state.event_store.get_events_since(since.as_deref());
+    serde_json::to_value(&events).map_err(|e| format!("Failed to serialize events: {}", e))
+}
+
+#[tauri::command]
+async fn subscribe_events(
+    _app: tauri::AppHandle,
+    state: tauri::State<'_, Arc<SidecarState>>,
+    event_types: Vec<String>,
+) -> Result<String, String> {
+    let sub_id = state.event_store.add_subscription(event_types);
+    Ok(sub_id)
+}
+
 // ── App Entry Point ─────────────────────────────────────────────
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -187,6 +207,8 @@ pub fn run() {
             start_publish,
             load_intake,
             restart_sidecar,
+            get_pipeline_events,
+            subscribe_events,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
