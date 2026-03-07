@@ -7,9 +7,9 @@
 <!-- readme-gen:start:badges -->
 <p align="center">
   <a href="https://pypi.org/project/brandmint/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white"></a>
-  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v5.0.0-1f883d?style=flat-square"></a>
+  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v5.1.0-1f883d?style=flat-square"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest"><img alt="Latest GitHub Release" src="https://img.shields.io/github/v/release/Sheshiyer/brandmint-oracle-aleph?style=flat-square&logo=github"></a>
-  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v5.0.0-6f42c1?style=flat-square"></a>
+  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v5.1.0-6f42c1?style=flat-square"></a>
   <a href="https://brandmint-openclaw.vercel.app"><img alt="OpenClaw Integration" src="https://img.shields.io/badge/OpenClaw-Integrated-0ea5e9?style=flat-square&logo=github&logoColor=white"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/pkgs/container/brandmint"><img alt="GHCR Package" src="https://img.shields.io/badge/GHCR-package-blue?style=flat-square&logo=docker&logoColor=white"></a>
   <a href="./ui/"><img alt="Desktop App" src="https://img.shields.io/badge/Desktop-Tauri_v2-FFC131?style=flat-square&logo=tauri&logoColor=white"></a>
@@ -34,7 +34,7 @@
 ## Why Brandmint
 
 - **Pipeline-first execution**: run the full chain with `bm launch` instead of ad-hoc skill runs.
-- **45 specialized skills / 9 categories**: from buyer persona and positioning to visual generation and publishing.
+- **45 specialized skills / 9 categories / 31 wired into pipeline**: from buyer persona and positioning to visual generation and publishing. Full manifest at `skills/manifest.yaml`.
 - **Asset Fidelity Pipeline** *(v5.0)*: PIL compositing preserves pixel-exact logos and product images — no more AI reinterpretation. Supports generate, composite, inpaint, and hybrid modes.
 - **Semantic reference matching**: 4-gate pipeline (domain, subject type, diversity, aesthetic) routes the right reference images to the right assets.
 - **Full NotebookLM publishing (Wave 7)**: 23 artifacts across all 9 types — decks, videos, audio, reports, quiz, flashcards, infographics, data tables, and mind maps — with LLM prose synthesis for source documents.
@@ -171,15 +171,17 @@ bm cache      # cache stats / clear
 
 ## Wave Model
 
-| Wave | Focus | Typical Outputs |
-|---|---|---|
-| 1 | Foundation | persona, competitors, niche inputs |
-| 2 | Strategy | positioning, voice, messaging |
-| 3 | Visual identity | core visual system + identity assets |
-| 4 | Product/campaign | product narratives + campaign copy/assets |
-| 5 | Launch assets | email and campaign collateral |
-| 6 | Distribution | ads, social, outreach content |
-| 7 | Publishing | NotebookLM: 23 artifacts (decks, videos, audio, reports, quiz, flashcards, infographics, data tables, mind maps) |
+| Wave | Focus | Text Skills | Typical Outputs |
+|---|---|---:|---|
+| 1 | Foundation | 4 | persona, competitors, niche validation, brand naming |
+| 2 | Strategy | 6 | positioning, voice, messaging, brand guidelines, logo concepts |
+| 3 | Visual identity | 1 | core visual system + identity assets |
+| 4 | Product/campaign | 5 | campaign copy, video script, ads, page layout, competitor ad analysis |
+| 5 | Launch assets | 5 | email sequences, packaging design, unboxing experience |
+| 6 | Distribution | 10 | ads, press, social, hooks, influencers, affiliates, community, campaign orchestration |
+| 7 | Publishing | — | NotebookLM: 23 artifacts (decks, videos, audio, reports, quiz, flashcards, infographics, data tables, mind maps) |
+
+**31 text skills** execute across waves 1–6, with visual assets generated in waves 3–6. Skill manifest: [`skills/manifest.yaml`](./skills/manifest.yaml).
 
 ## Publishing Deliverables (`bm publish`)
 
@@ -286,20 +288,31 @@ Every pipeline run generates a complete brand asset suite. Here's what a single 
 </div>
 <!-- readme-gen:end:showcase -->
 
-## Skills Inventory (repo reality)
+## Skills Inventory
 
-| Category | Skills |
-|---|---:|
-| text-strategy | 7 |
-| visual-prompters | 9 |
-| campaign-copy | 6 |
-| email-sequences | 3 |
-| brand-foundation | 3 |
-| social-growth | 5 |
-| advertising | 5 |
-| visual-pipeline | 4 |
-| publishing | 3 |
-| **Total** | **45** |
+| Category | On Disk | Wired in Pipeline | Example Skills |
+|---|---:|---:|---|
+| text-strategy | 7 | 7 | buyer-persona, competitor-analysis, brand-name-studio, voice-and-tone |
+| campaign-copy | 6 | 5 | campaign-page-copy, campaign-video-script, campaign-page-builder |
+| email-sequences | 3 | 3 | welcome, pre-launch, launch email sequences |
+| brand-foundation | 3 | 3 | brand-guidelines, packaging-experience-designer, unboxing-journey-guide |
+| social-growth | 5 | 5 | social-content-engine, community-manager-brain, influencer-outreach-pro |
+| advertising | 5 | 4 | pre-launch-ads, live-campaign-ads, competitive-ads-extractor |
+| visual-prompters | 9 | 2 | visual-identity-core, logo-concept-architect |
+| visual-pipeline | 4 | — | brand-visual-pipeline, visual-asset-generator (subprocess) |
+| publishing | 3 | — | notebooklm-publisher (via Wave 7 hook) |
+| **Total** | **45** | **31** | |
+
+### Scenario Coverage
+
+| Scenario | Skills | Best For |
+|---|---:|---|
+| brand-genesis | 10 | Pre-launch, bootstrapped — core identity |
+| crowdfunding-lean | 13 | Kickstarter/Indiegogo essentials |
+| crowdfunding-full | 27 | Full crowdfunding campaign, all waves |
+| bootstrapped-dtc | 11 | Shopify/organic, founder-led growth |
+| enterprise-gtm | 14 | B2B SaaS go-to-market |
+| custom-hybrid | — | Pick-and-choose |
 
 ## Release Highlights (from all repo releases)
 
@@ -310,7 +323,8 @@ Every pipeline run generates a complete brand asset suite. Here's what a single 
 - **v4.3.0** — Semantic reference matching: 4-gate pipeline, 5 new semantic metadata fields on 138 catalog entries, 5D icon removal, 3A/3B/4B migrated to Nano Banana Pro, `brandmint[vision]` + `brandmint[embeddings]` optional dependency groups, 43-task vision upgrade roadmap (issues #9-#51).
 - **v4.3.1** — Twitter sync pipeline: automated community prompt discovery via bird CLI, AmirMushich tracking with per-account overrides, unified `twitter_sync_all.sh` runner, launchd weekly automation, 73 curated references from 41 contributors, rebuilt reference catalog (160 entries).
 - **v4.4.0** — Full NotebookLM artifact matrix: 23 artifacts across all 9 types (was 5), LLM prose synthesis for source documents, 5-phase parallel execution engine (~35 min wall clock), brand archetype-matched video styles, configurable artifact filtering and parallelism, Tauri v2 Phase 1 shell prototype, removed local generators (Remotion/Marp/report/diagram).
-- **v5.0.0** *(current)* — Asset Fidelity Pipeline: PIL compositing for pixel-exact logo/product preservation (4 modes: generate, composite, inpaint, hybrid), FAL flux-fill + flux-canny providers. NotebookLM Brand Sources: LLM vision descriptions for visual assets, brand style guide synthesis, raw brand material scanning, priority scoring with logo/style guide bonuses, enriched infographic/PDF templates with brand embedding. 305 tests, 37 issues closed.
+- **v5.0.0** — Asset Fidelity Pipeline: PIL compositing for pixel-exact logo/product preservation (4 modes: generate, composite, inpaint, hybrid), FAL flux-fill + flux-canny providers. NotebookLM Brand Sources: LLM vision descriptions for visual assets, brand style guide synthesis, raw brand material scanning, priority scoring with logo/style guide bonuses, enriched infographic/PDF templates with brand embedding. 305 tests, 37 issues closed.
+- **v5.1.0** *(current)* — Tauri v2 Desktop App (Phases 2-6): 28-file component refactor, 18 IPC commands, event streaming, macOS menu bar, window persistence, native file dialogs. 56 desktop tests (8 Rust + 48 React). Full skill wiring: 31 text skills across 6 waves (was 20), restored `skills/manifest.yaml`, all 5 scenarios updated with zero orphaned skills.
 
 See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/releases) and [repo release notes](./.github/RELEASE_NOTES.md).
 
@@ -319,7 +333,7 @@ See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/relea
 
 | Category | Signal |
 |---|---|
-| Tests | 305 passing across 15 test files |
+| Tests | 305 Python + 56 desktop (8 Rust + 48 React) across 25 test files |
 | CI/CD | `publish-ghcr.yml` (container), `update-homebrew-tap.yml` (formula) |
 | Packaging | `pyproject.toml` + console scripts (`brandmint`, `bm`) + Homebrew tap + GHCR container |
 | Extras | `brandmint[vision]` (Pillow, colorgram, imagehash, scikit-image, OpenCV) / `brandmint[embeddings]` (CLIP, FAISS, torch) |
@@ -331,7 +345,13 @@ See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/relea
 
 Brandmint includes a native desktop app built with **Tauri v2** (Rust backend + React/TypeScript frontend). The app provides a local GUI for pipeline orchestration, replacing the need for terminal-only workflows.
 
-**Phase 1 (current):** Shell and sidecar prototype — Tauri window embeds the `bm` CLI as a sidecar process, with a React UI for config loading, wave selection, and live pipeline output streaming.
+**v5.1.0 (current):** Phases 2–6 complete:
+- **28-file component architecture** — monolithic App.tsx split into 6 Zustand stores, 8 pages, 5 UI components
+- **18 IPC commands** — pipeline control, event streaming, file operations, window management
+- **Event streaming** — structured EventStore with 1000-event ring buffer and typed channels
+- **Native features** — macOS menu bar (5 submenus, ⌘-shortcuts), file dialogs, drag-drop, notifications
+- **Window persistence** — position/size saved on close, restored on startup
+- **56 tests** — 8 Rust unit tests + 48 Vitest component/store tests
 
 ```bash
 # Development
@@ -339,11 +359,13 @@ cd ui && npm run tauri dev
 
 # Build (macOS universal)
 cd ui && npm run tauri build
+
+# Run tests
+cd ui && npm test                           # 48 React tests
+cd ui/src-tauri && cargo test               # 8 Rust tests
 ```
 
 **Requires:** Rust toolchain (`rustup`), Node.js 18+, and Xcode Command Line Tools (macOS).
-
-> Phase 2 will add real-time artifact previews, drag-and-drop config editing, and NotebookLM artifact gallery.
 
 ## OpenClaw Integration
 
