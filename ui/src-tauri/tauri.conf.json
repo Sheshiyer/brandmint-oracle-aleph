@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Brandmint",
-  "version": "4.3.1",
+  "version": "5.0.0",
   "identifier": "com.brandmint.app",
   "build": {
     "frontendDist": "../dist",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Brandmint v4.3.1",
+        "title": "Brandmint v5.0.0",
         "width": 1280,
         "height": 800,
         "minWidth": 900,
@@ -37,7 +37,8 @@
       "icons/icon.ico"
     ],
     "macOS": {
-      "minimumSystemVersion": "13.0"
+      "minimumSystemVersion": "13.0",
+      "signingIdentity": null
     },
     "externalBin": [
       "binaries/brandmint-bridge"

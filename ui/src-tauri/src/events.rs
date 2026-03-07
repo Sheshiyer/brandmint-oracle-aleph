@@ -101,7 +101,7 @@ impl EventStore {
     }
 
     /// Map an `event_type` discriminator to the corresponding Tauri channel name.
-    fn channel_for(event_type: &str) -> &str {
+    pub(crate) fn channel_for(event_type: &str) -> &str {
         match event_type {
             "state_changed" => EVT_PIPELINE_STATE,
             "log" => EVT_PIPELINE_LOG,
@@ -162,5 +162,112 @@ impl EventStore {
             });
         }
         id
+    }
+
+    /// Insert an event directly into the ring buffer (no Tauri emit).
+    ///
+    /// Used by tests and by code paths that do not have an `AppHandle`.
+    #[cfg(test)]
+    fn push_to_buffer(&self, event: PipelineEvent) {
+        if let Ok(mut buf) = self.events.lock() {
+            if buf.len() >= MAX_BUFFERED_EVENTS {
+                buf.pop_front();
+            }
+            buf.push_back(event);
+        }
+    }
+}
+
+// ── Unit tests ──────────────────────────────────────────────────────
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Helper: create and push an event into the buffer without needing an AppHandle.
+    fn push(store: &EventStore, event_type: &str, payload: serde_json::Value) {
+        let event = EventStore::create_event(event_type, payload);
+        store.push_to_buffer(event);
+    }
+
+    #[test]
+    fn test_event_store_push_and_get() {
+        let store = EventStore::new();
+        push(&store, "log", serde_json::json!({"message": "hello"}));
+        let events = store.get_events_since(None);
+        assert_eq!(events.len(), 1);
+        assert_eq!(events[0].event_type, "log");
+        assert_eq!(events[0].payload["message"], "hello");
+    }
+
+    #[test]
+    fn test_event_store_since_filter() {
+        let store = EventStore::new();
+        push(&store, "log", serde_json::json!({"msg": "first"}));
+        let events = store.get_events_since(None);
+        let ts = events[0].timestamp.clone();
+
+        // Small delay to ensure a different timestamp
+        std::thread::sleep(std::time::Duration::from_millis(2));
+        push(&store, "log", serde_json::json!({"msg": "second"}));
+
+        let filtered = store.get_events_since(Some(&ts));
+        assert_eq!(filtered.len(), 1);
+        assert_eq!(filtered[0].payload["msg"], "second");
+    }
+
+    #[test]
+    fn test_event_store_ring_buffer_cap() {
+        let store = EventStore::new();
+        for i in 0..1050 {
+            push(&store, "log", serde_json::json!({"i": i}));
+        }
+        let events = store.get_events_since(None);
+        assert!(events.len() <= 1000, "Ring buffer should cap at 1000");
+    }
+
+    #[test]
+    fn test_channel_for_mapping() {
+        assert_eq!(EventStore::channel_for("log"), EVT_PIPELINE_LOG);
+        assert_eq!(EventStore::channel_for("state_changed"), EVT_PIPELINE_STATE);
+        assert_eq!(EventStore::channel_for("progress"), EVT_PIPELINE_PROGRESS);
+        assert_eq!(EventStore::channel_for("sidecar_status"), EVT_SIDECAR_STATUS);
+        // Unknown types pass through as-is
+        assert_eq!(EventStore::channel_for("custom_event"), "custom_event");
+    }
+
+    #[test]
+    fn test_event_store_empty() {
+        let store = EventStore::new();
+        let events = store.get_events_since(None);
+        assert!(events.is_empty());
+    }
+
+    #[test]
+    fn test_create_event_has_timestamp() {
+        let event = EventStore::create_event("log", serde_json::json!({"x": 1}));
+        assert_eq!(event.event_type, "log");
+        assert!(!event.timestamp.is_empty());
+        // Timestamp should be a valid number string (millis since epoch)
+        assert!(event.timestamp.parse::<u128>().is_ok());
+    }
+
+    #[test]
+    fn test_subscription_ids_are_unique() {
+        let store = EventStore::new();
+        let id1 = store.add_subscription(vec!["log".to_string()]);
+        let id2 = store.add_subscription(vec!["progress".to_string()]);
+        assert_ne!(id1, id2);
+        assert!(id1.starts_with("sub_"));
+        assert!(id2.starts_with("sub_"));
+    }
+
+    #[test]
+    fn test_event_store_clone_shares_state() {
+        let store1 = EventStore::new();
+        let store2 = store1.clone();
+        push(&store1, "log", serde_json::json!({"source": "store1"}));
+        let events = store2.get_events_since(None);
+        assert_eq!(events.len(), 1, "Clone should share the same buffer");
     }
 }
