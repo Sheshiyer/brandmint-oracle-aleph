@@ -9,6 +9,9 @@ import { useSettingsStore } from "../../stores/settingsStore";
 import { useReferenceStore } from "../../stores/referenceStore";
 import { useArtifactStore } from "../../stores/artifactStore";
 import { buildProcessPages, waveForPage } from "../../lib/utils";
+import { notify, requestNotificationPermission } from "../../lib/notifications";
+import { readTextFile } from "../../lib/native";
+import { isTauri } from "../../lib/tauri";
 import type { BridgeLog, ArtifactItem, ReferenceImage, RunnerInfo, RunState, IntegrationSettings } from "../../types";
 import {
   DRAFT_KEY, HISTORY_KEY, PROJECTS_KEY, PREFS_KEY,
@@ -116,6 +119,11 @@ export default function Shell({ children }: ShellProps) {
   const runStartTimeRef = useRef<number | null>(null);
   const prevRunStateRef = useRef<RunState>("idle");
   const prevBridgeOnlineRef = useRef(true);
+
+  // ── Request notification permission on mount ──
+  useEffect(() => {
+    void requestNotificationPermission();
+  }, []);
 
   // ── Progress summary for footer ──
   const progressSummary = useMemo(() => {
@@ -422,8 +430,10 @@ export default function Shell({ children }: ShellProps) {
     prevRunStateRef.current = runState;
     if (prev === "running" && runState === "idle") {
       addToast("Pipeline run completed", "success");
+      void notify("Pipeline Complete", "Brand generation finished successfully");
     } else if (prev === "running" && runState === "aborted") {
       addToast("Pipeline run aborted", "error");
+      void notify("Pipeline Aborted", "The pipeline run was aborted");
     } else if (runState === "running" && prev !== "running") {
       runStartTimeRef.current = Date.now();
     }
@@ -433,6 +443,7 @@ export default function Shell({ children }: ShellProps) {
   useEffect(() => {
     if (prevBridgeOnlineRef.current && !bridgeOnline) {
       addToast("Bridge disconnected", "error");
+      void notify("Sidecar Error", "Bridge process crashed — restart from settings");
     } else if (!prevBridgeOnlineRef.current && bridgeOnline) {
       addToast("Bridge reconnected", "success");
     }
@@ -455,17 +466,71 @@ export default function Shell({ children }: ShellProps) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const name = file.name.toLowerCase();
+
+        // Attempt to get the full native path (Tauri provides this on some platforms)
+        const nativePath = (file as File & { path?: string }).path;
+
         if (name.endsWith(".yaml") || name.endsWith(".yml")) {
-          file.text().then(() => {
-            setConfigPath(file.name);
+          if (nativePath && isTauri()) {
+            // In Tauri, set the full native path so the sidecar can find the config
+            setConfigPath(nativePath);
             addToast(`Loaded config: ${file.name}`, "success");
-          });
+          } else {
+            file.text().then(() => {
+              setConfigPath(file.name);
+              addToast(`Loaded config: ${file.name}`, "success");
+            });
+          }
         } else if (name.endsWith(".md")) {
-          file.text().then((text) => {
-            setProductMdText(text);
-            setProductMdPath(file.name);
-            addToast(`Loaded product doc: ${file.name}`, "success");
-          });
+          if (nativePath && isTauri()) {
+            // In Tauri, read the file content via native FS for the full path
+            setProductMdPath(nativePath);
+            readTextFile(nativePath).then((text) => {
+              setProductMdText(text);
+              addToast(`Loaded product doc: ${file.name}`, "success");
+            }).catch(() => {
+              // Fallback to browser File API
+              file.text().then((text) => {
+                setProductMdText(text);
+                addToast(`Loaded product doc: ${file.name}`, "success");
+              });
+            });
+          } else {
+            file.text().then((text) => {
+              setProductMdText(text);
+              setProductMdPath(file.name);
+              addToast(`Loaded product doc: ${file.name}`, "success");
+            });
+          }
+        } else if (file.type === "" && file.size === 0 && nativePath) {
+          // Likely a folder drop (size 0, no type) — set as brand folder
+          setBrandFolder(nativePath);
+          addToast(`Brand folder: ${file.name}`, "success");
+        }
+      }
+
+      // Also check for Tauri file-drop paths in dataTransfer items
+      const tauriPaths = e.dataTransfer?.getData("text/uri-list");
+      if (tauriPaths) {
+        const paths = tauriPaths.split("\n").map((p) => p.trim()).filter(Boolean);
+        for (const p of paths) {
+          const lower = p.toLowerCase();
+          if (lower.endsWith(".yaml") || lower.endsWith(".yml")) {
+            setConfigPath(p);
+            addToast(`Config path: ${p.split("/").pop()}`, "success");
+          } else if (lower.endsWith(".md")) {
+            setProductMdPath(p);
+            if (isTauri()) {
+              readTextFile(p).then((text) => {
+                setProductMdText(text);
+                addToast(`Product doc: ${p.split("/").pop()}`, "success");
+              }).catch(() => {});
+            }
+          } else if (!lower.includes(".")) {
+            // No extension — likely a folder path
+            setBrandFolder(p);
+            addToast(`Brand folder: ${p.split("/").pop()}`, "success");
+          }
         }
       }
     };
@@ -584,8 +649,8 @@ export default function Shell({ children }: ShellProps) {
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            <p>Drop config file to load</p>
-            <small>.yaml &middot; .md &middot; .json</small>
+            <p>Drop files or folders to load</p>
+            <small>.yaml &middot; .md &middot; folder</small>
           </div>
         </div>
       )}

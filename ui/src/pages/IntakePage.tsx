@@ -4,6 +4,8 @@ import { usePipelineStore } from "../stores/pipelineStore";
 import { useUiStore } from "../stores/uiStore";
 import { parseProductMd, extractionToConfig, defaultConfigDraft } from "../lib/utils";
 import { emptyExtraction } from "../types";
+import { pickMarkdownFile, pickFolder, readTextFile } from "../lib/native";
+import { isTauri } from "../lib/tauri";
 
 export default function IntakePage() {
   const brandFolder = useProjectStore((s) => s.brandFolder);
@@ -106,21 +108,30 @@ export default function IntakePage() {
     }
   }
 
-  async function openFolderDialog(title: string) {
-    try {
-      const { open } = await import("@tauri-apps/plugin-dialog");
-      return (await open({ title, multiple: false, directory: true })) as string | null;
-    } catch {
-      return null;
-    }
+  async function openFolderDialog(_title: string) {
+    return pickFolder();
   }
 
-  async function openFileDialog(title: string, filters: { name: string; extensions: string[] }[]) {
-    try {
-      const { open } = await import("@tauri-apps/plugin-dialog");
-      return (await open({ title, filters, multiple: false, directory: false })) as string | null;
-    } catch {
-      return null;
+  async function openFileDialog(_title: string, _filters: { name: string; extensions: string[] }[]) {
+    return pickMarkdownFile();
+  }
+
+  /** Browse for a product.md, read its contents via native FS, and load into store. */
+  async function browseAndReadProductMd() {
+    const filePath = await pickMarkdownFile();
+    if (!filePath) return;
+    setProductMdPath(filePath);
+    if (isTauri()) {
+      try {
+        const text = await readTextFile(filePath);
+        setProductMdText(text);
+        setStatusMessage(`Loaded ${filePath.split("/").pop() ?? filePath}`);
+        addToast(`Product doc loaded: ${filePath.split("/").pop()}`, "success");
+      } catch (err) {
+        pushLocalLog("error", `Failed to read file: ${(err as Error).message}`);
+      }
+    } else {
+      addToast(`Product doc path: ${filePath}`, "info");
     }
   }
 
@@ -138,7 +149,7 @@ export default function IntakePage() {
       <div className="controls-row">
         <input type="file" accept=".md,.txt" onChange={handleFileUpload} />
         <button className="btn" onClick={() => void loadFromBrandFolder()}>Load From Brand Folder</button>
-        <button className="btn" onClick={async () => { const f = await openFileDialog("Select product.md", [{ name: "Markdown", extensions: ["md", "txt"] }]); if (f) { setProductMdPath(f); addToast(`Product doc: ${f}`, "info"); } }}>Open File</button>
+        <button className="btn" onClick={() => void browseAndReadProductMd()}>Open File</button>
         <button className="btn" onClick={loadDemoDryRun}>Load Demo Dry Run</button>
         <button className="btn" onClick={clearDraft}>Clear Draft</button>
       </div>

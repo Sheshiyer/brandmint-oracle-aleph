@@ -4,6 +4,7 @@ import { useProjectStore } from "../stores/projectStore";
 import { useSettingsStore } from "../stores/settingsStore";
 import { useUiStore } from "../stores/uiStore";
 import { buildProcessPages } from "../lib/utils";
+import { pickYamlFile, pickFolder } from "../lib/native";
 import type { PageStatus } from "../types";
 
 export default function LaunchPage() {
@@ -23,6 +24,7 @@ export default function LaunchPage() {
   const configPath = useProjectStore((s) => s.configPath);
   const setConfigPath = useProjectStore((s) => s.setConfigPath);
   const brandFolder = useProjectStore((s) => s.brandFolder);
+  const setBrandFolder = useProjectStore((s) => s.setBrandFolder);
   const exportedAt = useProjectStore((s) => s.exportedAt);
 
   const selectedRunnerInfo = useSettingsStore((s) => {
@@ -32,6 +34,7 @@ export default function LaunchPage() {
   const publishStage = useSettingsStore((s) => s.publishStage);
   const setPublishStage = useSettingsStore((s) => s.setPublishStage);
   const setSelectedPageId = useUiStore((s) => s.setSelectedPageId);
+  const addToast = useUiStore((s) => s.addToast);
 
   const processPages = useMemo(() => buildProcessPages(), []);
 
@@ -151,7 +154,17 @@ export default function LaunchPage() {
         </label>
         <label className="field compact">
           Config path
-          <input value={configPath} onChange={(e) => setConfigPath(e.target.value)} />
+          <div style={{ display: "flex", gap: 6 }}>
+            <input style={{ flex: 1 }} value={configPath} onChange={(e) => setConfigPath(e.target.value)} />
+            <button className="btn" onClick={async () => { const f = await pickYamlFile(); if (f) { setConfigPath(f); addToast(`Config: ${f}`, "success"); } }}>Browse…</button>
+          </div>
+        </label>
+        <label className="field compact">
+          Brand folder
+          <div style={{ display: "flex", gap: 6 }}>
+            <input style={{ flex: 1 }} value={brandFolder} onChange={(e) => setBrandFolder(e.target.value)} placeholder="./my-brand" />
+            <button className="btn" onClick={async () => { const f = await pickFolder(); if (f) { setBrandFolder(f); addToast(`Brand folder: ${f}`, "success"); } }}>Browse…</button>
+          </div>
         </label>
         <label className="field compact">
           Waves
