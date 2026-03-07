@@ -12,6 +12,8 @@ LOGICAL_MODELS = {
     "nano-banana-pro",  # Style anchor, image-reference capable
     "flux-2-pro",       # High quality general purpose
     "recraft-v3",       # Vector/illustration focused
+    "flux-fill",        # Inpainting (FAL-specific)
+    "flux-canny",       # Edge-guided generation (FAL-specific)
 }
 
 # Default model mappings per provider
@@ -22,6 +24,8 @@ MODEL_MAPPING: Dict[str, Dict[str, str]] = {
         "flux-2-pro": "fal-ai/flux-2-pro",
         "flux-dev": "fal-ai/flux/dev",
         "recraft-v3": "fal-ai/recraft/v3/text-to-image",
+        "flux-fill": "fal-ai/flux-pro/v1/fill",
+        "flux-canny": "fal-ai/flux-pro/v1/canny",
     },
     "openrouter": {
         # OpenRouter uses standard model paths
@@ -59,6 +63,8 @@ PROVIDER_CAPABILITIES = {
     "fal": {
         "supports_image_reference": True,  # Nano Banana Pro only
         "supports_negative_prompt": True,
+        "supports_inpainting": True,       # flux-fill
+        "supports_edge_guided": True,      # flux-canny
         "max_prompt_length": 1000,  # Recraft has 1000 char limit
         "supported_aspects": ["1:1", "16:9", "9:16", "3:4", "4:3"],
     },
@@ -100,6 +106,8 @@ COST_ESTIMATES = {
         "flux-2-pro": 0.05,
         "flux-dev": 0.03,
         "recraft-v3": 0.04,
+        "flux-fill": 0.06,
+        "flux-canny": 0.06,
     },
     "openrouter": {
         "nano-banana-pro": 0.05,

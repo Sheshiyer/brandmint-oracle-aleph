@@ -162,10 +162,11 @@ def visual_generate(
     config: Path = typer.Option(..., "--config", "-c", help="Path to brand-config.yaml"),
     output_dir: Optional[str] = typer.Option(None, "--output-dir", "-o", help="Override output directory"),
     assets: Optional[str] = typer.Option(None, "--assets", "-a", help="Comma-separated asset IDs"),
+    asset_mode: str = typer.Option("generate", "--asset-mode", "-m", help="Asset generation mode: generate|composite|inpaint|hybrid"),
 ):
     """Generate pipeline scripts from brand config."""
     from .visual import run_generate
-    run_generate(config, output_dir=output_dir, assets=assets)
+    run_generate(config, output_dir=output_dir, assets=assets, asset_mode=asset_mode)
 
 
 @visual_app.command("execute")
@@ -174,10 +175,11 @@ def visual_execute(
     batch: str = typer.Option("all", "--batch", "-b", help="Batch to run: anchor, identity, products, etc."),
     output_dir: Optional[str] = typer.Option(None, "--output-dir", "-o"),
     force: bool = typer.Option(False, "--force", "-f", help="Bypass cache, regenerate all assets"),
+    asset_mode: str = typer.Option("generate", "--asset-mode", "-m", help="Asset generation mode: generate|composite|inpaint|hybrid"),
 ):
     """Execute generated pipeline scripts."""
     from .visual import run_execute
-    run_execute(config, batch=batch, output_dir=output_dir, force=force)
+    run_execute(config, batch=batch, output_dir=output_dir, force=force, asset_mode=asset_mode)
 
 
 @visual_app.command("preview")
@@ -332,6 +334,8 @@ def publish_notebooklm(
     synthesis_model: str = typer.Option("", "--synthesis-model", help="OpenRouter model for prose synthesis (default: claude-3.5-haiku)"),
     clear_prose_cache: bool = typer.Option(False, "--clear-prose-cache", help="Clear cached synthesized prose before building"),
     max_parallel: int = typer.Option(3, "--max-parallel", help="Max parallel artifact workers (default: 3)"),
+    include_brand_materials: bool = typer.Option(False, "--include-brand-materials", help="Include logos, style guide, and visual descriptions as sources"),
+    vision_descriptions: bool = typer.Option(False, "--vision-descriptions", help="Generate LLM vision descriptions for visual assets (requires OPENROUTER_API_KEY)"),
 ):
     """Publish brand intelligence to NotebookLM and generate artifacts."""
     from .publish import run_notebooklm_publish
@@ -345,6 +349,8 @@ def publish_notebooklm(
         synthesis_model=synthesis_model,
         clear_prose_cache=clear_prose_cache,
         max_parallel=max_parallel,
+        include_brand_materials=include_brand_materials,
+        vision_descriptions=vision_descriptions,
     )
 
 

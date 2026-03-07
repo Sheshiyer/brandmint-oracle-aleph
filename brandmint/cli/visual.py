@@ -31,7 +31,7 @@ def _resolve_scripts_dir():
     sys.exit(1)
 
 
-def run_generate(config: Path, output_dir: Optional[str] = None, assets: Optional[str] = None):
+def run_generate(config: Path, output_dir: Optional[str] = None, assets: Optional[str] = None, asset_mode: str = "generate"):
     """Generate pipeline scripts from brand config."""
     scripts_dir = _resolve_scripts_dir()
     gen_script = os.path.join(scripts_dir, "generate_pipeline.py")
@@ -46,12 +46,18 @@ def run_generate(config: Path, output_dir: Optional[str] = None, assets: Optiona
     if assets:
         cmd.extend(["--assets", assets])
 
+    # Pass asset_mode via environment variable so generated scripts inherit it
+    env = os.environ.copy()
+    env["ASSET_MODE"] = asset_mode
+
     console.print(f"[dim]Running: {' '.join(cmd)}[/dim]")
-    result = subprocess.run(cmd)
+    if asset_mode != "generate":
+        console.print(f"[cyan]Asset mode: {asset_mode}[/cyan]")
+    result = subprocess.run(cmd, env=env)
     sys.exit(result.returncode)
 
 
-def run_execute(config: Path, batch: str = "all", output_dir: Optional[str] = None, force: bool = False):
+def run_execute(config: Path, batch: str = "all", output_dir: Optional[str] = None, force: bool = False, asset_mode: str = "generate"):
     """Execute generated pipeline scripts."""
     scripts_dir = _resolve_scripts_dir()
     run_script = os.path.join(scripts_dir, "run_pipeline.py")
@@ -62,8 +68,14 @@ def run_execute(config: Path, batch: str = "all", output_dir: Optional[str] = No
     if force:
         cmd.append("--force")
 
+    # Pass asset_mode via environment variable so executed scripts inherit it
+    env = os.environ.copy()
+    env["ASSET_MODE"] = asset_mode
+
     console.print(f"[dim]Running: {' '.join(cmd)}[/dim]")
-    result = subprocess.run(cmd)
+    if asset_mode != "generate":
+        console.print(f"[cyan]Asset mode: {asset_mode}[/cyan]")
+    result = subprocess.run(cmd, env=env)
     sys.exit(result.returncode)
 
 

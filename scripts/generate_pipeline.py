@@ -998,7 +998,8 @@ SKILL_REF_DIR = os.path.expanduser("~/.claude/skills/brandmint/references/images
 
 PROVIDER = os.environ.get("IMAGE_PROVIDER", "{provider}").lower()
 SUPPORTED_PROVIDERS = {{"fal", "openrouter", "openai", "replicate", "inference"}}
-if PROVIDER not in SUPPORTED_PROVIDERS:
+_USE_FALLBACK = PROVIDER == "auto"
+if not _USE_FALLBACK and PROVIDER not in SUPPORTED_PROVIDERS:
     print(f"WARNING: Unknown provider '{{PROVIDER}}', defaulting to FAL.")
     PROVIDER = "fal"
 
@@ -1011,17 +1012,34 @@ if INFERENCE_APP:
 
 try:
     from brandmint.core.providers import get_provider as _bm_get_provider
+    if _USE_FALLBACK:
+        from brandmint.core.providers import generate_with_fallback as _bm_generate_with_fallback
 except Exception as e:
     print(f"ERROR: Failed to import core provider adapters: {{e}}")
     sys.exit(1)
 
-try:
-    CORE_PROVIDER = _bm_get_provider(PROVIDER)
-except Exception as e:
-    print(f"ERROR: Provider '{{PROVIDER}}' is not available: {{e}}")
-    sys.exit(1)
+CORE_PROVIDER = None
+if not _USE_FALLBACK:
+    try:
+        CORE_PROVIDER = _bm_get_provider(PROVIDER)
+    except Exception as e:
+        print(f"ERROR: Provider '{{PROVIDER}}' is not available: {{e}}")
+        sys.exit(1)
 
-print(f"Using image provider: {{PROVIDER.upper()}}")
+if _USE_FALLBACK:
+    print("Using image provider: AUTO (fallback chain)")
+else:
+    print(f"Using image provider: {{PROVIDER.upper()}}")
+
+# =============================================================================
+# ASSET MODE — composite / inpaint / hybrid post-processing
+# =============================================================================
+ASSET_MODE = os.environ.get("ASSET_MODE", "generate").lower()
+if ASSET_MODE not in ("generate", "composite", "inpaint", "hybrid"):
+    print(f"WARNING: Unknown asset mode '{{ASSET_MODE}}', defaulting to generate.")
+    ASSET_MODE = "generate"
+if ASSET_MODE != "generate":
+    print(f"Asset mode: {{ASSET_MODE.upper()}}")
 
 NEGATIVE = """{negative_prompt}"""
 
@@ -1144,6 +1162,55 @@ def _normalize_png_if_needed(filepath):
         print(f"  WARNING: failed to normalize image payload at {{filepath}}: {{e}}")
 
 
+def _composite_post_pass(output_path, pid=""):
+    """Apply composite post-processing if ASSET_MODE != generate.
+
+    Overlays real brand logo onto AI-generated images using the compositor engine.
+    Saves the composited result as {{name}}-composited.png alongside the original.
+    """
+    if ASSET_MODE == "generate":
+        return
+    if not os.path.exists(output_path):
+        return
+
+    try:
+        from brandmint.core.asset_mode import AssetMode, route_asset
+        from brandmint.core.compositor import PostGenCompositor
+
+        mode = AssetMode(ASSET_MODE)
+        decision = route_asset(
+            asset_id=pid or os.path.basename(output_path),
+            global_mode=mode,
+            has_logo=bool(LOGO_PATH and os.path.exists(LOGO_PATH)),
+            has_product_images=bool(PRODUCT_REF_PATHS),
+        )
+
+        if not decision.needs_composite_pass:
+            return
+        if not LOGO_PATH or not os.path.exists(LOGO_PATH):
+            print(f"  SKIP composite: no logo file at {{LOGO_PATH}}")
+            return
+
+        # Build composited output path (preserve original)
+        base, ext = os.path.splitext(output_path)
+        composited_path = f"{{base}}-composited{{ext}}"
+
+        compositor = PostGenCompositor()
+        compositor.composite_pass_with_analysis(
+            generated_image_path=output_path,
+            logo_path=LOGO_PATH,
+            output_path=composited_path,
+        )
+
+        if os.path.exists(composited_path):
+            size_kb = os.path.getsize(composited_path) / 1024
+            print(f"  Composited: {{os.path.basename(composited_path)}} ({{size_kb:.0f}} KB)")
+    except ImportError as e:
+        print(f"  WARNING: composite pass unavailable (missing dependency): {{e}}")
+    except Exception as e:
+        print(f"  WARNING: composite post-pass failed: {{e}}")
+
+
 def gen_with_provider(
     prompt,
     model,
@@ -1155,34 +1222,52 @@ def gen_with_provider(
     negative_prompt="",
     **kwargs,
 ):
-    """Generate with core provider adapters only."""
-    if CORE_PROVIDER is None:
-        return False
-
+    """Generate with core provider adapters (single or auto-fallback)."""
     primary_ref = image_url
     if primary_ref is None and isinstance(image_urls, list) and image_urls:
         primary_ref = image_urls[0]
 
-    result = CORE_PROVIDER.generate(
-        prompt=prompt,
-        model=model,
-        output_path=output_path,
-        width=width,
-        height=height,
-        image_url=primary_ref,
-        negative_prompt=negative_prompt,
-        image_urls=image_urls,
-        **kwargs,
-    )
+    if _USE_FALLBACK:
+        result = _bm_generate_with_fallback(
+            prompt=prompt,
+            model=model,
+            output_path=output_path,
+            width=width,
+            height=height,
+            image_url=primary_ref,
+            negative_prompt=negative_prompt,
+            image_urls=image_urls,
+            **kwargs,
+        )
+    else:
+        if CORE_PROVIDER is None:
+            return False
+        result = CORE_PROVIDER.generate(
+            prompt=prompt,
+            model=model,
+            output_path=output_path,
+            width=width,
+            height=height,
+            image_url=primary_ref,
+            negative_prompt=negative_prompt,
+            image_urls=image_urls,
+            **kwargs,
+        )
+
     if not (result and result.success):
         err = result.error if result else "unknown adapter error"
-        print(f"  ERROR: generation failed for {{model}} via {{PROVIDER}}: {{err}}")
+        provider_label = "AUTO" if _USE_FALLBACK else PROVIDER
+        print(f"  ERROR: generation failed for {{model}} via {{provider_label}}: {{err}}")
         return False
 
     _normalize_png_if_needed(output_path)
     if os.path.exists(output_path):
         size_kb = os.path.getsize(output_path) / 1024
         print(f"  Saved: {{os.path.basename(output_path)}} ({{size_kb:.0f}} KB)")
+
+    # Composite post-pass: overlay real logo/product if ASSET_MODE != generate
+    _composite_post_pass(output_path)
+
     return True
 
 '''

@@ -45,6 +45,12 @@ class FalProvider(ImageProvider):
     def supports_image_reference(self) -> bool:
         return True  # Nano Banana Pro supports image references
     
+    def supports_inpainting(self) -> bool:
+        return True  # flux-fill endpoint
+    
+    def supports_edge_guided(self) -> bool:
+        return True  # flux-canny endpoint
+    
     def get_model_id(self, logical_model: str) -> str:
         return get_model_id("fal", logical_model)
     
@@ -169,6 +175,44 @@ class FalProvider(ImageProvider):
     ) -> dict:
         """Build model-aware payloads matching legacy generated-script behavior."""
         seed = kwargs.get("seed")
+
+        # --- flux-fill (inpainting) ---
+        if "flux-pro/v1/fill" in model_id:
+            if not image_url:
+                raise ValueError(
+                    "flux-fill requires image_url (base scene to inpaint)"
+                )
+            mask_url = kwargs.get("mask_url")
+            if not mask_url:
+                raise ValueError(
+                    "flux-fill requires mask_url (white=fill, black=keep)"
+                )
+            arguments: dict[str, Any] = {
+                "prompt": prompt,
+                "image": self._upload_reference(image_url),
+                "mask": self._upload_reference(mask_url),
+                "output_format": kwargs.get("output_format", "png"),
+            }
+            if seed is not None:
+                arguments["seed"] = seed
+            return arguments
+
+        # --- flux-canny (edge-guided) ---
+        if "flux-pro/v1/canny" in model_id:
+            if not image_url:
+                raise ValueError(
+                    "flux-canny requires image_url as control_image (edge/canny map)"
+                )
+            arguments = {
+                "prompt": prompt,
+                "control_image": self._upload_reference(image_url),
+                "output_format": kwargs.get("output_format", "png"),
+                "guidance_scale": guidance_scale,
+                "num_inference_steps": num_steps,
+            }
+            if seed is not None:
+                arguments["seed"] = seed
+            return arguments
 
         if "nano-banana" in model_id:
             arguments: dict[str, Any] = {

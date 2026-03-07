@@ -198,6 +198,17 @@ generation:
   output_format: "png"        # Primary output format
   env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
   provider: "fal"             # fal | openrouter | openai | replicate | inference | auto
+  asset_mode: "generate"      # generate | composite | inpaint | hybrid
+  composite_config:
+    logo_position: "bottom-right"  # 9-grid: top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right
+    logo_scale: 0.15               # fraction of canvas width
+    logo_padding: 20               # pixels from edge
+    logo_opacity: 1.0
+    logo_shadow: false
+    product_position: "center"
+    product_scale: 0.5
+    product_feather: 5
+    per_asset_overrides: {}        # e.g. {"2B-logo-lockup": "composite", "3A-product-hero": "inpaint"}
   visual_backend: "scripts"   # scripts | inference (writes inference scaffolds)
   inference_endpoint: "https://api.inference.sh"
   inference_app: "infsh-ai-image-generation" # Optional app override for generation.provider=inference
@@ -255,3 +266,12 @@ prompts:
   extended: {}                # Phase 3: Domain-specific asset prompts (keyed by prompt_key from registry)
                               # e.g., app_icon: "Minimalist app icon for {brand_name}..."
                               # Keys must match prompt_key in asset-registry.yaml
+
+# NotebookLM publishing configuration
+publishing:
+  synthesize: true                    # LLM prose synthesis (requires OPENROUTER_API_KEY)
+  synthesis_model: ""                 # Override model (default: anthropic/claude-3.5-haiku)
+  include_brand_materials: false      # Upload logos, style guide, visual descriptions as sources
+  vision_descriptions: false          # Generate LLM vision descriptions for visual assets
+  vision_model: ""                    # Override vision model (default: anthropic/claude-3.5-haiku)
+  max_sources: 50                     # NotebookLM Standard plan limit

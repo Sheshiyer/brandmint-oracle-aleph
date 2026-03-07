@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional, Set
 import yaml
 
 from .source_builder import SOURCE_GROUPS
+from .vision_describer import BrandStyleGuideBuilder
 
 
 # ---------------------------------------------------------------------------
@@ -85,7 +86,7 @@ class SourceCandidate:
     """A potential source for NotebookLM upload."""
 
     path: Path
-    source_type: str  # "prose", "image", "wiki", "config"
+    source_type: str  # "prose", "image", "wiki", "config", "visual-description", "brand-material"
     category: str     # "brand-identity", "product", "campaign", "social", "visual", "strategy"
     label: str        # Human-readable name
     size_bytes: int = 0
@@ -168,6 +169,62 @@ class SourceCurator:
         self._selected = self._select_within_budget()
         return self._selected
 
+    def coverage_report(self) -> Dict[str, Any]:
+        """Dry-run coverage report — runs curate() and returns structured metadata.
+
+        Returns a dict with:
+        - total_candidates: int — how many source candidates were found
+        - selected_count: int — how many passed the budget cut
+        - by_type: dict — count of candidates grouped by source_type
+        - brand_materials: list — paths of brand-material candidates
+        - vision_descriptions: list — paths of visual-description candidates
+        - budget_remaining: int — max_sources minus selected_count
+        - excluded: list of dicts {path, type, score, reason}
+        """
+        # Run the full curate pipeline
+        self.curate()
+
+        selected_count = len(self._selected)
+
+        # Group candidates by source_type
+        by_type: Dict[str, int] = {}
+        for c in self._candidates:
+            by_type[c.source_type] = by_type.get(c.source_type, 0) + 1
+
+        # Collect brand material paths (all candidates, not just selected)
+        brand_materials = [
+            str(c.path) for c in self._candidates
+            if c.source_type == "brand-material"
+        ]
+
+        # Collect vision description paths (all candidates, not just selected)
+        vision_descriptions = [
+            str(c.path) for c in self._candidates
+            if c.source_type == "visual-description"
+        ]
+
+        # Build excluded list
+        excluded = [
+            {
+                "path": str(c.path),
+                "type": c.source_type,
+                "score": round(c.score, 2),
+                "reason": c.skip_reason or "below budget cutoff",
+            }
+            for c in self._candidates
+            if not c.selected
+        ]
+
+        return {
+            "total_candidates": len(self._candidates),
+            "selected_count": selected_count,
+            "by_type": by_type,
+            "brand_materials": brand_materials,
+            "vision_descriptions": vision_descriptions,
+            "budget_remaining": self.max_sources - selected_count,
+            "excluded": excluded,
+        }
+
     def report(self) -> str:
         """Human-readable selection report for dry-run / logging."""
         if not self._candidates:
@@ -178,10 +235,12 @@ class SourceCurator:
         lines.append("━" * 52)
 
         # Group by type
-        type_order = ["prose", "config", "image", "wiki"]
+        type_order = ["prose", "visual-description", "config", "brand-material", "image", "wiki"]
         type_labels = {
             "prose": "Prose Documents",
+            "visual-description": "Visual Asset Descriptions",
             "config": "Brand Configuration",
+            "brand-material": "Brand Materials",
             "image": "Brand Images",
             "wiki": "Wiki Pages",
         }
@@ -223,7 +282,7 @@ class SourceCurator:
         total_selected = len(self._selected)
         total_text = sum(
             c.size_bytes for c in self._selected
-            if c.source_type in ("prose", "config", "wiki")
+            if c.source_type in ("prose", "config", "wiki", "visual-description", "brand-material")
         )
         total_images = sum(
             c.size_bytes for c in self._selected
@@ -245,6 +304,9 @@ class SourceCurator:
         candidates: List[SourceCandidate] = []
         candidates.extend(self._scan_prose_docs())
         candidates.extend(self._scan_config())
+        candidates.extend(self._scan_visual_descriptions())
+        candidates.extend(self._scan_brand_materials())
+        candidates.extend(self._scan_brand_config_sections())
         candidates.extend(self._scan_images())
         candidates.extend(self._scan_wiki_pages())
         return candidates
@@ -378,10 +440,121 @@ class SourceCurator:
 
         return results
 
+    # -- NB-06: Visual description scanning --------------------------------
+
+    def _scan_visual_descriptions(self) -> List[SourceCandidate]:
+        """Scan vision-cache directory for asset description markdown files."""
+        results: List[SourceCandidate] = []
+        cache_dir = self.brand_dir / ".brandmint" / "vision-cache"
+        if not cache_dir.is_dir():
+            return results
+
+        for md_file in sorted(cache_dir.glob("*.md")):
+            label = md_file.stem.replace("-", " ").title()
+            results.append(SourceCandidate(
+                path=md_file,
+                source_type="visual-description",
+                category="visual",
+                label=label,
+                size_bytes=md_file.stat().st_size,
+                content_value=75.0,  # Between prose (95) and image (40-88)
+                uniqueness=100.0,
+            ))
+
+        return results
+
+    # -- NB-08: Brand material scanning ------------------------------------
+
+    def _scan_brand_materials(self) -> List[SourceCandidate]:
+        """Scan brand-materials/ directory for user-provided brand files."""
+        results: List[SourceCandidate] = []
+        materials_dir = self.brand_dir / "brand-materials"
+
+        if not materials_dir.is_dir():
+            return results
+
+        # Supported file extensions for brand materials
+        supported = {".svg", ".pdf", ".png", ".jpg", ".jpeg", ".webp",
+                     ".ai", ".eps", ".psd", ".md", ".txt"}
+
+        for fpath in sorted(materials_dir.iterdir()):
+            if fpath.is_file() and fpath.suffix.lower() in supported:
+                label = fpath.stem.replace("-", " ").replace("_", " ").title()
+
+                # Score based on file type — vector/PDF logos score higher
+                if fpath.suffix.lower() in (".svg", ".ai", ".eps"):
+                    base_value = 70.0
+                elif fpath.suffix.lower() == ".pdf":
+                    base_value = 65.0
+                elif fpath.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp"):
+                    base_value = 55.0
+                else:
+                    base_value = 50.0
+
+                results.append(SourceCandidate(
+                    path=fpath,
+                    source_type="brand-material",
+                    category="brand-identity",
+                    label=label,
+                    size_bytes=fpath.stat().st_size,
+                    content_value=base_value,
+                    uniqueness=100.0,
+                ))
+
+        return results
+
+    # -- NB-09: Brand config section sources -------------------------------
+
+    def _scan_brand_config_sections(self) -> List[SourceCandidate]:
+        """Extract palette/typography from config and create structured source."""
+        results: List[SourceCandidate] = []
+
+        # Check if publishing.include_brand_materials is true (default: false)
+        publishing = self.config.get("publishing", {})
+        if not publishing.get("include_brand_materials", False):
+            return results
+
+        palette = self.config.get("palette", {})
+        typography = self.config.get("typography", {})
+        if not palette and not typography:
+            return results
+
+        # Use BrandStyleGuideBuilder to create structured content
+        builder = BrandStyleGuideBuilder()
+        guide_content = builder.build_style_guide(self.config)
+
+        if not guide_content:
+            return results
+
+        # Save to .brandmint/sources/
+        sources_dir = self.brand_dir / ".brandmint" / "sources"
+        sources_dir.mkdir(parents=True, exist_ok=True)
+        guide_path = sources_dir / "brand-style-guide.md"
+        guide_path.write_text(guide_content, encoding="utf-8")
+
+        results.append(SourceCandidate(
+            path=guide_path,
+            source_type="visual-description",
+            category="brand-identity",
+            label="Brand Style Guide",
+            size_bytes=guide_path.stat().st_size,
+            content_value=75.0,
+            uniqueness=90.0,
+        ))
+
+        return results
+
     # -- Scoring -----------------------------------------------------------
 
     def _score_all(self) -> None:
-        """Compute scores for all candidates with category diversity bonus."""
+        """Compute scores for all candidates with category diversity bonus.
+
+        NB-07 enhancements:
+        - Logo descriptions: +10 content_value
+        - Style guide source: +8 content_value
+        - Brand identity assets (2A, 2B): +5 category_bonus when both
+          image AND description exist
+        """
         # Count how many candidates per category
         category_counts: Dict[str, int] = {}
         for c in self._candidates:
@@ -391,10 +564,50 @@ class SourceCurator:
         # Categories with fewer candidates get a diversity bonus
         max_count = max(category_counts.values()) if category_counts else 1
 
+        # NB-07: Build lookup sets for complementary scoring
+        image_asset_ids: Set[str] = {
+            c.asset_id for c in self._candidates
+            if c.source_type == "image" and c.asset_id
+        }
+        visual_desc_stems: Set[str] = {
+            c.path.stem for c in self._candidates
+            if c.source_type == "visual-description"
+        }
+
         for c in self._candidates:
+            # NB-07: Logo description bonus (+10)
+            if (c.source_type == "visual-description"
+                    and "logo" in c.path.stem.lower()):
+                c.content_value += 10.0
+
+            # NB-07: Style guide bonus (+8)
+            if "brand-style-guide" in c.path.stem:
+                c.content_value += 8.0
+
+            # NB-07: Brand identity complementary bonus (+5)
+            if (c.source_type == "image"
+                    and c.asset_id in ("2A", "2B")
+                    and c.uniqueness > 0):
+                # Check if a matching description exists
+                has_desc = any(
+                    c.asset_id in stem
+                    for stem in visual_desc_stems
+                )
+                if has_desc:
+                    c.category_bonus += 5.0
+
+            # NB-06: Visual descriptions that complement uploaded images
+            # get higher uniqueness
+            if c.source_type == "visual-description":
+                # Check if this description matches an uploaded image asset
+                for asset_id in image_asset_ids:
+                    if asset_id in c.path.stem:
+                        c.uniqueness = min(100.0, c.uniqueness + 10.0)
+                        break
+
             # Category diversity bonus: underrepresented categories score higher
             cat_count = category_counts.get(c.category, 1)
-            c.category_bonus = max(0, 100.0 * (1 - cat_count / max_count))
+            c.category_bonus += max(0, 100.0 * (1 - cat_count / max_count))
 
             # Size efficiency: prefer smaller sources (more info per slot)
             if c.size_bytes > 0:
@@ -450,7 +663,7 @@ class SourceCurator:
                 continue
 
             # Size gate for text sources
-            if c.source_type in ("wiki",) and c.size_bytes > MAX_SOURCE_SIZE_BYTES:
+            if c.source_type in ("wiki", "visual-description", "brand-material") and c.size_bytes > MAX_SOURCE_SIZE_BYTES:
                 c.skip_reason = f"exceeds {MAX_SOURCE_SIZE_BYTES // 1024}KB limit"
                 continue
 

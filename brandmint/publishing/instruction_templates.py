@@ -75,6 +75,43 @@ def _brand_context_block(config: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
+# NB-10: Brand context injection helper
+# ---------------------------------------------------------------------------
+
+
+def inject_brand_context(template: str, config: dict) -> str:
+    """Replace brand placeholders in a template string.
+
+    Supported placeholders:
+        {palette_summary}     → colour palette summary
+        {typography_summary}  → typography hierarchy summary
+        {logo_reference}      → brand logo reference
+        {brand_colors}        → hex colour values
+        {aesthetic_direction}  → aesthetic/theme direction
+
+    Args:
+        template: String with {placeholder} tokens.
+        config: Parsed brand-config.yaml dict.
+
+    Returns:
+        Template with placeholders replaced by brand-specific values.
+    """
+    from .brand_asset_injector import get_brand_context_for_instructions
+
+    ctx = get_brand_context_for_instructions(config)
+
+    # Replace all known placeholders
+    result = template
+    for key, value in ctx.items():
+        placeholder = "{" + key + "}"
+        if placeholder in result:
+            display_value = value if isinstance(value, str) else str(value)
+            result = result.replace(placeholder, display_value)
+
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Video style auto-resolution
 # ---------------------------------------------------------------------------
 
@@ -384,6 +421,18 @@ def brand_report(config: dict) -> str:
 
 FORMAT: Structured briefing document with clear sections and data.
 
+BRAND EMBEDDING DIRECTIVES:
+- Use brand colours for section headers and accent elements
+- Place brand logo in document header
+- Apply brand typography for headings and body text
+- Reference the brand style guide source when available
+
+VISUAL IDENTITY:
+Colour Palette:
+{_palette_block(config)}
+Typography:
+{_typography_block(config)}
+
 SECTIONS:
 1. Executive Summary — One-page overview of the brand
 2. Market Analysis — Niche validation, market opportunity, competitive landscape
@@ -568,6 +617,11 @@ Colour Palette:
 Typography:
 {_typography_block(config)}
 
+BRAND MATERIAL REFERENCES:
+- Use the brand's color palette for all visual elements
+- Include the brand logo in headers/footers
+- Follow the typography hierarchy for text elements
+
 INFOGRAPHIC SECTIONS:
 1. Brand Hero — Name, tagline, and archetype visual
 2. By the Numbers — Key statistics (market size, audience reach, growth)
@@ -593,6 +647,13 @@ def infographic_product(config: dict) -> str:
 VISUAL IDENTITY:
 Colour Palette:
 {_palette_block(config)}
+Typography:
+{_typography_block(config)}
+
+BRAND MATERIAL REFERENCES:
+- Use the brand's color palette for all visual elements
+- Include the brand logo in the header area
+- Follow the typography hierarchy for headings and body text
 
 FOCUS: Product features, benefits, and differentiation.
 

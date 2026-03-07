@@ -71,5 +71,5 @@ Use these ready-made and combo prompts to drive the full 6-part crowdfunding wor
 - Minimal inputs
   - "[PRODUCT_INPUTS]: Name, price, overview"
 - Allowed skills example
-  - "[ALLOWED_SKILLS]: buyer-persona-generator, competitor-analysis, detailed-product-description, product-positioning-summary, mds-messaging-direction-summary, voice-and-tone, pre-launch-ads, welcome-email-sequence, pre-launch-email-sequence, launch-email-sequence, campaign-page-copy, campaign-video-script, live-campaign-ads, press-release-copy"
+  - "[ALLOWED_SKILLS]: buyer-persona, competitor-analysis, detailed-product-description, product-positioning-summary, mds-messaging-direction-summary, voice-and-tone, pre-launch-ads, welcome-email-sequence, pre-launch-email-sequence, launch-email-sequence, campaign-page-copy, campaign-video-script, live-campaign-ads, press-release-copy"
 
