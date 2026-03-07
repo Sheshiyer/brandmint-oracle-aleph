@@ -2,6 +2,7 @@ import { ChangeEvent } from "react";
 import { useProjectStore } from "../stores/projectStore";
 import { usePipelineStore } from "../stores/pipelineStore";
 import { useUiStore } from "../stores/uiStore";
+import { useReferenceStore } from "../stores/referenceStore";
 import { parseProductMd, extractionToConfig, defaultConfigDraft } from "../lib/utils";
 import { emptyExtraction } from "../types";
 import { pickMarkdownFile, pickFolder, readTextFile } from "../lib/native";
@@ -21,8 +22,6 @@ export default function IntakePage() {
   const setConfigPath = useProjectStore((s) => s.setConfigPath);
   const setExportedAt = useProjectStore((s) => s.setExportedAt);
   const setSelectedReferenceIds = (ids: string[]) => {
-    // Access reference store directly
-    const { useReferenceStore } = require("../stores/referenceStore");
     useReferenceStore.getState().setSelectedReferenceIds(ids);
   };
   const setWikiHandoffDone = useProjectStore((s) => s.setWikiHandoffDone);

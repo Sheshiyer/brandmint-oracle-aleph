@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { usePipelineStore } from "../../stores/pipelineStore";
 import { useUiStore } from "../../stores/uiStore";
 import { useSettingsStore } from "../../stores/settingsStore";
+import { buildProcessPages } from "../../lib/utils";
 
 export default function Header() {
   const bridgeOnline = usePipelineStore((s) => s.bridgeOnline);
@@ -14,11 +15,7 @@ export default function Header() {
   const setSelectedPageId = useUiStore((s) => s.setSelectedPageId);
 
   const selectedPageId = useUiStore((s) => s.selectedPageId);
-  const processPages = useMemo(() => {
-    // We import lazily to avoid circular deps in layout
-    const { buildProcessPages } = require("../../lib/utils");
-    return buildProcessPages();
-  }, []);
+  const processPages = useMemo(() => buildProcessPages(), []);
 
   const selectedPage = useMemo(
     () => processPages.find((p: { id: string }) => p.id === selectedPageId) ?? processPages[0],
