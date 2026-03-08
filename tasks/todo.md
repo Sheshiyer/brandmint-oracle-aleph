@@ -225,6 +225,31 @@ Objective: add a no-break, config-gated path to use imported `infsh-*` skills in
     - `pytest -q tests/test_visual_backend.py tests/test_generate_pipeline_template.py tests/test_skills_registry.py`
     - `python3 -m brandmint.cli.app launch --config assets/example-tryambakam-noesis.yaml --scenario crowdfunding-lean --dry-run --non-interactive`
 
+---
+
+## Task Addendum (2026-03-08): Tauri Release Assets for GitHub Releases (#113)
+
+Objective: publish downloadable macOS desktop release assets for tagged releases by building the Tauri app on GitHub Actions and uploading both the generated `.dmg` and an archived `.app` bundle to the existing GitHub Release.
+
+### Plan
+- [x] Inspect current Tauri bundle config and release workflows in the isolated `codex/tauri-release-assets` worktree.
+- [x] Add a dedicated GitHub Actions workflow triggered on GitHub Release publish and manual dispatch.
+- [x] Build the Tauri desktop app on `macos-latest`, archive `Brandmint.app` as `.zip`, and upload both `.dmg` and `.app.zip` assets to the matching release.
+- [x] Update release documentation/checklist for the new desktop release asset path and note signing/notarization limits.
+- [x] Run syntax/static validation and capture any baseline build blockers separately from this workflow scope.
+
+### Review
+- Added `.github/workflows/publish-tauri-release-assets.yml` to build the Tauri desktop app on `macos-latest` for release tags, archive the generated `.app` with `ditto`, and upload both the `.dmg` and `.app.zip` to the matching GitHub Release with `gh release upload --clobber`.
+- Updated `docs/release-checklist.md` with desktop release asset checks and explicit current limitations around unsigned, non-notarized macOS artifacts.
+- Validation passed:
+  - `ruby -e 'require "yaml"; YAML.load_file(".github/workflows/publish-tauri-release-assets.yml")'`
+  - `python3 -m json.tool ui/src-tauri/tauri.conf.json >/dev/null`
+- Baseline blocker outside `#113` scope:
+  - `npm --prefix ui install --no-package-lock && npm --prefix ui run build` fails in existing frontend code with TypeScript errors in `ui/src/App.legacy.tsx` (`Cannot find namespace 'JSX'`) and `ui/src/test/setup.ts` (`Cannot find name 'vi'`).
+  - This blocks the release workflow too, because `ui/src-tauri/tauri.conf.json` sets `beforeBuildCommand: "npm run build"` for Tauri builds.
+- Reproducibility note:
+  - `ui/` does not currently include a committed lockfile, so the release workflow uses `npm install --no-package-lock` instead of `npm ci`.
+
 ### Meta-Semantic Upgrade ("Brain" Routing)
 - [x] Add meta-semantic media skill selector in inference backend.
 - [x] Allow semantic config for browser-routing intent via `semantic_routing`.
