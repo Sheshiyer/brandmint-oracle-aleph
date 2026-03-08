@@ -1,0 +1,26 @@
+name: Inference Pack Integrity
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  validate-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install validator dependency
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Validate normalized inference pack
+        run: python scripts/validate_skill_pack.py --pack-root skills/external/inference-sh/normalized

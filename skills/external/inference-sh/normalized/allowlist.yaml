@@ -1,0 +1,9 @@
+version: 1
+skills:
+- infsh-agent-tools
+- infsh-agentic-browser
+- infsh-ai-image-generation
+- infsh-ai-video-generation
+- infsh-llm-models
+- infsh-python-executor
+- infsh-web-search

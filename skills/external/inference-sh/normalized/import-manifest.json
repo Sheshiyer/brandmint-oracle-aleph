@@ -1,0 +1,93 @@
+{
+  "source_repo": "https://github.com/inference-sh/skills.git",
+  "source_commit": "ab546d072f1e41adac2fa65ca3743c21c041e399",
+  "imported_at": "2026-03-04T02:28:42.014968+00:00",
+  "allowlist": [
+    "agent-tools",
+    "agentic-browser",
+    "ai-image-generation",
+    "ai-video-generation",
+    "llm-models",
+    "python-executor",
+    "web-search"
+  ],
+  "skills": [
+    {
+      "source_slug": "agent-tools",
+      "source_basename_slug": "agent-tools",
+      "source_path": "tools/agent-tools",
+      "normalized_id": "infsh-agent-tools",
+      "target_path": "normalized/infsh-agent-tools",
+      "had_frontmatter": true,
+      "frontmatter_parse_ok": true,
+      "rewrites_applied": 0
+    },
+    {
+      "source_slug": "ai-image-generation",
+      "source_basename_slug": "ai-image-generation",
+      "source_path": "tools/image/ai-image-generation",
+      "normalized_id": "infsh-ai-image-generation",
+      "target_path": "normalized/infsh-ai-image-generation",
+      "had_frontmatter": true,
+      "frontmatter_parse_ok": true,
+      "rewrites_applied": 1
+    },
+    {
+      "source_slug": "llm-models",
+      "source_basename_slug": "llm-models",
+      "source_path": "tools/llm/llm-models",
+      "normalized_id": "infsh-llm-models",
+      "target_path": "normalized/infsh-llm-models",
+      "had_frontmatter": true,
+      "frontmatter_parse_ok": true,
+      "rewrites_applied": 1
+    },
+    {
+      "source_slug": "web-search",
+      "source_basename_slug": "web-search",
+      "source_path": "tools/llm/web-search",
+      "normalized_id": "infsh-web-search",
+      "target_path": "normalized/infsh-web-search",
+      "had_frontmatter": true,
+      "frontmatter_parse_ok": true,
+      "rewrites_applied": 1
+    },
+    {
+      "source_slug": "agentic-browser",
+      "source_basename_slug": "agentic-browser",
+      "source_path": "tools/utilities/agentic-browser",
+      "normalized_id": "infsh-agentic-browser",
+      "target_path": "normalized/infsh-agentic-browser",
+      "had_frontmatter": true,
+      "frontmatter_parse_ok": true,
+      "rewrites_applied": 0
+    },
+    {
+      "source_slug": "python-executor",
+      "source_basename_slug": "python-executor",
+      "source_path": "tools/utilities/python-executor",
+      "normalized_id": "infsh-python-executor",
+      "target_path": "normalized/infsh-python-executor",
+      "had_frontmatter": true,
+      "frontmatter_parse_ok": true,
+      "rewrites_applied": 0
+    },
+    {
+      "source_slug": "ai-video-generation",
+      "source_basename_slug": "ai-video-generation",
+      "source_path": "tools/video/ai-video-generation",
+      "normalized_id": "infsh-ai-video-generation",
+      "target_path": "normalized/infsh-ai-video-generation",
+      "had_frontmatter": true,
+      "frontmatter_parse_ok": true,
+      "rewrites_applied": 1
+    }
+  ],
+  "stats": {
+    "candidate_dirs": 68,
+    "imported": 7,
+    "skipped": 61,
+    "frontmatter_fixed": 0,
+    "reference_rewrites": 4
+  }
+}

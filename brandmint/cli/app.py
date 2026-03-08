@@ -226,10 +226,17 @@ def registry_list(
 
 
 @registry_app.command("sync")
-def registry_sync():
+def registry_sync(
+    output: Optional[Path] = typer.Option(
+        None,
+        "--output",
+        "-o",
+        help="Output JSON path (default: ./.brandmint/registry.json)",
+    ),
+):
     """Sync skill registry to JSON file."""
     from .registry import run_sync
-    run_sync()
+    run_sync(output=output)
 
 
 @registry_app.command("info")
@@ -239,6 +246,22 @@ def registry_info(
     """Show detailed information about a specific skill."""
     from .registry import run_info
     run_info(skill_id)
+
+
+@registry_app.command("doctor")
+def registry_doctor(
+    strict: bool = typer.Option(
+        False,
+        "--strict",
+        help="Exit with non-zero status if issues are found",
+    ),
+):
+    """Run registry diagnostics (conflicts, aliases, skill resolvability)."""
+    from .registry import run_doctor
+
+    code = run_doctor(strict=strict)
+    if code != 0:
+        raise typer.Exit(code=code)
 
 
 # ━━━ Install subcommands ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
