@@ -452,3 +452,35 @@ Objective: complete provider-path unification by removing inline provider HTTP l
   - `python3 -m brandmint.cli.app inference route-test --config ./assets/example-tryambakam-noesis.yaml --batch products --assets APP-SCREENSHOT,3A` -> pass
   - `python3 -m brandmint.cli.app registry doctor --strict` -> pass
   - `python3 -m brandmint.cli.app launch --config ./assets/example-tryambakam-noesis.yaml --dry-run` -> pass
+
+---
+
+## Task Addendum (2026-03-08): Install Check Input Validation Follow-up
+
+Objective: harden the merged provider-aware install check path so explicit invalid `--provider` and `--config` input cannot silently downgrade to `auto`.
+
+### Plan
+- [x] Create a follow-up branch from `origin/main` after the `#115` merge.
+- [x] Make explicit invalid `--provider` values fail fast instead of normalizing to `auto`.
+- [x] Make explicit `--config` errors fail fast for missing files, parse failures, invalid top-level shape, and invalid `generation.provider` / `generation.fallback_chain` values.
+- [x] Surface those validation failures as CLI exit code `2` with a clear error message.
+- [x] Add regression coverage for invalid provider input and bad config input.
+- [x] Verify with targeted pytest and CLI smoke checks before pushing.
+
+### Review
+- `brandmint/installer/setup_skills.py` now distinguishes explicit user input from best-effort defaults:
+  - `--provider` must be one of the supported providers or the install check exits with an error.
+  - `--config` must exist and parse as a top-level mapping.
+  - invalid provider values inside `generation.provider` and `generation.fallback_chain` now fail the targeted check instead of silently degrading to `auto`.
+- `brandmint/cli/app.py` now converts config/provider validation exceptions into a clean CLI error and exit code `2`.
+- Added regression coverage in `tests/test_install_check.py` for:
+  - invalid explicit provider
+  - missing config path
+  - invalid provider in config
+  - invalid fallback provider in config
+  - CLI failure modes for invalid provider and missing config
+- Verification:
+  - `python3 -m py_compile brandmint/installer/setup_skills.py brandmint/cli/app.py tests/test_install_check.py` -> pass
+  - `pytest -q tests/test_install_check.py tests/test_inference_provider.py` -> `13 passed`
+  - `python3 -m brandmint.cli.app install check --provider openroutr` -> exit `2`
+  - `python3 -m brandmint.cli.app install check --config <missing-path>` -> exit `2`

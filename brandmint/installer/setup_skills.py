@@ -234,20 +234,26 @@ def resolve_install_provider(
     config_data = _load_brand_config(config)
     generation = config_data.get("generation", {}) if isinstance(config_data, dict) else {}
 
-    selected = _normalize_provider_name(
-        provider
-        or generation.get("provider")
-        or os.environ.get("IMAGE_PROVIDER")
-        or "auto"
-    )
+    if provider is not None:
+        selected = _require_provider_name(provider, source="--provider")
+    elif generation.get("provider") is not None:
+        config_label = f"{config}: generation.provider" if config is not None else "generation.provider"
+        selected = _require_provider_name(generation.get("provider"), source=config_label)
+    else:
+        selected = _normalize_provider_name(os.environ.get("IMAGE_PROVIDER") or "auto")
 
     raw_chain = generation.get("fallback_chain")
     if isinstance(raw_chain, list):
-        fallback_chain = [
-            normalized
-            for normalized in (_normalize_provider_name(item) for item in raw_chain)
-            if normalized in PROVIDER_ENV_VARS
-        ]
+        fallback_chain = []
+        for item in raw_chain:
+            normalized = _normalize_provider_name(item)
+            if normalized not in PROVIDER_ENV_VARS:
+                if config is not None:
+                    raise ValueError(
+                        f"{config}: generation.fallback_chain contains unsupported provider {item!r}"
+                    )
+                continue
+            fallback_chain.append(normalized)
     else:
         fallback_chain = []
 
@@ -348,23 +354,35 @@ def _normalize_provider_name(value: Any) -> str:
     return "auto"
 
 
+def _require_provider_name(value: Any, source: str) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized in SUPPORTED_PROVIDERS:
+        return normalized
+
+    supported = ", ".join(SUPPORTED_PROVIDERS)
+    raise ValueError(f"{source} must be one of: {supported}. Got {value!r}")
+
+
 def _load_brand_config(path: Optional[Path]) -> Dict[str, Any]:
     if path is None:
         return {}
     if not path.exists():
-        return {}
+        raise FileNotFoundError(f"Config file not found: {path}")
 
     try:
         import yaml
     except ImportError:
-        return {}
+        raise RuntimeError("PyYAML is required to read config files for install checks")
 
     try:
         data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    except Exception:
-        return {}
+    except Exception as exc:
+        raise ValueError(f"Failed to parse config file {path}: {exc}") from exc
 
-    return data if isinstance(data, dict) else {}
+    if not isinstance(data, dict):
+        raise ValueError(f"Config file {path} must contain a top-level mapping")
+
+    return data
 
 
 def setup_brand_directory(
