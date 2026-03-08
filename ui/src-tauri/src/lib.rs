@@ -102,8 +102,21 @@ async fn restart_sidecar(
     state.shutdown();
     tokio::time::sleep(std::time::Duration::from_millis(500)).await;
     sidecar::spawn_sidecar(&app, &state)?;
-    sidecar::wait_for_healthy(&state).await?;
-    Ok("Sidecar restarted".to_string())
+    match sidecar::wait_for_healthy(&state).await {
+        Ok(()) => {
+            let _ = app.emit("sidecar-status", serde_json::json!({
+                "status": "ready",
+            }));
+            Ok("Sidecar restarted".to_string())
+        }
+        Err(e) => {
+            let _ = app.emit("sidecar-status", serde_json::json!({
+                "status": "unhealthy",
+                "error": e.clone(),
+            }));
+            Err(e)
+        }
+    }
 }
 
 #[tauri::command]

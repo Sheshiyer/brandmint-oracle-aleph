@@ -258,6 +258,38 @@ Objective: publish downloadable macOS desktop release assets for tagged releases
 - Reproducibility note:
   - `ui/` does not currently include a committed lockfile, so the release workflow uses `npm install --no-package-lock` instead of `npm ci`.
 
+---
+
+## Task Addendum (2026-03-08): Tauri Sidecar Coupling Hardening
+
+Objective: ensure the desktop app does not present itself as usable unless the bridge sidecar is actually healthy.
+
+### Plan
+- [x] Trace the current sidecar startup flow across Rust setup, emitted status events, and frontend splash handling.
+- [x] Remove frontend startup bypasses that allowed the app to become interactive without a healthy bridge.
+- [x] Add a startup health probe so the UI can recover safely if it misses the initial `ready` event.
+- [x] Make `restart_sidecar` emit authoritative ready/unhealthy events after retry attempts.
+- [x] Add a regression test for startup success and startup failure/no-bypass behavior.
+- [ ] Re-run full Tauri bundle verification after the startup-coupling changes.
+
+### Review
+- Root cause:
+  - `ui/src/components/SplashScreen.tsx` previously timed out to `ready` after 20 seconds and exposed a `Continue anyway` button.
+  - That meant the Tauri shell could look usable even when the sidecar was absent or unhealthy.
+- Hardening implemented:
+  - removed the timeout-to-ready fallback
+  - removed the `Continue anyway` bypass
+  - added active `get_health` polling during startup
+  - treat `failed`, `unhealthy`, `stopped`, and `terminated` sidecar states as blocking states
+  - `restart_sidecar` now emits `sidecar-status` events on success/failure instead of relying on timing side effects
+- Regression coverage:
+  - added `ui/src/components/__tests__/SplashScreen.test.tsx`
+  - verifies successful reveal when health succeeds
+  - verifies the app stays blocked when the bridge never becomes healthy
+- Verification:
+  - `npm --prefix ui test -- SplashScreen.test.tsx` -> pass
+  - `npm --prefix ui run build` -> pass
+
 ### Meta-Semantic Upgrade ("Brain" Routing)
 - [x] Add meta-semantic media skill selector in inference backend.
 - [x] Allow semantic config for browser-routing intent via `semantic_routing`.

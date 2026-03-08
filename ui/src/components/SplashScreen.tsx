@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { isTauri, listenEvent } from "../lib/tauri";
+import { apiBridge, isTauri, listenEvent } from "../lib/tauri";
 
-type SidecarStatus = "starting" | "ready" | "unhealthy" | "failed";
+type SidecarStatus = "starting" | "ready" | "unhealthy" | "failed" | "stopped";
+
+const STARTUP_TIMEOUT_MS = 20_000;
+const HEALTH_POLL_INTERVAL_MS = 500;
 
 export default function SplashScreen({ children }: { children: React.ReactNode }) {
   const [status, setStatus] = useState<SidecarStatus>("starting");
@@ -15,26 +18,54 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
       return;
     }
 
+    let cancelled = false;
     const unlisteners: (() => void)[] = [];
+    const startupDeadline = Date.now() + STARTUP_TIMEOUT_MS;
+
+    const markFailed = (nextStatus: SidecarStatus, message: string) => {
+      if (cancelled) return;
+      setStatus(nextStatus);
+      setError(message);
+    };
 
     listenEvent("sidecar-status", (payload) => {
       const data = payload as { status: string; error?: string };
       if (data.status === "ready") {
         setStatus("ready");
+        setError("");
       } else if (data.status === "failed" || data.status === "unhealthy") {
-        setStatus(data.status as SidecarStatus);
-        setError(data.error || "Unknown error");
+        markFailed(data.status as SidecarStatus, data.error || "Unknown error");
+      } else if (data.status === "stopped" || data.status === "terminated") {
+        markFailed("stopped", data.error || "Bridge process stopped");
       }
     }).then((unlisten) => unlisteners.push(unlisten));
 
-    // Timeout fallback: if sidecar doesn't report ready in 20s,
-    // show the app anyway (bridge might already be running externally)
-    const timeout = setTimeout(() => {
-      setStatus((prev) => (prev === "starting" ? "ready" : prev));
-    }, 20000);
+    const pollHealth = async () => {
+      while (!cancelled) {
+        try {
+          await apiBridge("get_health");
+          if (!cancelled) {
+            setStatus("ready");
+            setError("");
+          }
+          return;
+        } catch (probeError) {
+          if (Date.now() >= startupDeadline) {
+            markFailed(
+              "failed",
+              `Bridge did not become healthy within ${STARTUP_TIMEOUT_MS / 1000}s: ${String(probeError)}`,
+            );
+            return;
+          }
+          await new Promise((resolve) => setTimeout(resolve, HEALTH_POLL_INTERVAL_MS));
+        }
+      }
+    };
+
+    void pollHealth();
 
     return () => {
-      clearTimeout(timeout);
+      cancelled = true;
       unlisteners.forEach((fn) => fn());
     };
   }, []);
@@ -78,20 +109,19 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
                 setError("");
                 // Trigger sidecar restart via invoke
                 import("@tauri-apps/api/core").then(({ invoke }) => {
-                  invoke("restart_sidecar").catch((e) => {
-                    setStatus("failed");
-                    setError(String(e));
-                  });
+                  invoke("restart_sidecar")
+                    .then(() => {
+                      setStatus("ready");
+                      setError("");
+                    })
+                    .catch((e) => {
+                      setStatus("failed");
+                      setError(String(e));
+                    });
                 });
               }}
             >
               Retry
-            </button>
-            <button
-              style={{ ...styles.retryBtn, background: "transparent", border: "1px solid rgba(255,255,255,0.2)" }}
-              onClick={() => setStatus("ready")}
-            >
-              Continue anyway
             </button>
           </>
         )}
