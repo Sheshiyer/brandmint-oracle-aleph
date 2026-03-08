@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { vi } from "vitest";
 
 // Mock Tauri APIs — these are only available inside the Tauri webview runtime
 vi.mock("@tauri-apps/api/core", () => ({

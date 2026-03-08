@@ -6,6 +6,8 @@ use std::sync::Arc;
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
 use tauri::{Emitter, Manager};
 
+const APP_CONFIG_DIR: &str = "com.brandmint.desktop";
+
 // ── Tauri Commands ──────────────────────────────────────────────
 
 #[tauri::command]
@@ -135,7 +137,7 @@ async fn save_window_state(window: tauri::Window) -> Result<(), String> {
     });
     let config_dir = dirs::config_dir()
         .ok_or("No config dir")?
-        .join("com.brandmint.app");
+        .join(APP_CONFIG_DIR);
     std::fs::create_dir_all(&config_dir).map_err(|e| e.to_string())?;
     std::fs::write(
         config_dir.join("window-state.json"),
@@ -149,7 +151,7 @@ async fn save_window_state(window: tauri::Window) -> Result<(), String> {
 async fn restore_window_state(window: tauri::Window) -> Result<(), String> {
     let config_dir = dirs::config_dir()
         .ok_or("No config dir")?
-        .join("com.brandmint.app");
+        .join(APP_CONFIG_DIR);
     let path = config_dir.join("window-state.json");
     if path.exists() {
         let data = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
@@ -275,7 +277,7 @@ pub fn run() {
                 if let Some(main_window) = app.get_webview_window("main") {
                     if let Some(config_dir) = dirs::config_dir() {
                         let state_path =
-                            config_dir.join("com.brandmint.app").join("window-state.json");
+                            config_dir.join(APP_CONFIG_DIR).join("window-state.json");
                         if state_path.exists() {
                             if let Ok(data) = std::fs::read_to_string(&state_path) {
                                 if let Ok(ws) =
@@ -405,7 +407,7 @@ pub fn run() {
                             (window.outer_position(), window.outer_size())
                         {
                             if let Some(config_dir) = dirs::config_dir() {
-                                let dir = config_dir.join("com.brandmint.app");
+                                let dir = config_dir.join(APP_CONFIG_DIR);
                                 let _ = std::fs::create_dir_all(&dir);
                                 let state_json = serde_json::json!({
                                     "x": pos.x, "y": pos.y,

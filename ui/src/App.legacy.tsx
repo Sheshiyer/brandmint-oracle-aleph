@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+import type { JSX } from "react";
 
 type RunState = "idle" | "running" | "retrying" | "aborted";
 

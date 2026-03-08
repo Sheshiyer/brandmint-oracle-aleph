@@ -241,12 +241,20 @@ Objective: publish downloadable macOS desktop release assets for tagged releases
 ### Review
 - Added `.github/workflows/publish-tauri-release-assets.yml` to build the Tauri desktop app on `macos-latest` for release tags, archive the generated `.app` with `ditto`, and upload both the `.dmg` and `.app.zip` to the matching GitHub Release with `gh release upload --clobber`.
 - Updated `docs/release-checklist.md` with desktop release asset checks and explicit current limitations around unsigned, non-notarized macOS artifacts.
+- Fixed the UI TypeScript blockers that were preventing Tauri release builds:
+  - `ui/src/App.legacy.tsx` now imports `JSX` type from React for React 19-compatible typing.
+  - `ui/src/test/setup.ts` now imports `vi` from Vitest explicitly so plain TypeScript compilation succeeds.
+- Normalized the macOS bundle identifier from `com.brandmint.app` to `com.brandmint.desktop` and aligned Rust-side config-dir paths to remove the packaging warning about identifiers ending in `.app`.
 - Validation passed:
   - `ruby -e 'require "yaml"; YAML.load_file(".github/workflows/publish-tauri-release-assets.yml")'`
   - `python3 -m json.tool ui/src-tauri/tauri.conf.json >/dev/null`
-- Baseline blocker outside `#113` scope:
-  - `npm --prefix ui install --no-package-lock && npm --prefix ui run build` fails in existing frontend code with TypeScript errors in `ui/src/App.legacy.tsx` (`Cannot find namespace 'JSX'`) and `ui/src/test/setup.ts` (`Cannot find name 'vi'`).
-  - This blocks the release workflow too, because `ui/src-tauri/tauri.conf.json` sets `beforeBuildCommand: "npm run build"` for Tauri builds.
+- End-to-end local verification passed:
+  - `npm --prefix ui install --no-package-lock`
+  - `npm --prefix ui run build`
+  - `npm --prefix ui run tauri:build -- --bundles app,dmg`
+  - produced:
+    - `ui/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Brandmint.app`
+    - `ui/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Brandmint_5.0.0_aarch64.dmg`
 - Reproducibility note:
   - `ui/` does not currently include a committed lockfile, so the release workflow uses `npm install --no-package-lock` instead of `npm ci`.
 

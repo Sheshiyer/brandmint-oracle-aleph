@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Brandmint",
   "version": "5.0.0",
-  "identifier": "com.brandmint.app",
+  "identifier": "com.brandmint.desktop",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:4188",
