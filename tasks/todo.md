@@ -218,6 +218,28 @@ Objective: add a no-break, config-gated path to use imported `infsh-*` skills in
 - Result:
   - Image-skill policy now lives in `generation.inference_skill_policy` and is enforced in `brandmint/pipeline/visual_backend.py`.
   - Allowlisted, supported image roles only:
+
+---
+
+## Task Addendum (2026-03-08): Provider-Aware Install Checks (#65)
+
+Objective: make `bm install check` validate the selected provider path instead of always requiring FAL readiness.
+
+### Plan
+- [x] Refactor install readiness checks to resolve provider from explicit CLI option, config, or `IMAGE_PROVIDER`.
+- [x] Support provider-specific env validation for `fal`, `openrouter`, `openai`, `replicate`, `inference`, and `auto`.
+- [x] Keep provider-specific import checks only where they are actually required (`fal-client` for FAL).
+- [x] Add CLI options to pass `--provider` and `--config` into install checks.
+- [x] Add focused regression tests for provider resolution, auto fallback evaluation, and CLI plumbing.
+- [x] Verify with targeted pytest plus CLI smoke checks before pushing.
+
+### Review
+- `pytest -q tests/test_install_check.py` passed (`5 passed`).
+- `python3 -m py_compile brandmint/installer/setup_skills.py brandmint/cli/app.py tests/test_install_check.py` passed.
+- CLI smoke checks passed for inference provider selection:
+  - `INFERENCE_API_KEY=test-key python3 -m brandmint.cli.app install check --provider inference`
+  - `INFERENCE_API_KEY=test-key python3 -m brandmint.cli.app install check --config <temp-config>`
+- Pre-existing local environment issue remains visible and unchanged: `brand skills (44/52)` still fails independently of provider readiness.
     - scaffold: `infsh-llm-models`
     - media: `infsh-ai-image-generation`, `infsh-agentic-browser`
   - Verification:

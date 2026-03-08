@@ -274,10 +274,23 @@ def install_skills():
 
 
 @install_app.command("check")
-def install_check():
-    """Verify brandmint installation is complete."""
+def install_check(
+    provider: Optional[str] = typer.Option(
+        None,
+        "--provider",
+        "-p",
+        help="Provider to validate (fal, openrouter, openai, replicate, inference, auto)",
+    ),
+    config: Optional[Path] = typer.Option(
+        None,
+        "--config",
+        "-c",
+        help="Optional brand-config.yaml to source generation.provider and fallback_chain from",
+    ),
+):
+    """Verify brandmint installation is complete for the selected provider path."""
     from ..installer.setup_skills import check_installation
-    check_installation(console=console)
+    check_installation(console=console, provider=provider, config=config)
 
 
 # ━━━ Report command ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

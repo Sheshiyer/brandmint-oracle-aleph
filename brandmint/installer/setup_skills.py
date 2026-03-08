@@ -1,7 +1,7 @@
 """
 Brandmint -- Installation and setup utilities.
 
-Handles skill symlinks, FAL_KEY verification, and brand directory scaffolding.
+Handles skill symlinks, provider readiness verification, and brand directory scaffolding.
 Consumed by `bm install skills` and `bm install check` CLI commands.
 """
 from __future__ import annotations
@@ -11,7 +11,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 from rich.console import Console
 from rich.table import Table
@@ -22,6 +22,18 @@ BRAND_SKILLS_DIR = PACKAGE_ROOT / "skills"
 CLAUDE_SKILLS_DIR = Path.home() / ".claude" / "skills"
 BRANDMINT_SKILL_DIR = CLAUDE_SKILLS_DIR / "brandmint"
 CLAUDE_ENV_PATH = Path.home() / ".claude" / ".env"
+
+SUPPORTED_PROVIDERS = ("fal", "openrouter", "openai", "replicate", "inference", "auto")
+PROVIDER_ENV_VARS = {
+    "fal": "FAL_KEY",
+    "openrouter": "OPENROUTER_API_KEY",
+    "openai": "OPENAI_API_KEY",
+    "replicate": "REPLICATE_API_TOKEN",
+    "inference": "INFERENCE_API_KEY",
+}
+PROVIDER_IMPORT_CHECKS = {
+    "fal": ("fal_client", "fal-client installed"),
+}
 
 
 # ---------------------------------------------------------------------------
@@ -156,21 +168,26 @@ def install_brand_skills(console: Optional[Console] = None) -> Dict[str, str]:
     return results
 
 
-def check_installation(console: Optional[Console] = None) -> Dict[str, bool]:
+def check_installation(
+    console: Optional[Console] = None,
+    provider: Optional[str] = None,
+    config: Optional[Path] = None,
+) -> Dict[str, bool]:
     """Run full installation verification.
 
     Checks:
     1. brandmint package importable
     2. bm command available in PATH
     3. ~/.claude/skills/brandmint/ exists and has SKILL.md
-    4. FAL_KEY is set in environment
+    4. Provider-aware API key readiness
     5. Python version >= 3.10
-    6. fal-client package importable
+    6. Provider-specific package/import checks when required
 
     Returns dict of {check_name: pass/fail}.
     Prints a Rich table with status per check if console is provided.
     """
     results: Dict[str, bool] = {}
+    selected_provider, fallback_chain = resolve_install_provider(config=config, provider=provider)
 
     # 1. brandmint importable
     try:
@@ -195,18 +212,13 @@ def check_installation(console: Optional[Console] = None) -> Dict[str, bool]:
         )
         results[f"brand skills ({linked}/{expected})"] = linked == expected
 
-    # 4. FAL_KEY set
-    results["FAL_KEY set"] = check_fal_key()
+    # 4. Provider readiness
+    results[f"provider target ({selected_provider})"] = selected_provider in SUPPORTED_PROVIDERS
+    provider_results = evaluate_provider_readiness(selected_provider, fallback_chain=fallback_chain)
+    results.update(provider_results)
 
     # 5. Python >= 3.10
     results["Python >= 3.10"] = sys.version_info >= (3, 10)
-
-    # 6. fal-client importable
-    try:
-        import fal_client  # noqa: F401
-        results["fal-client installed"] = True
-    except ImportError:
-        results["fal-client installed"] = False
 
     if console is not None:
         _render_check_table(console, results)
@@ -214,17 +226,76 @@ def check_installation(console: Optional[Console] = None) -> Dict[str, bool]:
     return results
 
 
-def check_fal_key() -> bool:
-    """Check if FAL_KEY is set.
+def resolve_install_provider(
+    config: Optional[Path] = None,
+    provider: Optional[str] = None,
+) -> tuple[str, list[str]]:
+    """Resolve provider target and fallback chain for install checks."""
+    config_data = _load_brand_config(config)
+    generation = config_data.get("generation", {}) if isinstance(config_data, dict) else {}
 
-    Tries in order:
-    1. os.environ.get("FAL_KEY")
-    2. Load from ~/.claude/.env via dotenv
-    3. Load from PACKAGE_ROOT/.env
+    selected = _normalize_provider_name(
+        provider
+        or generation.get("provider")
+        or os.environ.get("IMAGE_PROVIDER")
+        or "auto"
+    )
 
-    Returns True if FAL_KEY is found and non-empty.
-    """
-    if os.environ.get("FAL_KEY"):
+    raw_chain = generation.get("fallback_chain")
+    if isinstance(raw_chain, list):
+        fallback_chain = [
+            normalized
+            for normalized in (_normalize_provider_name(item) for item in raw_chain)
+            if normalized in PROVIDER_ENV_VARS
+        ]
+    else:
+        fallback_chain = []
+
+    if not fallback_chain:
+        try:
+            from ..core.providers import DEFAULT_FALLBACK_CHAIN
+
+            fallback_chain = list(DEFAULT_FALLBACK_CHAIN)
+        except Exception:
+            fallback_chain = ["fal", "openrouter", "replicate", "openai", "inference"]
+
+    return selected, fallback_chain
+
+
+def evaluate_provider_readiness(
+    selected_provider: str,
+    fallback_chain: Optional[list[str]] = None,
+) -> Dict[str, bool]:
+    """Return provider-specific readiness checks for install check output."""
+    if selected_provider == "auto":
+        chain = fallback_chain or []
+        results: Dict[str, bool] = {}
+        any_ready = False
+        for provider_name in chain:
+            ready = _provider_ready(provider_name)
+            results[f"auto candidate {provider_name}"] = ready
+            any_ready = any_ready or ready
+            import_check_name = _provider_import_check_name(provider_name)
+            if import_check_name:
+                results[f"{import_check_name} ({provider_name})"] = _provider_import_ready(provider_name)
+        results["auto provider availability"] = any_ready
+        return results
+
+    env_var = PROVIDER_ENV_VARS.get(selected_provider)
+    results = {}
+    if env_var:
+        results[f"{env_var} set"] = check_env_var(env_var)
+
+    import_check_name = _provider_import_check_name(selected_provider)
+    if import_check_name:
+        results[import_check_name] = _provider_import_ready(selected_provider)
+
+    return results
+
+
+def check_env_var(name: str) -> bool:
+    """Check if an environment variable is set directly or via common env files."""
+    if os.environ.get(name):
         return True
 
     try:
@@ -235,10 +306,65 @@ def check_fal_key() -> bool:
     for env_path in (CLAUDE_ENV_PATH, PACKAGE_ROOT / ".env"):
         if env_path.exists():
             load_dotenv(env_path, override=False)
-            if os.environ.get("FAL_KEY"):
+            if os.environ.get(name):
                 return True
 
     return False
+
+
+def _provider_ready(provider_name: str) -> bool:
+    env_var = PROVIDER_ENV_VARS.get(provider_name)
+    if not env_var:
+        return False
+    key_ready = check_env_var(env_var)
+    import_ready = _provider_import_ready(provider_name)
+    return key_ready and import_ready
+
+
+def _provider_import_check_name(provider_name: str) -> Optional[str]:
+    entry = PROVIDER_IMPORT_CHECKS.get(provider_name)
+    if not entry:
+        return None
+    return entry[1]
+
+
+def _provider_import_ready(provider_name: str) -> bool:
+    entry = PROVIDER_IMPORT_CHECKS.get(provider_name)
+    if not entry:
+        return True
+
+    module_name = entry[0]
+    try:
+        __import__(module_name)
+        return True
+    except ImportError:
+        return False
+
+
+def _normalize_provider_name(value: Any) -> str:
+    normalized = str(value or "").strip().lower()
+    if normalized in SUPPORTED_PROVIDERS:
+        return normalized
+    return "auto"
+
+
+def _load_brand_config(path: Optional[Path]) -> Dict[str, Any]:
+    if path is None:
+        return {}
+    if not path.exists():
+        return {}
+
+    try:
+        import yaml
+    except ImportError:
+        return {}
+
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return {}
+
+    return data if isinstance(data, dict) else {}
 
 
 def setup_brand_directory(
