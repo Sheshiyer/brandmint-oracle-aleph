@@ -1,0 +1,117 @@
+name: Publish Tauri Release Assets
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to upload desktop assets to (e.g. v5.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  publish-macos-assets:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve release tag
+        id: tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Confirm release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "${{ steps.tag.outputs.tag }}"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up Rust toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+
+      - name: Install UI dependencies
+        working-directory: ui
+        run: npm install --no-package-lock
+
+      - name: Build macOS app bundle and DMG
+        working-directory: ui
+        run: npm run tauri:build -- --bundles app,dmg
+
+      - name: Archive and locate release assets
+        id: assets
+        shell: bash
+        working-directory: ui
+        run: |
+          set -euo pipefail
+
+          app_path="$(find src-tauri/target/release/bundle/macos -maxdepth 1 -type d -name '*.app' | head -n 1)"
+          dmg_path="$(find src-tauri/target/release/bundle/dmg -maxdepth 1 -type f -name '*.dmg' | head -n 1)"
+
+          if [ -z "$app_path" ]; then
+            echo "No .app bundle found under ui/src-tauri/target/release/bundle/macos" >&2
+            exit 1
+          fi
+
+          if [ -z "$dmg_path" ]; then
+            echo "No .dmg bundle found under ui/src-tauri/target/release/bundle/dmg" >&2
+            exit 1
+          fi
+
+          app_name="$(basename "$app_path" .app)"
+          version="${{ steps.tag.outputs.tag }}"
+          version="${version#v}"
+
+          case "$(uname -m)" in
+            arm64) arch_slug="aarch64" ;;
+            x86_64) arch_slug="x64" ;;
+            *) arch_slug="$(uname -m)" ;;
+          esac
+
+          app_zip_name="${app_name}_${version}_${arch_slug}.app.zip"
+          app_zip_path="$RUNNER_TEMP/$app_zip_name"
+
+          ditto -c -k --sequesterRsrc --keepParent "$app_path" "$app_zip_path"
+
+          echo "app_zip=$app_zip_path" >> "$GITHUB_OUTPUT"
+          echo "dmg=$dmg_path" >> "$GITHUB_OUTPUT"
+
+      - name: Upload desktop assets to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ steps.tag.outputs.tag }}" \
+            "${{ steps.assets.outputs.dmg }}" \
+            "${{ steps.assets.outputs.app_zip }}" \
+            --clobber
+
+      - name: Summarize uploaded assets
+        shell: bash
+        run: |
+          {
+            echo "## Uploaded macOS desktop assets"
+            echo
+            echo "- Release: \`${{ steps.tag.outputs.tag }}\`"
+            echo "- DMG: \`$(basename "${{ steps.assets.outputs.dmg }}")\`"
+            echo "- App archive: \`$(basename "${{ steps.assets.outputs.app_zip }}")\`"
+            echo
+            echo "Current workflow publishes unsigned, non-notarized macOS artifacts unless signing and notarization are configured separately."
+          } >> "$GITHUB_STEP_SUMMARY"

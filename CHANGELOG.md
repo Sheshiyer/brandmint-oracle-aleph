@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file.
 - 28-file component architecture: monolithic 3439-line App.tsx split into 6 Zustand stores, 8 page components, 5 UI components, 3 layout components.
 - Native file dialogs via `@tauri-apps/plugin-dialog`, drag-drop enhancement, system notifications with browser fallback.
 - macOS menu bar: 5 submenus (File, Pipeline, View, Window, Help) with keyboard shortcuts (⌘O, ⌘R, ⌘1-4).
-- Window state persistence: position/size saved on close to `~/Library/Application Support/com.brandmint.app/window-state.json`, restored on startup.
+- Window state persistence: position/size saved on close to `~/Library/Application Support/com.brandmint.desktop/window-state.json`, restored on startup.
 - 18 IPC commands (13 original + 2 event + 3 window management).
 - 8 Rust unit tests for EventStore (ring buffer, since-filter, channel routing).
 - 48 Vitest component/store tests with Tauri API mocks (6 store suites + 4 component suites).
