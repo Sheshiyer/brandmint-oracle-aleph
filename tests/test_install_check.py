@@ -30,7 +30,7 @@ def test_resolve_install_provider_prefers_explicit_provider(tmp_path: Path, monk
     assert fallback_chain == ["inference", "fal"]
 
 
-def test_resolve_install_provider_uses_config_and_filters_unknown_fallbacks(tmp_path: Path):
+def test_resolve_install_provider_uses_config_and_rejects_unknown_fallbacks(tmp_path: Path):
     config = tmp_path / "brand-config.yaml"
     config.write_text(
         "generation:\n"
@@ -42,10 +42,50 @@ def test_resolve_install_provider_uses_config_and_filters_unknown_fallbacks(tmp_
         encoding="utf-8",
     )
 
-    provider, fallback_chain = setup_skills.resolve_install_provider(config=config)
+    try:
+        setup_skills.resolve_install_provider(config=config)
+    except ValueError as exc:
+        assert "generation.fallback_chain" in str(exc)
+        assert "bogus" in str(exc)
+    else:
+        raise AssertionError("Expected invalid config fallback provider to raise ValueError")
 
-    assert provider == "openai"
-    assert fallback_chain == ["openrouter", "inference"]
+
+def test_resolve_install_provider_rejects_invalid_explicit_provider():
+    try:
+        setup_skills.resolve_install_provider(provider="openroutr")
+    except ValueError as exc:
+        assert "--provider must be one of" in str(exc)
+    else:
+        raise AssertionError("Expected invalid provider to raise ValueError")
+
+
+def test_resolve_install_provider_rejects_missing_config_path(tmp_path: Path):
+    missing = tmp_path / "missing.yaml"
+
+    try:
+        setup_skills.resolve_install_provider(config=missing)
+    except FileNotFoundError as exc:
+        assert str(missing) in str(exc)
+    else:
+        raise AssertionError("Expected missing config path to raise FileNotFoundError")
+
+
+def test_resolve_install_provider_rejects_invalid_provider_in_config(tmp_path: Path):
+    config = tmp_path / "brand-config.yaml"
+    config.write_text(
+        "generation:\n"
+        "  provider: openroutr\n",
+        encoding="utf-8",
+    )
+
+    try:
+        setup_skills.resolve_install_provider(config=config)
+    except ValueError as exc:
+        assert "generation.provider" in str(exc)
+        assert "openroutr" in str(exc)
+    else:
+        raise AssertionError("Expected invalid config provider to raise ValueError")
 
 
 def test_evaluate_provider_readiness_for_inference_requires_only_api_key(monkeypatch):
@@ -107,3 +147,26 @@ def test_install_check_cli_passes_provider_and_config(monkeypatch, tmp_path: Pat
 
     assert result.exit_code == 0
     assert captured == {"provider": "inference", "config": config}
+
+
+def test_install_check_cli_fails_for_invalid_provider():
+    result = runner.invoke(
+        app,
+        ["install", "check", "--provider", "openroutr"],
+    )
+
+    assert result.exit_code == 2
+    assert "--provider must be one of" in result.stdout
+
+
+def test_install_check_cli_fails_for_missing_config(tmp_path: Path):
+    missing = tmp_path / "missing.yaml"
+
+    result = runner.invoke(
+        app,
+        ["install", "check", "--config", str(missing)],
+    )
+
+    assert result.exit_code == 2
+    assert "Config file not found:" in result.stdout
+    assert str(missing).replace("/", "") in result.stdout.replace("/", "").replace("\n", "")

@@ -290,7 +290,11 @@ def install_check(
 ):
     """Verify brandmint installation is complete for the selected provider path."""
     from ..installer.setup_skills import check_installation
-    check_installation(console=console, provider=provider, config=config)
+    try:
+        check_installation(console=console, provider=provider, config=config)
+    except (FileNotFoundError, RuntimeError, ValueError) as exc:
+        console.print(f"[red]{exc}[/red]")
+        raise typer.Exit(code=2)
 
 
 # ━━━ Report command ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
