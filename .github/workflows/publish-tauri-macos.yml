@@ -1,0 +1,190 @@
+# Publish Brandmint Desktop — macOS (Tauri v2)
+#
+# Builds the Tauri desktop app on macOS and uploads .dmg + .app.zip
+# to the GitHub Release that triggered this workflow.
+#
+# Triggers alongside publish-ghcr.yml and update-homebrew-tap.yml
+# on the same `release: published` event.
+#
+# ── Signing & Notarization ──
+# For unsigned internal/dev builds: no extra secrets needed.
+# For signed distribution builds, set these repository secrets:
+#   APPLE_CERTIFICATE        — Base64-encoded .p12 Developer ID certificate
+#   APPLE_CERTIFICATE_PASSWORD — Password for the .p12 file
+#   APPLE_SIGNING_IDENTITY   — e.g. "Developer ID Application: Your Name (TEAMID)"
+#   APPLE_ID                 — Apple ID email for notarization
+#   APPLE_PASSWORD           — App-specific password for notarization
+#   APPLE_TEAM_ID            — 10-char Apple Developer Team ID
+#
+# When these secrets are absent the build proceeds unsigned.
+
+name: Publish Brandmint Desktop (macOS)
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to attach artifacts to (leave empty for artifact-only build)"
+        required: false
+
+permissions:
+  contents: write
+
+env:
+  TAURI_SIGNING_PRIVATE_KEY: ""
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: ui
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Toolchain ──────────────────────────────────────────────
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - name: Cache Cargo registry & build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ui/src-tauri/target
+          key: macos-cargo-${{ hashFiles('ui/src-tauri/Cargo.lock') }}
+          restore-keys: macos-cargo-
+
+      # ── Apple Code Signing (optional) ──────────────────────────
+
+      - name: Import Apple certificate
+        if: env.APPLE_CERTIFICATE != ''
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          CERT_PATH=$RUNNER_TEMP/certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+
+          echo "$APPLE_CERTIFICATE" | base64 --decode > "$CERT_PATH"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" \
+            -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security set-key-partition-list -S apple-tool:,apple: \
+            -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+      # ── Build ──────────────────────────────────────────────────
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY || '' }}
+          APPLE_ID: ${{ secrets.APPLE_ID || '' }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD || '' }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || '' }}
+        with:
+          projectPath: ui
+          tauriScript: npx tauri
+
+      # ── Package artifacts ──────────────────────────────────────
+
+      - name: Resolve version
+        id: version
+        run: |
+          VERSION=$(jq -r .version src-tauri/tauri.conf.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building Brandmint v$VERSION"
+
+      - name: Locate build artifacts
+        id: artifacts
+        run: |
+          DMG=$(find src-tauri/target/release/bundle/dmg -name '*.dmg' | head -1)
+          APP=$(find src-tauri/target/release/bundle/macos -name '*.app' -maxdepth 1 | head -1)
+
+          if [ -z "$DMG" ]; then echo "::error::DMG not found"; exit 1; fi
+          if [ -z "$APP" ]; then echo "::error::.app bundle not found"; exit 1; fi
+
+          echo "dmg=$DMG" >> "$GITHUB_OUTPUT"
+          echo "app=$APP" >> "$GITHUB_OUTPUT"
+          echo "Found DMG: $DMG"
+          echo "Found APP: $APP"
+
+      - name: Archive .app bundle
+        id: archive
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          APP_PATH="${{ steps.artifacts.outputs.app }}"
+          ZIP_NAME="Brandmint_${VERSION}_macos-aarch64.app.zip"
+          ZIP_PATH="src-tauri/target/release/bundle/${ZIP_NAME}"
+
+          ditto -c -k --keepParent "$APP_PATH" "$ZIP_PATH"
+          echo "zip=$ZIP_PATH" >> "$GITHUB_OUTPUT"
+          echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          echo "Archived: $ZIP_PATH ($(du -h "$ZIP_PATH" | cut -f1))"
+
+      - name: Rename DMG with stable name
+        id: dmg
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+          SRC="${{ steps.artifacts.outputs.dmg }}"
+          DMG_NAME="Brandmint_${VERSION}_macos-aarch64.dmg"
+          DMG_PATH="src-tauri/target/release/bundle/${DMG_NAME}"
+
+          cp "$SRC" "$DMG_PATH"
+          echo "dmg=$DMG_PATH" >> "$GITHUB_OUTPUT"
+          echo "dmg_name=$DMG_NAME" >> "$GITHUB_OUTPUT"
+          echo "Renamed: $DMG_PATH ($(du -h "$DMG_PATH" | cut -f1))"
+
+      # ── Upload ─────────────────────────────────────────────────
+
+      - name: Upload artifacts to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ui/${{ steps.dmg.outputs.dmg }}
+            ui/${{ steps.archive.outputs.zip }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts (workflow_dispatch — no release)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: brandmint-macos-${{ steps.version.outputs.version }}
+          path: |
+            ui/${{ steps.dmg.outputs.dmg }}
+            ui/${{ steps.archive.outputs.zip }}
+          retention-days: 14
+
+      # ── Cleanup ────────────────────────────────────────────────
+
+      - name: Clean up keychain
+        if: always() && env.APPLE_CERTIFICATE != ''
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+        run: security delete-keychain $RUNNER_TEMP/app-signing.keychain-db 2>/dev/null || true
