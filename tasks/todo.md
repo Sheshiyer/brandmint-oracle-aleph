@@ -247,6 +247,71 @@ Objective: make `bm install check` validate the selected provider path instead o
     - `pytest -q tests/test_visual_backend.py tests/test_generate_pipeline_template.py tests/test_skills_registry.py`
     - `python3 -m brandmint.cli.app launch --config assets/example-tryambakam-noesis.yaml --scenario crowdfunding-lean --dry-run --non-interactive`
 
+---
+
+## Task Addendum (2026-03-08): Tauri Release Assets for GitHub Releases (#113)
+
+Objective: publish downloadable macOS desktop release assets for tagged releases by building the Tauri app on GitHub Actions and uploading both the generated `.dmg` and an archived `.app` bundle to the existing GitHub Release.
+
+### Plan
+- [x] Inspect current Tauri bundle config and release workflows in the isolated `codex/tauri-release-assets` worktree.
+- [x] Add a dedicated GitHub Actions workflow triggered on GitHub Release publish and manual dispatch.
+- [x] Build the Tauri desktop app on `macos-latest`, archive `Brandmint.app` as `.zip`, and upload both `.dmg` and `.app.zip` assets to the matching release.
+- [x] Update release documentation/checklist for the new desktop release asset path and note signing/notarization limits.
+- [x] Run syntax/static validation and capture any baseline build blockers separately from this workflow scope.
+
+### Review
+- Added `.github/workflows/publish-tauri-release-assets.yml` to build the Tauri desktop app on `macos-latest` for release tags, archive the generated `.app` with `ditto`, and upload both the `.dmg` and `.app.zip` to the matching GitHub Release with `gh release upload --clobber`.
+- Updated `docs/release-checklist.md` with desktop release asset checks and explicit current limitations around unsigned, non-notarized macOS artifacts.
+- Fixed the UI TypeScript blockers that were preventing Tauri release builds:
+  - `ui/src/App.legacy.tsx` now imports `JSX` type from React for React 19-compatible typing.
+  - `ui/src/test/setup.ts` now imports `vi` from Vitest explicitly so plain TypeScript compilation succeeds.
+- Normalized the macOS bundle identifier from `com.brandmint.app` to `com.brandmint.desktop` and aligned Rust-side config-dir paths to remove the packaging warning about identifiers ending in `.app`.
+- Validation passed:
+  - `ruby -e 'require "yaml"; YAML.load_file(".github/workflows/publish-tauri-release-assets.yml")'`
+  - `python3 -m json.tool ui/src-tauri/tauri.conf.json >/dev/null`
+- End-to-end local verification passed:
+  - `npm --prefix ui install --no-package-lock`
+  - `npm --prefix ui run build`
+  - `npm --prefix ui run tauri:build -- --bundles app,dmg`
+  - produced:
+    - `ui/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Brandmint.app`
+    - `ui/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Brandmint_5.0.0_aarch64.dmg`
+- Reproducibility note:
+  - `ui/` does not currently include a committed lockfile, so the release workflow uses `npm install --no-package-lock` instead of `npm ci`.
+
+---
+
+## Task Addendum (2026-03-08): Tauri Sidecar Coupling Hardening
+
+Objective: ensure the desktop app does not present itself as usable unless the bridge sidecar is actually healthy.
+
+### Plan
+- [x] Trace the current sidecar startup flow across Rust setup, emitted status events, and frontend splash handling.
+- [x] Remove frontend startup bypasses that allowed the app to become interactive without a healthy bridge.
+- [x] Add a startup health probe so the UI can recover safely if it misses the initial `ready` event.
+- [x] Make `restart_sidecar` emit authoritative ready/unhealthy events after retry attempts.
+- [x] Add a regression test for startup success and startup failure/no-bypass behavior.
+- [ ] Re-run full Tauri bundle verification after the startup-coupling changes.
+
+### Review
+- Root cause:
+  - `ui/src/components/SplashScreen.tsx` previously timed out to `ready` after 20 seconds and exposed a `Continue anyway` button.
+  - That meant the Tauri shell could look usable even when the sidecar was absent or unhealthy.
+- Hardening implemented:
+  - removed the timeout-to-ready fallback
+  - removed the `Continue anyway` bypass
+  - added active `get_health` polling during startup
+  - treat `failed`, `unhealthy`, `stopped`, and `terminated` sidecar states as blocking states
+  - `restart_sidecar` now emits `sidecar-status` events on success/failure instead of relying on timing side effects
+- Regression coverage:
+  - added `ui/src/components/__tests__/SplashScreen.test.tsx`
+  - verifies successful reveal when health succeeds
+  - verifies the app stays blocked when the bridge never becomes healthy
+- Verification:
+  - `npm --prefix ui test -- SplashScreen.test.tsx` -> pass
+  - `npm --prefix ui run build` -> pass
+
 ### Meta-Semantic Upgrade ("Brain" Routing)
 - [x] Add meta-semantic media skill selector in inference backend.
 - [x] Allow semantic config for browser-routing intent via `semantic_routing`.

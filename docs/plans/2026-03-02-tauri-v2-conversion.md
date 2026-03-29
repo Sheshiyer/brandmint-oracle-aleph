@@ -298,7 +298,7 @@ Then Phases 2-6 incrementally migrate to native Tauri patterns.
 
 | ID | Title | Area | Owner | Est | Deps | Deliverable | Acceptance | Validation |
 |----|-------|------|-------|-----|------|-------------|------------|------------|
-| P5-001 | Configure `tauri.conf.json` bundle identifier (`com.brandmint.app`) | infra | DevOps | 1h | P1-001 | Bundle ID, category, copyright in config | Bundle metadata correct | `mdls Brandmint.app` shows correct metadata |
+| P5-001 | Configure `tauri.conf.json` bundle identifier (`com.brandmint.desktop`) | infra | DevOps | 1h | P1-001 | Bundle ID, category, copyright in config | Bundle metadata correct | `mdls Brandmint.app` shows correct metadata |
 | P5-002 | Generate macOS icon set (icon.icns from brandmint logo) | infra | DevOps | 2h | P1-027 | `icons/icon.icns` + all required sizes (16x16 to 1024x1024) | Icon renders at all sizes | Finder, Dock, Spotlight all show icon |
 | P5-003 | Build `.app` bundle with `cargo tauri build` | infra | DevOps | 2h | P5-001, P5-002 | `target/release/bundle/macos/Brandmint.app` | App bundle launches correctly | Double-click `.app` → app starts |
 | P5-004 | Build `.dmg` installer | infra | DevOps | 2h | P5-003 | `target/release/bundle/dmg/Brandmint_4.3.1_aarch64.dmg` | DMG mounts, drag to Applications works | App installs and runs from /Applications |
