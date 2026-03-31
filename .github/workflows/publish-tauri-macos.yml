@@ -17,6 +17,10 @@
 #   APPLE_TEAM_ID            — 10-char Apple Developer Team ID
 #
 # When these secrets are absent the build proceeds unsigned.
+# The workflow intentionally builds the `.app` bundle first and then
+# creates the DMG with `hdiutil` so CI does not depend on Finder/AppleScript.
+# The `.app` can be signed during build; notarization/stapling of release assets
+# remains an operator decision for public distribution.
 
 name: Publish Brandmint Desktop (macOS)
 
@@ -99,16 +103,12 @@ jobs:
         run: npm ci
 
       - name: Build Tauri app
-        uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY || '' }}
           APPLE_ID: ${{ secrets.APPLE_ID || '' }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD || '' }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || '' }}
-        with:
-          projectPath: ui
-          tauriScript: npx tauri
+        run: npm run tauri:build -- --bundles app --target aarch64-apple-darwin
 
       # ── Package artifacts ──────────────────────────────────────
 
@@ -116,21 +116,20 @@ jobs:
         id: version
         run: |
           VERSION=$(jq -r .version src-tauri/tauri.conf.json)
+          BUNDLE_ROOT="src-tauri/target/aarch64-apple-darwin/release/bundle"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "bundle_root=$BUNDLE_ROOT" >> "$GITHUB_OUTPUT"
           echo "Building Brandmint v$VERSION"
 
       - name: Locate build artifacts
         id: artifacts
         run: |
-          DMG=$(find src-tauri/target/release/bundle/dmg -name '*.dmg' | head -1)
-          APP=$(find src-tauri/target/release/bundle/macos -name '*.app' -maxdepth 1 | head -1)
+          BUNDLE_ROOT="${{ steps.version.outputs.bundle_root }}"
+          APP="$BUNDLE_ROOT/macos/Brandmint.app"
 
-          if [ -z "$DMG" ]; then echo "::error::DMG not found"; exit 1; fi
-          if [ -z "$APP" ]; then echo "::error::.app bundle not found"; exit 1; fi
+          if [ ! -d "$APP" ]; then echo "::error::.app bundle not found at $APP"; exit 1; fi
 
-          echo "dmg=$DMG" >> "$GITHUB_OUTPUT"
           echo "app=$APP" >> "$GITHUB_OUTPUT"
-          echo "Found DMG: $DMG"
           echo "Found APP: $APP"
 
       - name: Archive .app bundle
@@ -139,25 +138,37 @@ jobs:
           VERSION=${{ steps.version.outputs.version }}
           APP_PATH="${{ steps.artifacts.outputs.app }}"
           ZIP_NAME="Brandmint_${VERSION}_macos-aarch64.app.zip"
-          ZIP_PATH="src-tauri/target/release/bundle/${ZIP_NAME}"
+          ZIP_PATH="${{ steps.version.outputs.bundle_root }}/${ZIP_NAME}"
 
           ditto -c -k --keepParent "$APP_PATH" "$ZIP_PATH"
           echo "zip=$ZIP_PATH" >> "$GITHUB_OUTPUT"
           echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
           echo "Archived: $ZIP_PATH ($(du -h "$ZIP_PATH" | cut -f1))"
 
-      - name: Rename DMG with stable name
+      - name: Create DMG with stable name
         id: dmg
         run: |
           VERSION=${{ steps.version.outputs.version }}
-          SRC="${{ steps.artifacts.outputs.dmg }}"
           DMG_NAME="Brandmint_${VERSION}_macos-aarch64.dmg"
-          DMG_PATH="src-tauri/target/release/bundle/${DMG_NAME}"
+          DMG_PATH="${{ steps.version.outputs.bundle_root }}/${DMG_NAME}"
+          STAGING_DIR="$RUNNER_TEMP/brandmint-dmg"
+          STAGING_APP_DIR="$STAGING_DIR/Brandmint"
 
-          cp "$SRC" "$DMG_PATH"
+          rm -rf "$STAGING_DIR"
+          mkdir -p "$STAGING_APP_DIR"
+          ditto "${{ steps.artifacts.outputs.app }}" "$STAGING_APP_DIR/Brandmint.app"
+          ln -s /Applications "$STAGING_APP_DIR/Applications"
+
+          hdiutil create -ov \
+            -volname "Brandmint" \
+            -srcfolder "$STAGING_APP_DIR" \
+            -fs HFS+ \
+            -format UDZO \
+            "$DMG_PATH"
+
           echo "dmg=$DMG_PATH" >> "$GITHUB_OUTPUT"
           echo "dmg_name=$DMG_NAME" >> "$GITHUB_OUTPUT"
-          echo "Renamed: $DMG_PATH ($(du -h "$DMG_PATH" | cut -f1))"
+          echo "Created: $DMG_PATH ($(du -h "$DMG_PATH" | cut -f1))"
 
       # ── Upload ─────────────────────────────────────────────────
 
