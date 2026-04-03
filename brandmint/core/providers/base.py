@@ -200,22 +200,6 @@ class ImageProvider(ABC):
         """
         pass
     
-    def supports_inpainting(self) -> bool:
-        """Returns True if provider supports inpainting (masked fill).
-        
-        Override in subclasses that offer inpainting endpoints.
-        Default: False.
-        """
-        return False
-
-    def supports_edge_guided(self) -> bool:
-        """Returns True if provider supports edge-guided (canny) generation.
-        
-        Override in subclasses that offer canny/edge-guided endpoints.
-        Default: False.
-        """
-        return False
-
     def validate_dimensions(self, width: int, height: int) -> tuple[int, int]:
         """Validate and adjust dimensions to provider constraints.
         

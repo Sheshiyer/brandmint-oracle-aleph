@@ -45,6 +45,7 @@ from ..models.skill import UnifiedSkill, SkillSource
 from ..core.skills_registry import SkillsRegistry
 from ..core.agent_scaffolder import AgentScaffolder
 from ..core.hydrator import hydrate_brand_config, save_hydrated_config
+from ..core.kickstarter_blueprint import build_kickstarter_readiness
 from ..cli.ui import (
     render_wave_progress,
     render_skill_prompt,
@@ -59,6 +60,8 @@ from ..cli.report import (
     AssetExecution,
     save_report,
 )
+from .visual_backend import create_visual_backend
+from ..core.cache import get_prompt_cache
 
 # Estimated costs per provider (USD per image)
 PROVIDER_COSTS = {
@@ -113,6 +116,7 @@ class WaveExecutor:
         execution_context: ExecutionContext,
         brand_dir: Path,
         console: Console,
+        scenario_id: Optional[str] = None,
     ) -> None:
         self.config = config
         self.config_path = config_path
@@ -120,6 +124,7 @@ class WaveExecutor:
         self.context = execution_context
         self.brand_dir = brand_dir
         self.console = console
+        self.scenario_id = scenario_id
 
         # Working directories
         self.prompts_dir = brand_dir / ".brandmint" / "prompts"
@@ -138,17 +143,27 @@ class WaveExecutor:
 
         # Runtime state
         self.state = self._load_or_create_state()
+        if self.scenario_id:
+            self.state.scenario = self.scenario_id
+        elif self.state.scenario:
+            self.scenario_id = self.state.scenario
+
         self.upstream_data: Dict[str, Any] = {}
         self._interrupted = False
         
         # Cost tracking
         self._actual_costs: Dict[str, float] = {}  # asset_id -> cost
         self._provider = self.config.get("generation", {}).get("provider", "fal")
+        self._visual_backend = create_visual_backend(
+            config=self.config,
+            brand_dir=self.brand_dir,
+            console=self.console,
+        )
         
         # Execution report
         self._report = ExecutionReport(
             brand_name=self.config.get("brand", {}).get("name", "Unknown"),
-            scenario=getattr(execution_context, "scenario_id", None) or "custom",
+            scenario=self.scenario_id or "custom",
             started_at=datetime.now().isoformat(),
         )
 
@@ -157,6 +172,7 @@ class WaveExecutor:
 
         # Hydrate upstream_data from any pre-existing outputs on disk.
         self._load_existing_outputs()
+        self._refresh_kickstarter_readiness()
 
     def _setup_signal_handlers(self) -> None:
         """Install signal handlers for graceful shutdown.
@@ -232,9 +248,13 @@ class WaveExecutor:
                     "text_skills": {},
                     "visual_assets": {},
                     "estimated_cost": wave.estimated_cost,
+                    "kickstarter_sections": list(wave.kickstarter_sections),
+                    "kickstarter_artifacts": list(wave.kickstarter_artifacts),
                 }
 
             self.state.waves[wkey]["status"] = WaveStatus.IN_PROGRESS.value
+            self.state.waves[wkey]["kickstarter_sections"] = list(wave.kickstarter_sections)
+            self.state.waves[wkey]["kickstarter_artifacts"] = list(wave.kickstarter_artifacts)
             self._save_state()
 
             # Post-hook waves delegate to a custom publisher.
@@ -321,6 +341,8 @@ class WaveExecutor:
         """
         if hook_name in ("notebooklm", "publishing"):
             return self._hook_publishing_pipeline(wave_number)
+        if hook_name in ("brand_docs", "astro_wiki"):
+            return self._hook_brand_docs_pipeline(wave_number)
         else:
             self.console.print(
                 f"[red]Unknown post hook: {hook_name}[/red]"
@@ -367,6 +389,28 @@ class WaveExecutor:
             self.console.print(f"  [red]NotebookLM error: {e}[/red]")
             return False
 
+    def _hook_brand_docs_pipeline(self, wave_number: int) -> bool:
+        """Run Wave 8 publishing — brand docs markdown + Astro wiki build."""
+        self.console.print("\n  [bold cyan]Wave 8: Brand Docs + Astro Wiki[/bold cyan]")
+        try:
+            from ..publishing.brand_docs_publisher import BrandDocsPublisher
+
+            publisher = BrandDocsPublisher(
+                brand_dir=self.brand_dir,
+                config=self.config,
+                config_path=self.config_path,
+                console=self.console,
+            )
+            if not publisher.publish():
+                self.console.print(
+                    "  [yellow]Brand docs publishing did not complete[/yellow]"
+                )
+                return False
+            return True
+        except Exception as e:
+            self.console.print(f"  [red]Brand docs error: {e}[/red]")
+            return False
+
     # ------------------------------------------------------------------
     # Text skill execution
     # ------------------------------------------------------------------
@@ -392,14 +436,22 @@ class WaveExecutor:
         if skill is None:
             skill = self._create_stub_skill(skill_id)
 
-        # Generate the scaffolded prompt.
+        # Generate the scaffolded prompt (with caching).
         start_ts = time.monotonic()
-        prompt = self.scaffolder.generate_context_prompt(
-            skill=skill,
-            context=self.context,
-            upstream_data=self.upstream_data,
-            scenario_name=self.state.scenario or "execution",
-        )
+        cache = get_prompt_cache()
+        cache_key = f"{skill_id}:{self.state.scenario or 'execution'}"
+        cached = cache.get(cache_key, provider="scaffolder", model=skill_id)
+        if cached and isinstance(cached, str):
+            prompt = cached
+            self.console.print(f"  [dim]Using cached prompt for {skill_id}[/dim]")
+        else:
+            prompt = self.scaffolder.generate_context_prompt(
+                skill=skill,
+                context=self.context,
+                upstream_data=self.upstream_data,
+                scenario_name=self.state.scenario or "execution",
+            )
+            cache.set(cache_key, prompt, provider="scaffolder", model=skill_id)
 
         # Write prompt to disk.
         prompt_path = self.prompts_dir / f"{skill_id}.md"
@@ -419,6 +471,7 @@ class WaveExecutor:
 
         if output_data is not None:
             self.upstream_data[skill_id] = output_data
+            self._refresh_kickstarter_readiness()
             self._update_state(
                 wave_num,
                 skill_id,
@@ -474,7 +527,7 @@ class WaveExecutor:
         Returns ``True`` when every batch succeeds.
         """
         script_path = PACKAGE_ROOT / "scripts" / "run_pipeline.py"
-        if not script_path.exists():
+        if self._visual_backend.requires_script_path and not script_path.exists():
             self.console.print(
                 f"[yellow]Visual pipeline script not found at "
                 f"{script_path} -- skipping visual assets.[/yellow]"
@@ -513,7 +566,7 @@ class WaveExecutor:
     ) -> bool:
         """Execute batches in parallel using ThreadPoolExecutor."""
         all_ok = True
-        max_workers = min(len(batches), 4)  # Cap at 4 parallel batches
+        max_workers = min(len(batches), 8)  # Cap at 8 parallel batches (I/O-bound FAL API calls)
         
         self.console.print(
             f"  [cyan]Running {len(batches)} batches in parallel "
@@ -570,19 +623,10 @@ class WaveExecutor:
 
         self.console.print(
             f"  [cyan]Running visual batch '{batch_name}' "
-            f"({len(batch_asset_ids)} assets)...[/cyan]"
+            f"({len(batch_asset_ids)} assets, backend={self._visual_backend.name})...[/cyan]"
         )
 
         start_ts = time.monotonic()
-        cmd = [
-            sys.executable,
-            str(script_path),
-            "execute",
-            "--config",
-            str(self.config_path),
-            "--batch",
-            batch_name,
-        ]
 
         timeout_seconds = int(
             self.config.get("generation", {}).get("batch_timeout_seconds", 1200)
@@ -590,13 +634,15 @@ class WaveExecutor:
         timeout_seconds = max(60, timeout_seconds)
 
         try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=timeout_seconds,
+            result = self._visual_backend.run_batch(
+                script_path=script_path,
+                config_path=self.config_path,
+                batch_name=batch_name,
+                asset_ids=batch_asset_ids,
+                timeout_seconds=timeout_seconds,
             )
             duration = round(time.monotonic() - start_ts, 1)
+            self._record_batch_routing_decisions(batch_name=batch_name, wave_num=wave_num)
 
             if result.returncode == 0:
                 # Calculate cost for this batch
@@ -696,6 +742,25 @@ class WaveExecutor:
     # Auto-hydration
     # ------------------------------------------------------------------
 
+    def _record_batch_routing_decisions(self, *, batch_name: str, wave_num: int) -> None:
+        """Append backend routing summaries to execution report when available."""
+        getter = getattr(self._visual_backend, "get_batch_routing_summary", None)
+        if not callable(getter):
+            return
+        try:
+            rows = getter(batch_name)
+        except Exception:
+            return
+        if not isinstance(rows, list):
+            return
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            entry = dict(row)
+            entry.setdefault("batch", batch_name)
+            entry.setdefault("wave", wave_num)
+            self._report.routing_decisions.append(entry)
+
     def _run_hydration(self) -> None:
         """Inject completed text skill outputs into the brand config.
 
@@ -721,12 +786,17 @@ class WaveExecutor:
                 f"  [red]Hydration failed: {exc}[/red]"
             )
 
+    def _refresh_kickstarter_readiness(self) -> None:
+        """Refresh the report snapshot for mandatory Kickstarter artifact coverage."""
+        self._report.kickstarter_readiness = build_kickstarter_readiness(self.upstream_data)
+
     # ------------------------------------------------------------------
     # Reporting
     # ------------------------------------------------------------------
 
     def _finalize_report(self, success: bool = True) -> None:
         """Finalize and save the execution report."""
+        self._refresh_kickstarter_readiness()
         self._report.completed_at = datetime.now().isoformat()
         self._report.status = "completed" if success else "failed"
         

@@ -22,7 +22,7 @@ Use this when launching or retrofitting a full campaign and you want a repeatabl
 ## The Phases
 
 ### Part 1: Understanding the Market
-1. Buyer Persona (`buyer-persona`)
+1. Buyer Persona (`buyer-persona-generator`)
    - Output: `Buyer Persona/templates/persona-dossier.md`
    - JSON: `meta_project.persona_name`, `voice_samples`, `emotional_drivers`
    - Gate: If persona lists < 20 wants / < 20 anti-goals, iterate.

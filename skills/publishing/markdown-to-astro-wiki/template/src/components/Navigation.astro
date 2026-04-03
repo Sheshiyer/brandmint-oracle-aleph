@@ -1,0 +1,92 @@
+---
+import { getCollection } from 'astro:content';
+import siteData from '../data/site-data.json';
+import type { Locale } from '../i18n';
+import { localizedPath, localizedDocTitle, t } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale);
+const docs = await getCollection('docs');
+const frDocs = await getCollection('frDocs');
+const frDocsBySlug = new Map(frDocs.map((entry) => [entry.slug, entry]));
+const localizedDocs = docs.map((doc) => {
+  const localized = locale === 'fr' ? frDocsBySlug.get(doc.slug) : undefined;
+  return localized
+    ? {
+        ...doc,
+        data: {
+          ...doc.data,
+          ...localized.data,
+        },
+      }
+    : doc;
+});
+const categories: Record<string, typeof localizedDocs> = {};
+
+for (const doc of localizedDocs) {
+  const category = (doc.data.category || 'general').toString();
+  if (!categories[category]) categories[category] = [];
+  categories[category].push(doc);
+}
+
+for (const category of Object.keys(categories)) {
+  categories[category].sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+}
+
+const categoryOrder = ['general', 'product', 'brand', 'audience', 'marketing'];
+const sortedCategories = Object.entries(categories).sort(([a], [b]) => {
+  const ai = categoryOrder.indexOf(a);
+  const bi = categoryOrder.indexOf(b);
+  const aRank = ai === -1 ? 99 : ai;
+  const bRank = bi === -1 ? 99 : bi;
+  return aRank === bRank ? a.localeCompare(b) : aRank - bRank;
+});
+---
+
+<nav class="portal-nav">
+  <a href={localizedPath(locale, '/')} class="brand-lockup">
+    <span class="brand-lockup__orb">✦</span>
+    <span>
+      <strong>{siteData.brandName}</strong>
+      <small>{siteData.tagline}</small>
+    </span>
+  </a>
+
+  <div class="brand-summary glass-panel glass-panel--soft">
+    <p class="eyebrow">{siteData.themeName}</p>
+    <h2>{siteData.heroTitle}</h2>
+    <p>{siteData.heroSubtitle}</p>
+  </div>
+
+  <div class="portal-nav__quicklinks">
+    <a class="quicklink" href={localizedPath(locale, '/')}>{copy.shell.portalHome}</a>
+    <a class="quicklink" href={localizedPath(locale, siteData.docsHomeHref || '/docs/index')}>{copy.shell.docsIndex}</a>
+    <a class="quicklink" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>{copy.shell.notebooklm}</a>
+  </div>
+
+  {sortedCategories.map(([category, categoryDocs]) => (
+    <section class="nav-section">
+      <div class="nav-section__header">
+        <p class="eyebrow eyebrow--muted">{copy.categories[category as keyof typeof copy.categories] || category}</p>
+        <span>{categoryDocs.length}</span>
+      </div>
+      <ul class="nav-list">
+        {categoryDocs.map((doc) => (
+          <li>
+            <a href={localizedPath(locale, `/docs/${doc.slug}`)} class="nav-link">
+              {doc.data.icon && <span class="nav-link__icon">{doc.data.icon}</span>}
+              <span>
+                <strong>{localizedDocTitle(locale, doc.slug, doc.data.title)}</strong>
+                {doc.data.description && <small>{doc.data.description}</small>}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</nav>

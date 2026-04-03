@@ -1,0 +1,91 @@
+last_updated: '2026-04-03T16:26:51.918366'
+report:
+  actual_cost_usd: 0
+  assets:
+  - asset_id: 2A
+    batch: anchor
+    cost_usd: 0.0
+    duration_seconds: 0.0
+    error: 'ERROR: Failed to import core provider adapters: cannot import name ''get_provider''
+      from partially ini'
+    file_path: null
+    provider: fal
+    status: failed
+  assets_failed: 1
+  assets_generated: 0
+  brand_name: HeyZack
+  completed_at: '2026-04-03T16:26:51.917284'
+  estimated_cost_usd: 0.46
+  kickstarter_readiness:
+    all_ready: false
+    artifact_status:
+      campaign-page-copy: false
+      campaign-video-script: false
+      competitor-summary: false
+      detailed-product-description: false
+      landing-page-copy: false
+      launch-email-sequence: false
+      live-campaign-ads-copy: false
+      market-buyer-persona: false
+      mds: false
+      pre-launch-ads-copy: false
+      pre-launch-email-sequence: false
+      press-release-copy: false
+      product-positioning-summary: false
+      voice-and-tone: false
+      welcome-email-sequence: false
+    section_status:
+      campaign-messaging:
+        completed: 0
+        missing_artifact_ids:
+        - campaign-page-copy
+        - campaign-video-script
+        ready: false
+        total: 2
+      crafting-compelling-copy:
+        completed: 0
+        missing_artifact_ids:
+        - landing-page-copy
+        - pre-launch-ads-copy
+        ready: false
+        total: 2
+      driving-continual-interest:
+        completed: 0
+        missing_artifact_ids:
+        - live-campaign-ads-copy
+        - press-release-copy
+        ready: false
+        total: 2
+      email-strategy:
+        completed: 0
+        missing_artifact_ids:
+        - welcome-email-sequence
+        - pre-launch-email-sequence
+        - launch-email-sequence
+        ready: false
+        total: 3
+      market-understanding:
+        completed: 0
+        missing_artifact_ids:
+        - market-buyer-persona
+        - competitor-summary
+        ready: false
+        total: 2
+      product-detailing:
+        completed: 0
+        missing_artifact_ids:
+        - detailed-product-description
+        - product-positioning-summary
+        - mds
+        - voice-and-tone
+        ready: false
+        total: 4
+  routing_decisions: []
+  scenario: custom-hybrid
+  skills: []
+  skills_failed: 0
+  skills_skipped: 0
+  skills_succeeded: 0
+  started_at: '2026-04-03T16:26:51.685041'
+  status: failed
+  total_duration_seconds: 0.232248

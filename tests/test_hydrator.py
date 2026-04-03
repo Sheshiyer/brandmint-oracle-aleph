@@ -98,12 +98,55 @@ def competitor_output() -> dict:
 
 
 @pytest.fixture
+def visual_identity_core_output() -> dict:
+    """Sample visual-identity-core skill output."""
+    return {
+        "imagery": {
+            "hero_object_type": "signal artifact",
+            "hero_surface": "matte ceramic",
+            "poster_artifact": "glyph monolith",
+            "poster_filament": "fiber optic threads",
+            "seeker_inner_detail": "symbolic grid",
+            "sequence_type": "ritual sequence",
+            "sequence_constraint": "hands-only",
+        },
+        "graphic_elements": {
+            "seal_material": "brushed steel",
+            "seal_geometry": "geometric precision",
+            "panel_structure": "layered panel matrix",
+            "icon_line_style": "clean contour lines",
+            "poster_border": "thin deco frame",
+            "engraving_style": "technical engraving",
+        },
+        "logo_usage": {
+            "treatment": "embossed",
+            "substrate": "stone tile",
+        },
+    }
+
+
+@pytest.fixture
+def detailed_product_description_output() -> dict:
+    """Sample detailed-product-description skill output."""
+    return {
+        "hero_product": {
+            "name": "Atlas Bottle",
+            "description": "Insulated travel bottle",
+            "physical_form": "double-wall steel flask",
+        },
+        "product_category": "travel gear",
+    }
+
+
+@pytest.fixture
 def all_skill_outputs(
     buyer_persona_output,
     product_positioning_output,
     mds_output,
     voice_tone_output,
     competitor_output,
+    visual_identity_core_output,
+    detailed_product_description_output,
 ) -> Dict[str, dict]:
     """All Wave 2 skill outputs combined."""
     return {
@@ -112,6 +155,8 @@ def all_skill_outputs(
         "mds-messaging-direction-summary": mds_output,
         "voice-and-tone": voice_tone_output,
         "competitor-analysis": competitor_output,
+        "visual-identity-core": visual_identity_core_output,
+        "detailed-product-description": detailed_product_description_output,
     }
 
 
@@ -413,5 +458,7 @@ class TestHydrationMap:
             "mds-messaging-direction-summary",
             "voice-and-tone",
             "competitor-analysis",
+            "visual-identity-core",
+            "detailed-product-description",
         }
         assert expected == set(HYDRATION_MAP.keys())

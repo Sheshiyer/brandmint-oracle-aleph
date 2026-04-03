@@ -1,5 +1,5 @@
 ---
-name: buyer-persona
+name: buyer-persona-generator
 description: Generates a deep-psychology buyer persona dossier. It strictly follows a 10-step market analysis protocol (Demographics, Failed Solutions, Tone Switching, Genie Simulation, Anti-Goals) to create a strategic foundation for marketing campaigns.
 ---
 

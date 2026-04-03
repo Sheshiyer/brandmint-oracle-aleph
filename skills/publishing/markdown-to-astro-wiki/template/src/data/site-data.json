@@ -1,0 +1,33 @@
+{
+  "brandName": "Brand",
+  "tagline": "Launch portal",
+  "themeName": "Brand Theme",
+  "launchChannel": "launch",
+  "heroTitle": "Launch Portal",
+  "heroSubtitle": "Curated brand, product, and research materials.",
+  "heroDescription": "",
+  "heroPrimaryHref": "/docs/index",
+  "heroSecondaryHref": "/docs/getting-started/quickstart",
+  "docsHomeHref": "/docs/index",
+  "heroImage": "",
+  "heroImageAlt": "",
+  "metrics": [],
+  "launchFacts": [],
+  "storyPillars": [],
+  "featuredDocs": [],
+  "visualHighlights": [],
+  "notebooklmHighlights": [],
+  "publishedAtHuman": "",
+  "runLabel": "",
+  "palette": {
+    "primary": { "name": "Muted Lilac", "hex": "#AA98D6" },
+    "secondary": { "name": "Cloud White", "hex": "#F8F6F2" },
+    "accent": { "name": "Warm Sunset Orange", "hex": "#E67A2E" },
+    "support": { "name": "Soft Almond Cream", "hex": "#D9D3C1" },
+    "signal": { "name": "Soft Aqua Teal", "hex": "#4CC8B2" }
+  },
+  "typography": {
+    "header": { "font": "Figtree" },
+    "body": { "font": "Inter" }
+  }
+}

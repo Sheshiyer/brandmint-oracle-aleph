@@ -67,7 +67,7 @@ PRIMARY_REFS = {
     },
     "3C": {
         "file": "ref-3C-essence-vial.jpg",
-        "name": "Essence Vial",
+        "name": "Product Detail",
         "model": "nano-banana-pro",
         "supports_image_urls": True,
         "aspect": "1:1",

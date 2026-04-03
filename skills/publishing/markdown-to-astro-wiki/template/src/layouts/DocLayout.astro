@@ -1,0 +1,50 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import type { Locale } from '../i18n';
+import { t } from '../i18n';
+
+interface Props {
+  title: string;
+  description?: string;
+  category?: string;
+  headings?: { depth: number; slug: string; text: string }[];
+  locale: Locale;
+}
+
+const { title, description, category, headings = [], locale } = Astro.props;
+const copy = t(locale);
+const content = await Astro.slots.render('default');
+const wordCount = content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const readingTime = Math.max(1, Math.ceil(wordCount / 210));
+---
+
+<BaseLayout title={title} description={description} locale={locale}>
+  <section class="doc-stage">
+    <div class="doc-shell">
+      <article class="doc-panel glass-panel">
+        <Breadcrumb title={title} category={category} locale={locale} />
+
+        <header class="doc-header">
+          <div class="doc-header__meta">
+            {category && <span class="pill pill--soft">{category}</span>}
+            <span class="pill pill--warm">{readingTime} {copy.shell.minRead}</span>
+          </div>
+          <h1>{title}</h1>
+          {description && <p class="doc-description">{description}</p>}
+        </header>
+
+        <div class="prose portal-prose">
+          <slot />
+        </div>
+      </article>
+
+      {headings.length > 0 && (
+        <div class="doc-sidebar">
+          <TableOfContents headings={headings} locale={locale} />
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

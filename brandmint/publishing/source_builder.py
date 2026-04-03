@@ -13,18 +13,27 @@ from raw JSON. This module supports two rendering modes:
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 from rich.console import Console
+
+from ..core.kickstarter_blueprint import (
+    KICKSTARTER_READINESS_DOC_STEM,
+    MANDATORY_KICKSTARTER_ARTIFACTS,
+    MANDATORY_KICKSTARTER_SECTIONS,
+    artifact_doc_stem,
+    build_kickstarter_readiness,
+    iter_section_artifacts,
+    section_doc_stem,
+)
 
 
 # ---------------------------------------------------------------------------
 # Source group definitions
 # ---------------------------------------------------------------------------
 
-SOURCE_GROUPS: Dict[str, Dict[str, Any]] = {
+CORE_SOURCE_GROUPS: Dict[str, Dict[str, Any]] = {
     "brand-foundation": {
         "title": "Brand Foundation",
         "description": "Market validation, target audience, competitive landscape, and core brand definition.",
@@ -80,19 +89,40 @@ SOURCE_GROUPS: Dict[str, Dict[str, Any]] = {
     },
 }
 
+# Backwards-compatible export used by the prose synthesizer.
+SOURCE_GROUPS: Dict[str, Dict[str, Any]] = dict(CORE_SOURCE_GROUPS)
+
+SOURCE_DOCUMENT_MODES = {"hybrid", "legacy-only", "kickstarter-only"}
+
+
+def resolve_source_document_mode(config: dict) -> str:
+    """Resolve which source document families should be generated."""
+    mode = (
+        config.get("publishing", {})
+        .get("notebooklm", {})
+        .get("source_document_mode", "hybrid")
+    )
+    mode = str(mode).strip().lower() if mode is not None else "hybrid"
+    if mode not in SOURCE_DOCUMENT_MODES:
+        return "hybrid"
+    return mode
+
 
 # ---------------------------------------------------------------------------
 # Skill-specific formatters
 # ---------------------------------------------------------------------------
 
-def _format_handoff(skill_id: str, data: dict) -> str:
+
+def _format_handoff(skill_id: str, data: dict, heading_level: int = 2) -> str:
     """Convert a skill's handoff dict into markdown sections."""
     handoff = data.get("handoff", data)
     meta = data.get("meta", {})
 
     parts: List[str] = []
     skill_name = meta.get("skill", skill_id).replace("-", " ").title()
-    parts.append(f"## {skill_name}\n")
+    prefix = "#" * heading_level
+    sub_prefix = "#" * min(heading_level + 1, 6)
+    parts.append(f"{prefix} {skill_name}\n")
 
     # Narrative summary if available
     narrative = data.get("narrative") or handoff.get("narrative")
@@ -104,10 +134,11 @@ def _format_handoff(skill_id: str, data: dict) -> str:
         if key in ("narrative",):
             continue
         heading = key.replace("_", " ").title()
-        parts.append(f"### {heading}\n")
+        parts.append(f"{sub_prefix} {heading}\n")
         parts.append(_render_value(value, depth=0))
 
     return "\n".join(parts)
+
 
 
 def _render_value(value: Any, depth: int = 0) -> str:
@@ -120,7 +151,6 @@ def _render_value(value: Any, depth: int = 0) -> str:
         lines = []
         for item in value:
             if isinstance(item, dict):
-                # Inline dict as a bullet with sub-fields
                 summary = _dict_summary(item)
                 lines.append(f"{'  ' * depth}- {summary}")
             else:
@@ -146,6 +176,7 @@ def _render_value(value: Any, depth: int = 0) -> str:
     return str(value) + "\n"
 
 
+
 def _dict_summary(d: dict) -> str:
     """Produce a compact one-line summary of a dict."""
     parts = []
@@ -163,6 +194,7 @@ def _dict_summary(d: dict) -> str:
 # Config section renderer
 # ---------------------------------------------------------------------------
 
+
 def _render_config_section(config: dict, section_key: str) -> str:
     """Render a brand-config.yaml section as markdown."""
     section = config.get(section_key, {})
@@ -179,12 +211,12 @@ def _render_config_section(config: dict, section_key: str) -> str:
 # Visual asset scanner
 # ---------------------------------------------------------------------------
 
+
 def _scan_visual_assets(brand_dir: Path, config: dict) -> str:
     """Build a descriptive catalog of generated visual assets."""
     brand_name = config.get("brand", {}).get("name", "brand")
     slug = brand_name.lower().replace(" ", "-").replace("'", "")
 
-    # Try common generated directories
     gen_dir = None
     for candidate in [
         brand_dir / slug / "generated",
@@ -198,7 +230,6 @@ def _scan_visual_assets(brand_dir: Path, config: dict) -> str:
     if gen_dir is None:
         return "### Generated Visual Assets\n\nNo generated assets directory found.\n"
 
-    # Scan for images
     parts = ["### Generated Visual Assets\n"]
     image_files = sorted(gen_dir.glob("*.png")) + sorted(gen_dir.glob("*.webp"))
 
@@ -208,10 +239,8 @@ def _scan_visual_assets(brand_dir: Path, config: dict) -> str:
 
     parts.append(f"Total: {len(image_files)} visual assets\n")
 
-    # Group by asset ID prefix
     groups: Dict[str, List[Path]] = {}
     for f in image_files:
-        # Extract asset ID from filename (e.g., "2A-brand-kit-bento-grid-seed1.png")
         stem = f.stem
         prefix = stem.split("-")[0] if "-" in stem else stem
         groups.setdefault(prefix, []).append(f)
@@ -221,7 +250,7 @@ def _scan_visual_assets(brand_dir: Path, config: dict) -> str:
         parts.append(
             f"- **{prefix}**: {len(files)} file(s), {size_mb:.1f} MB total"
         )
-        for f in files[:3]:  # Show up to 3 filenames
+        for f in files[:3]:
             parts.append(f"  - `{f.name}`")
 
     return "\n".join(parts) + "\n"
@@ -230,6 +259,7 @@ def _scan_visual_assets(brand_dir: Path, config: dict) -> str:
 # ---------------------------------------------------------------------------
 # Manifest reader
 # ---------------------------------------------------------------------------
+
 
 def _read_generation_manifest(brand_dir: Path, config: dict) -> str:
     """Read generation-manifest.json if it exists."""
@@ -265,8 +295,145 @@ def _read_generation_manifest(brand_dir: Path, config: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Kickstarter prototype renderers
+# ---------------------------------------------------------------------------
+
+
+def _render_kickstarter_section_doc(section_id: str, skill_outputs: Dict[str, dict], config: dict) -> str:
+    """Render a section-oriented Kickstarter source document."""
+    section = MANDATORY_KICKSTARTER_SECTIONS[section_id]
+    readiness = build_kickstarter_readiness(skill_outputs)
+    row = readiness["section_status"][section_id]
+    brand_name = config.get("brand", {}).get("name", "Brand")
+
+    parts = [
+        f"# {section.title}\n",
+        f"> {section.description}\n",
+        f"**Brand:** {brand_name}\n",
+        f"**Readiness:** {'Ready' if row['ready'] else 'In progress'} ({row['completed']}/{row['total']} artifacts available)\n",
+    ]
+
+    if row["missing_artifact_ids"]:
+        parts.append("## Missing Mandatory Artifacts\n")
+        for artifact_id in row["missing_artifact_ids"]:
+            artifact = MANDATORY_KICKSTARTER_ARTIFACTS[artifact_id]
+            parts.append(f"- **{artifact.title}:** waiting on `{artifact.source_skill_id}` output")
+        parts.append("")
+
+    for artifact in iter_section_artifacts(section_id):
+        parts.append(f"## {artifact.title}\n")
+        parts.append(f"> Source skill: `{artifact.source_skill_id}` — {artifact.description}\n")
+        payload = skill_outputs.get(artifact.source_skill_id)
+        if payload:
+            parts.append(_format_handoff(artifact.source_skill_id, payload, heading_level=3))
+        else:
+            parts.append("_This mandatory artifact has not been generated yet._\n")
+
+    return "\n".join(parts).strip() + "\n"
+
+
+
+def _render_kickstarter_artifact_doc(artifact_id: str, skill_outputs: Dict[str, dict], config: dict) -> Optional[str]:
+    """Render an artifact-focused Kickstarter source document if data exists."""
+    artifact = MANDATORY_KICKSTARTER_ARTIFACTS[artifact_id]
+    payload = skill_outputs.get(artifact.source_skill_id)
+    if not payload:
+        return None
+
+    brand_name = config.get("brand", {}).get("name", "Brand")
+    section = MANDATORY_KICKSTARTER_SECTIONS[artifact.section_id]
+    parts = [
+        f"# {artifact.title}\n",
+        f"> {artifact.description}\n",
+        f"**Brand:** {brand_name}\n",
+        f"**Kickstarter Section:** {section.title}\n",
+        f"**Source Skill:** `{artifact.source_skill_id}`\n",
+        _format_handoff(artifact.source_skill_id, payload, heading_level=2),
+    ]
+    return "\n".join(parts).strip() + "\n"
+
+
+
+def _render_kickstarter_readiness_doc(skill_outputs: Dict[str, dict], config: dict) -> str:
+    """Render the mandatory Kickstarter readiness summary."""
+    readiness = build_kickstarter_readiness(skill_outputs)
+    brand_name = config.get("brand", {}).get("name", "Brand")
+
+    parts = [
+        "# Kickstarter Prototype Readiness\n",
+        "> Mandatory section and artifact coverage for Kickstarter-capable products.\n",
+        f"**Brand:** {brand_name}\n",
+        f"**Overall Readiness:** {'Ready' if readiness['all_ready'] else 'Incomplete'}\n",
+        "## Section Status\n",
+    ]
+
+    for section_id, section in MANDATORY_KICKSTARTER_SECTIONS.items():
+        row = readiness["section_status"][section_id]
+        parts.append(
+            f"- **{section.title}:** {'Ready' if row['ready'] else 'In progress'} "
+            f"({row['completed']}/{row['total']})"
+        )
+        if row["missing_artifact_ids"]:
+            missing = ", ".join(
+                MANDATORY_KICKSTARTER_ARTIFACTS[artifact_id].title
+                for artifact_id in row["missing_artifact_ids"]
+            )
+            parts.append(f"  - Missing: {missing}")
+
+    parts.append("\n## Artifact Status\n")
+    for artifact_id, artifact in MANDATORY_KICKSTARTER_ARTIFACTS.items():
+        status = readiness["artifact_status"][artifact_id]
+        parts.append(
+            f"- **{artifact.title}:** {'Available' if status else 'Missing'} "
+            f"(source: `{artifact.source_skill_id}`)"
+        )
+
+    return "\n".join(parts).strip() + "\n"
+
+
+# ---------------------------------------------------------------------------
+# Public helpers
+# ---------------------------------------------------------------------------
+
+
+def get_source_group_definitions(document_mode: str = "hybrid") -> Dict[str, Dict[str, Any]]:
+    """Return metadata for all generated source documents."""
+    mode = document_mode if document_mode in SOURCE_DOCUMENT_MODES else "hybrid"
+    groups: Dict[str, Dict[str, Any]] = {}
+
+    if mode in {"hybrid", "legacy-only"}:
+        groups.update(CORE_SOURCE_GROUPS)
+
+    if mode in {"hybrid", "kickstarter-only"}:
+        for section_id, section in MANDATORY_KICKSTARTER_SECTIONS.items():
+            groups[section_doc_stem(section_id)] = {
+                "title": section.title,
+                "description": section.description,
+                "skills": [artifact.source_skill_id for artifact in iter_section_artifacts(section_id)],
+                "category": "kickstarter-section",
+            }
+
+        for artifact_id, artifact in MANDATORY_KICKSTARTER_ARTIFACTS.items():
+            groups[artifact_doc_stem(artifact_id)] = {
+                "title": artifact.title,
+                "description": artifact.description,
+                "skills": [artifact.source_skill_id],
+                "category": "kickstarter-artifact",
+            }
+
+        groups[KICKSTARTER_READINESS_DOC_STEM] = {
+            "title": "Kickstarter Prototype Readiness",
+            "description": "Mandatory Kickstarter-capable product section coverage and missing artifact summary.",
+            "skills": [],
+            "category": "kickstarter-readiness",
+        }
+    return groups
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
+
 
 def build_source_documents(
     outputs_dir: Path,
@@ -279,26 +446,10 @@ def build_source_documents(
     model: str = "",
     console: Optional[Console] = None,
 ) -> Dict[str, Path]:
-    """Build all source markdown documents and write to output_dir.
-
-    Args:
-        outputs_dir: Path to ``.brandmint/outputs/`` directory.
-        config: Parsed brand-config.yaml dict.
-        config_path: Path to brand-config.yaml file.
-        brand_dir: Root brand directory (parent of .brandmint/).
-        output_dir: Where to write the markdown source documents.
-        synthesize: If True (default), use LLM prose synthesis when API key is
-            available. Falls back to mechanical rendering otherwise.
-        model: OpenRouter model ID override (default: claude-3.5-haiku).
-        console: Rich console for progress output.
-
-    Returns:
-        Dict mapping group_id to the written file path.
-    """
+    """Build all source markdown documents and write to output_dir."""
     _console = console or Console()
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Load all available skill outputs
     skill_outputs: Dict[str, dict] = {}
     if outputs_dir.is_dir():
         for f in outputs_dir.glob("*.json"):
@@ -308,15 +459,12 @@ def build_source_documents(
             except (json.JSONDecodeError, OSError):
                 pass
 
-    # ── Synthesis path ────────────────────────────────────────────────
+    document_mode = resolve_source_document_mode(config)
     synthesized: Dict[str, str] = {}
-
-    if synthesize:
+    if synthesize and document_mode in {"hybrid", "legacy-only"}:
         from .prose_synthesizer import ProseSynthesizer, DEFAULT_MODEL
 
-        # Load voice-and-tone config for system prompt injection
         voice_config = skill_outputs.get("voice-and-tone", {})
-
         synth = ProseSynthesizer(
             voice_config=voice_config,
             brand_config=config,
@@ -333,50 +481,71 @@ def build_source_documents(
             )
         else:
             _console.print(
-                "  [yellow]OPENROUTER_API_KEY not set — "
-                "falling back to mechanical rendering[/yellow]"
+                "  [yellow]OPENROUTER_API_KEY not set — falling back to mechanical rendering[/yellow]"
             )
 
-    # ── Write documents ───────────────────────────────────────────────
     result: Dict[str, Path] = {}
+    brand_name = config.get("brand", {}).get("name", "Brand")
 
-    for group_id, group_def in SOURCE_GROUPS.items():
-        # If synthesis produced prose for this group, use it
-        if group_id in synthesized:
+    if document_mode in {"hybrid", "legacy-only"}:
+        for group_id, group_def in CORE_SOURCE_GROUPS.items():
+            if group_id in synthesized:
+                doc_path = output_dir / f"{group_id}.md"
+                doc_path.write_text(synthesized[group_id])
+                result[group_id] = doc_path
+                continue
+
+            parts: List[str] = []
+            parts.append(f"# {group_def['title']}\n")
+            parts.append(f"> {group_def['description']}\n")
+            parts.append(f"**Brand:** {brand_name}\n")
+
+            for section_key in group_def.get("include_config_sections", []):
+                rendered = _render_config_section(config, section_key)
+                if rendered:
+                    parts.append(rendered)
+
+            for skill_id in group_def.get("skills", []):
+                if skill_id in skill_outputs:
+                    parts.append(_format_handoff(skill_id, skill_outputs[skill_id]))
+
+            if group_def.get("scan_visual_assets"):
+                parts.append(_scan_visual_assets(brand_dir, config))
+                parts.append(_read_generation_manifest(brand_dir, config))
+
             doc_path = output_dir / f"{group_id}.md"
-            doc_path.write_text(synthesized[group_id])
+            doc_path.write_text("\n".join(parts))
             result[group_id] = doc_path
-            continue
 
-        # Mechanical fallback: direct JSON-to-markdown rendering
-        parts: List[str] = []
+    if document_mode in {"hybrid", "kickstarter-only"}:
+        # Section-oriented Kickstarter docs
+        for section_id in MANDATORY_KICKSTARTER_SECTIONS:
+            group_id = section_doc_stem(section_id)
+            doc_path = output_dir / f"{group_id}.md"
+            doc_path.write_text(_render_kickstarter_section_doc(section_id, skill_outputs, config))
+            result[group_id] = doc_path
 
-        # Header
-        parts.append(f"# {group_def['title']}\n")
-        parts.append(f"> {group_def['description']}\n")
-        brand_name = config.get("brand", {}).get("name", "Brand")
-        parts.append(f"**Brand:** {brand_name}\n")
+        # Per-artifact Kickstarter docs (only when backing skill output exists)
+        for artifact_id in MANDATORY_KICKSTARTER_ARTIFACTS:
+            rendered = _render_kickstarter_artifact_doc(artifact_id, skill_outputs, config)
+            if rendered is None:
+                continue
+            group_id = artifact_doc_stem(artifact_id)
+            doc_path = output_dir / f"{group_id}.md"
+            doc_path.write_text(rendered)
+            result[group_id] = doc_path
 
-        # Config sections
-        for section_key in group_def.get("include_config_sections", []):
-            rendered = _render_config_section(config, section_key)
-            if rendered:
-                parts.append(rendered)
+        readiness_path = output_dir / f"{KICKSTARTER_READINESS_DOC_STEM}.md"
+        readiness_path.write_text(_render_kickstarter_readiness_doc(skill_outputs, config))
+        result[KICKSTARTER_READINESS_DOC_STEM] = readiness_path
 
-        # Skill outputs
-        for skill_id in group_def.get("skills", []):
-            if skill_id in skill_outputs:
-                parts.append(_format_handoff(skill_id, skill_outputs[skill_id]))
-            # Silently skip missing skills — not all brands run all skills
-
-        # Visual asset catalog (special case)
-        if group_def.get("scan_visual_assets"):
-            parts.append(_scan_visual_assets(brand_dir, config))
-            parts.append(_read_generation_manifest(brand_dir, config))
-
-        # Write document
-        doc_path = output_dir / f"{group_id}.md"
-        doc_path.write_text("\n".join(parts))
-        result[group_id] = doc_path
+    known_paths: Set[Path] = {
+        output_dir / f"{group_id}.md"
+        for group_id in get_source_group_definitions("hybrid")
+    }
+    generated_paths = set(result.values())
+    for known_path in known_paths:
+        if known_path not in generated_paths and known_path.exists():
+            known_path.unlink()
 
     return result

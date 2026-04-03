@@ -18,6 +18,8 @@ from rich.table import Table
 from rich.panel import Panel
 import yaml
 
+from ..core.kickstarter_blueprint import MANDATORY_KICKSTARTER_SECTIONS
+
 console = Console()
 
 
@@ -65,6 +67,8 @@ class ExecutionReport:
     # Executions
     skills: list[SkillExecution] = field(default_factory=list)
     assets: list[AssetExecution] = field(default_factory=list)
+    routing_decisions: list[dict] = field(default_factory=list)
+    kickstarter_readiness: Optional[dict] = None
     
     # Summaries
     skills_succeeded: int = 0
@@ -82,7 +86,10 @@ class ExecutionReport:
         """Create from dictionary."""
         skills = [SkillExecution(**s) for s in data.pop("skills", [])]
         assets = [AssetExecution(**a) for a in data.pop("assets", [])]
-        return cls(**data, skills=skills, assets=assets)
+        routing_decisions = data.pop("routing_decisions", [])
+        if not isinstance(routing_decisions, list):
+            routing_decisions = []
+        return cls(**data, skills=skills, assets=assets, routing_decisions=routing_decisions)
 
 
 def get_state_file(config_path: Path) -> Path:
@@ -121,6 +128,22 @@ def save_report(config_path: Path, report: ExecutionReport):
     
     with open(state_file, "w") as f:
         yaml.safe_dump(state, f, default_flow_style=False)
+
+
+def _kickstarter_section_rows(report: ExecutionReport) -> list[tuple[str, dict]]:
+    """Return Kickstarter section rows in display order."""
+    readiness = report.kickstarter_readiness or {}
+    section_status = readiness.get("section_status", {}) if isinstance(readiness, dict) else {}
+    rows: list[tuple[str, dict]] = []
+    for section_id, section in MANDATORY_KICKSTARTER_SECTIONS.items():
+        rows.append((section.title, section_status.get(section_id, {
+            "ready": False,
+            "completed": 0,
+            "total": len(section.artifact_ids),
+            "missing_artifact_ids": list(section.artifact_ids),
+        })))
+    return rows
+
 
 
 def format_markdown(report: ExecutionReport) -> str:
@@ -179,6 +202,39 @@ def format_markdown(report: ExecutionReport) -> str:
         ])
         for asset in report.assets:
             lines.append(f"| {asset.asset_id} | {asset.batch} | {asset.status} | ${asset.cost_usd:.3f} | {asset.provider} |")
+        lines.append("")
+
+    if report.kickstarter_readiness:
+        lines.extend([
+            "## Kickstarter Readiness",
+            "",
+            f"- All mandatory sections ready: {'Yes' if report.kickstarter_readiness.get('all_ready') else 'No'}",
+            "",
+            "| Section | Status | Coverage | Missing |",
+            "|---------|--------|----------|---------|",
+        ])
+        for section_title, row in _kickstarter_section_rows(report):
+            missing = ", ".join(row.get("missing_artifact_ids", [])) or "—"
+            status = "Ready" if row.get("ready") else "In progress"
+            coverage = f"{row.get('completed', 0)}/{row.get('total', 0)}"
+            lines.append(f"| {section_title} | {status} | {coverage} | {missing} |")
+        lines.append("")
+
+    if report.routing_decisions:
+        lines.extend([
+            "## Routing Decisions",
+            "",
+            f"- Recorded decisions: {len(report.routing_decisions)}",
+            "",
+            "| Asset | Batch | Media Skill | Reason | Confidence |",
+            "|-------|-------|-------------|--------|------------|",
+        ])
+        for row in report.routing_decisions:
+            lines.append(
+                f"| {row.get('asset_id', '')} | {row.get('batch', '')} | "
+                f"{row.get('media_skill_id', '')} | {row.get('reason', '')} | "
+                f"{row.get('confidence', '')} |"
+            )
         lines.append("")
     
     lines.extend([
@@ -255,8 +311,16 @@ def format_html(report: ExecutionReport) -> str:
     
     <h2>🖼️ Assets Summary</h2>
     <p>Generated: {report.assets_generated} | Failed: {report.assets_failed}</p>
-    
+
     {"<table><tr><th>Asset</th><th>Batch</th><th>Status</th><th>Cost</th><th>Provider</th></tr>" + "".join(f"<tr><td>{a.asset_id}</td><td>{a.batch}</td><td>{a.status}</td><td>${a.cost_usd:.3f}</td><td>{a.provider}</td></tr>" for a in report.assets) + "</table>" if report.assets else ""}
+
+    <h2>🚀 Kickstarter Readiness</h2>
+    <p>All mandatory sections ready: {"Yes" if (report.kickstarter_readiness or {}).get("all_ready") else "No"}</p>
+    {"<table><tr><th>Section</th><th>Status</th><th>Coverage</th><th>Missing</th></tr>" + "".join(f"<tr><td>{title}</td><td>{'Ready' if row.get('ready') else 'In progress'}</td><td>{row.get('completed', 0)}/{row.get('total', 0)}</td><td>{', '.join(row.get('missing_artifact_ids', [])) or '—'}</td></tr>" for title, row in _kickstarter_section_rows(report)) + "</table>" if report.kickstarter_readiness else ""}
+
+    <h2>🧭 Routing Decisions</h2>
+    <p>Recorded: {len(report.routing_decisions)}</p>
+    {"<table><tr><th>Asset</th><th>Batch</th><th>Media Skill</th><th>Reason</th><th>Confidence</th></tr>" + "".join(f"<tr><td>{r.get('asset_id','')}</td><td>{r.get('batch','')}</td><td>{r.get('media_skill_id','')}</td><td>{r.get('reason','')}</td><td>{r.get('confidence','')}</td></tr>" for r in report.routing_decisions) + "</table>" if report.routing_decisions else ""}
     
     <hr>
     <p><em>Generated by Brandmint at {datetime.now().isoformat()}</em></p>
@@ -291,6 +355,13 @@ def render_report_table(report: ExecutionReport):
     
     # Assets summary  
     console.print(f"[bold]🖼️ Assets:[/] ✓ {report.assets_generated}  ✗ {report.assets_failed}")
+    if report.kickstarter_readiness:
+        ready_sections = sum(1 for _, row in _kickstarter_section_rows(report) if row.get("ready"))
+        total_sections = len(MANDATORY_KICKSTARTER_SECTIONS)
+        overall = "ready" if report.kickstarter_readiness.get("all_ready") else "in progress"
+        console.print(f"[bold]🚀 Kickstarter:[/] {ready_sections}/{total_sections} sections ready ({overall})")
+    if report.routing_decisions:
+        console.print(f"[bold]🧭 Routing:[/] {len(report.routing_decisions)} decision rows")
     
     # Timing
     console.print(f"\n[dim]Duration: {report.total_duration_seconds:.1f}s[/]")

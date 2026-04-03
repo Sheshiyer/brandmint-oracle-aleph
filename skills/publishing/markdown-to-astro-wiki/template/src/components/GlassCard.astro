@@ -1,0 +1,29 @@
+---
+interface Props {
+  href?: string;
+  interactive?: boolean;
+  tone?: 'default' | 'warm' | 'signal' | 'accent';
+  class?: string;
+}
+
+const {
+  href,
+  interactive = false,
+  tone = 'default',
+  class: className = '',
+} = Astro.props;
+
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'glass-card',
+    `glass-card--${tone}`,
+    { 'glass-card--interactive': interactive || Boolean(href) },
+    className,
+  ]}
+>
+  <slot />
+</Tag>

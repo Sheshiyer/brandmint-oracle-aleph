@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "vite-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 4188,
+      "cwd": "ui"
+    },
+    {
+      "name": "tauri-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "tauri:dev"],
+      "port": 4188,
+      "cwd": "ui"
+    },
+    {
+      "name": "python-sidecar",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["scripts/ui_backend_bridge.py"],
+      "port": 4191
+    }
+  ]
+}

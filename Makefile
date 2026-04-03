@@ -7,7 +7,7 @@ export PATH := $(HOME)/.cargo/bin:/opt/homebrew/bin:$(PATH)
 UI_DIR := ui
 TAURI_DIR := $(UI_DIR)/src-tauri
 
-.PHONY: dev build clean sidecar install
+.PHONY: dev build clean sidecar install bundle-sidecar-venv
 
 ## dev — Start Tauri dev mode (Vite hot-reload + Rust backend + sidecar)
 dev:
@@ -30,6 +30,12 @@ sidecar:
 install:
 	cd $(UI_DIR) && npm install
 	cd $(TAURI_DIR) && cargo build
+
+## bundle-sidecar-venv — Prepare a portable Python env beside the Tauri sidecar wrapper
+bundle-sidecar-venv:
+	python3 -m venv $(TAURI_DIR)/binaries/venv
+	$(TAURI_DIR)/binaries/venv/bin/pip install --upgrade pip
+	$(TAURI_DIR)/binaries/venv/bin/pip install .
 
 ## check — Lint and type-check
 check:

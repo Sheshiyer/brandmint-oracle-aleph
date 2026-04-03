@@ -11,6 +11,7 @@ artifacts per project) using a 5-phase execution strategy:
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -73,9 +74,7 @@ class NotebookLMPublisher:
         max_sources: int = 50,
         synthesize: bool = True,
         synthesis_model: str = "",
-        max_parallel: int = 3,
-        include_brand_materials: bool = False,
-        vision_descriptions: bool = False,
+        max_parallel: int = 5,
     ):
         self.brand_dir = Path(brand_dir)
         self.config = config
@@ -86,17 +85,20 @@ class NotebookLMPublisher:
         self.max_sources = max_sources
         self.synthesize = synthesize
         self.synthesis_model = synthesis_model
-        self.include_brand_materials = include_brand_materials
-        self.vision_descriptions = vision_descriptions
 
         # NotebookLM config overrides from brand-config.yaml
         nb_config = config.get("notebooklm", {})
         artifacts_config = nb_config.get("artifacts", {})
         self.max_parallel = nb_config.get("max_parallel_workers", max_parallel)
-        self.inter_artifact_delay = nb_config.get("inter_artifact_delay", 2.0)
+        self.inter_artifact_delay = nb_config.get("inter_artifact_delay", 1.0)
         self.video_style_override = artifacts_config.get("video_style")
         self.disabled_artifacts: Set[str] = set(artifacts_config.get("disabled", []))
         self.custom_artifacts: List[dict] = artifacts_config.get("custom", [])
+        self.notebook_reuse_policy = str(
+            nb_config.get("reuse_policy", "fresh-per-spec")
+        ).strip().lower() or "fresh-per-spec"
+        if self.notebook_reuse_policy not in {"fresh-per-spec", "fresh-per-run", "reuse-existing"}:
+            self.notebook_reuse_policy = "fresh-per-spec"
 
         # Derived paths
         self.outputs_dir = self.brand_dir / ".brandmint" / "outputs"
@@ -112,11 +114,13 @@ class NotebookLMPublisher:
 
         # Brand info
         self.brand_name = config.get("brand", {}).get("name", "Brand")
+        self.notebook_fingerprint = self._build_notebook_fingerprint()
 
     def publish(self) -> bool:
         """Run the full publish pipeline. Returns True on success."""
         started = time.time()
         artifact_defs = self._build_artifact_defs()
+        success = False
 
         self.console.print(
             Panel(
@@ -130,41 +134,50 @@ class NotebookLMPublisher:
             )
         )
 
-        # Step 1: Preflight
-        if not self._preflight():
+        try:
+            # Step 1: Preflight
+            if not self._preflight():
+                return False
+
+            # Step 2: Create or reuse notebook
+            notebook_id = self._ensure_notebook()
+            if not notebook_id:
+                return False
+
+            # Step 3: Build and curate source documents
+            curated = self._build_sources()
+            if not curated:
+                self.console.print("[red]No source documents generated.[/red]")
+                return False
+
+            # Step 4: Upload curated sources
+            self._upload_sources(curated, notebook_id)
+
+            # Step 5: Wait for source indexing
+            self._wait_for_indexing(notebook_id)
+            self._persist_progress(started, artifact_defs)
+
+            # Step 6a: On resume, reconcile any previously submitted artifacts first.
+            self._wait_for_artifacts(notebook_id)
+            self._download_artifacts(notebook_id, artifact_defs)
+            self._persist_progress(started, artifact_defs)
+
+            # Step 6b: Generate any remaining artifacts, then reconcile/download again.
+            self._generate_artifacts(notebook_id, artifact_defs)
+            self._persist_progress(started, artifact_defs)
+            self._wait_for_artifacts(notebook_id)
+            self._download_artifacts(notebook_id, artifact_defs)
+
+            success = True
+            return True
+        except Exception as e:
+            self.console.print(f"[red]NotebookLM publishing failed: {e}[/red]")
             return False
-
-        # Step 2: Create or reuse notebook
-        notebook_id = self._ensure_notebook()
-        if not notebook_id:
-            return False
-
-        # Step 3: Build and curate source documents
-        curated = self._build_sources()
-        if not curated:
-            self.console.print("[red]No source documents generated.[/red]")
-            return False
-
-        # Step 4: Upload curated sources
-        self._upload_sources(curated, notebook_id)
-
-        # Step 5: Wait for source indexing
-        self._wait_for_indexing(notebook_id)
-
-        # Step 6-8: Generate, wait, download artifacts
-        self._generate_artifacts(notebook_id, artifact_defs)
-        self._wait_for_artifacts(notebook_id)
-        self._download_artifacts(notebook_id, artifact_defs)
-
-        # Step 9: Save report
-        elapsed = time.time() - started
-        self._save_report(elapsed, artifact_defs)
-        self.state["updated_at"] = datetime.now().isoformat()
-        _save_state(self.state, self.state_path)
-
-        # Summary
-        self._print_summary(elapsed, artifact_defs)
-        return True
+        finally:
+            elapsed = time.time() - started
+            self._persist_progress(started, artifact_defs)
+            if success:
+                self._print_summary(elapsed, artifact_defs)
 
     def dry_run(self) -> None:
         """Show what would be done without executing."""
@@ -368,21 +381,86 @@ class NotebookLMPublisher:
         except (FileNotFoundError, _sp.TimeoutExpired):
             return False
 
+    def _build_notebook_fingerprint(self) -> str:
+        """Hash the product/source-defining config so stale notebooks are not silently reused."""
+        payload = {
+            "brand": self.config.get("brand", {}),
+            "theme": self.config.get("theme", {}),
+            "palette": self.config.get("palette", {}),
+            "materials": self.config.get("materials", []),
+            "products": self.config.get("products", {}),
+            "aesthetic": self.config.get("aesthetic", {}),
+            "negative_prompt": self.config.get("negative_prompt", ""),
+            "execution_context": self.config.get("execution_context", {}),
+            "publishing": self.config.get("publishing", {}).get("notebooklm", {}),
+            "generation": {
+                "product_reference_images": self.config.get("generation", {}).get("product_reference_images", []),
+                "reference_overrides": self.config.get("generation", {}).get("reference_overrides", {}),
+            },
+        }
+        blob = json.dumps(payload, sort_keys=True, ensure_ascii=False)
+        return hashlib.sha256(blob.encode("utf-8")).hexdigest()[:12]
+
+    def _reset_state_for_new_notebook(self, *, reason: str, previous_id: str = "") -> None:
+        """Clear notebook-bound state when policy requires a fresh notebook."""
+        preserved = {
+            "notebook_policy": self.notebook_reuse_policy,
+            "notebook_fingerprint": self.notebook_fingerprint,
+            "reset_reason": reason,
+        }
+        if previous_id:
+            preserved["previous_notebook_id"] = previous_id
+        previous_fingerprint = self.state.get("notebook_fingerprint")
+        if previous_fingerprint:
+            preserved["previous_notebook_fingerprint"] = previous_fingerprint
+        self.state = preserved
+
     def _ensure_notebook(self) -> Optional[str]:
         """Create or reuse a notebook. Returns notebook_id or None."""
         existing_id = self.state.get("notebook_id")
+        existing_fingerprint = self.state.get("notebook_fingerprint")
+        should_reuse = False
+        reuse_reason = ""
+
         if existing_id and not self.force:
+            if self.notebook_reuse_policy == "reuse-existing":
+                should_reuse = True
+                reuse_reason = "policy reuse-existing"
+            elif self.notebook_reuse_policy == "fresh-per-spec":
+                if existing_fingerprint == self.notebook_fingerprint:
+                    should_reuse = True
+                    reuse_reason = "matching product/spec fingerprint"
+                else:
+                    self.console.print(
+                        "  [yellow]Notebook fingerprint changed — creating a fresh notebook to avoid cross-version contamination.[/yellow]"
+                    )
+            elif self.notebook_reuse_policy == "fresh-per-run":
+                self.console.print(
+                    "  [yellow]Notebook policy fresh-per-run — creating a fresh notebook for this publish run.[/yellow]"
+                )
+
+        if should_reuse:
             self.console.print(
-                f"  [green]✓[/green] Reusing notebook: {existing_id[:12]}..."
+                f"  [green]✓[/green] Reusing notebook: {existing_id[:12]}... ({reuse_reason})"
             )
+            self.state["notebook_policy"] = self.notebook_reuse_policy
+            self.state["notebook_fingerprint"] = self.notebook_fingerprint
             return existing_id
 
-        title = f"{self.brand_name} — Brand Intelligence"
+        if existing_id and not self.force:
+            self._reset_state_for_new_notebook(
+                reason=f"policy={self.notebook_reuse_policy}",
+                previous_id=existing_id,
+            )
+
+        title = f"{self.brand_name} — Brand Intelligence [{self.notebook_fingerprint}]"
         self.console.print(f"  Creating notebook: [bold]{title}[/bold]")
         try:
             notebook_id = self.client.create_notebook(title)
             self.state["notebook_id"] = notebook_id
             self.state["notebook_title"] = title
+            self.state["notebook_policy"] = self.notebook_reuse_policy
+            self.state["notebook_fingerprint"] = self.notebook_fingerprint
             self.state["created_at"] = datetime.now().isoformat()
             self.state.setdefault("sources", {})
             self.state.setdefault("artifacts", {})
@@ -430,6 +508,12 @@ class NotebookLMPublisher:
             type_counts[c.source_type] = type_counts.get(c.source_type, 0) + 1
         for stype, count in sorted(type_counts.items()):
             self.console.print(f"    {stype}: {count}")
+
+        self.state["source_selection"] = {
+            "count": len(selected),
+            "files": [c.path.name for c in selected],
+            "image_source_policy": getattr(curator, "image_source_policy", "manifest-only"),
+        }
 
         return selected
 
@@ -606,10 +690,14 @@ class NotebookLMPublisher:
         """Generate a single artifact."""
         aid = adef["id"]
 
-        # Skip if already generated
+        # Skip if already submitted or completed unless force is requested.
         existing = artifacts_state.get(aid, {})
-        if existing.get("status") == "completed" and not self.force:
+        existing_status = existing.get("status")
+        if existing_status == "completed" and not self.force:
             self.console.print(f"  [dim]⏭ {aid} — already completed[/dim]")
+            return
+        if existing_status == "pending" and existing.get("artifact_id") and not self.force:
+            self.console.print(f"  [dim]⏭ {aid} — already submitted[/dim]")
             return
 
         # Build instructions
@@ -740,7 +828,7 @@ class NotebookLMPublisher:
             artifact_id = info.get("artifact_id", "")
             output_path = self.artifacts_dir / adef["output_filename"]
 
-            ok = self.client.download_artifact(
+            ok, error = self.client.download_artifact(
                 artifact_type=adef["download_type"],
                 output_path=str(output_path),
                 artifact_id=artifact_id,
@@ -749,26 +837,46 @@ class NotebookLMPublisher:
             if ok:
                 info["downloaded"] = True
                 info["path"] = str(output_path)
+                info.pop("download_error", None)
                 size_kb = output_path.stat().st_size / 1024
                 self.console.print(
                     f"  [green]✓[/green] {adef['output_filename']} ({size_kb:.1f} KB)"
                 )
             else:
+                info["download_error"] = error
                 self.console.print(
-                    f"  [red]✗ {adef['output_filename']} download failed[/red]"
+                    f"  [red]✗ {adef['output_filename']} download failed: {error}[/red]"
                 )
 
         _save_state(self.state, self.state_path)
 
+    def _persist_progress(self, started: float, artifact_defs: List[dict]) -> None:
+        """Persist state and a partial report so resumes have a reliable checkpoint."""
+        self.state["updated_at"] = datetime.now().isoformat()
+        _save_state(self.state, self.state_path)
+        elapsed = time.time() - started
+        self._save_report(elapsed, artifact_defs)
+
     def _save_report(self, elapsed: float, artifact_defs: List[dict]) -> None:
         """Write the publish execution report."""
         self.deliverables_dir.mkdir(parents=True, exist_ok=True)
+        artifacts = self.state.get("artifacts", {})
         report = {
             "brand": self.brand_name,
             "notebook_id": self.state.get("notebook_id"),
+            "notebook_title": self.state.get("notebook_title"),
+            "notebook_policy": self.state.get("notebook_policy"),
+            "notebook_fingerprint": self.state.get("notebook_fingerprint"),
+            "source_selection": self.state.get("source_selection", {}),
             "sources": self.state.get("sources", {}),
-            "artifacts": self.state.get("artifacts", {}),
+            "artifacts": artifacts,
             "artifact_count": len(artifact_defs),
+            "artifact_summary": {
+                "completed": sum(1 for info in artifacts.values() if info.get("status") == "completed"),
+                "pending": sum(1 for info in artifacts.values() if info.get("status") == "pending"),
+                "failed": sum(1 for info in artifacts.values() if info.get("status") == "failed"),
+                "downloaded": sum(1 for info in artifacts.values() if info.get("downloaded")),
+            },
             "elapsed_seconds": round(elapsed, 1),
             "completed_at": datetime.now().isoformat(),
         }

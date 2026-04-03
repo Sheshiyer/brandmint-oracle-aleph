@@ -1,0 +1,39 @@
+version: v1
+default:
+  browser_assets:
+    - APP-SCREENSHOT
+  browser_keywords:
+    - screenshot
+    - screen
+    - ui
+    - interface
+    - dashboard
+    - app store
+domain_packs:
+  app:
+    browser_assets:
+      - APP-ICON
+    browser_keywords:
+      - mobile
+      - ios
+      - android
+      - onboarding
+      - settings screen
+  saas:
+    browser_keywords:
+      - analytics
+      - admin panel
+      - table view
+      - billing page
+  ecommerce:
+    browser_keywords:
+      - product page
+      - cart
+      - checkout
+      - storefront
+  social:
+    browser_keywords:
+      - feed
+      - profile
+      - post composer
+      - timeline

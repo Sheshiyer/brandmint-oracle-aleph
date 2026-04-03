@@ -120,25 +120,25 @@ ASSET_CATALOG = {
         "aspect": "16:9",
     },
     "3B": {
-        "name": "Hero Book / Codex",
+        "name": "Hero Product",
         "category": "products",
         "model": "flux-2-pro",
         "cost_per_seed": 0.05,
         "priority": 3,
-        "description": "Hardcover codex with custom spine and visible diagrams.",
-        "when": "Brands with knowledge/education products.",
-        "tags": ["product", "knowledge"],
+        "description": "Primary hero product render anchored to the approved product specification.",
+        "when": "Any product-led brand that needs the canonical hero item.",
+        "tags": ["product", "hero"],
         "aspect": "3:4",
     },
     "3C": {
-        "name": "Essence Vial",
+        "name": "Product Detail",
         "category": "products",
         "model": "flux-2-pro",
         "cost_per_seed": 0.05,
         "priority": 4,
-        "description": "Borosilicate glass vessel with branded elements.",
-        "when": "Wellness, beauty, or ceremonial product brands.",
-        "tags": ["product", "niche"],
+        "description": "Close-up product detail render anchored to the approved product specification.",
+        "when": "Any product-led brand that needs material and feature close-ups.",
+        "tags": ["product", "detail"],
         "aspect": "3:4",
     },
     "4A": {
@@ -341,10 +341,14 @@ def get_exec_context(config_path, cfg):
     engines_list = posters_cfg.get("engines", []) if isinstance(posters_cfg, dict) else []
     sequences_list = posters_cfg.get("sequences", []) if isinstance(posters_cfg, dict) else []
 
-    # Depth determines seeds count
+    # Depth determines seeds count; generation.seeds list overrides if present
     depth_level = ec.get("depth_level", "focused")
-    seeds_map = {"surface": 1, "focused": 2, "comprehensive": 2, "exhaustive": 3}
-    seeds_count = seeds_map.get(depth_level, 2)
+    gen_seeds = cfg.get("generation", {}).get("seeds", [])
+    if gen_seeds:
+        seeds_count = len(gen_seeds)
+    else:
+        seeds_map = {"surface": 1, "focused": 2, "comprehensive": 2, "exhaustive": 3}
+        seeds_count = seeds_map.get(depth_level, 2)
 
     return {
         "domain": brand.get("domain", "general"),
@@ -729,7 +733,7 @@ def cmd_status(args):
         ("2C", "Logo Emboss"),
         ("3A", "Capsule Collection"),
         ("3B", "Hero Book"),
-        ("3C", "Essence Vial"),
+        ("3C", "Product Detail"),
         ("4A", "Catalog Layout"),
         ("4B", "Flatlay"),
         ("5A", "Heritage Engraving"),

@@ -10,6 +10,11 @@ export const isTauri = (): boolean => typeof window !== "undefined" && Boolean(w
 
 const BRIDGE_BASE = "http://127.0.0.1:4191";
 
+type BridgeRoute = {
+  method: "GET" | "POST";
+  path: string | ((args?: Record<string, unknown>) => string);
+};
+
 /**
  * Invoke a Tauri command or fall back to fetch() against the Python bridge.
  */
@@ -23,14 +28,20 @@ export async function apiBridge<T = unknown>(
   }
 
   // Fallback: map command names to REST endpoints
-  const mapping: Record<string, { method: string; path: string }> = {
+  const mapping: Record<string, BridgeRoute> = {
     get_health: { method: "GET", path: "/api/health" },
     get_state: { method: "GET", path: "/api/state" },
+    get_logs: { method: "GET", path: (routeArgs) => `/api/logs?since=${routeArgs?.since ?? 0}` },
     get_runners: { method: "GET", path: "/api/runners" },
     get_settings: { method: "GET", path: "/api/settings" },
     update_settings: { method: "POST", path: "/api/settings" },
-    get_artifacts: { method: "GET", path: `/api/artifacts?limit=${args?.limit ?? 400}` },
-    get_references: { method: "GET", path: `/api/references?limit=${args?.limit ?? 1000}` },
+    get_artifacts: { method: "GET", path: (routeArgs) => `/api/artifacts?limit=${routeArgs?.limit ?? 400}` },
+    read_artifact: {
+      method: "GET",
+      path: (routeArgs) => `/api/artifacts/read?path=${encodeURIComponent(String(routeArgs?.path ?? ""))}`,
+    },
+    get_references: { method: "GET", path: (routeArgs) => `/api/references?limit=${routeArgs?.limit ?? 1000}` },
+    save_config: { method: "POST", path: "/api/config/save" },
     start_run: { method: "POST", path: "/api/run/start" },
     abort_run: { method: "POST", path: "/api/run/abort" },
     retry_run: { method: "POST", path: "/api/run/retry" },
@@ -42,6 +53,7 @@ export async function apiBridge<T = unknown>(
   if (!route) {
     throw new Error(`Unknown API command: ${command}`);
   }
+  const path = typeof route.path === "function" ? route.path(args) : route.path;
 
   const opts: RequestInit = { method: route.method };
   if (route.method === "POST" && args) {
@@ -50,12 +62,23 @@ export async function apiBridge<T = unknown>(
     opts.body = JSON.stringify(args.payload ?? args);
   }
 
-  const res = await fetch(`${BRIDGE_BASE}${route.path}`, opts);
+  const res = await fetch(`${BRIDGE_BASE}${path}`, opts);
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error((err as Record<string, string>).error || `Request failed: ${res.status}`);
   }
   return res.json() as Promise<T>;
+}
+
+export function bridgeAssetUrl(pathOrUrl: string): string {
+  if (!pathOrUrl) return BRIDGE_BASE;
+  if (/^(https?:)?\/\//i.test(pathOrUrl) || pathOrUrl.startsWith("data:") || pathOrUrl.startsWith("blob:")) {
+    return pathOrUrl;
+  }
+  if (pathOrUrl.startsWith("/")) {
+    return `${BRIDGE_BASE}${pathOrUrl}`;
+  }
+  return `${BRIDGE_BASE}/${pathOrUrl.replace(/^\/+/, "")}`;
 }
 
 /**

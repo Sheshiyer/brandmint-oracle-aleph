@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/components/splashscreen.tsx","./src/lib/appmeta.ts","./src/lib/brandconfig.ts","./src/lib/tauri.ts"],"version":"5.9.3"}

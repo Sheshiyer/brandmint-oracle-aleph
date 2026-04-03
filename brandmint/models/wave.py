@@ -44,6 +44,8 @@ class Wave(BaseModel):
     status: WaveStatus = Field(default=WaveStatus.PENDING)
     estimated_cost: float = 0.0
     post_hook: Optional[str] = None
+    kickstarter_sections: List[str] = Field(default_factory=list)
+    kickstarter_artifacts: List[str] = Field(default_factory=list)
 
     # Execution tracking
     skill_executions: Dict[str, SkillExecution] = Field(default_factory=dict)
@@ -58,6 +60,9 @@ class Wave(BaseModel):
             "depends_on": self.depends_on,
             "status": self.status.value,
             "estimated_cost": self.estimated_cost,
+            "post_hook": self.post_hook,
+            "kickstarter_sections": self.kickstarter_sections,
+            "kickstarter_artifacts": self.kickstarter_artifacts,
         }
 
 

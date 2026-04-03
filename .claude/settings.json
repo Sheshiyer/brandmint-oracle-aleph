@@ -1,0 +1,6 @@
+{
+  "enabledPlugins": {
+    "obsidian@obsidian-skills": true,
+    "claude-mem@thedotmack": true
+  }
+}

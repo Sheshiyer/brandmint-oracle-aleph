@@ -1,0 +1,43 @@
+---
+import type { Locale } from '../i18n';
+import { t } from '../i18n';
+
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+  locale: Locale;
+}
+
+const { headings, locale } = Astro.props;
+const copy = t(locale);
+const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3);
+---
+
+{toc.length > 0 && (
+  <aside class="toc-panel glass-panel glass-panel--soft">
+    <p class="eyebrow eyebrow--muted">{copy.shell.onThisPage}</p>
+    <ul class="toc-list">
+      {toc.map((heading) => (
+        <li class:list={['toc-item', `toc-item--${heading.depth}`]}>
+          <a href={`#${heading.slug}`} class="toc-link">{heading.text}</a>
+        </li>
+      ))}
+    </ul>
+  </aside>
+)}
+
+<script is:inline>
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const headings = document.querySelectorAll('h2[id], h3[id]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach((link) => link.classList.remove('is-active'));
+        const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+        activeLink?.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-25% 0px -60% 0px' });
+
+  headings.forEach((heading) => observer.observe(heading));
+</script>

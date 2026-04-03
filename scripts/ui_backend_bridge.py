@@ -15,11 +15,47 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
+from brandmint.config_approval import (
+    APPROVAL_ERROR_CODE,
+    build_approval_error,
+    compose_config_document,
+    config_launch_status,
+    dump_config_document,
+    read_config_document,
+    semantic_payload_from_document,
+    write_config_document,
+)
+
 
 HOST = "127.0.0.1"
 PORT = 4191
 FIXED_UI_PORT = 4188
-ROOT = Path("/Volumes/madara/2026/brandmint")
+
+
+def _detect_root() -> Path:
+    explicit = os.environ.get("BRANDMINT_ROOT", "").strip()
+    candidates = []
+    if explicit:
+        candidates.append(Path(explicit).expanduser())
+    candidates.extend(
+        [
+            Path(__file__).resolve().parent.parent,
+            Path.cwd(),
+        ]
+    )
+
+    for candidate in candidates:
+        try:
+            resolved = candidate.resolve()
+        except FileNotFoundError:
+            continue
+        if (resolved / "pyproject.toml").exists() and (resolved / "brandmint").is_dir():
+            return resolved
+
+    return Path(__file__).resolve().parent.parent
+
+
+ROOT = _detect_root()
 ARTIFACT_PATHS = [
     ROOT / ".brandmint" / "outputs",
     ROOT / "deliverables",
@@ -42,6 +78,14 @@ DEFAULT_UI_SETTINGS = {
         "model": "openai/gpt-4o-mini",
         "routeMode": "balanced",
         "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    },
+    "inference": {
+        "endpoint": "https://api.inference.sh",
+        "visualBackend": "scripts",
+        "rolloutMode": "ring0",
+        "fallbackToScripts": True,
+        "semanticRoutingEnabled": True,
+        "semanticDomainPack": "",
     },
     "nbrain": {
         "enabled": False,
@@ -84,10 +128,13 @@ class RuntimeState:
 
     def snapshot(self) -> dict:
         with self.lock:
-            pid = self.process.pid if self.process else None
             running = bool(self.process and self.process.poll() is None)
+            pid = self.process.pid if running and self.process else None
+            state = self.run_state
+            if not running and state in {"running", "retrying"}:
+                state = "idle"
             return {
-                "state": self.run_state,
+                "state": state,
                 "runner": self.runner_id,
                 "pid": pid,
                 "running": running,
@@ -151,12 +198,18 @@ def get_settings_snapshot() -> dict:
     with SETTINGS_LOCK:
         base = json.loads(json.dumps(UI_SETTINGS))
     openrouter_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    inference_key = os.environ.get("INFERENCE_API_KEY", "").strip()
     nbrain_key = os.environ.get("NBRAIN_API_KEY", "").strip()
     return {
         "openrouter": {
             **base.get("openrouter", {}),
             "hasApiKey": bool(openrouter_key),
             "apiKeyMasked": _mask_secret(openrouter_key),
+        },
+        "inference": {
+            **base.get("inference", {}),
+            "hasApiKey": bool(inference_key),
+            "apiKeyMasked": _mask_secret(inference_key),
         },
         "nbrain": {
             **base.get("nbrain", {}),
@@ -179,6 +232,24 @@ def update_settings(payload: dict) -> dict:
                 "endpoint"
             ]
 
+        inference = UI_SETTINGS.setdefault("inference", {})
+        if "inferenceEndpoint" in payload:
+            inference["endpoint"] = str(payload.get("inferenceEndpoint") or "").strip() or DEFAULT_UI_SETTINGS["inference"][
+                "endpoint"
+            ]
+        if "inferenceVisualBackend" in payload:
+            backend = str(payload.get("inferenceVisualBackend") or "scripts").strip().lower()
+            inference["visualBackend"] = "inference" if backend == "inference" else "scripts"
+        if "inferenceRolloutMode" in payload:
+            mode = str(payload.get("inferenceRolloutMode") or "ring0").strip().lower()
+            inference["rolloutMode"] = mode if mode in {"ring0", "ring1", "ring2"} else "ring0"
+        if "inferenceFallbackToScripts" in payload:
+            inference["fallbackToScripts"] = bool(payload.get("inferenceFallbackToScripts"))
+        if "inferenceSemanticRoutingEnabled" in payload:
+            inference["semanticRoutingEnabled"] = bool(payload.get("inferenceSemanticRoutingEnabled"))
+        if "inferenceSemanticDomainPack" in payload:
+            inference["semanticDomainPack"] = str(payload.get("inferenceSemanticDomainPack") or "").strip()
+
         nbrain = UI_SETTINGS.setdefault("nbrain", {})
         if "nbrainEnabled" in payload:
             nbrain["enabled"] = bool(payload.get("nbrainEnabled"))
@@ -199,6 +270,13 @@ def update_settings(payload: dict) -> dict:
             os.environ["OPENROUTER_API_KEY"] = key
     if payload.get("clearOpenrouterApiKey"):
         os.environ.pop("OPENROUTER_API_KEY", None)
+
+    if "inferenceApiKey" in payload:
+        key = str(payload.get("inferenceApiKey") or "").strip()
+        if key:
+            os.environ["INFERENCE_API_KEY"] = key
+    if payload.get("clearInferenceApiKey"):
+        os.environ.pop("INFERENCE_API_KEY", None)
 
     if "nbrainApiKey" in payload:
         key = str(payload.get("nbrainApiKey") or "").strip()
@@ -551,6 +629,18 @@ def _resolve_user_path(raw: str | None, expect_dir: bool = False) -> Path:
     return resolved
 
 
+def _is_within_any(candidate: Path, bases: list[Path]) -> bool:
+    for base in bases:
+        try:
+            candidate.relative_to(base.resolve())
+            return True
+        except ValueError:
+            continue
+        except FileNotFoundError:
+            continue
+    return False
+
+
 def load_intake_from_folder(payload: dict) -> dict:
     brand_folder = str(payload.get("brandFolder") or "").strip()
     if not brand_folder:
@@ -575,6 +665,16 @@ def load_intake_from_folder(payload: dict) -> dict:
 
     if not config_path.exists():
         warnings.append(f"Config not found at {config_path}")
+        config_document = None
+        config_launch = None
+    else:
+        try:
+            config_document = read_config_document(config_path)
+            config_launch = config_launch_status(config_document)
+        except Exception as exc:
+            warnings.append(f"Failed reading config: {exc}")
+            config_document = None
+            config_launch = None
 
     runtime.append_log("info", f"Intake loaded from folder: {folder}")
     return {
@@ -583,7 +683,66 @@ def load_intake_from_folder(payload: dict) -> dict:
         "productMdPath": str(product_path),
         "productMdText": product_text,
         "configPath": str(config_path),
+        "configDocument": config_document,
+        "semanticConfig": semantic_payload_from_document(config_document) if config_document else None,
+        "configMetadata": (config_document or {}).get("_brandmint") if config_document else None,
+        "configLaunchStatus": config_launch,
         "warnings": warnings,
+    }
+
+
+def save_config_from_payload(payload: dict) -> dict:
+    raw_path = str(payload.get("configPath") or "").strip()
+    if not raw_path:
+        raise ValueError("configPath is required")
+    config_path = _resolve_user_path(raw_path, expect_dir=False)
+
+    semantic_config = payload.get("semanticConfig") or payload.get("configDraft")
+    if not isinstance(semantic_config, dict):
+        raise ValueError("semanticConfig is required")
+
+    review = payload.get("review") or {}
+    approved = bool(payload.get("approved"))
+    pending_fields = review.get("pendingFields") or review.get("pending_fields") or []
+    if approved and pending_fields:
+        preview = ", ".join(str(item) for item in pending_fields[:3])
+        raise ValueError(
+            f"Config cannot be approved while fields still need review: {preview or 'pending fields remain'}"
+        )
+
+    existing_document = None
+    if config_path.exists() and config_path.is_file():
+        try:
+            existing_document = read_config_document(config_path)
+        except Exception:
+            existing_document = None
+
+    document = compose_config_document(
+        semantic_config,
+        review=review,
+        source_text=str(payload.get("sourceText") or ""),
+        source_uri=str(payload.get("sourceUri") or payload.get("productMdPath") or ""),
+        source_type=str(payload.get("sourceType") or "product-md"),
+        extractor_version=str(payload.get("extractorVersion") or "front-ui-v1"),
+        state="approved" if approved else "draft",
+        approved_by=str(payload.get("approvedBy") or ""),
+        approval_note=str(payload.get("approvalNote") or ""),
+        existing_document=existing_document,
+    )
+    write_config_document(config_path, document)
+    launch_status = config_launch_status(document)
+    runtime.append_log(
+        "info",
+        f"Config saved to {config_path} ({launch_status['state']}, pending={len(launch_status['pending_fields'])})",
+    )
+    return {
+        "ok": True,
+        "configPath": str(config_path),
+        "yaml": dump_config_document(document),
+        "document": document,
+        "semanticConfig": semantic_payload_from_document(document),
+        "configMetadata": document.get("_brandmint"),
+        "configLaunchStatus": launch_status,
     }
 
 
@@ -599,23 +758,37 @@ def _build_runner_command(payload: dict, retry: bool) -> tuple[str, list[str]]:
 
     if runner_id == "bm":
         config = payload.get("configPath") or "./brand-config.yaml"
+        config_path = _resolve_user_path(str(config), expect_dir=False)
+        if not config_path.exists():
+            raise ValueError(f"Config file not found: {config_path}")
+        config_document = read_config_document(config_path)
+        launch_status = config_launch_status(config_document)
+        if not launch_status["is_launchable"]:
+            raise ValueError(build_approval_error(config_path, launch_status.get("pending_fields")))
         scenario = payload.get("scenario") or "focused"
         waves = payload.get("waves") or "1-3"
+        inference = settings.get("inference", {})
         if retry:
             runtime.append_log("info", "Retry requested: clearing fixed UI port 4188")
             if not clear_port(FIXED_UI_PORT):
                 raise RuntimeError(f"Failed to clear port {FIXED_UI_PORT}")
-        return runner_id, [
+        cmd = [
             "bm",
             "launch",
             "--config",
-            str(config),
+            str(config_path),
             "--scenario",
             str(scenario),
             "--waves",
             str(waves),
             "--non-interactive",
         ]
+        if str(inference.get("visualBackend", "scripts")).strip().lower() == "inference":
+            cmd.append("--inference-only-visual")
+        rollout_mode = str(inference.get("rolloutMode", "ring0")).strip().lower()
+        if rollout_mode in {"ring0", "ring1", "ring2"}:
+            cmd.extend(["--inference-rollout-mode", rollout_mode])
+        return runner_id, cmd
 
     prompt = str(payload.get("taskPrompt") or DEFAULT_DOC_PROMPT).strip()
     if not prompt:
@@ -705,7 +878,9 @@ def start_run(payload: dict, retry: bool = False) -> dict:
     try:
         runner_id, cmd = _build_runner_command(payload, retry=retry)
     except Exception as exc:
-        return {"ok": False, "error": str(exc)}
+        message = str(exc)
+        code = APPROVAL_ERROR_CODE if "not approved" in message.lower() else "run_start_failed"
+        return {"ok": False, "error": message, "code": code}
 
     return _start_process_with_command(cmd, runner_id=runner_id, retry=retry)
 
@@ -743,7 +918,7 @@ def abort_run() -> dict:
 
 
 class Handler(BaseHTTPRequestHandler):
-    def _send(self, status: int, data: dict) -> None:
+    def _send(self, status: int, data: object) -> None:
         body = json.dumps(data).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json")
@@ -802,6 +977,26 @@ class Handler(BaseHTTPRequestHandler):
             limit = int(qs.get("limit", ["200"])[0])
             self._send(200, {"artifacts": discover_artifacts(limit=min(max(limit, 1), 2000))})
             return
+        if parsed.path == "/api/artifacts/read":
+            qs = parse_qs(parsed.query)
+            rel = unquote(qs.get("path", [""])[0]).strip()
+            if not rel:
+                self._send(400, {"ok": False, "error": "Missing path"})
+                return
+            candidate = (ROOT / rel).resolve()
+            if not _is_within_any(candidate, ARTIFACT_PATHS) or not candidate.exists() or not candidate.is_file():
+                self._send(404, {"ok": False, "error": "Artifact not found"})
+                return
+            try:
+                payload = json.loads(candidate.read_text(encoding="utf-8"))
+            except json.JSONDecodeError as exc:
+                self._send(400, {"ok": False, "error": f"Artifact is not valid JSON: {exc}"})
+                return
+            except Exception as exc:
+                self._send(500, {"ok": False, "error": f"Failed to read artifact: {exc}"})
+                return
+            self._send(200, payload)
+            return
         if parsed.path == "/api/references":
             qs = parse_qs(parsed.query)
             limit = int(qs.get("limit", ["500"])[0])
@@ -814,8 +1009,7 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(400, {"ok": False, "error": "Missing path"})
                 return
             candidate = (ROOT / rel).resolve()
-            allowed = any(str(candidate).startswith(str(base.resolve())) for base in REFERENCE_IMAGE_DIRS)
-            if not allowed or not candidate.exists() or not candidate.is_file():
+            if not _is_within_any(candidate, REFERENCE_IMAGE_DIRS) or not candidate.exists() or not candidate.is_file():
                 self._send(404, {"ok": False, "error": "Image not found"})
                 return
             self._send_file(candidate)
@@ -860,6 +1054,16 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(400, {"ok": False, "error": str(exc)})
                 return
             self._send(200, {"ok": True, "settings": settings})
+            return
+        if parsed.path == "/api/config/save":
+            try:
+                result = save_config_from_payload(payload)
+            except Exception as exc:
+                message = str(exc)
+                code = APPROVAL_ERROR_CODE if "approve" in message.lower() or "pending" in message.lower() else "config_save_failed"
+                self._send(400, {"ok": False, "error": message, "code": code})
+                return
+            self._send(200, result)
             return
         self._send(404, {"ok": False, "error": "Not found"})
 

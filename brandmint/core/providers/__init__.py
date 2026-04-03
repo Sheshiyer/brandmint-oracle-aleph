@@ -39,6 +39,7 @@ from .model_mapping import (
     PROVIDER_CAPABILITIES,
     COST_ESTIMATES,
 )
+from .fallback_chain import ProviderFallbackChain
 
 __all__ = [
     # Base classes
@@ -51,6 +52,8 @@ __all__ = [
     "OpenAIProvider",
     "ReplicateProvider",
     "InferenceProvider",
+    # Fallback orchestration
+    "ProviderFallbackChain",
     # Factory functions
     "get_provider",
     "get_available_providers",

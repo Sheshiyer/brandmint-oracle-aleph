@@ -28,6 +28,7 @@ from typing import Any, Dict, List, Optional
 import yaml
 
 from ..models.wave import Wave, WaveStatus
+from .kickstarter_blueprint import artifact_ids_for_source_skill, section_ids_for_source_skills
 
 
 # ---------------------------------------------------------------------------
@@ -43,7 +44,7 @@ DEFAULT_SEEDS: int = 2
 DEPTH_WAVE_LIMITS: Dict[str, int] = {
     "surface": 2,
     "focused": 5,
-    "comprehensive": 7,
+    "comprehensive": 8,
     "exhaustive": 999,
 }
 """Maximum wave number included at each depth level."""
@@ -89,26 +90,19 @@ VISUAL_ASSET_COSTS: Dict[str, float] = {
 WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
     1: {
         "name": "Foundation",
-        "description": "Market understanding + brand identity groundwork",
-        "text_skills": [
-            "niche-validator",
-            "buyer-persona",
-            "competitor-analysis",
-            "brand-name-studio",
-        ],
+        "description": "Market understanding + brand identity setup",
+        "text_skills": ["niche-validator", "buyer-persona", "competitor-analysis"],
         "visual_assets": [],
         "depends_on": [],
     },
     2: {
         "name": "Strategy",
-        "description": "Product positioning, messaging direction, brand guidelines",
+        "description": "Product positioning + messaging direction",
         "text_skills": [
             "detailed-product-description",
             "product-positioning-summary",
             "mds-messaging-direction-summary",
             "voice-and-tone",
-            "brand-guidelines",
-            "logo-concept-architect",
         ],
         "visual_assets": [],
         "depends_on": [1],
@@ -122,26 +116,22 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
     },
     4: {
         "name": "Products & Content",
-        "description": "Product visuals, campaign copy, ad research",
+        "description": "Product visuals + campaign copy",
         "text_skills": [
             "campaign-page-copy",
             "campaign-video-script",
             "pre-launch-ads",
-            "campaign-page-builder",
-            "competitive-ads-extractor",
         ],
         "visual_assets": ["3A", "3B", "3C", "4A", "4B", "APP-SCREENSHOT"],
         "depends_on": [3],
     },
     5: {
         "name": "Campaign Assets",
-        "description": "Email sequences, packaging, unboxing experience",
+        "description": "Campaign visuals + email sequences",
         "text_skills": [
             "welcome-email-sequence",
             "pre-launch-email-sequence",
             "launch-email-sequence",
-            "packaging-experience-designer",
-            "unboxing-journey-guide",
         ],
         "visual_assets": [
             "5A", "5B", "5C",
@@ -152,7 +142,7 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
     },
     6: {
         "name": "Distribution",
-        "description": "Launch amplification -- ads, press, social, community, affiliates",
+        "description": "Launch amplification -- ads, press, social",
         "text_skills": [
             "live-campaign-ads",
             "press-release-copy",
@@ -160,10 +150,6 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
             "short-form-hook-generator",
             "influencer-outreach-pro",
             "review-response-strategist",
-            "affiliate-program-designer",
-            "community-manager-brain",
-            "update-strategy-sequencer",
-            "campaign-orchestrator",
         ],
         "visual_assets": ["PITCH-HERO", "EMAIL-HERO"],
         "depends_on": [5],
@@ -177,6 +163,18 @@ WAVE_DEFINITIONS: Dict[int, Dict[str, Any]] = {
         "post_hook": "publishing",
         "sub_steps": [
             {"id": "7B", "name": "NotebookLM Publishing", "hook": "notebooklm"},
+        ],
+    },
+    8: {
+        "name": "Brand Docs & Wiki",
+        "description": "Generate brand documentation markdown and publish the latest Astro wiki build",
+        "text_skills": [],
+        "visual_assets": [],
+        "depends_on": [7],
+        "post_hook": "brand_docs",
+        "sub_steps": [
+            {"id": "8A", "name": "Brand Docs Generation", "hook": "brand_docs"},
+            {"id": "8B", "name": "Astro Wiki Publish", "hook": "astro_wiki"},
         ],
     },
 }
@@ -376,6 +374,13 @@ def compute_wave_plan(
             if aid in eligible_assets
         ]
 
+        kickstarter_sections = section_ids_for_source_skills(text_skills)
+        kickstarter_artifacts: List[str] = []
+        for skill_id in text_skills:
+            for artifact_id in artifact_ids_for_source_skill(skill_id):
+                if artifact_id not in kickstarter_artifacts:
+                    kickstarter_artifacts.append(artifact_id)
+
         # Cost estimation
         text_cost = _text_skill_cost(len(text_skills))
         visual_cost = _visual_asset_cost(visual_assets)
@@ -391,6 +396,8 @@ def compute_wave_plan(
             status=WaveStatus.PENDING,
             estimated_cost=round(estimated_cost, 2),
             post_hook=defn.get("post_hook"),
+            kickstarter_sections=kickstarter_sections,
+            kickstarter_artifacts=kickstarter_artifacts,
         )
         waves.append(wave)
 

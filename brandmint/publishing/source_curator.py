@@ -11,6 +11,7 @@ sources.  The curator adds supplementary sources on top.
 """
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -18,8 +19,7 @@ from typing import Any, Dict, List, Optional, Set
 
 import yaml
 
-from .source_builder import SOURCE_GROUPS
-from .vision_describer import BrandStyleGuideBuilder
+from .source_builder import get_source_group_definitions, resolve_source_document_mode
 
 
 # ---------------------------------------------------------------------------
@@ -37,7 +37,7 @@ IMAGE_CATEGORY_MAP: Dict[str, tuple] = {
     "2C": ("brand-identity", 84, "Logo emboss"),
     "3A": ("product", 82, "Capsule collection"),
     "3B": ("product", 82, "Hero product"),
-    "3C": ("product", 78, "Essence vial"),
+    "3C": ("product", 78, "Product detail"),
     "4A": ("product", 76, "Catalog layout"),
     "4B": ("product", 74, "Flatlay"),
     "5A": ("visual", 72, "Heritage engraving"),
@@ -86,7 +86,7 @@ class SourceCandidate:
     """A potential source for NotebookLM upload."""
 
     path: Path
-    source_type: str  # "prose", "image", "wiki", "config", "visual-description", "brand-material"
+    source_type: str  # "prose", "image", "wiki", "config"
     category: str     # "brand-identity", "product", "campaign", "social", "visual", "strategy"
     label: str        # Human-readable name
     size_bytes: int = 0
@@ -148,6 +148,13 @@ class SourceCurator:
             self.brand_dir / "deliverables" / "notebooklm" / "sources"
         )
 
+        publishing_cfg = config.get("publishing", {}).get("notebooklm", {})
+        self.image_source_policy = str(
+            publishing_cfg.get("image_source_policy", "manifest-only")
+        ).strip().lower() or "manifest-only"
+        if self.image_source_policy not in {"manifest-only", "all-generated", "product-reference-only"}:
+            self.image_source_policy = "manifest-only"
+
         # Derived paths
         self.outputs_dir = self.brand_dir / ".brandmint" / "outputs"
         brand_name = config.get("brand", {}).get("name", "brand")
@@ -155,6 +162,7 @@ class SourceCurator:
         self.generated_dir = self.brand_dir / slug / "generated"
         self.wiki_dir = self.brand_dir / "wiki-output"
         self.config_path = self.brand_dir / "brand-config.yaml"
+        self.allowed_image_asset_ids = self._load_manifest_asset_ids()
 
         # State
         self._candidates: List[SourceCandidate] = []
@@ -169,62 +177,6 @@ class SourceCurator:
         self._selected = self._select_within_budget()
         return self._selected
 
-    def coverage_report(self) -> Dict[str, Any]:
-        """Dry-run coverage report — runs curate() and returns structured metadata.
-
-        Returns a dict with:
-        - total_candidates: int — how many source candidates were found
-        - selected_count: int — how many passed the budget cut
-        - by_type: dict — count of candidates grouped by source_type
-        - brand_materials: list — paths of brand-material candidates
-        - vision_descriptions: list — paths of visual-description candidates
-        - budget_remaining: int — max_sources minus selected_count
-        - excluded: list of dicts {path, type, score, reason}
-        """
-        # Run the full curate pipeline
-        self.curate()
-
-        selected_count = len(self._selected)
-
-        # Group candidates by source_type
-        by_type: Dict[str, int] = {}
-        for c in self._candidates:
-            by_type[c.source_type] = by_type.get(c.source_type, 0) + 1
-
-        # Collect brand material paths (all candidates, not just selected)
-        brand_materials = [
-            str(c.path) for c in self._candidates
-            if c.source_type == "brand-material"
-        ]
-
-        # Collect vision description paths (all candidates, not just selected)
-        vision_descriptions = [
-            str(c.path) for c in self._candidates
-            if c.source_type == "visual-description"
-        ]
-
-        # Build excluded list
-        excluded = [
-            {
-                "path": str(c.path),
-                "type": c.source_type,
-                "score": round(c.score, 2),
-                "reason": c.skip_reason or "below budget cutoff",
-            }
-            for c in self._candidates
-            if not c.selected
-        ]
-
-        return {
-            "total_candidates": len(self._candidates),
-            "selected_count": selected_count,
-            "by_type": by_type,
-            "brand_materials": brand_materials,
-            "vision_descriptions": vision_descriptions,
-            "budget_remaining": self.max_sources - selected_count,
-            "excluded": excluded,
-        }
-
     def report(self) -> str:
         """Human-readable selection report for dry-run / logging."""
         if not self._candidates:
@@ -235,12 +187,10 @@ class SourceCurator:
         lines.append("━" * 52)
 
         # Group by type
-        type_order = ["prose", "visual-description", "config", "brand-material", "image", "wiki"]
+        type_order = ["prose", "config", "image", "wiki"]
         type_labels = {
             "prose": "Prose Documents",
-            "visual-description": "Visual Asset Descriptions",
             "config": "Brand Configuration",
-            "brand-material": "Brand Materials",
             "image": "Brand Images",
             "wiki": "Wiki Pages",
         }
@@ -282,7 +232,7 @@ class SourceCurator:
         total_selected = len(self._selected)
         total_text = sum(
             c.size_bytes for c in self._selected
-            if c.source_type in ("prose", "config", "wiki", "visual-description", "brand-material")
+            if c.source_type in ("prose", "config", "wiki")
         )
         total_images = sum(
             c.size_bytes for c in self._selected
@@ -297,6 +247,53 @@ class SourceCurator:
 
         return "\n".join(lines)
 
+    def _load_manifest_asset_ids(self) -> Optional[Set[str]]:
+        """Read current-run asset IDs from generation-manifest.json when available."""
+        for candidate in [
+            self.generated_dir / "generation-manifest.json",
+            self.brand_dir / "generated" / "generation-manifest.json",
+        ]:
+            if not candidate.is_file():
+                continue
+            try:
+                payload = json.loads(candidate.read_text())
+            except (json.JSONDecodeError, OSError):
+                continue
+            assets = payload.get("assets", [])
+            asset_ids = {
+                str(asset.get("id", "")).strip().upper()
+                for asset in assets
+                if isinstance(asset, dict) and str(asset.get("id", "")).strip()
+            }
+            return asset_ids or None
+        return None
+
+    def _scan_product_reference_images(self) -> List[SourceCandidate]:
+        """Scan configured product reference images as NotebookLM image sources."""
+        results: List[SourceCandidate] = []
+        product_refs = self.config.get("generation", {}).get("product_reference_images", [])
+        config_dir = self.config_path.parent
+        for index, ref in enumerate(product_refs, start=1):
+            ref_path = Path(ref)
+            if not ref_path.is_absolute():
+                ref_path = (config_dir / ref_path).resolve()
+            if not ref_path.is_file():
+                continue
+            results.append(
+                SourceCandidate(
+                    path=ref_path,
+                    source_type="image",
+                    category="product",
+                    label=f"Product reference {index}",
+                    size_bytes=ref_path.stat().st_size,
+                    content_value=95.0,
+                    uniqueness=100.0,
+                    asset_id=f"PRODUCT-REF-{index}",
+                    seed_variant="ref",
+                )
+            )
+        return results
+
     # -- Scanning ----------------------------------------------------------
 
     def _scan_all_candidates(self) -> List[SourceCandidate]:
@@ -304,37 +301,42 @@ class SourceCurator:
         candidates: List[SourceCandidate] = []
         candidates.extend(self._scan_prose_docs())
         candidates.extend(self._scan_config())
-        candidates.extend(self._scan_visual_descriptions())
-        candidates.extend(self._scan_brand_materials())
-        candidates.extend(self._scan_brand_config_sections())
         candidates.extend(self._scan_images())
         candidates.extend(self._scan_wiki_pages())
         return candidates
 
     def _scan_prose_docs(self) -> List[SourceCandidate]:
-        """Scan the 5 prose source documents built by source_builder."""
+        """Scan the prose source documents built by source_builder."""
         results: List[SourceCandidate] = []
         if not self.sources_dir.is_dir():
             return results
 
+        source_groups = get_source_group_definitions()
+
         for md_file in sorted(self.sources_dir.glob("*.md")):
             group_id = md_file.stem
-            # Skip config source — it's handled separately
             if group_id == "brand-config-source":
                 continue
-            group_def = SOURCE_GROUPS.get(group_id, {})
+            group_def = source_groups.get(group_id)
             if not group_def:
-                continue  # Skip unknown files in sources dir
+                continue
+
             title = group_def.get("title", group_id.replace("-", " ").title())
+            content_value = _prose_content_value(group_id, group_def)
+            uniqueness = 100.0
+            if group_def.get("category") == "kickstarter-readiness":
+                uniqueness = 75.0
+            elif group_def.get("category") == "kickstarter-artifact":
+                uniqueness = 68.0
 
             results.append(SourceCandidate(
                 path=md_file,
                 source_type="prose",
-                category=_prose_to_category(group_id),
+                category=_prose_to_category(group_id, group_def),
                 label=title,
                 size_bytes=md_file.stat().st_size,
-                content_value=95.0,  # Highest — purpose-built for NotebookLM
-                uniqueness=100.0,    # No overlap with themselves
+                content_value=content_value,
+                uniqueness=uniqueness,
             ))
         return results
 
@@ -362,6 +364,9 @@ class SourceCurator:
 
     def _scan_images(self) -> List[SourceCandidate]:
         """Scan generated visual assets, deduplicating seed variants."""
+        if self.image_source_policy == "product-reference-only":
+            return self._scan_product_reference_images()
+
         results: List[SourceCandidate] = []
 
         if not self.generated_dir.is_dir():
@@ -378,6 +383,12 @@ class SourceCurator:
         groups: Dict[str, List[Path]] = {}
         for f in image_files:
             asset_id, variant = _parse_image_filename(f.name)
+            if (
+                self.image_source_policy == "manifest-only"
+                and self.allowed_image_asset_ids
+                and asset_id not in self.allowed_image_asset_ids
+            ):
+                continue
             groups.setdefault(asset_id, []).append((f, variant))
 
         for asset_id, variants in sorted(groups.items()):
@@ -385,10 +396,10 @@ class SourceCurator:
             meta = IMAGE_CATEGORY_MAP.get(asset_id, ("visual", 40, asset_id))
             category, base_value, human_label = meta
 
-            # Sort variants: prefer v1, then lowest number, then PNG over WebP
+            # Sort variants: newest file first, then highest variant number, then PNG over WebP.
             variants.sort(key=lambda x: (
-                0 if x[1] == "v1" else 1,
-                int(re.search(r"v(\d+)", x[1]).group(1)) if re.search(r"v(\d+)", x[1]) else 999,
+                -x[0].stat().st_mtime,
+                -int(re.search(r"v(\d+)", x[1]).group(1)) if re.search(r"v(\d+)", x[1]) else -1,
                 0 if x[0].suffix == ".png" else 1,
             ))
 
@@ -406,7 +417,7 @@ class SourceCurator:
                     seed_variant=variant,
                 )
                 if not is_primary:
-                    cand.skip_reason = f"seed variant of {asset_id}"
+                    cand.skip_reason = f"older/alternate variant of {asset_id}"
                 results.append(cand)
 
         return results
@@ -440,121 +451,10 @@ class SourceCurator:
 
         return results
 
-    # -- NB-06: Visual description scanning --------------------------------
-
-    def _scan_visual_descriptions(self) -> List[SourceCandidate]:
-        """Scan vision-cache directory for asset description markdown files."""
-        results: List[SourceCandidate] = []
-        cache_dir = self.brand_dir / ".brandmint" / "vision-cache"
-        if not cache_dir.is_dir():
-            return results
-
-        for md_file in sorted(cache_dir.glob("*.md")):
-            label = md_file.stem.replace("-", " ").title()
-            results.append(SourceCandidate(
-                path=md_file,
-                source_type="visual-description",
-                category="visual",
-                label=label,
-                size_bytes=md_file.stat().st_size,
-                content_value=75.0,  # Between prose (95) and image (40-88)
-                uniqueness=100.0,
-            ))
-
-        return results
-
-    # -- NB-08: Brand material scanning ------------------------------------
-
-    def _scan_brand_materials(self) -> List[SourceCandidate]:
-        """Scan brand-materials/ directory for user-provided brand files."""
-        results: List[SourceCandidate] = []
-        materials_dir = self.brand_dir / "brand-materials"
-
-        if not materials_dir.is_dir():
-            return results
-
-        # Supported file extensions for brand materials
-        supported = {".svg", ".pdf", ".png", ".jpg", ".jpeg", ".webp",
-                     ".ai", ".eps", ".psd", ".md", ".txt"}
-
-        for fpath in sorted(materials_dir.iterdir()):
-            if fpath.is_file() and fpath.suffix.lower() in supported:
-                label = fpath.stem.replace("-", " ").replace("_", " ").title()
-
-                # Score based on file type — vector/PDF logos score higher
-                if fpath.suffix.lower() in (".svg", ".ai", ".eps"):
-                    base_value = 70.0
-                elif fpath.suffix.lower() == ".pdf":
-                    base_value = 65.0
-                elif fpath.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp"):
-                    base_value = 55.0
-                else:
-                    base_value = 50.0
-
-                results.append(SourceCandidate(
-                    path=fpath,
-                    source_type="brand-material",
-                    category="brand-identity",
-                    label=label,
-                    size_bytes=fpath.stat().st_size,
-                    content_value=base_value,
-                    uniqueness=100.0,
-                ))
-
-        return results
-
-    # -- NB-09: Brand config section sources -------------------------------
-
-    def _scan_brand_config_sections(self) -> List[SourceCandidate]:
-        """Extract palette/typography from config and create structured source."""
-        results: List[SourceCandidate] = []
-
-        # Check if publishing.include_brand_materials is true (default: false)
-        publishing = self.config.get("publishing", {})
-        if not publishing.get("include_brand_materials", False):
-            return results
-
-        palette = self.config.get("palette", {})
-        typography = self.config.get("typography", {})
-        if not palette and not typography:
-            return results
-
-        # Use BrandStyleGuideBuilder to create structured content
-        builder = BrandStyleGuideBuilder()
-        guide_content = builder.build_style_guide(self.config)
-
-        if not guide_content:
-            return results
-
-        # Save to .brandmint/sources/
-        sources_dir = self.brand_dir / ".brandmint" / "sources"
-        sources_dir.mkdir(parents=True, exist_ok=True)
-        guide_path = sources_dir / "brand-style-guide.md"
-        guide_path.write_text(guide_content, encoding="utf-8")
-
-        results.append(SourceCandidate(
-            path=guide_path,
-            source_type="visual-description",
-            category="brand-identity",
-            label="Brand Style Guide",
-            size_bytes=guide_path.stat().st_size,
-            content_value=75.0,
-            uniqueness=90.0,
-        ))
-
-        return results
-
     # -- Scoring -----------------------------------------------------------
 
     def _score_all(self) -> None:
-        """Compute scores for all candidates with category diversity bonus.
-
-        NB-07 enhancements:
-        - Logo descriptions: +10 content_value
-        - Style guide source: +8 content_value
-        - Brand identity assets (2A, 2B): +5 category_bonus when both
-          image AND description exist
-        """
+        """Compute scores for all candidates with category diversity bonus."""
         # Count how many candidates per category
         category_counts: Dict[str, int] = {}
         for c in self._candidates:
@@ -564,50 +464,10 @@ class SourceCurator:
         # Categories with fewer candidates get a diversity bonus
         max_count = max(category_counts.values()) if category_counts else 1
 
-        # NB-07: Build lookup sets for complementary scoring
-        image_asset_ids: Set[str] = {
-            c.asset_id for c in self._candidates
-            if c.source_type == "image" and c.asset_id
-        }
-        visual_desc_stems: Set[str] = {
-            c.path.stem for c in self._candidates
-            if c.source_type == "visual-description"
-        }
-
         for c in self._candidates:
-            # NB-07: Logo description bonus (+10)
-            if (c.source_type == "visual-description"
-                    and "logo" in c.path.stem.lower()):
-                c.content_value += 10.0
-
-            # NB-07: Style guide bonus (+8)
-            if "brand-style-guide" in c.path.stem:
-                c.content_value += 8.0
-
-            # NB-07: Brand identity complementary bonus (+5)
-            if (c.source_type == "image"
-                    and c.asset_id in ("2A", "2B")
-                    and c.uniqueness > 0):
-                # Check if a matching description exists
-                has_desc = any(
-                    c.asset_id in stem
-                    for stem in visual_desc_stems
-                )
-                if has_desc:
-                    c.category_bonus += 5.0
-
-            # NB-06: Visual descriptions that complement uploaded images
-            # get higher uniqueness
-            if c.source_type == "visual-description":
-                # Check if this description matches an uploaded image asset
-                for asset_id in image_asset_ids:
-                    if asset_id in c.path.stem:
-                        c.uniqueness = min(100.0, c.uniqueness + 10.0)
-                        break
-
             # Category diversity bonus: underrepresented categories score higher
             cat_count = category_counts.get(c.category, 1)
-            c.category_bonus += max(0, 100.0 * (1 - cat_count / max_count))
+            c.category_bonus = max(0, 100.0 * (1 - cat_count / max_count))
 
             # Size efficiency: prefer smaller sources (more info per slot)
             if c.size_bytes > 0:
@@ -623,53 +483,81 @@ class SourceCurator:
         """Select the optimal set within the source budget."""
         selected: List[SourceCandidate] = []
         budget_remaining = self.max_sources
+        source_groups = get_source_group_definitions("hybrid")
 
-        # TIER 1: Always include prose documents (highest value)
+        def select_group(candidates: List[SourceCandidate]) -> None:
+            nonlocal budget_remaining
+            for c in candidates:
+                if budget_remaining <= 0:
+                    c.skip_reason = "over budget"
+                    continue
+                if c.source_type in ("prose", "wiki") and c.size_bytes > MAX_SOURCE_SIZE_BYTES:
+                    c.skip_reason = f"exceeds {MAX_SOURCE_SIZE_BYTES // 1024}KB limit"
+                    continue
+                c.selected = True
+                selected.append(c)
+                budget_remaining -= 1
+
         prose = [c for c in self._candidates if c.source_type == "prose"]
-        for c in prose:
-            if budget_remaining <= 0:
-                c.skip_reason = "over budget"
-                continue
-            if c.size_bytes > MAX_SOURCE_SIZE_BYTES:
-                c.skip_reason = f"exceeds {MAX_SOURCE_SIZE_BYTES // 1024}KB limit"
-                continue
-            c.selected = True
-            selected.append(c)
-            budget_remaining -= 1
+        prose.sort(
+            key=lambda c: (
+                _prose_selection_bucket(
+                    c.path.stem,
+                    source_groups.get(c.path.stem, {}),
+                    self.config,
+                ),
+                -c.score,
+                c.size_bytes,
+            )
+        )
 
-        # TIER 1.5: Always include brand config
+        pinned_prose = [
+            c for c in prose
+            if _prose_selection_bucket(c.path.stem, source_groups.get(c.path.stem, {}), self.config) == 0
+        ]
+        preferred_prose = [
+            c for c in prose
+            if _prose_selection_bucket(c.path.stem, source_groups.get(c.path.stem, {}), self.config) == 1
+        ]
+        supplemental_prose = [
+            c for c in prose
+            if _prose_selection_bucket(c.path.stem, source_groups.get(c.path.stem, {}), self.config) >= 2
+        ]
+
+        # TIER 1: Highest-priority prose docs based on channel and document mode.
+        select_group(pinned_prose)
+
+        # TIER 1.5: Always include brand config when budget allows.
         config_sources = [c for c in self._candidates if c.source_type == "config"]
-        for c in config_sources:
-            if budget_remaining <= 0:
-                c.skip_reason = "over budget"
-                continue
-            c.selected = True
-            selected.append(c)
-            budget_remaining -= 1
+        select_group(config_sources)
 
-        # TIER 2+: Score-ranked selection from remaining candidates
+        # TIER 2: Preferred prose docs (legacy grouped docs in Kickstarter mode, etc.)
+        select_group(preferred_prose)
+
+        # TIER 3+: Supplemental prose, images, and wiki pages by score.
         remaining = [
             c for c in self._candidates
             if not c.selected and c.uniqueness > 0 and not c.skip_reason
         ]
-        remaining.sort(key=lambda c: -c.score)
-
-        # Track selected categories for diversity
-        selected_categories: Set[str] = {c.category for c in selected}
+        prose_supplemental_paths = {c.path for c in supplemental_prose}
+        remaining.sort(
+            key=lambda c: (
+                0 if c.path in prose_supplemental_paths else 1,
+                -c.score,
+            )
+        )
 
         for c in remaining:
             if budget_remaining <= 0:
                 c.skip_reason = "over budget"
                 continue
 
-            # Size gate for text sources
-            if c.source_type in ("wiki", "visual-description", "brand-material") and c.size_bytes > MAX_SOURCE_SIZE_BYTES:
+            if c.source_type in ("wiki",) and c.size_bytes > MAX_SOURCE_SIZE_BYTES:
                 c.skip_reason = f"exceeds {MAX_SOURCE_SIZE_BYTES // 1024}KB limit"
                 continue
 
             c.selected = True
             selected.append(c)
-            selected_categories.add(c.category)
             budget_remaining -= 1
 
         # Mark all non-selected, non-skipped as "below cutoff"
@@ -684,7 +572,54 @@ class SourceCurator:
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _prose_to_category(group_id: str) -> str:
+def _prose_selection_bucket(group_id: str, group_def: Optional[dict], config: dict) -> int:
+    """Return prose selection priority bucket (lower = selected earlier)."""
+    launch_channel = str(config.get("execution_context", {}).get("launch_channel", "")).strip().lower()
+    document_mode = resolve_source_document_mode(config)
+    category = (group_def or {}).get("category")
+    is_core = category is None and group_id in {
+        "brand-foundation",
+        "brand-strategy",
+        "campaign-content",
+        "communications-social",
+        "visual-asset-catalog",
+    }
+
+    if document_mode == "legacy-only":
+        return 0 if is_core else 3
+    if document_mode == "kickstarter-only":
+        if category == "kickstarter-section":
+            return 0
+        if category == "kickstarter-readiness":
+            return 1
+        if category == "kickstarter-artifact":
+            return 2
+        return 3
+
+    if launch_channel == "kickstarter":
+        if category == "kickstarter-section":
+            return 0
+        if category == "kickstarter-readiness":
+            return 1
+        if is_core:
+            return 2
+        if category == "kickstarter-artifact":
+            return 3
+        return 4
+
+    if is_core:
+        return 0
+    if category == "kickstarter-section":
+        return 1
+    if category == "kickstarter-readiness":
+        return 1
+    if category == "kickstarter-artifact":
+        return 2
+    return 3
+
+
+
+def _prose_to_category(group_id: str, group_def: Optional[dict] = None) -> str:
     """Map source group ID to category."""
     mapping = {
         "brand-foundation": "strategy",
@@ -693,7 +628,48 @@ def _prose_to_category(group_id: str) -> str:
         "communications-social": "social",
         "visual-asset-catalog": "visual",
     }
-    return mapping.get(group_id, "brand-identity")
+    if group_id in mapping:
+        return mapping[group_id]
+
+    category = (group_def or {}).get("category")
+    if category == "kickstarter-section":
+        if "market-understanding" in group_id:
+            return "strategy"
+        if "product-detailing" in group_id:
+            return "brand-identity"
+        if "email-strategy" in group_id:
+            return "social"
+        if "campaign-messaging" in group_id:
+            return "campaign"
+        if "driving-continual-interest" in group_id:
+            return "campaign"
+        return "campaign"
+    if category == "kickstarter-artifact":
+        if "buyer-persona" in group_id or "competitor-summary" in group_id:
+            return "strategy"
+        if any(token in group_id for token in ["product-positioning", "product-description", "voice-and-tone", "mds"]):
+            return "brand-identity"
+        if "email" in group_id:
+            return "social"
+        return "campaign"
+    if category == "kickstarter-readiness":
+        return "brand-identity"
+    return "brand-identity"
+
+
+
+def _prose_content_value(group_id: str, group_def: Optional[dict] = None) -> float:
+    """Score prose documents by how directly they support prototype decisions."""
+    category = (group_def or {}).get("category")
+    if category == "kickstarter-section":
+        return 93.0
+    if category == "kickstarter-artifact":
+        return 90.0
+    if category == "kickstarter-readiness":
+        return 82.0
+    if group_id == "visual-asset-catalog":
+        return 88.0
+    return 95.0
 
 
 def _parse_image_filename(filename: str) -> tuple:
@@ -732,16 +708,19 @@ def _parse_image_filename(filename: str) -> tuple:
     # Normalise known prefixes
     raw_id = "-".join(asset_parts)
 
-    # Map compound IDs to their base: "5D-1" → "5D", "9A-01" → "9A"
-    # but keep "EMAIL-HERO", "IG-STORY", etc.
-    compound_match = re.match(r"^(\d+[A-Z])-\d+", raw_id)
-    if compound_match:
-        base_id = compound_match.group(1)
+    # Map prompt-prefixed IDs to their base: "3A-capsule-collection" → "3A",
+    # "5D-1-regional" → "5D", "9A-01-storytelling" → "9A",
+    # while keeping special social ids intact.
+    for special in ["EMAIL-HERO", "IG-STORY", "OG-IMAGE", "TWITTER-HEADER"]:
+        if raw_id.upper().startswith(special):
+            return special, variant
+
+    base_match = re.match(r"^(\d+[A-Z])(?:-|$)", raw_id)
+    if base_match:
+        base_id = base_match.group(1)
     else:
         base_id = raw_id
 
-    # For lookup in IMAGE_CATEGORY_MAP, we use the base_id
-    # but return the full raw_id for uniqueness within the group
     return base_id, variant
 
 

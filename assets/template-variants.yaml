@@ -389,11 +389,11 @@ variants:
           atmosphere: "Living editorial stillness, the artisan's world made visible."
 
   3C:
-    name: "Essence Vial"
-    default: apothecary_vial
+    name: "Product Detail"
+    default: clean_closeup
     variants:
-      apothecary_vial:
-        description: "Clean product on solid primary background with precise lighting"
+      clean_closeup:
+        description: "Clean product close-up on solid primary background with precise lighting"
         aesthetic_tags:
           composition_density: [sparse]
           temporal_register: [contemporary]
@@ -402,8 +402,8 @@ variants:
           editorial_vs_commercial: [commercial]
         template_variables: {}
 
-      ceremony_vessel:
-        description: "Vessel in ritual context — hands visible, surface and environment, sacred ceremony"
+      contextual_detail:
+        description: "Product detail in lived context — hands visible, surface and environment support the object"
         aesthetic_tags:
           composition_density: [moderate]
           temporal_register: [heritage]
@@ -411,12 +411,12 @@ variants:
           visual_boldness: [balanced]
           editorial_vs_commercial: [editorial]
         template_variables:
-          composition_style: "Vessel in ritual context — hands visible cradling the container on {hero_surface}, {photo_environment} background. Container within its ceremony. "
-          lighting_approach: "Warm candle-temperature directional light, soft shadows, {accent_name} ({accent_hex}) highlights on container surface. "
-          atmosphere: "Sacred ceremony, daily ritual elevated to the extraordinary."
+          composition_style: "Product detail in lived context — hands visible near the object on {hero_surface}, with {photo_environment} softly visible behind it. Keep the approved product as the hero. "
+          lighting_approach: "Warm directional light, soft shadows, {accent_name} ({accent_hex}) highlights across the approved product surface. "
+          atmosphere: "Lived ritual, tactile intimacy, the real product grounded in daily use."
 
-      lab_specimen:
-        description: "Clinical white environment — pure surface, technical precision, pharmaceutical authority"
+      technical_detail:
+        description: "Technical close-up — pure surface, precise lighting, engineered clarity"
         aesthetic_tags:
           composition_density: [sparse]
           temporal_register: [contemporary]
@@ -424,12 +424,12 @@ variants:
           visual_boldness: [architectural]
           editorial_vs_commercial: [commercial]
         template_variables:
-          composition_style: "Clinical white environment — container on pure white {secondary_name} ({secondary_hex}) surface, 1cm measured spacing from edges. Technical specimen clarity. "
-          lighting_approach: "Cold overhead diffuse studio light, clean reflections, precise highlights on label surface. "
-          atmosphere: "Scientific precision, pharmaceutical authority, zero embellishment."
+          composition_style: "Technical close-up — approved product on pure {secondary_name} ({secondary_hex}) surface with measured spacing from edges. Feature clarity and exact geometry are critical. "
+          lighting_approach: "Cold overhead diffuse studio light, clean reflections, precise highlights on the approved product only. "
+          atmosphere: "Engineering precision, exact features, zero embellishment."
 
-      craft_container:
-        description: "Container surrounded by source materials — material provenance visible, raw workshop"
+      material_closeup:
+        description: "Product detail surrounded by source materials — material provenance visible, raw workshop"
         aesthetic_tags:
           composition_density: [dense]
           temporal_register: [heritage]
@@ -437,9 +437,9 @@ variants:
           visual_boldness: [bold]
           editorial_vs_commercial: [editorial]
         template_variables:
-          composition_style: "Container surrounded by its source materials — {materials_list} arranged naturally around the vessel on {hero_surface}. Material provenance fully visible. "
+          composition_style: "Approved product detail surrounded by its source materials — {materials_list} arranged naturally around it on {hero_surface}. Material provenance is visible without introducing new objects. "
           lighting_approach: "Warm raking light from upper left, material textures fully rendered, deep shadows in material folds. "
-          atmosphere: "Raw material provenance, artisan's workshop, the maker's process made visible."
+          atmosphere: "Raw material provenance, maker's process, tactile product truth."
 
   # ═══════════════════════════════════════════════════════════════════════
   # PHOTOGRAPHY ASSETS

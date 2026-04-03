@@ -1,0 +1,62 @@
+---
+import Navigation from '../components/Navigation.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import LanguageToggle from '../components/LanguageToggle.astro';
+import siteData from '../data/site-data.json';
+import type { Locale } from '../i18n';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  locale: Locale;
+}
+
+const { title, description, locale } = Astro.props;
+const palette = siteData.palette || {};
+const brandVars = {
+  '--brand-primary': palette.primary?.hex || '#AA98D6',
+  '--brand-secondary': palette.secondary?.hex || '#F8F6F2',
+  '--brand-accent': palette.accent?.hex || '#E67A2E',
+  '--brand-support': palette.support?.hex || '#D9D3C1',
+  '--brand-signal': palette.signal?.hex || '#4CC8B2',
+  '--font-display': siteData.typography?.header?.font || 'Figtree',
+  '--font-body': siteData.typography?.body?.font || 'Inter',
+};
+const pathname = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang={locale} data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      const preferred = savedTheme || 'light';
+      document.documentElement.setAttribute('data-theme', preferred);
+    </script>
+  </head>
+  <body style={brandVars}>
+    <div class="ambient ambient--primary"></div>
+    <div class="ambient ambient--accent"></div>
+    <div class="ambient ambient--signal"></div>
+
+    <div class="portal-shell">
+      <aside class="sidebar-frame">
+        <div class="sidebar-frame__topbar">
+          <LanguageToggle locale={locale} pathname={pathname} />
+        </div>
+        <Navigation locale={locale} />
+      </aside>
+
+      <main class="content-frame">
+        <slot />
+      </main>
+    </div>
+
+    <ThemeToggle />
+  </body>
+</html>

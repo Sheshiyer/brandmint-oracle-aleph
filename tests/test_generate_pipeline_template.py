@@ -44,6 +44,28 @@ def test_generated_batches_route_references_through_upload_helper() -> None:
         assert marker in src
 
 
+
+def test_template_enforces_reference_payload_for_nano_banana() -> None:
+    src = _template_source()
+
+    assert 'REFERENCE_POLICY = os.environ.get("BRANDMINT_REFERENCE_POLICY", "error")' in src
+    assert "def enforce_reference_payload(pid, image_urls):" in src
+    assert "enforce_reference_payload(pid, image_urls)" in src
+    assert "degrade to text-only generation" in src
+
+
+
+def test_template_includes_product_spec_lock() -> None:
+    src = _template_source()
+
+    assert "def build_product_spec_lock(" in src
+    assert "SPEC LOCK: Depict only" in src
+    assert "{product_spec_lock}" in src
+    assert 'get_ref_image("3C")' not in src
+    assert 'get_supp_ref_images("3C")' not in src
+
+
+
 def test_model_callsites_use_unified_gen_with_provider() -> None:
     src = _template_source()
 

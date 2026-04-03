@@ -34,6 +34,13 @@ from typing import Optional
 import yaml
 from rich.console import Console
 from rich.prompt import Prompt
+from rich.table import Table
+
+from ..config_approval import build_approval_error, config_launch_status
+from ..core.kickstarter_blueprint import (
+    MANDATORY_KICKSTARTER_SECTIONS,
+    build_kickstarter_readiness_from_outputs,
+)
 
 console = Console()
 
@@ -52,6 +59,8 @@ def run_launch(
     resume_from: Optional[int] = None,
     webhook: Optional[str] = None,
     non_interactive: bool = False,
+    inference_only_visual: bool = False,
+    inference_rollout_mode: Optional[str] = None,
 ) -> None:
     """Full pipeline wizard -- orchestrate text skills + visual assets.
 
@@ -65,6 +74,8 @@ def run_launch(
         resume_from: Resume execution from this wave number.
         webhook: URL to POST completion notification.
         non_interactive: Skip all interactive prompts (for agent/CI environments).
+        inference_only_visual: Force inference visual backend for visual batches.
+        inference_rollout_mode: Optional rollout override (ring0|ring1|ring2).
     """
     from ..cli.ui import (
         render_brand_banner,
@@ -78,8 +89,18 @@ def run_launch(
 
     # -- 1. Load brand config -----------------------------------------------
     cfg = _load_config(config)
+    approval_status = config_launch_status(cfg)
+    if not approval_status["is_launchable"]:
+        console.print(f"[red]{build_approval_error(config, approval_status.get('pending_fields'))}[/red]")
+        raise SystemExit(1)
+    generation = cfg.setdefault("generation", {})
+    if inference_only_visual:
+        generation["visual_backend"] = "inference"
+    if inference_rollout_mode:
+        generation["inference_rollout_mode"] = str(inference_rollout_mode).strip().lower()
     ec = cfg.get("execution_context", {})
     depth = ec.get("depth_level", "focused")
+    brand_dir = _resolve_brand_dir(config, cfg)
 
     # Auto-detect non-interactive environment
     is_interactive = not non_interactive and sys.stdin.isatty()
@@ -139,6 +160,7 @@ def run_launch(
 
     render_wave_table(wave_plan, console)
     render_cost_summary(wave_plan, console)
+    _render_kickstarter_readiness_snapshot(cfg, brand_dir)
 
     # -- 6a. Cost budget gate ------------------------------------------------
     if max_cost is not None:
@@ -185,10 +207,7 @@ def run_launch(
     # -- 8. Build execution context ------------------------------------------
     execution_context = _build_execution_context(scenario_obj, cfg)
 
-    # -- 9. Resolve brand directory ------------------------------------------
-    brand_dir = _resolve_brand_dir(config, cfg)
-
-    # -- 10. Execute ---------------------------------------------------------
+    # -- 9. Execute ---------------------------------------------------------
     from ..pipeline.executor import WaveExecutor
 
     executor = WaveExecutor(
@@ -198,6 +217,7 @@ def run_launch(
         execution_context=execution_context,
         brand_dir=brand_dir,
         console=console,
+        scenario_id=selected_scenario_id,
     )
 
     state = executor.execute(wave_range=wave_range, interactive=is_interactive)
@@ -299,6 +319,38 @@ def run_init(output: Path) -> None:
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+
+def _render_kickstarter_readiness_snapshot(cfg: dict, brand_dir: Path) -> None:
+    """Render current mandatory Kickstarter section coverage when relevant."""
+    outputs_dir = brand_dir / ".brandmint" / "outputs"
+    readiness = build_kickstarter_readiness_from_outputs(outputs_dir)
+    completed_sections = sum(
+        1 for row in readiness.get("section_status", {}).values() if row.get("ready")
+    )
+    has_progress = any(
+        row.get("completed", 0) > 0 for row in readiness.get("section_status", {}).values()
+    )
+    launch_channel = str(cfg.get("execution_context", {}).get("launch_channel", "")).strip().lower()
+    if launch_channel != "kickstarter" and not has_progress:
+        return
+
+    table = Table(title="Kickstarter Prototype Readiness", show_header=True, header_style="bold magenta")
+    table.add_column("Section")
+    table.add_column("Coverage", justify="right")
+    table.add_column("Status")
+    for section_id, section in MANDATORY_KICKSTARTER_SECTIONS.items():
+        row = readiness.get("section_status", {}).get(section_id, {})
+        coverage = f"{row.get('completed', 0)}/{row.get('total', len(section.artifact_ids))}"
+        status = "ready" if row.get("ready") else "in progress"
+        table.add_row(section.title, coverage, status)
+
+    console.print(table)
+    summary = "ready" if readiness.get("all_ready") else "in progress"
+    console.print(
+        f"[magenta]Mandatory Kickstarter sections:[/] {completed_sections}/{len(MANDATORY_KICKSTARTER_SECTIONS)} ready ({summary})"
+    )
+
 
 def _load_config(config_path: Path) -> dict:
     """Load and validate brand config YAML."""

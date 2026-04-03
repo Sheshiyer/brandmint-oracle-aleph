@@ -212,7 +212,7 @@ class NotebookLMClient:
         output_path: str,
         artifact_id: str,
         notebook_id: str,
-    ) -> bool:
+    ) -> tuple[bool, str]:
         """Download a generated artifact to disk."""
         r = self._run([
             "notebooklm", "download", artifact_type, output_path,
@@ -220,8 +220,9 @@ class NotebookLMClient:
         ], timeout=TIMEOUT_COMMAND)
         if r.success:
             p = Path(output_path)
-            return p.exists() and p.stat().st_size > 0
-        return False
+            exists = p.exists() and p.stat().st_size > 0
+            return exists, "" if exists else "CLI reported success but no output file was written"
+        return False, (r.stderr or r.stdout or "download failed").strip()
 
     # -- Internal ----------------------------------------------------------
 

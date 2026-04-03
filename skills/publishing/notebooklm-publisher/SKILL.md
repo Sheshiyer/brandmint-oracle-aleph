@@ -1,3 +1,8 @@
+---
+name: notebooklm-publisher
+description: Use when completed Brandmint outputs should be published into NotebookLM and turned into NotebookLM artifacts.
+---
+
 # NotebookLM Publisher
 
 **Wave:** 7 (Publishing)

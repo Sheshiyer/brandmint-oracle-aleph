@@ -23,7 +23,7 @@ ASSET_WIKI_MAP = {
     # Products → product pages
     "3A": {"page": "product/features.md", "section": "Product Line", "role": "inline", "alt": "Capsule Collection"},
     "3B": {"page": "product/overview.md", "section": "Hero Product", "role": "hero", "alt": "Hero Product"},
-    "3C": {"page": "product/features.md", "section": "Product Line", "role": "inline", "alt": "Essence Vial"},
+    "3C": {"page": "product/features.md", "section": "Product Line", "role": "inline", "alt": "Product Detail"},
 
     # Photography → product/specifications.md
     "4A": {"page": "product/specifications.md", "section": "Catalog", "role": "hero", "alt": "Catalog Layout"},

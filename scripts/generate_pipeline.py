@@ -36,7 +36,7 @@ _DEFAULT_REF_IMAGES = {
     "2C": "ref-2C-logo-emboss.jpg",
     "3A": "ref-3A-capsule-collection.jpg",
     "3B": "ref-3B-hero-product.jpg",
-    "3C": "ref-3C-essence-vial.jpg",
+    "3C": "ref-3C-product-detail.jpg",
     "4A": "ref-4A-catalog-layout.jpg",
     "4B": "ref-4B-flatlay.jpg",
     "5A": "ref-5A-heritage-engraving.jpg",
@@ -717,6 +717,127 @@ def _resolve_logo_path(path_str, config_dir):
     return os.path.abspath(resolved) if os.path.exists(resolved) else ""
 
 
+LEGACY_PRODUCT_PROMPT_IDS = {
+    "hero_book": "hero_product",
+    "essence_vial": "product_detail",
+}
+
+
+def normalize_product_prompt_ids(cfg):
+    """Normalize legacy product prompt ids in config in-place."""
+    products = cfg.get("prompts", {}).get("products", [])
+    if not isinstance(products, list):
+        return []
+    replacements = []
+    normalized = []
+    for item in products:
+        mapped = LEGACY_PRODUCT_PROMPT_IDS.get(item, item)
+        if mapped != item:
+            replacements.append((item, mapped))
+        if mapped not in normalized:
+            normalized.append(mapped)
+    cfg.setdefault("prompts", {})["products"] = normalized
+    return replacements
+
+
+
+def validate_product_spec_consistency(cfg):
+    """Return high-signal product-spec contradictions that should stop generation."""
+    errors = []
+    products = cfg.get("products", {})
+    hero = products.get("hero", {})
+    hero_blob = " ".join(
+        str(v) for v in [hero.get("name", ""), hero.get("description", ""), hero.get("physical_form", "")]
+    ).lower()
+    flatlay_items = products.get("flatlay_objects", {}).get("items", [])
+    flatlay_blob = " ".join(str(item) for item in flatlay_items).lower()
+    materials_blob = " ".join(str(item) for item in cfg.get("materials", [])).lower()
+    negative_blob = str(cfg.get("negative_prompt", "")).lower()
+    photo_constraint = str(cfg.get("photography", {}).get("constraint", "")).lower()
+    prompt_products = [str(p).lower() for p in cfg.get("prompts", {}).get("products", [])]
+
+    screen_banned = any(term in negative_blob or term in photo_constraint for term in ["no screens", "screen", "phone", "tablet", "laptop", "monitor", "tv"])
+    screen_instructions = any(term in flatlay_blob for term in ["phone", "screen", "tablet", "laptop", "monitor", "tv"])
+    if screen_banned and screen_instructions:
+        errors.append(
+            "Conflicting screen instructions: the config bans visible screens, but products.flatlay_objects.items still includes a phone/screen device."
+        )
+
+    mentions_usb_c = any("usb-c" in blob for blob in [hero_blob, flatlay_blob, materials_blob])
+    mentions_dock = any(term in blob for blob in [hero_blob, flatlay_blob, materials_blob] for term in ["charging dock", "charging pad", "charging station"])
+    if mentions_usb_c and mentions_dock:
+        errors.append(
+            "Conflicting charging instructions: the product is described with USB-C charging, but other fields still describe a charging dock/pad/station."
+        )
+
+    plush_like = any(term in hero_blob for term in ["plush", "stuffed", "soft toy", "toy", "cat-like ears", "creature"])
+    legacy_prompt_ids = {legacy for legacy in LEGACY_PRODUCT_PROMPT_IDS if legacy in prompt_products}
+    if plush_like and legacy_prompt_ids:
+        errors.append(
+            "Legacy product prompt ids remain in prompts.products for a plush/toy product: "
+            + ", ".join(sorted(legacy_prompt_ids))
+        )
+
+    return errors
+
+
+
+def build_product_spec_lock(cfg, *, primary_name, primary_hex, negative_prompt):
+    """Build a canonical product-spec lock string injected into product-facing prompts."""
+    products = cfg.get("products", {})
+    hero = products.get("hero", {})
+    detail = products.get("detail") or products.get("essence") or {}
+    if not isinstance(detail, dict):
+        detail = {"description": str(detail)}
+    materials = cfg.get("materials", [])
+    flatlay_items = products.get("flatlay_objects", {}).get("items", [])
+
+    hero_name = hero.get("name", "the product")
+    hero_physical = hero.get("physical_form") or hero.get("description") or ""
+    detail_focus = (
+        detail.get("focus")
+        or detail.get("description")
+        or hero.get("description")
+        or hero_physical
+    )
+
+    accessories = []
+    for item in flatlay_items:
+        item_text = str(item).strip()
+        if not item_text:
+            continue
+        if any(token in item_text.lower() for token in ["phone", "screen", "tablet", "laptop", "monitor", "tv"]):
+            continue
+        accessories.append(item_text)
+    accessories_text = ", ".join(accessories[:5]) if accessories else "only the accessories shown in the approved product references"
+
+    neg_lower = str(negative_prompt).lower()
+    bans = []
+    if "teddy bear" in neg_lower or "bear shape" in neg_lower:
+        bans.append("teddy bear / bear silhouette")
+    if any(term in neg_lower for term in ["screen", "phone", "tablet", "laptop", "monitor", "tv"]):
+        bans.append("screens or phone/tablet devices")
+    if "charging dock" in neg_lower or "charging pad" in neg_lower or "charging station" in neg_lower:
+        bans.append("charging dock / charging pad")
+    elif "usb-c" in hero_physical.lower():
+        bans.append("charging dock / charging pad")
+    if "robot" in neg_lower or "metallic" in neg_lower:
+        bans.append("robotic hard-surface body")
+    if "cat-like ears" in hero_physical.lower():
+        bans.append("missing cat-like ears")
+
+    bans_text = ", ".join(dict.fromkeys(bans)) if bans else "no substitutions or accessory inventions"
+    return (
+        f"SPEC LOCK: Depict only {hero_name}. Exact physical form: {hero_physical}. "
+        f"Signature color anchor: {primary_name} ({primary_hex}). "
+        f"Detail focus: {detail_focus}. "
+        f"Allowed accessories only: {accessories_text}. "
+        f"Hard bans: {bans_text}. "
+        "Match the uploaded product reference photos exactly in silhouette, face details, materials, ports, and included accessories."
+    )
+
+
+
 def build_vars(cfg, exec_ctx=None, config_path=None):
     """Flatten config into a dict of template variables."""
     b = cfg["brand"]
@@ -864,10 +985,15 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
         v["product_capsule_2"] = dd["product_capsule_2"]
         v["product_capsule_3"] = dd["product_capsule_3"]
 
-    essence = prods.get("essence", {})
-    v["product_essence_name"] = essence.get("name", dd["product_essence_name"])
-    v["product_essence_container"] = essence.get("container", dd["product_essence_container"])
-    v["product_essence_size"] = essence.get("size", dd["product_essence_size"])
+    detail = prods.get("detail") or prods.get("essence") or {}
+    if not isinstance(detail, dict):
+        detail = {"description": str(detail)}
+    v["product_detail_name"] = detail.get("name", hero.get("name", dd["product_hero_name"]))
+    v["product_detail_focus"] = (
+        detail.get("focus")
+        or detail.get("description")
+        or hero.get("description", dd["product_hero_description"])
+    )
 
     flatlay = prods.get("flatlay_objects", {})
     v["product_flatlay_count"] = str(flatlay.get("count", 5))
@@ -875,6 +1001,12 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["product_flatlay_description"] = ", ".join(flatlay_items) if flatlay_items else "brand objects"
 
     v["product_category"] = prods.get("category", "lifestyle product")
+    v["product_spec_lock"] = build_product_spec_lock(
+        cfg,
+        primary_name=v["primary_name"],
+        primary_hex=v["primary_hex"],
+        negative_prompt=neg,
+    )
 
     # ── Aesthetic language overrides (domain-aware defaults) ──
     aes = cfg.get("aesthetic", {})
@@ -998,8 +1130,7 @@ SKILL_REF_DIR = os.path.expanduser("~/.claude/skills/brandmint/references/images
 
 PROVIDER = os.environ.get("IMAGE_PROVIDER", "{provider}").lower()
 SUPPORTED_PROVIDERS = {{"fal", "openrouter", "openai", "replicate", "inference"}}
-_USE_FALLBACK = PROVIDER == "auto"
-if not _USE_FALLBACK and PROVIDER not in SUPPORTED_PROVIDERS:
+if PROVIDER not in SUPPORTED_PROVIDERS:
     print(f"WARNING: Unknown provider '{{PROVIDER}}', defaulting to FAL.")
     PROVIDER = "fal"
 
@@ -1012,34 +1143,17 @@ if INFERENCE_APP:
 
 try:
     from brandmint.core.providers import get_provider as _bm_get_provider
-    if _USE_FALLBACK:
-        from brandmint.core.providers import generate_with_fallback as _bm_generate_with_fallback
 except Exception as e:
     print(f"ERROR: Failed to import core provider adapters: {{e}}")
     sys.exit(1)
 
-CORE_PROVIDER = None
-if not _USE_FALLBACK:
-    try:
-        CORE_PROVIDER = _bm_get_provider(PROVIDER)
-    except Exception as e:
-        print(f"ERROR: Provider '{{PROVIDER}}' is not available: {{e}}")
-        sys.exit(1)
+try:
+    CORE_PROVIDER = _bm_get_provider(PROVIDER)
+except Exception as e:
+    print(f"ERROR: Provider '{{PROVIDER}}' is not available: {{e}}")
+    sys.exit(1)
 
-if _USE_FALLBACK:
-    print("Using image provider: AUTO (fallback chain)")
-else:
-    print(f"Using image provider: {{PROVIDER.upper()}}")
-
-# =============================================================================
-# ASSET MODE — composite / inpaint / hybrid post-processing
-# =============================================================================
-ASSET_MODE = os.environ.get("ASSET_MODE", "generate").lower()
-if ASSET_MODE not in ("generate", "composite", "inpaint", "hybrid"):
-    print(f"WARNING: Unknown asset mode '{{ASSET_MODE}}', defaulting to generate.")
-    ASSET_MODE = "generate"
-if ASSET_MODE != "generate":
-    print(f"Asset mode: {{ASSET_MODE.upper()}}")
+print(f"Using image provider: {{PROVIDER.upper()}}")
 
 NEGATIVE = """{negative_prompt}"""
 
@@ -1126,6 +1240,62 @@ def get_supp_ref_images(pid, limit=3):
     return urls
 
 
+REFERENCE_POLICY = os.environ.get("BRANDMINT_REFERENCE_POLICY", "error").strip().lower()
+if REFERENCE_POLICY not in {"error", "warn", "off"}:
+    print(f"WARNING: Unknown BRANDMINT_REFERENCE_POLICY '{{REFERENCE_POLICY}}', defaulting to error.")
+    REFERENCE_POLICY = "error"
+
+
+def _existing_reference_paths(pid):
+    """Return local reference files that should anchor a Nano Banana generation."""
+    expected = []
+    if pid != "2A":
+        style_anchor = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
+        if os.path.exists(style_anchor):
+            expected.append(style_anchor)
+    if LOGO_PATH and os.path.exists(LOGO_PATH):
+        expected.append(LOGO_PATH)
+    expected.extend([p for p in PRODUCT_REF_PATHS if os.path.exists(p)])
+    ref_path = get_ref_image(pid)
+    if ref_path:
+        expected.append(ref_path)
+    for fname in SUPP_REFS.get(pid, [])[:3]:
+        path = os.path.join(SKILL_REF_DIR, fname)
+        if os.path.exists(path):
+            expected.append(path)
+
+    deduped = []
+    seen = set()
+    for path in expected:
+        apath = os.path.abspath(path)
+        if apath in seen:
+            continue
+        seen.add(apath)
+        deduped.append(apath)
+    return deduped
+
+
+
+def enforce_reference_payload(pid, image_urls):
+    """Prevent ref-capable Nano Banana steps from silently degrading to text-only."""
+    if REFERENCE_POLICY == "off":
+        return
+    expected = _existing_reference_paths(pid)
+    provided = [url for url in (image_urls or []) if url]
+    if not expected or provided:
+        return
+
+    names = ", ".join(os.path.basename(path) for path in expected[:5])
+    message = (
+        f"[{{pid}}] Reference payload missing despite available refs: {{names}}. "
+        "This Nano Banana step would degrade to text-only generation."
+    )
+    if REFERENCE_POLICY == "warn":
+        print(f"WARNING: {{message}}")
+        return
+    raise RuntimeError(message)
+
+
 def _normalize_png_if_needed(filepath):
     """Convert JPEG/WebP/SVG payloads into PNG when output path expects PNG."""
     if not filepath.endswith(".png") or not os.path.exists(filepath):
@@ -1162,55 +1332,6 @@ def _normalize_png_if_needed(filepath):
         print(f"  WARNING: failed to normalize image payload at {{filepath}}: {{e}}")
 
 
-def _composite_post_pass(output_path, pid=""):
-    """Apply composite post-processing if ASSET_MODE != generate.
-
-    Overlays real brand logo onto AI-generated images using the compositor engine.
-    Saves the composited result as {{name}}-composited.png alongside the original.
-    """
-    if ASSET_MODE == "generate":
-        return
-    if not os.path.exists(output_path):
-        return
-
-    try:
-        from brandmint.core.asset_mode import AssetMode, route_asset
-        from brandmint.core.compositor import PostGenCompositor
-
-        mode = AssetMode(ASSET_MODE)
-        decision = route_asset(
-            asset_id=pid or os.path.basename(output_path),
-            global_mode=mode,
-            has_logo=bool(LOGO_PATH and os.path.exists(LOGO_PATH)),
-            has_product_images=bool(PRODUCT_REF_PATHS),
-        )
-
-        if not decision.needs_composite_pass:
-            return
-        if not LOGO_PATH or not os.path.exists(LOGO_PATH):
-            print(f"  SKIP composite: no logo file at {{LOGO_PATH}}")
-            return
-
-        # Build composited output path (preserve original)
-        base, ext = os.path.splitext(output_path)
-        composited_path = f"{{base}}-composited{{ext}}"
-
-        compositor = PostGenCompositor()
-        compositor.composite_pass_with_analysis(
-            generated_image_path=output_path,
-            logo_path=LOGO_PATH,
-            output_path=composited_path,
-        )
-
-        if os.path.exists(composited_path):
-            size_kb = os.path.getsize(composited_path) / 1024
-            print(f"  Composited: {{os.path.basename(composited_path)}} ({{size_kb:.0f}} KB)")
-    except ImportError as e:
-        print(f"  WARNING: composite pass unavailable (missing dependency): {{e}}")
-    except Exception as e:
-        print(f"  WARNING: composite post-pass failed: {{e}}")
-
-
 def gen_with_provider(
     prompt,
     model,
@@ -1222,52 +1343,34 @@ def gen_with_provider(
     negative_prompt="",
     **kwargs,
 ):
-    """Generate with core provider adapters (single or auto-fallback)."""
+    """Generate with core provider adapters only."""
+    if CORE_PROVIDER is None:
+        return False
+
     primary_ref = image_url
     if primary_ref is None and isinstance(image_urls, list) and image_urls:
         primary_ref = image_urls[0]
 
-    if _USE_FALLBACK:
-        result = _bm_generate_with_fallback(
-            prompt=prompt,
-            model=model,
-            output_path=output_path,
-            width=width,
-            height=height,
-            image_url=primary_ref,
-            negative_prompt=negative_prompt,
-            image_urls=image_urls,
-            **kwargs,
-        )
-    else:
-        if CORE_PROVIDER is None:
-            return False
-        result = CORE_PROVIDER.generate(
-            prompt=prompt,
-            model=model,
-            output_path=output_path,
-            width=width,
-            height=height,
-            image_url=primary_ref,
-            negative_prompt=negative_prompt,
-            image_urls=image_urls,
-            **kwargs,
-        )
-
+    result = CORE_PROVIDER.generate(
+        prompt=prompt,
+        model=model,
+        output_path=output_path,
+        width=width,
+        height=height,
+        image_url=primary_ref,
+        negative_prompt=negative_prompt,
+        image_urls=image_urls,
+        **kwargs,
+    )
     if not (result and result.success):
         err = result.error if result else "unknown adapter error"
-        provider_label = "AUTO" if _USE_FALLBACK else PROVIDER
-        print(f"  ERROR: generation failed for {{model}} via {{provider_label}}: {{err}}")
+        print(f"  ERROR: generation failed for {{model}} via {{PROVIDER}}: {{err}}")
         return False
 
     _normalize_png_if_needed(output_path)
     if os.path.exists(output_path):
         size_kb = os.path.getsize(output_path) / 1024
         print(f"  Saved: {{os.path.basename(output_path)}} ({{size_kb:.0f}} KB)")
-
-    # Composite post-pass: overlay real logo/product if ASSET_MODE != generate
-    _composite_post_pass(output_path)
-
     return True
 
 '''
@@ -1276,6 +1379,7 @@ FUNC_NANO_BANANA = '''
 def gen_nano_banana(pid, slug, prompt, aspect, image_urls, seeds=({seed_a}, {seed_b})):
     """Generate with Nano Banana Pro via unified core provider adapter path."""
     full_prompt = f"{{prompt}}\\n\\nAvoid: {{NEGATIVE}}"
+    enforce_reference_payload(pid, image_urls)
     
     # Parse aspect ratio to get dimensions
     aspect_dims = {{"16:9": (1792, 1024), "9:16": (1024, 1792), "1:1": (1024, 1024), 
@@ -1402,6 +1506,7 @@ light creating colored shadows on {secondary_name} ({secondary_hex}) surface bel
 "{brand_name}" wordmark in {header_font} SemiBold below. {2c_atmosphere}8K detail."""
 
 PROMPT_3A_CAPSULE = """{brand_name} capsule collection product lineup.
+{product_spec_lock}
 Three products in a row on {hero_surface}: {product_capsule_1},
 {product_capsule_2}, and {product_capsule_3}.
 {3a_composition_approach}
@@ -1413,18 +1518,21 @@ Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world
 {3a_atmosphere}{detail_suffix}"""
 
 PROMPT_3B_HERO = """{brand_name} hero product shot. {product_hero_physical}.
+{product_spec_lock}
 {3b_composition_style}Sitting on {hero_surface}. {photo_style}. Environment: {photo_environment}.
 {3b_lighting_note}{photo_constraint}. Camera: {photo_camera}. Materials: {materials_list}.
 {3b_atmosphere}8K."""
 
-PROMPT_3C_DETAIL = """{brand_name} {product_essence_name} product shot. {product_essence_container}
-({product_essence_size}). {3c_composition_style}Etched label directly into surface in {data_font}.
-Brand name "{brand_name}" etched dominant. Minimal sigil below. Pure solid
+PROMPT_3C_DETAIL = """{brand_name} product detail close-up.
+{product_spec_lock}
+Focus on {product_detail_name}: {product_detail_focus}. {3c_composition_style}Tight framing on the approved product only.
+No substitute objects, no invented accessories, no alternate device class. Pure solid
 {primary_name} ({primary_hex}) background. {3c_lighting_approach}Sharp high-contrast lighting from above.
 {accent_name} highlight, {secondary_name} edge-glow.
 {3c_atmosphere}{photo_constraint}. 8K."""
 
 PROMPT_4A_CATALOG = """{brand_name} product design catalog page. {4a_layout_approach}Top section:
+{product_spec_lock}
 {product_category} image inside {photo_environment}. {accent_name} ({accent_hex})
 light filtering through. Bottom section: {4a_panel_note}technical specification panel with
 architectural line drawings in {accent_name} on {primary_name} background.
@@ -1434,6 +1542,7 @@ Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world
 {4a_atmosphere}{quality}.{detail_suffix}"""
 
 PROMPT_4B_FLATLAY = """{brand_name} product collection flat-lay. {product_flatlay_count} objects
+{product_spec_lock}
 {4b_arrangement_style}arranged on {hero_surface} in precise architectural spacing: {product_flatlay_description}. Materials:
 {materials_list}. Overhead composition. Each object casting a single sharp shadow.
 {4b_lighting_approach}Lighting: directional from upper left with warm {accent_name} ({accent_hex})
@@ -1472,6 +1581,7 @@ glowing {secondary_name}. No mystical imagery. Paper texture: warm, fibrous.
 {5c_atmosphere}"""
 
 PROMPT_7A_CONTACT = """{brand_name} editorial contact sheet. {7a_grid_approach}3x3 grid, 9 panels,
+{product_spec_lock}
 {sequence_constraint} lifestyle photography inside {photo_environment}. No face -- only hands
 and forearms. Same hands all panels. {7a_moment_style}9 panels showing different moments of
 {sequence_type} with brand products. Materials: {materials_list}.
@@ -1497,7 +1607,8 @@ Audience aesthetic: {audience_aesthetic}. Emotional register: {emotional_registe
 {8a_atmosphere}{detail_suffix}"""
 
 PROMPT_9A_ENGINE = """{brand_name} campaign poster. Single {{object}} centered on
-{{bg_color}} ({{bg_hex}}) background. The object rendered as physical {poster_artifact}
+{{bg_color}} ({{bg_hex}}) background. {product_spec_lock}
+The object rendered as physical {poster_artifact}
 artifact -- part {{material_a}}, part {{material_b}}, with {poster_filament}
 glowing {secondary_name} ({secondary_hex}). {poster_border} in
 {accent_name} ({accent_hex}). Typography bottom third: "{{engine_name}}" in
@@ -1506,6 +1617,7 @@ Below: "{{tagline}}" in {header_font} Light, {support_name} ({support_hex}).
 Bottom: "{brand_name}" in {body_font} Regular. Dramatic top-down spotlight. 8K."""
 
 PROMPT_10_SEQUENCE = """{brand_name} "{{sequence_title}}" {sequence_type}.
+{product_spec_lock}
 3x3 grid of 9 panels showing {sequence_constraint} progression.
 No face -- only hands and forearms. Same hands across all 9 panels.
 Environment: {photo_environment}. Materials: {materials_list}.
@@ -1528,6 +1640,7 @@ Central mark: simplified version of brand sigil ({sigil_description}).
     "og_image": """{brand_name} Open Graph social sharing preview. 1200x630 composition.
 PRODUCT: {product_hero_name} -- {product_hero_physical}.
 The product must match the reference photos exactly. Do NOT substitute with any other device.
+{product_spec_lock}
 "{brand_tagline}" headline in {header_font} {header_emphasis_weight},
 {secondary_name} ({secondary_hex}) text on {primary_name} ({primary_hex}) overlay.
 Brand mark bottom-right: {sigil_description}.
@@ -1548,6 +1661,7 @@ Product context: {product_hero_name}. {icon_line_style}. {quality}.""",
     "pitch_hero": """{brand_name} pitch deck hero slide. 16:9 landscape composition.
 PRODUCT: {product_hero_name} -- {product_hero_physical}.
 The product must match the reference photos exactly. Do NOT substitute with any other device.
+{product_spec_lock}
 "{hero_headline}" in {header_font} {header_display_weight}, {header_case},
 {secondary_name} ({secondary_hex}) text. {primary_name} ({primary_hex}) background.
 {color_directive} Presentation-quality, cinematic. {quality}.""",
@@ -1555,6 +1669,7 @@ The product must match the reference photos exactly. Do NOT substitute with any 
     "twitter_header": """{brand_name} Twitter/X header banner. 1500x500 panoramic.
 PRODUCT: {product_hero_name} -- {product_hero_physical}.
 The product must match the reference photos exactly. Do NOT substitute with any other device.
+{product_spec_lock}
 "{brand_tagline}" in {header_font} {header_emphasis_weight}.
 Brand mark right-aligned: {sigil_description}.
 {color_directive} {primary_name} overlay gradient. Cinematic. {quality}.""",
@@ -1562,6 +1677,7 @@ Brand mark right-aligned: {sigil_description}.
     "email_hero": """{brand_name} email header hero image. 600px wide landscape composition.
 PRODUCT: {product_hero_name} -- {product_hero_physical}.
 The product must match the reference photos exactly. Do NOT substitute with any other device.
+{product_spec_lock}
 Warm {accent_name} ({accent_hex}) lighting. {primary_name} ({primary_hex}) tonal background.
 Brand mark: {sigil_description}. Materials: {materials_list}. Clean, inviting. {quality}.""",
 }
@@ -1643,6 +1759,10 @@ def main():
     logo_url = get_logo_url()
     if logo_url:
         image_urls.append(logo_url)
+
+    # Product reference images help the anchor stay faithful to the hero object.
+    for purl in get_product_ref_urls():
+        image_urls.append(purl)
 
     # Add supplementary composition references
     image_urls.extend(get_supp_ref_images("2A"))
@@ -1746,7 +1866,7 @@ if __name__ == "__main__":
 
 
 def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
-    """Generate generate-products.py (3A capsule + 3B book + 3C vial + domain-specific)."""
+    """Generate generate-products.py (3A capsule + 3B hero + 3C product detail + domain-specific)."""
     asset_ids = _get_asset_ids(asset_groups, "products", {"3A", "3B", "3C"})
     if not asset_ids:
         return
@@ -1838,16 +1958,9 @@ def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
     gen_nano_banana("3B", "hero-product", PROMPT_3B, "1:1", urls_3b)
 ''' if "3B" in asset_ids else ""
     gen_3c = '''
-    # 3C with composition reference
+    # 3C uses the style anchor + actual product reference photos only.
     print("\\n--- 3C: Product Detail (Nano Banana Pro) ---")
     urls_3c = list(image_urls)
-    ref_3c = get_ref_image("3C")
-    if ref_3c:
-        print(f"  Adding composition ref: {os.path.basename(ref_3c)}")
-        ref_url = upload_reference(ref_3c)
-        if ref_url:
-            urls_3c.append(ref_url)
-    urls_3c.extend(get_supp_ref_images("3C"))
     gen_nano_banana("3C", "product-detail", PROMPT_3C, "1:1", urls_3c)
 ''' if "3C" in asset_ids else ""
 
@@ -2380,7 +2493,7 @@ def gen_cookbook(out_dir, v, cfg):
         asset_display = {
             "2a": "2A Brand Kit Bento Grid", "2b": "2B Brand Seal",
             "2c": "2C Logo Emboss",          "3a": "3A Capsule Collection",
-            "3b": "3B Hero Product",          "3c": "3C Essence Vial",
+            "3b": "3B Hero Product",          "3c": "3C Product Detail",
             "4a": "4A Catalog Layout",        "4b": "4B Flatlay",
             "5a": "5A Heritage Engraving",    "5b": "5B Campaign Grid",
             "5c": "5C Art Panel",             "7a": "7A Contact Sheet",
@@ -2679,6 +2792,17 @@ def main():
     print(f"\n  Config: {config_path}")
 
     cfg = load_config(config_path)
+    normalized_prompt_ids = normalize_product_prompt_ids(cfg)
+    if normalized_prompt_ids:
+        print("  Normalized legacy product prompt ids: " + ", ".join(f"{old}->{new}" for old, new in normalized_prompt_ids))
+
+    validation_errors = validate_product_spec_consistency(cfg)
+    if validation_errors:
+        print("\n  ERROR: Product-spec validation failed:")
+        for err in validation_errors:
+            print(f"    - {err}")
+        sys.exit(1)
+
     exec_ctx = load_execution_context(config_path, cfg)
     v = build_vars(cfg, exec_ctx, config_path=config_path)
 

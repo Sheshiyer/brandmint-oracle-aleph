@@ -12,6 +12,34 @@ execution_context:
   tone: ""                      # e.g. "conversion-focused", "premium", "minimal"
   quality_bar: "standard"       # minimal|standard|premium
 
+# ─── CANONICAL CONTRACT METADATA ─────────────────────────
+# Reserved system namespace for config review + approval state.
+# The semantic launch payload is the full document minus `_brandmint`.
+_brandmint:
+  document:
+    kind: "brand-config"
+    contract_version: "1"
+    state: "draft"              # draft|approved|superseded
+  lineage:
+    source_type: "product-md"   # github-url|product-md|manual|imported-config
+    source_uri: ""
+    source_hash: "sha256:..."
+    extractor_version: "front-ui-v1"
+    mapping_spec_version: "2026-03-30"
+    created_at: "2026-03-30T12:00:00+00:00"
+    updated_at: "2026-03-30T12:15:00+00:00"
+  review:
+    pending_fields: []          # canonical dot-paths still requiring operator review
+    edited_fields: []           # canonical dot-paths changed from raw extraction
+    fields: {}                  # per-field provenance + snippet evidence
+  approval:
+    approved_by: ""
+    approved_at: ""
+    approval_note: ""
+    fingerprint_algorithm: "sha256"
+    fingerprint_scope: "semantic-config-v1"
+    fingerprint_value: ""
+
 # ─── BRAND IDENTITY ───────────────────────────────────────
 brand:
   name: ""                    # Brand name (used in all prompts and file naming)
@@ -125,10 +153,13 @@ products:
     physical_form: ""           # Full physical description for 3B hero product shot
   capsule_lineup:               # For 3A three-product lineup
     - { name: "", description: "" }  # At least 3 items recommended
-  essence:                      # For 3C small-format product
-    name: ""                    # e.g., "Essence Concentrate", "Calibration Oil"
-    container: ""               # Container description
-    size: ""                    # e.g., "30ml", "15ml"
+  detail:                       # Preferred for 3C product detail close-ups
+    name: ""                    # e.g., "Flagship Product Detail"
+    focus: ""                   # Exact close-up features/materials/ports to emphasize
+  essence:                      # Legacy alias for older 3C configs (still supported)
+    name: ""                    # Deprecated legacy field name
+    container: ""               # Deprecated legacy field name
+    size: ""                    # Deprecated legacy field name
   flatlay_objects:              # For 4B overhead arrangement
     count: 5                    # Number of objects
     items: []                   # List of object descriptions
@@ -150,7 +181,7 @@ products:
 #   2c: stained_glass_emboss | relief_emboss | flat_modern | inlaid_craft
 #   3a: architectural_lineup | earth_abundance | clinical_precision | festive_tableau
 #   3b: contextual_hero | floating_hero | technical_flatlay | atmospheric_still
-#   3c: apothecary_vial | ceremony_vessel | lab_specimen | craft_container
+#   3c: clean_closeup | contextual_detail | technical_detail | material_closeup
 #   4a: technical_catalog | editorial_spread | artisanal_reference | minimal_product
 #   4b: scattered_flatlay | abundant_arrangement | ceremonial_layout | natural_scatter
 #   5a: botanical_scientific | block_print_heritage | circuit_filigree | calligraphic_line
@@ -198,17 +229,6 @@ generation:
   output_format: "png"        # Primary output format
   env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
   provider: "fal"             # fal | openrouter | openai | replicate | inference | auto
-  asset_mode: "generate"      # generate | composite | inpaint | hybrid
-  composite_config:
-    logo_position: "bottom-right"  # 9-grid: top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right
-    logo_scale: 0.15               # fraction of canvas width
-    logo_padding: 20               # pixels from edge
-    logo_opacity: 1.0
-    logo_shadow: false
-    product_position: "center"
-    product_scale: 0.5
-    product_feather: 5
-    per_asset_overrides: {}        # e.g. {"2B-logo-lockup": "composite", "3A-product-hero": "inpaint"}
   visual_backend: "scripts"   # scripts | inference (writes inference scaffolds)
   inference_endpoint: "https://api.inference.sh"
   inference_app: "infsh-ai-image-generation" # Optional app override for generation.provider=inference
@@ -266,12 +286,3 @@ prompts:
   extended: {}                # Phase 3: Domain-specific asset prompts (keyed by prompt_key from registry)
                               # e.g., app_icon: "Minimalist app icon for {brand_name}..."
                               # Keys must match prompt_key in asset-registry.yaml
-
-# NotebookLM publishing configuration
-publishing:
-  synthesize: true                    # LLM prose synthesis (requires OPENROUTER_API_KEY)
-  synthesis_model: ""                 # Override model (default: anthropic/claude-3.5-haiku)
-  include_brand_materials: false      # Upload logos, style guide, visual descriptions as sources
-  vision_descriptions: false          # Generate LLM vision descriptions for visual assets
-  vision_model: ""                    # Override vision model (default: anthropic/claude-3.5-haiku)
-  max_sources: 50                     # NotebookLM Standard plan limit

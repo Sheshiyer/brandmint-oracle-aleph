@@ -10,9 +10,7 @@
     "preview": "vite preview --host 127.0.0.1 --port 4188 --strictPort",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "tauri:build": "tauri build"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.10.1",
@@ -22,20 +20,15 @@
     "@tauri-apps/plugin-process": "^2.3.1",
     "@tauri-apps/plugin-shell": "^2.3.5",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-router-dom": "^7.13.1",
-    "zustand": "^5.0.11"
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.10.0",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
+    "@types/node": "^22.19.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.4",
-    "jsdom": "^28.1.0",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "vite": "^7.3.1"
   }
 }

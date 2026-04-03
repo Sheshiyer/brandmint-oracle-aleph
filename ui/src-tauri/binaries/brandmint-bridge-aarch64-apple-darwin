@@ -13,7 +13,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Find repo root by walking up from script dir looking for pyproject.toml
 find_repo_root() {
     local dir="$SCRIPT_DIR"
-    for _ in 1 2 3 4 5 6 7 8; do
+    for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
         if [ -f "$dir/pyproject.toml" ] && [ -d "$dir/scripts" ]; then
             echo "$dir"
             return 0
@@ -27,6 +27,10 @@ find_repo_root() {
 BRIDGE_SCRIPT=""
 if REPO_ROOT="$(find_repo_root)"; then
     BRIDGE_SCRIPT="$REPO_ROOT/scripts/ui_backend_bridge.py"
+elif [ -f "$SCRIPT_DIR/../Resources/ui_backend_bridge.py" ]; then
+    BRIDGE_SCRIPT="$SCRIPT_DIR/../Resources/ui_backend_bridge.py"
+elif [ -f "$SCRIPT_DIR/../Resources/scripts/ui_backend_bridge.py" ]; then
+    BRIDGE_SCRIPT="$SCRIPT_DIR/../Resources/scripts/ui_backend_bridge.py"
 elif [ -f "$SCRIPT_DIR/ui_backend_bridge.py" ]; then
     # Prod mode: bundled alongside this script
     BRIDGE_SCRIPT="$SCRIPT_DIR/ui_backend_bridge.py"
@@ -45,4 +49,15 @@ if [ -f "$HOME/.claude/.env" ]; then
     set -a; source "$HOME/.claude/.env"; set +a
 fi
 
-exec python3 "$BRIDGE_SCRIPT"
+if [ -n "${REPO_ROOT:-}" ]; then
+    export BRANDMINT_ROOT="$REPO_ROOT"
+fi
+
+PYTHON_BIN="python3"
+if [ -x "$SCRIPT_DIR/venv/bin/python3" ]; then
+    PYTHON_BIN="$SCRIPT_DIR/venv/bin/python3"
+elif [ -x "$SCRIPT_DIR/../Resources/venv/bin/python3" ]; then
+    PYTHON_BIN="$SCRIPT_DIR/../Resources/venv/bin/python3"
+fi
+
+exec "$PYTHON_BIN" "$BRIDGE_SCRIPT"

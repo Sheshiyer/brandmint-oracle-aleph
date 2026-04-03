@@ -45,12 +45,6 @@ class FalProvider(ImageProvider):
     def supports_image_reference(self) -> bool:
         return True  # Nano Banana Pro supports image references
     
-    def supports_inpainting(self) -> bool:
-        return True  # flux-fill endpoint
-    
-    def supports_edge_guided(self) -> bool:
-        return True  # flux-canny endpoint
-    
     def get_model_id(self, logical_model: str) -> str:
         return get_model_id("fal", logical_model)
     
@@ -113,10 +107,10 @@ class FalProvider(ImageProvider):
                             return json.loads(resp2.read().decode("utf-8"))
                     except urllib.error.HTTPError as e2:
                         if e2.code == 400:
-                            time.sleep(5)
+                            time.sleep(2)
                             continue
                         raise
-                time.sleep(5)
+                time.sleep(2)
                 continue
 
             req_status = status.get("status", "UNKNOWN")
@@ -134,7 +128,7 @@ class FalProvider(ImageProvider):
             if req_status in ("FAILED", "CANCELLED"):
                 raise RuntimeError(f"Generation failed: {json.dumps(status)}")
 
-            time.sleep(5)
+            time.sleep(2)
 
         raise TimeoutError(f"Timed out after {max_wait}s")
     
@@ -176,44 +170,6 @@ class FalProvider(ImageProvider):
         """Build model-aware payloads matching legacy generated-script behavior."""
         seed = kwargs.get("seed")
 
-        # --- flux-fill (inpainting) ---
-        if "flux-pro/v1/fill" in model_id:
-            if not image_url:
-                raise ValueError(
-                    "flux-fill requires image_url (base scene to inpaint)"
-                )
-            mask_url = kwargs.get("mask_url")
-            if not mask_url:
-                raise ValueError(
-                    "flux-fill requires mask_url (white=fill, black=keep)"
-                )
-            arguments: dict[str, Any] = {
-                "prompt": prompt,
-                "image": self._upload_reference(image_url),
-                "mask": self._upload_reference(mask_url),
-                "output_format": kwargs.get("output_format", "png"),
-            }
-            if seed is not None:
-                arguments["seed"] = seed
-            return arguments
-
-        # --- flux-canny (edge-guided) ---
-        if "flux-pro/v1/canny" in model_id:
-            if not image_url:
-                raise ValueError(
-                    "flux-canny requires image_url as control_image (edge/canny map)"
-                )
-            arguments = {
-                "prompt": prompt,
-                "control_image": self._upload_reference(image_url),
-                "output_format": kwargs.get("output_format", "png"),
-                "guidance_scale": guidance_scale,
-                "num_inference_steps": num_steps,
-            }
-            if seed is not None:
-                arguments["seed"] = seed
-            return arguments
-
         if "nano-banana" in model_id:
             arguments: dict[str, Any] = {
                 "prompt": prompt,
@@ -225,19 +181,34 @@ class FalProvider(ImageProvider):
             if seed is not None:
                 arguments["seed"] = seed
 
-            image_urls = kwargs.get("image_urls")
+            # Support both 'images' (Nano Banana 2 editing workflow) and 
+            # 'image_urls' (Nano Banana Pro style reference workflow)
+            images_param = kwargs.get("images")
+            image_urls_param = kwargs.get("image_urls")
             uploaded_urls: list[str] = []
-            if isinstance(image_urls, list):
-                for ref in image_urls:
+            
+            # Handle 'images' parameter (editing workflow - Nano Banana 2)
+            if isinstance(images_param, list):
+                for ref in images_param:
                     sval = str(ref).strip()
                     if not sval:
                         continue
                     uploaded_urls.append(self._upload_reference(sval))
+                if uploaded_urls:
+                    arguments["images"] = uploaded_urls
+            # Handle 'image_urls' parameter (style reference workflow - Nano Banana Pro)
+            elif isinstance(image_urls_param, list):
+                for ref in image_urls_param:
+                    sval = str(ref).strip()
+                    if not sval:
+                        continue
+                    uploaded_urls.append(self._upload_reference(sval))
+                if uploaded_urls:
+                    arguments["image_urls"] = uploaded_urls
+            # Legacy single image_url support
             elif image_url:
-                uploaded_urls.append(self._upload_reference(image_url))
+                arguments["image_url"] = self._upload_reference(image_url)
 
-            if uploaded_urls:
-                arguments["image_urls"] = uploaded_urls
             if negative_prompt:
                 arguments["negative_prompt"] = negative_prompt
             return arguments

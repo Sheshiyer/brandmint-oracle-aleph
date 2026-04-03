@@ -1,0 +1,211 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GlassCard from './GlassCard.astro';
+import siteData from '../data/site-data.json';
+import type { Locale } from '../i18n';
+import { localizedDocTitle, localizedFeature, localizedPath, t } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = t(locale);
+const docs = await getCollection('docs');
+const frDocs = await getCollection('frDocs');
+const frDocsBySlug = new Map(frDocs.map((entry) => [entry.slug, entry]));
+const localizedDocs = docs.map((doc) => {
+  const localized = locale === 'fr' ? frDocsBySlug.get(doc.slug) : undefined;
+  return localized
+    ? {
+        ...doc,
+        data: {
+          ...doc.data,
+          ...localized.data,
+        },
+      }
+    : doc;
+});
+const docsBySlug = new Map(localizedDocs.map((doc) => [doc.slug, doc]));
+const metrics = siteData.metrics || [];
+const storyPillars = siteData.storyPillars || [];
+const featuredDocs = siteData.featuredDocs || [];
+const visualHighlights = siteData.visualHighlights || [];
+const notebooklmHighlights = siteData.notebooklmHighlights || [];
+
+const categories: Record<string, typeof localizedDocs> = {};
+for (const doc of localizedDocs) {
+  const category = (doc.data.category || 'general').toString();
+  if (!categories[category]) categories[category] = [];
+  categories[category].push(doc);
+}
+for (const category of Object.keys(categories)) {
+  categories[category].sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+}
+const orderedCategories = Object.entries(categories).sort(([a], [b]) => {
+  const order = ['general', 'product', 'brand', 'audience', 'marketing'];
+  return (order.indexOf(a) === -1 ? 99 : order.indexOf(a)) - (order.indexOf(b) === -1 ? 99 : order.indexOf(b));
+});
+---
+
+<BaseLayout title={`${siteData.brandName} Launch Portal`} description={siteData.heroSubtitle || siteData.tagline} locale={locale}>
+  <section class="home-stage">
+    <section class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">{locale === 'fr' ? 'INTELLIGENCE DOUCE' : siteData.themeName.toUpperCase()} · {siteData.launchChannel}</p>
+        <h1>{locale === 'fr' ? 'Compagnon de jeu sans écran' : siteData.heroTitle}</h1>
+        <p class="hero-subtitle">{locale === 'fr' ? 'Une IA chaleureuse, douce et tactile, pensée comme un câlin intelligent.' : siteData.heroSubtitle}</p>
+        {siteData.heroDescription && <p class="hero-description">{locale === 'fr' ? 'ZackAI réunit la chaleur d’une peluche, l’apprentissage sans écran et la recherche prête pour le lancement dans un portail premium à parcourir.' : siteData.heroDescription}</p>}
+
+        <div class="hero-actions">
+          <a class="cta cta--primary" href={localizedPath(locale, siteData.heroPrimaryHref || '/docs/product/overview')}>{locale === 'fr' ? 'Explorer le récit produit' : 'Explore the product story'}</a>
+          <a class="cta cta--secondary" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>{locale === 'fr' ? 'Ouvrir la recherche & NotebookLM' : 'Open research & NotebookLM'}</a>
+        </div>
+
+        {storyPillars.length > 0 && (
+          <div class="story-pillars">
+            {storyPillars.map((pillar) => <span class="pill pill--soft">{pillar}</span>)}
+          </div>
+        )}
+
+        {metrics.length > 0 && (
+          <div class="metric-grid">
+            {metrics.map((metric) => (
+              <GlassCard class="metric-card" tone="warm">
+                <strong>{metric.value}</strong>
+                <span>{metric.label}</span>
+              </GlassCard>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <GlassCard class="hero-visual-card" tone="accent">
+        <div class="hero-visual-card__frame">
+          {siteData.heroImage && <img src={siteData.heroImage} alt={siteData.heroImageAlt || siteData.brandName} />}
+        </div>
+        <div class="hero-visual-card__copy">
+          <p class="eyebrow">{copy.shell.launchReadyPortal}</p>
+          <h2>{siteData.brandName}</h2>
+          <p>{siteData.tagline}</p>
+        </div>
+        <div class="launch-facts">
+          {(siteData.launchFacts || []).map((fact) => (
+            <div class="launch-fact">
+              <small>{fact.label}</small>
+              <strong>{fact.value}</strong>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+    </section>
+
+    <section class="home-section">
+      <div class="section-heading">
+        <p class="eyebrow">{copy.home.curatedLaunchTracks}</p>
+        <h2>{copy.home.homeHeading}</h2>
+        <p>{copy.home.homeBlurb}</p>
+      </div>
+      <div class="feature-grid">
+        {featuredDocs.map((doc) => {
+          const slug = (doc.href || '').replace(/^\/docs\//, '').replace(/^\//, '');
+          const localizedDoc = docsBySlug.get(slug);
+          const localized = localizedFeature(locale, doc.href, {
+            title: localizedDoc?.data.title || doc.title,
+            eyebrow: doc.eyebrow,
+            description: localizedDoc?.data.description || doc.description,
+          });
+          return (
+            <GlassCard class="feature-card" interactive href={localizedPath(locale, doc.href)} tone="default">
+              <p class="feature-card__eyebrow">{localized.eyebrow}</p>
+              <h3>{doc.icon ? `${doc.icon} ${localized.title}` : localized.title}</h3>
+              <p>{localized.description}</p>
+              <span class="feature-link">{copy.shell.openSection}</span>
+            </GlassCard>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="home-section">
+      <div class="section-heading">
+        <p class="eyebrow">{copy.home.visualWorld}</p>
+        <h2>{copy.home.visualHeading}</h2>
+      </div>
+      <div class="visual-grid">
+        {visualHighlights.map((item) => (
+          <GlassCard class="visual-card" interactive href={localizedPath(locale, item.href)} tone="signal">
+            {item.image && <img src={item.image} alt={item.title} class="visual-card__image" />}
+            <div class="visual-card__copy">
+              <p class="feature-card__eyebrow">{item.eyebrow}</p>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <span class="feature-link">{copy.shell.reviewContext}</span>
+            </div>
+          </GlassCard>
+        ))}
+      </div>
+    </section>
+
+    <section class="home-section home-section--dual">
+      <GlassCard class="knowledge-map" tone="default">
+        <div class="section-heading section-heading--compact">
+          <p class="eyebrow">{copy.home.knowledgeMap}</p>
+          <h2>{copy.home.knowledgeHeading}</h2>
+        </div>
+        <div class="knowledge-map__grid">
+          {orderedCategories.map(([category, categoryDocs]) => (
+            <section class="knowledge-map__section">
+              <p class="feature-card__eyebrow">{copy.categories[category as keyof typeof copy.categories] || category}</p>
+              <ul>
+                {categoryDocs.map((doc) => (
+                  <li>
+                    <a href={localizedPath(locale, `/docs/${doc.slug}`)}>
+                      {doc.data.icon && <span>{doc.data.icon} </span>}
+                      {localizedDocTitle(locale, doc.slug, doc.data.title)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </GlassCard>
+
+      <GlassCard class="research-panel" tone="warm">
+        <div class="section-heading section-heading--compact">
+          <p class="eyebrow">{copy.home.notebooklmSpotlight}</p>
+          <h2>{copy.home.notebooklmHeading}</h2>
+        </div>
+        <div class="research-panel__list">
+          {notebooklmHighlights.map((item) => (
+            <a class="research-item" href={localizedPath(locale, item.href || siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>
+              {item.image && <img src={item.image} alt={item.title} class="research-item__image" />}
+              <div>
+                <p class="feature-card__eyebrow">{item.kind}</p>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <span class="feature-link">{copy.shell.openInWiki}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </GlassCard>
+    </section>
+
+    <section class="home-section">
+      <GlassCard class="closing-banner" tone="accent">
+        <div>
+          <p class="eyebrow">{copy.shell.freshBuild}</p>
+          <h2>{siteData.runLabel}</h2>
+          <p>{locale === 'fr' ? 'Publié ' : 'Published '}{siteData.publishedAtHuman}. {locale === 'fr' ? 'Ce portail garde la profondeur du wiki, tout en la présentant dans le système de marque ZackAI.' : 'This portal keeps the wiki depth, but presents it through the ZackAI brand system.'}</p>
+        </div>
+        <div class="closing-banner__actions">
+          <a class="cta cta--secondary" href={localizedPath(locale, siteData.docsHomeHref || '/docs/index')}>{copy.shell.openDocsIndex}</a>
+          <a class="cta cta--primary" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>{copy.shell.openResearchHub}</a>
+        </div>
+      </GlassCard>
+    </section>
+  </section>
+</BaseLayout>

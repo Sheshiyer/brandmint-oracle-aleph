@@ -1,0 +1,17 @@
+---
+---
+
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+  <span class="theme-toggle__emoji">☀️</span>
+  <span class="theme-toggle__emoji theme-toggle__emoji--dark">🌙</span>
+</button>
+
+<script is:inline>
+  const toggle = document.getElementById('theme-toggle');
+  toggle?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { isTauri, listenEvent } from "../lib/tauri";
+import { PRODUCT_NAME, PRODUCT_VERSION } from "../lib/appMeta";
 
 type SidecarStatus = "starting" | "ready" | "unhealthy" | "failed";
 
@@ -56,11 +57,11 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.logo}>BM</div>
-        <h1 style={styles.title}>Brandmint</h1>
+        <h1 style={styles.title}>{PRODUCT_NAME}</h1>
 
         {status === "starting" && (
           <>
-            <p style={styles.message}>Starting bridge{dots}</p>
+            <p style={styles.message}>Starting {PRODUCT_NAME}{dots}</p>
             <div style={styles.progressTrack}>
               <div style={styles.progressFill} />
             </div>
@@ -69,7 +70,7 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
 
         {(status === "failed" || status === "unhealthy") && (
           <>
-            <p style={{ ...styles.message, color: "#ff3b3b" }}>Bridge failed to start</p>
+            <p style={{ ...styles.message, color: "#ff3b3b" }}>{PRODUCT_NAME} bridge failed to start</p>
             <p style={styles.error}>{error}</p>
             <button
               style={styles.retryBtn}
@@ -96,7 +97,7 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
           </>
         )}
 
-        <p style={styles.version}>v4.3.1</p>
+        <p style={styles.version}>v{PRODUCT_VERSION}</p>
       </div>
     </div>
   );

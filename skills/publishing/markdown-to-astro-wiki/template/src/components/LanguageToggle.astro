@@ -1,0 +1,24 @@
+---
+import type { Locale } from '../i18n';
+import { LOCALES, switchLocalePath } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+
+const { locale, pathname } = Astro.props;
+---
+
+<div class="language-toggle" aria-label="Language switcher">
+  {LOCALES.map((candidate) => (
+    <a
+      href={switchLocalePath(pathname, candidate)}
+      class:list={['language-toggle__link', { 'is-active': candidate === locale }]}
+      lang={candidate}
+      hrefLang={candidate}
+    >
+      {candidate.toUpperCase()}
+    </a>
+  ))}
+</div>

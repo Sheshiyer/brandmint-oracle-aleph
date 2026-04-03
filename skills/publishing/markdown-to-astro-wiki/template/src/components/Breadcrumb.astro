@@ -1,0 +1,20 @@
+---
+import type { Locale } from '../i18n';
+import { localizedPath, t } from '../i18n';
+
+interface Props {
+  category?: string;
+  title: string;
+  locale: Locale;
+}
+
+const { category, title, locale } = Astro.props;
+const copy = t(locale);
+---
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href={localizedPath(locale, '/')}>{copy.shell.portal}</a>
+  {category && <><span>/</span><span>{category}</span></>}
+  <span>/</span>
+  <span class="breadcrumb__current">{title}</span>
+</nav>

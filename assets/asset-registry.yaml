@@ -67,7 +67,7 @@ assets:
     cost_usd: 0.05
 
   3C:
-    name: "Essence Vial"
+    name: "Product Detail"
     generator: "products"
     model: "flux-2-pro"
     tags: ["dtc", "wellness", "beauty", "physical-product"]
