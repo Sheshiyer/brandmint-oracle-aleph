@@ -312,6 +312,28 @@
 
 - In progress.
 
+## 2026-04-16 Wave 0 Quiz-Card Brand Config Triage
+
+- [x] Add explicit Wave 0 planning + execution checklist in UI flow (intake/extraction/wizard/export grouped as pre-launch triage)
+- [x] Implement quiz-card extraction review with yes/no and multiple-choice presets inferred from initial Product MD extraction
+- [x] Wire quiz-card answers to update the generated brand config draft before launch pipeline execution
+- [x] Add a fast path to apply quiz answers and move directly to config export/approval so drift is resolved before text/visual waves
+- [x] Update launch UI gating copy to reflect Wave 0 completion requirement
+- [x] Add/adjust styles for quiz cards and option controls
+- [x] Run UI verification (`npm --prefix ui run build`) and capture results
+- [x] Add review notes and residual risk summary
+
+### Review
+
+- Implemented Wave 0 triage UX in `ui/src/App.tsx` with inferred quiz defaults, yes/no + multi-choice card controls, and `Apply Quiz Answers` actions that patch config draft state before launch.
+- Grouped intake/extraction/wizard/export surfaces into `Wave 0 · Config Triage` and updated launch gating copy to require Wave 0 completion before run start.
+- Added dedicated quiz-card styles in `ui/src/styles/globals.css` and responsive collapse behavior for smaller screens.
+- Verification:
+  - `npm --prefix ui run build` currently fails from pre-existing repository TypeScript/dependency issues outside this change set (for example missing `vitest`/`zustand` modules and existing `App.legacy.tsx` type errors).
+  - Runtime smoke check via `npm --prefix ui run dev` plus `curl -sS http://127.0.0.1:4188/src/App.tsx | rg -n "Wave 0|quiz"` confirms new Wave 0 quiz logic is served by the app.
+- Residual risk:
+  - Quiz inference is keyword-based and can misclassify sparse Product MD input; operators can correct values immediately through the quiz cards and manual extraction overrides.
+
 ## 2026-03-31 GitHub Issues Review
 
 - [x] Confirm repo target and review relevant project lessons

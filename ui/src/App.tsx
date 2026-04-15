@@ -232,6 +232,13 @@ type AppPreferences = {
   logRetention: number;
 };
 
+type Wave0QuizAnswers = {
+  b2bFit: "yes" | "no";
+  tonePreset: "authoritative" | "premium" | "playful" | "technical" | "calm";
+  visualPreset: "editorial" | "minimal" | "bold" | "geometric" | "organic";
+  objectivePreset: "conversion" | "awareness" | "waitlist" | "retention";
+};
+
 const DEFAULT_PREFERENCES: AppPreferences = {
   fontSize: "large",
   sidebarWidth: 280,
@@ -289,6 +296,167 @@ const FALLBACK_RUNNERS: RunnerInfo[] = [
     description: "Runs bm launch pipeline with waves/scenario.",
   },
 ];
+
+const DEFAULT_WAVE0_QUIZ: Wave0QuizAnswers = {
+  b2bFit: "no",
+  tonePreset: "calm",
+  visualPreset: "minimal",
+  objectivePreset: "conversion",
+};
+
+function inferWave0QuizFromExtraction(extraction: ExtractedDraft): Wave0QuizAnswers {
+  const corpus = [
+    extraction.category,
+    extraction.audience,
+    extraction.problem,
+    extraction.valueProposition,
+    extraction.launchGoal,
+    extraction.voiceTone,
+    extraction.differentiators,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  const b2bFit = /b2b|enterprise|saas|team|manager|operations|procurement|revops|workflow/.test(corpus)
+    ? "yes"
+    : "no";
+
+  let tonePreset: Wave0QuizAnswers["tonePreset"] = "calm";
+  if (/playful|fun|energetic|bold|youthful|viral/.test(corpus)) {
+    tonePreset = "playful";
+  } else if (/technical|api|developer|platform|infrastructure|analytics/.test(corpus)) {
+    tonePreset = "technical";
+  } else if (/premium|luxury|editorial|elegant|refined/.test(corpus)) {
+    tonePreset = "premium";
+  } else if (/authoritative|trust|security|compliance|expert/.test(corpus)) {
+    tonePreset = "authoritative";
+  }
+
+  let visualPreset: Wave0QuizAnswers["visualPreset"] = "minimal";
+  if (/editorial|magazine|fashion|luxury/.test(corpus)) {
+    visualPreset = "editorial";
+  } else if (/bold|high contrast|vibrant|loud|expressive/.test(corpus)) {
+    visualPreset = "bold";
+  } else if (/geometric|modular|grid|system/.test(corpus)) {
+    visualPreset = "geometric";
+  } else if (/organic|natural|human|warm/.test(corpus)) {
+    visualPreset = "organic";
+  }
+
+  let objectivePreset: Wave0QuizAnswers["objectivePreset"] = "conversion";
+  if (/waitlist|prelaunch|pre-launch|coming soon/.test(corpus)) {
+    objectivePreset = "waitlist";
+  } else if (/retention|renew|churn|upsell|repeat/.test(corpus)) {
+    objectivePreset = "retention";
+  } else if (/awareness|reach|visibility|impressions|attention/.test(corpus)) {
+    objectivePreset = "awareness";
+  }
+
+  return {
+    b2bFit,
+    tonePreset,
+    visualPreset,
+    objectivePreset,
+  };
+}
+
+function applyWave0QuizToDraft(
+  extraction: ExtractedDraft,
+  draft: ConfigDraft,
+  quiz: Wave0QuizAnswers,
+): ConfigDraft {
+  const next = structuredClone(draft);
+
+  const toneMap: Record<Wave0QuizAnswers["tonePreset"], { voice: string; tone: string }> = {
+    authoritative: {
+      voice: "expert, direct, outcome-led",
+      tone: "confident, precise",
+    },
+    premium: {
+      voice: "refined, calm, deliberate",
+      tone: "premium, minimal",
+    },
+    playful: {
+      voice: "friendly, energetic, human",
+      tone: "playful, bright",
+    },
+    technical: {
+      voice: "precise, analytical, trustworthy",
+      tone: "technical, clear",
+    },
+    calm: {
+      voice: "calm, clear, helpful",
+      tone: "steady, modern",
+    },
+  };
+
+  const visualMap: Record<Wave0QuizAnswers["visualPreset"], ConfigDraft["visual"]> = {
+    editorial: {
+      paletteMood: "editorial contrast + quiet luxury",
+      typography: "high-contrast sans + elegant serif accents",
+      surfaceStyle: "magazine grid with cinematic depth",
+    },
+    minimal: {
+      paletteMood: "neutral monochrome + soft contrast",
+      typography: "clean geometric sans",
+      surfaceStyle: "minimal cards with restrained motion",
+    },
+    bold: {
+      paletteMood: "high-saturation accents + dark neutrals",
+      typography: "expressive display + utility sans",
+      surfaceStyle: "bold blocks with high-contrast gradients",
+    },
+    geometric: {
+      paletteMood: "structured duotone + sharp accents",
+      typography: "architectural sans",
+      surfaceStyle: "geometric grids and modular cards",
+    },
+    organic: {
+      paletteMood: "earthy neutrals + natural highlights",
+      typography: "humanist sans + soft serif",
+      surfaceStyle: "organic textures with soft curves",
+    },
+  };
+
+  const objectiveMap: Record<Wave0QuizAnswers["objectivePreset"], string> = {
+    conversion: "Drive first conversion cycle",
+    awareness: "Build awareness and memorability for launch",
+    waitlist: "Convert traffic into a qualified pre-launch waitlist",
+    retention: "Increase repeat engagement and customer retention",
+  };
+
+  const defaultPositioning =
+    "Transforms product notes into launch-ready brand assets.";
+
+  next.brand.voice = toneMap[quiz.tonePreset].voice;
+  next.brand.tone = toneMap[quiz.tonePreset].tone;
+  next.visual = visualMap[quiz.visualPreset];
+  next.campaign.primaryObjective = objectiveMap[quiz.objectivePreset];
+
+  if (quiz.b2bFit === "yes") {
+    if (!/b2b|saas|enterprise/.test(next.brand.domain.toLowerCase())) {
+      next.brand.domain = "saas";
+    }
+    if (!next.audience.personaName || /buyer|individual|customer/i.test(next.audience.personaName)) {
+      next.audience.personaName = "Product, Growth, and Ops teams";
+    }
+  } else {
+    if (!next.brand.domain || /saas|enterprise|b2b/.test(next.brand.domain.toLowerCase())) {
+      next.brand.domain = extraction.category || "consumer-product";
+    }
+    if (!next.audience.personaName || /team|manager|ops/i.test(next.audience.personaName)) {
+      next.audience.personaName = extraction.audience || "Design-aware individual buyers";
+    }
+  }
+
+  if (!next.positioning.statement || next.positioning.statement === defaultPositioning) {
+    const segment = quiz.b2bFit === "yes" ? "teams" : "buyers";
+    const value = extraction.valueProposition || "clear brand outcomes";
+    next.positioning.statement = `Helps ${segment} move from interest to action with ${value.toLowerCase()}.`;
+  }
+
+  return next;
+}
 
 function summarizeLanes(tasks: Task[]) {
   return tasks.reduce<Record<string, number>>((acc, task) => {
@@ -362,7 +530,7 @@ function buildProcessPages(): ProcessPage[] {
     { id: "journey-02", title: "Campaign Intent & Success Criteria", track: "Brand Experience Journey", kind: "journey", objective: "Capture what success means before users upload or generate anything.", focus: ["Primary goal", "KPI framing", "Constraints"] },
     { id: "process-intake", title: "Product MD Intake", track: "Brand Experience Journey", kind: "intake", objective: "Capture complete product context before synthesis.", focus: ["Upload", "Paste", "Draft restore"] },
     { id: "journey-03", title: "Input Quality Diagnostics", track: "Brand Experience Journey", kind: "journey", objective: "Show if Product MD quality is sufficient for high-confidence extraction.", focus: ["Completeness score", "Missing fields", "Fix tips"] },
-    { id: "process-extraction", title: "Extraction Review", track: "Brand Experience Journey", kind: "extraction", objective: "Validate extracted signals before config generation.", focus: ["Confidence", "Field edits", "Confirm"] },
+    { id: "process-extraction", title: "Wave 0 Quiz Triage", track: "Brand Experience Journey", kind: "extraction", objective: "Validate extracted signals and resolve drift before config generation.", focus: ["Yes/No cards", "Multiple-choice presets", "Fast apply"] },
     { id: "journey-04", title: "Signal Confidence Tuning", track: "Brand Experience Journey", kind: "journey", objective: "Tune low-confidence sections before moving into the wizard.", focus: ["Trust score", "Suggested edits", "Approve"] },
     { id: "journey-05", title: "Brand Basics Setup", track: "Brand Experience Journey", kind: "journey", objective: "Guide naming, domain, and base identity structure.", focus: ["Brand name", "Domain", "Category fit"] },
     { id: "journey-06", title: "Audience Definition", track: "Brand Experience Journey", kind: "journey", objective: "Capture persona and pain points with minimal friction.", focus: ["Persona", "Pain points", "Priority needs"] },
@@ -415,17 +583,17 @@ function waveForPage(page: ProcessPage): { id: string; label: string } {
     page.kind === "export" ||
     (journeyNumber !== null && journeyNumber >= 1 && journeyNumber <= 10)
   ) {
-    return { id: "wave-1", label: "Wave 1 · Foundations" };
+    return { id: "wave-0", label: "Wave 0 · Config Triage" };
   }
   if (
     page.kind === "reference-curation" ||
     page.kind === "reference-library" ||
     (journeyNumber !== null && journeyNumber >= 11 && journeyNumber <= 14)
   ) {
-    return { id: "wave-2", label: "Wave 2 · References + Prompting" };
+    return { id: "wave-1", label: "Wave 1 · References + Prompting" };
   }
   if (page.kind === "fal-dry-run" || (journeyNumber !== null && journeyNumber >= 15 && journeyNumber <= 16)) {
-    return { id: "wave-3", label: "Wave 3 · Generation Prep" };
+    return { id: "wave-2", label: "Wave 2 · Generation Prep" };
   }
   if (
     page.kind === "settings" ||
@@ -441,10 +609,10 @@ function waveForPage(page: ProcessPage): { id: string; label: string } {
     page.kind === "runner-workbench" ||
     page.kind === "runner-matrix"
   ) {
-    return { id: "wave-4", label: "Wave 4 · Run Orchestration" };
+    return { id: "wave-3", label: "Wave 3 · Run Orchestration" };
   }
   if (page.kind === "artifacts" || page.kind === "handoff") {
-    return { id: "wave-5", label: "Wave 5 · Delivery + Handoff" };
+    return { id: "wave-4", label: "Wave 4 · Delivery + Handoff" };
   }
   if (page.kind === "publish-notebooklm") {
     return { id: "wave-7", label: "Wave 7 · Publishing Deliverables" };
@@ -453,7 +621,7 @@ function waveForPage(page: ProcessPage): { id: string; label: string } {
     return { id: "wave-8", label: "Wave 8 · Docs + Astro Handoff" };
   }
   if (journeyNumber !== null && journeyNumber >= 21) {
-    return { id: "wave-6", label: "Wave 6 · Visual Surfaces" };
+    return { id: "wave-5", label: "Wave 5 · Visual Surfaces" };
   }
   return { id: "wave-x", label: "Additional Surfaces" };
 }
@@ -471,6 +639,7 @@ export default function App() {
   const [productMdPath, setProductMdPath] = useState("./product.md");
   const [productMdText, setProductMdText] = useState("");
   const [extraction, setExtraction] = useState<ExtractedDraft>(emptyExtraction);
+  const [wave0Quiz, setWave0Quiz] = useState<Wave0QuizAnswers>(DEFAULT_WAVE0_QUIZ);
   const [extractionConfirmed, setExtractionConfirmed] = useState(false);
   const [wizardStep, setWizardStep] = useState(0);
   const [configDraft, setConfigDraft] = useState<ConfigDraft>(defaultConfigDraft());
@@ -545,6 +714,7 @@ export default function App() {
   const [selectedPageId, setSelectedPageId] = useState(processPages[0]?.id ?? "");
   const [pageSearch, setPageSearch] = useState("");
   const [collapsedWaves, setCollapsedWaves] = useState<Record<string, boolean>>({
+    "wave-0": false,
     "wave-1": false,
     "wave-2": false,
     "wave-3": false,
@@ -875,7 +1045,7 @@ export default function App() {
       acc[wave.id].pages.push(page);
       return acc;
     }, {});
-    const order = ["wave-1", "wave-2", "wave-3", "wave-4", "wave-5", "wave-6", "wave-7", "wave-8", "wave-x"];
+    const order = ["wave-0", "wave-1", "wave-2", "wave-3", "wave-4", "wave-5", "wave-6", "wave-7", "wave-8", "wave-x"];
     return order.map((id) => grouped[id]).filter(Boolean) as WaveGroup[];
   }, [filteredPages]);
 
@@ -1186,7 +1356,14 @@ export default function App() {
       if (parsed.configPath) setConfigPath(parsed.configPath);
       if (parsed.productMdPath) setProductMdPath(parsed.productMdPath);
       if (parsed.productMdText) setProductMdText(parsed.productMdText);
-      if (parsed.extraction) setExtraction({ ...emptyExtraction, ...parsed.extraction });
+      if (parsed.extraction) {
+        const restoredExtraction = { ...emptyExtraction, ...parsed.extraction };
+        setExtraction(restoredExtraction);
+        if (!parsed.wave0Quiz) {
+          setWave0Quiz(inferWave0QuizFromExtraction(restoredExtraction));
+        }
+      }
+      if (parsed.wave0Quiz) setWave0Quiz({ ...DEFAULT_WAVE0_QUIZ, ...parsed.wave0Quiz });
       if (typeof parsed.extractionConfirmed === "boolean") setExtractionConfirmed(parsed.extractionConfirmed);
       if (typeof parsed.wizardStep === "number") setWizardStep(Math.max(0, Math.min(4, parsed.wizardStep)));
       if (parsed.configDraft) setConfigDraft(parsed.configDraft);
@@ -1392,6 +1569,7 @@ export default function App() {
           productMdPath,
           productMdText,
           extraction,
+          wave0Quiz,
           extractionConfirmed,
           wizardStep,
           configDraft,
@@ -1420,6 +1598,7 @@ export default function App() {
     dryRunMode,
     exportedAt,
     extraction,
+    wave0Quiz,
     extractionConfirmed,
     loadedSemanticConfig,
     approvalName,
@@ -1823,21 +2002,23 @@ export default function App() {
     }
     const parsed = parseProductMd(trimmed);
     setExtraction(parsed);
+    setWave0Quiz(inferWave0QuizFromExtraction(parsed));
     setExtractionConfirmed(false);
     setConfigApproval({ state: "draft", approvedBy: "", approvedAt: "", approvalNote: "", fingerprintValue: "" });
     setSavedConfigYaml("");
     setWizardStep(0);
-    setStatusMessage(`Extraction complete (${(parsed.confidence * 100).toFixed(0)}% confidence).`);
+    setStatusMessage(`Extraction complete (${(parsed.confidence * 100).toFixed(0)}% confidence). Wave 0 quiz presets are ready.`);
     setSelectedPageId("process-extraction");
   }
 
   function confirmExtractionAndBuildWizard() {
-    setConfigDraft(extractionToConfig(extraction));
+    const seeded = extractionToConfig(extraction);
+    setConfigDraft(applyWave0QuizToDraft(extraction, seeded, wave0Quiz));
     setExtractionConfirmed(true);
     setConfigApproval({ state: "draft", approvedBy: "", approvedAt: "", approvalNote: "", fingerprintValue: "" });
     setSavedConfigYaml("");
     setWizardStep(0);
-    setStatusMessage("Extraction confirmed. Wizard draft generated.");
+    setStatusMessage("Wave 0 extraction confirmed. Quiz-adjusted wizard draft generated.");
     setSelectedPageId("process-wizard");
   }
 
@@ -1851,8 +2032,9 @@ export default function App() {
     setProductMdPath("./demo-product.md");
     setProductMdText(demoMd);
     setExtraction(parsed);
+    setWave0Quiz(inferWave0QuizFromExtraction(parsed));
     setExtractionConfirmed(true);
-    setConfigDraft(draft);
+    setConfigDraft(applyWave0QuizToDraft(parsed, draft, inferWave0QuizFromExtraction(parsed)));
     setLoadedSemanticConfig(draftToSemanticConfig(draft));
     setConfigApproval({ state: "draft", approvedBy: "", approvedAt: "", approvalNote: "", fingerprintValue: "" });
     setSavedConfigYaml("");
@@ -1875,6 +2057,7 @@ export default function App() {
     setProductMdPath("./product.md");
     setProductMdText("");
     setExtraction(emptyExtraction);
+    setWave0Quiz(DEFAULT_WAVE0_QUIZ);
     setExtractionConfirmed(false);
     setWizardStep(0);
     setConfigDraft(defaultConfigDraft());
@@ -1910,9 +2093,11 @@ export default function App() {
         setProductMdText(result.productMdText);
         const parsed = parseProductMd(result.productMdText);
         setExtraction(parsed);
+        setWave0Quiz(inferWave0QuizFromExtraction(parsed));
         setExtractionConfirmed(true);
       } else {
         setExtraction(emptyExtraction);
+        setWave0Quiz(DEFAULT_WAVE0_QUIZ);
         setExtractionConfirmed(false);
       }
       if (result?.configPath) {
@@ -2196,6 +2381,31 @@ export default function App() {
   ) {
     invalidateApproval();
     setConfigDraft((prev) => (typeof updater === "function" ? (updater as (value: ConfigDraft) => ConfigDraft)(prev) : updater));
+  }
+
+  function updateWave0Quiz(
+    updater: Wave0QuizAnswers | ((prev: Wave0QuizAnswers) => Wave0QuizAnswers),
+  ) {
+    invalidateApproval();
+    setWave0Quiz((prev) =>
+      typeof updater === "function" ? (updater as (value: Wave0QuizAnswers) => Wave0QuizAnswers)(prev) : updater,
+    );
+  }
+
+  function applyWave0QuizAnswers(goToExport: boolean = false) {
+    const seededDraft = extractionConfirmed ? configDraft : extractionToConfig(extraction);
+    const patchedDraft = applyWave0QuizToDraft(extraction, seededDraft, wave0Quiz);
+    setConfigDraft(patchedDraft);
+    setExtractionConfirmed(true);
+    setConfigApproval({ state: "draft", approvedBy: "", approvedAt: "", approvalNote: "", fingerprintValue: "" });
+    setSavedConfigYaml("");
+    setWizardStep(0);
+    setStatusMessage(
+      goToExport
+        ? "Wave 0 quiz applied. Review and approve config to launch."
+        : "Wave 0 quiz applied to config draft.",
+    );
+    setSelectedPageId(goToExport ? "process-export" : "process-wizard");
   }
 
   function renderWizardPane() {
@@ -2519,13 +2729,90 @@ export default function App() {
       case "extraction":
         return (
           <section className="content-block">
-            <h3>Extraction Review</h3>
+            <h3>Wave 0 · Extraction Quiz Triage</h3>
+            <p>
+              Resolve drift early. These cards are prefilled from Product MD extraction and directly patch the generated brand config before launch.
+            </p>
             <div className="chip-row">
               <span>confidence {(extraction.confidence * 100).toFixed(0)}%</span>
               <span>needs review {reviewSummary.pendingFields.length}</span>
               <span>edited {reviewSummary.editedFields.length}</span>
               <span>{extractionConfirmed ? "confirmed" : "not confirmed"}</span>
             </div>
+            <div className="quiz-card-grid">
+              <article className="quiz-card">
+                <h4>Is this primarily a B2B offer?</h4>
+                <p>Inferred from audience/category language. This tunes domain + persona defaults.</p>
+                <div className="quiz-option-row">
+                  {(["yes", "no"] as const).map((choice) => (
+                    <button
+                      key={`b2b-${choice}`}
+                      className={`btn quiz-option-btn ${wave0Quiz.b2bFit === choice ? "active" : ""}`}
+                      onClick={() => updateWave0Quiz((prev) => ({ ...prev, b2bFit: choice }))}
+                    >
+                      {choice === "yes" ? "Yes" : "No"}
+                    </button>
+                  ))}
+                </div>
+              </article>
+              <article className="quiz-card">
+                <h4>What tone preset fits best?</h4>
+                <p>Maps to brand voice + tone fields.</p>
+                <div className="quiz-option-row">
+                  {(["authoritative", "premium", "playful", "technical", "calm"] as const).map((tone) => (
+                    <button
+                      key={`tone-${tone}`}
+                      className={`btn quiz-option-btn ${wave0Quiz.tonePreset === tone ? "active" : ""}`}
+                      onClick={() => updateWave0Quiz((prev) => ({ ...prev, tonePreset: tone }))}
+                    >
+                      {tone}
+                    </button>
+                  ))}
+                </div>
+              </article>
+              <article className="quiz-card">
+                <h4>Choose visual direction</h4>
+                <p>Applies palette mood, typography, and surface-style defaults in one step.</p>
+                <div className="quiz-option-row">
+                  {(["editorial", "minimal", "bold", "geometric", "organic"] as const).map((visual) => (
+                    <button
+                      key={`visual-${visual}`}
+                      className={`btn quiz-option-btn ${wave0Quiz.visualPreset === visual ? "active" : ""}`}
+                      onClick={() => updateWave0Quiz((prev) => ({ ...prev, visualPreset: visual }))}
+                    >
+                      {visual}
+                    </button>
+                  ))}
+                </div>
+              </article>
+              <article className="quiz-card">
+                <h4>Primary objective for this run?</h4>
+                <p>Sets campaign objective before skill/visual execution.</p>
+                <div className="quiz-option-row">
+                  {(["conversion", "awareness", "waitlist", "retention"] as const).map((goal) => (
+                    <button
+                      key={`goal-${goal}`}
+                      className={`btn quiz-option-btn ${wave0Quiz.objectivePreset === goal ? "active" : ""}`}
+                      onClick={() => updateWave0Quiz((prev) => ({ ...prev, objectivePreset: goal }))}
+                    >
+                      {goal}
+                    </button>
+                  ))}
+                </div>
+              </article>
+            </div>
+            <div className="controls-row">
+              <button className="btn" onClick={() => applyWave0QuizAnswers(false)}>
+                Apply Quiz Answers
+              </button>
+              <button className="btn btn-primary" onClick={() => applyWave0QuizAnswers(true)}>
+                Apply + Go to Export
+              </button>
+              <button className="btn" onClick={confirmExtractionAndBuildWizard}>
+                Apply + Continue to Wizard
+              </button>
+            </div>
+            <h4 style={{ marginTop: 16 }}>Manual Overrides</h4>
             <div className="page-form-grid">
               <label className="field">
                 Product name
@@ -2594,9 +2881,6 @@ export default function App() {
                     </div>
                   ))}
               </article>
-            </div>
-            <div className="controls-row">
-              <button className="btn btn-primary" onClick={confirmExtractionAndBuildWizard}>Confirm and Continue</button>
             </div>
           </section>
         );
@@ -2748,7 +3032,7 @@ export default function App() {
             </div>
             {configApproval.state !== "approved" && !dryRunMode && (
               <p className="field-hint warn">
-                Launch is blocked until the current config is approved and saved to disk.
+                Launch is blocked until Wave 0 is complete: apply quiz triage, then approve and save the current config.
               </p>
             )}
             <div className="controls-row">
