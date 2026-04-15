@@ -215,6 +215,42 @@ def _derive_supp_ref_policy(cfg):
     }
 
 
+def _resolve_registry_paths_for_selection(cfg, config_path):
+    """Return absolute registry paths configured for asset selection."""
+    generation = cfg.get("generation", {}) if isinstance(cfg, dict) else {}
+    configured = generation.get("asset_registry_paths", []) or []
+    fallback_single = (
+        generation.get("asset_registry_path")
+        or cfg.get("asset_registry_path")
+        or []
+    )
+    raw_paths = []
+    if isinstance(configured, (list, tuple)):
+        raw_paths.extend(configured)
+    elif configured:
+        raw_paths.append(configured)
+    if fallback_single:
+        if isinstance(fallback_single, (list, tuple)):
+            raw_paths.extend(fallback_single)
+        else:
+            raw_paths.append(fallback_single)
+    if not raw_paths:
+        return []
+
+    config_dir = os.path.dirname(os.path.abspath(config_path))
+    resolved = []
+    for raw in raw_paths:
+        value = str(raw).strip()
+        if not value:
+            continue
+        path = os.path.expanduser(value)
+        if not os.path.isabs(path):
+            path = os.path.abspath(os.path.join(config_dir, path))
+        resolved.append(path)
+    # Preserve order while deduplicating.
+    return list(dict.fromkeys(resolved))
+
+
 def _entry_ref_terms(entry_id, entry):
     return set(_extract_ref_terms(
         entry_id,
@@ -622,7 +658,7 @@ CHANNEL_REF_OVERRIDES = {
 # DOMAIN-AWARE VISUAL CONCEPT DEFAULTS
 # =====================================================================
 # Maps brand domain_tags to appropriate visual defaults.
-# Replaces the previous Tryambakam Noesis-specific hardcoded fallbacks.
+# Replaces prior single-brand hardcoded fallback assumptions.
 
 DOMAIN_CONCEPTS = {
     "saas": {
@@ -1116,7 +1152,7 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
         "identity_pillars": ", ".join(pillars) if pillars else "",
     }
 
-    # ── Domain-aware defaults (replaces hardcoded Noesis fallbacks) ──
+    # ── Domain-aware defaults (replaces legacy hardcoded fallbacks) ──
     dd = resolve_domain_defaults(cfg)
 
     # ── Products (domain-aware fallbacks) ──
@@ -3144,14 +3180,23 @@ def main():
     domain_tags = v.get("domain_tags", [])
     depth = exec_ctx.get("depth_level", "focused")
     excluded_assets = cfg.get("generation", {}).get("excluded_assets", []) or []
+    registry_paths = _resolve_registry_paths_for_selection(cfg, config_path)
 
     asset_groups = None  # None = legacy mode
     if domain_tags:
         try:
             from asset_registry import select_assets, get_assets_by_generator, print_selection_summary
-            selected = select_assets(domain_tags, depth, channel, excluded_assets=excluded_assets)
+            selected = select_assets(
+                domain_tags,
+                depth,
+                channel,
+                excluded_assets=excluded_assets,
+                registry_paths=registry_paths or None,
+            )
             asset_groups = get_assets_by_generator(selected)
             print_selection_summary(selected, domain_tags, depth, channel)
+            if registry_paths:
+                print(f"  Registry paths: {registry_paths}")
             if excluded_assets:
                 print(f"  Excluded assets: {sorted(excluded_assets)}")
         except ImportError:

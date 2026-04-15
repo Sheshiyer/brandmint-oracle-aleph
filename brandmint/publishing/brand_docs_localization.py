@@ -76,14 +76,38 @@ FRENCH_LOCALIZED_PAGES: Dict[str, Dict[str, str]] = {
 }
 
 
-def localized_page_paths(locale: str) -> List[str]:
+def _normalized_brand_name(config: Optional[Dict[str, Any]]) -> str:
+    brand_name = (config or {}).get("brand", {}).get("name", "")
+    return "".join(ch for ch in str(brand_name).lower() if ch.isalnum())
+
+
+def _supports_custom_french_copy(config: Optional[Dict[str, Any]]) -> bool:
+    """Return True only for the ZackAI-specific FR copy pack.
+
+    This module contains a bespoke French narrative tuned for the ZackAI
+    launch. For other brands, the publisher should skip FR page generation
+    to avoid cross-brand copy leakage.
+    """
+    normalized = _normalized_brand_name(config)
+    return normalized == "zackai"
+
+
+def localized_page_paths(locale: str, config: Optional[Dict[str, Any]] = None) -> List[str]:
     if locale == "fr":
+        if not _supports_custom_french_copy(config):
+            return []
         return list(FRENCH_LOCALIZED_PAGES.keys())
     return []
 
 
-def localized_page_metadata(locale: str, path: str) -> Optional[Dict[str, str]]:
+def localized_page_metadata(
+    locale: str,
+    path: str,
+    config: Optional[Dict[str, Any]] = None,
+) -> Optional[Dict[str, str]]:
     if locale == "fr":
+        if not _supports_custom_french_copy(config):
+            return None
         return FRENCH_LOCALIZED_PAGES.get(path)
     return None
 
@@ -99,6 +123,8 @@ def render_localized_page_body(
     notebooklm: Dict[str, Any],
 ) -> Optional[str]:
     if locale != "fr":
+        return None
+    if not _supports_custom_french_copy(config):
         return None
 
     if path == "index.md":

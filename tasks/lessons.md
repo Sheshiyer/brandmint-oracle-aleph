@@ -12,3 +12,6 @@
 - For repeated Wave 8 rebuilds, treat generated `wiki-site/` cleanup as a real reliability concern — harden deletion logic instead of assuming `shutil.rmtree` will always succeed on the fixture filesystem.
 - For bilingual wiki work, verify the main article body in-browser, not just the sidebar or route title — mixed-language fragments can survive even when localized metadata looks correct.
 - When a repo review request says to omit a backlog stream (for example `vision-upgrade`), filter that stream out before scoring readiness, risk, and next-wave priorities.
+- When the user asks for `autoresearch` loops, explicitly run and document a minimum three-pass keep/discard cycle (detect -> remediate -> verify), not a single-pass patch.
+- Keep brand-specific localization packs behind explicit config guards; never let one brand's localized narrative auto-generate for every brand.
+- Tests that depend on local fixture repos/paths should skip cleanly when the fixture is absent, rather than failing the whole suite.

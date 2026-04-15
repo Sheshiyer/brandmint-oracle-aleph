@@ -1,37 +1,62 @@
-"""
-asset_registry.py — Domain-aware asset selection engine (Phase 3).
-
-Given a brand's domain_tags + depth + channel, returns the filtered
-and prioritized list of assets to generate.
-
-Usage:
-    from asset_registry import select_assets, get_assets_by_generator
-
-    selected = select_assets(
-        domain_tags=["app", "marketplace", "travel"],
-        depth="focused",
-        channel="dtc",
-    )
-    groups = get_assets_by_generator(selected)
-    # groups["identity"] -> [("2B", {...}), ("APP-ICON", {...}), ...]
-"""
+"""Domain-aware asset selection engine with optional registry layering."""
 
 import os
+
 import yaml
 
 
-def load_registry(registry_path=None):
-    """Load asset-registry.yaml and return the assets dict."""
-    if not registry_path:
-        registry_path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '..', 'assets', 'asset-registry.yaml'
-        )
+def _default_registry_path():
+    return os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "..", "assets", "asset-registry.yaml",
+    )
+
+
+def _normalize_registry_inputs(registry_path=None, registry_paths=None):
+    if registry_paths is not None:
+        if isinstance(registry_paths, (str, os.PathLike)):
+            return [str(registry_paths)]
+        return [str(path) for path in registry_paths if str(path).strip()]
+    if registry_path is None:
+        return [_default_registry_path()]
+    if isinstance(registry_path, (list, tuple, set)):
+        return [str(path) for path in registry_path if str(path).strip()]
+    return [str(registry_path)]
+
+
+def _load_assets_from_path(registry_path):
     with open(registry_path) as f:
-        return yaml.safe_load(f)['assets']
+        payload = yaml.safe_load(f) or {}
+    assets = payload.get("assets", {})
+    if not isinstance(assets, dict):
+        raise ValueError(f"Asset registry at {registry_path} does not contain a valid 'assets' mapping")
+    return assets
 
 
-def select_assets(domain_tags, depth='focused', channel='dtc', registry=None, excluded_assets=None):
+def load_registry(registry_path=None, registry_paths=None):
+    """Load one or more asset registries and return a merged assets dict.
+
+    Later registry files override earlier entries when asset IDs collide.
+    """
+    paths = _normalize_registry_inputs(registry_path=registry_path, registry_paths=registry_paths)
+    merged = {}
+    for raw_path in paths:
+        resolved = os.path.abspath(os.path.expanduser(str(raw_path)))
+        if not os.path.exists(resolved):
+            raise FileNotFoundError(f"Asset registry not found: {resolved}")
+        merged.update(_load_assets_from_path(resolved))
+    return merged
+
+
+def select_assets(
+    domain_tags,
+    depth="focused",
+    channel="dtc",
+    registry=None,
+    excluded_assets=None,
+    registry_path=None,
+    registry_paths=None,
+):
     """
     Select and prioritize assets based on domain tags, depth, and channel.
 
@@ -45,7 +70,7 @@ def select_assets(domain_tags, depth='focused', channel='dtc', registry=None, ex
     5. Sort by effective priority descending
     """
     if registry is None:
-        registry = load_registry()
+        registry = load_registry(registry_path=registry_path, registry_paths=registry_paths)
     excluded = set(excluded_assets or [])
 
     selected = []

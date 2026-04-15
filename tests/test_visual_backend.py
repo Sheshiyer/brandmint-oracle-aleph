@@ -1,6 +1,8 @@
 from pathlib import Path
 import json
 
+import yaml
+
 from brandmint.pipeline.visual_backend import (
     InferenceScaffoldExecutionBackend,
     SubprocessVisualExecutionBackend,
@@ -107,6 +109,42 @@ def test_inference_scaffold_backend_writes_asset_scaffolds(tmp_path: Path) -> No
     assert runbook["asset_count"] == 2
     assert runbook["summary"]["validated"] == 2
     assert runbook["summary"]["failed_validation"] == 0
+
+
+def test_inference_scaffold_backend_merges_configured_asset_registry_paths(tmp_path: Path) -> None:
+    brand_dir = tmp_path / "brand"
+    brand_dir.mkdir(parents=True, exist_ok=True)
+    custom_registry = tmp_path / "custom-assets.yaml"
+    custom_registry.write_text(
+        yaml.safe_dump(
+            {
+                "assets": {
+                    "CUSTOM-APP": {
+                        "tags": ["app"],
+                        "priority": 9,
+                        "generator": "products",
+                        "prompt_key": "custom_app",
+                    }
+                }
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+
+    config = {
+        "brand": {"name": "Test Brand"},
+        "generation": {
+            "output_dir": "generated",
+            "visual_backend": "inference",
+            "asset_registry_paths": [str(custom_registry)],
+        },
+    }
+
+    backend = InferenceScaffoldExecutionBackend(config=config, brand_dir=brand_dir)
+
+    assert "APP-SCREENSHOT" in backend._asset_registry
+    assert "CUSTOM-APP" in backend._asset_registry
 
 
 def test_inference_skill_policy_applies_asset_override_when_allowlisted(tmp_path: Path) -> None:

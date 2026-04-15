@@ -53,10 +53,10 @@ const orderedCategories = Object.entries(categories).sort(([a], [b]) => {
   <section class="home-stage">
     <section class="hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow">{locale === 'fr' ? 'INTELLIGENCE DOUCE' : siteData.themeName.toUpperCase()} · {siteData.launchChannel}</p>
-        <h1>{locale === 'fr' ? 'Compagnon de jeu sans écran' : siteData.heroTitle}</h1>
-        <p class="hero-subtitle">{locale === 'fr' ? 'Une IA chaleureuse, douce et tactile, pensée comme un câlin intelligent.' : siteData.heroSubtitle}</p>
-        {siteData.heroDescription && <p class="hero-description">{locale === 'fr' ? 'ZackAI réunit la chaleur d’une peluche, l’apprentissage sans écran et la recherche prête pour le lancement dans un portail premium à parcourir.' : siteData.heroDescription}</p>}
+        <p class="eyebrow">{siteData.themeName.toUpperCase()} · {siteData.launchChannel}</p>
+        <h1>{siteData.heroTitle}</h1>
+        <p class="hero-subtitle">{siteData.heroSubtitle}</p>
+        {siteData.heroDescription && <p class="hero-description">{siteData.heroDescription}</p>}
 
         <div class="hero-actions">
           <a class="cta cta--primary" href={localizedPath(locale, siteData.heroPrimaryHref || '/docs/product/overview')}>{locale === 'fr' ? 'Explorer le récit produit' : 'Explore the product story'}</a>
@@ -199,7 +199,7 @@ const orderedCategories = Object.entries(categories).sort(([a], [b]) => {
         <div>
           <p class="eyebrow">{copy.shell.freshBuild}</p>
           <h2>{siteData.runLabel}</h2>
-          <p>{locale === 'fr' ? 'Publié ' : 'Published '}{siteData.publishedAtHuman}. {locale === 'fr' ? 'Ce portail garde la profondeur du wiki, tout en la présentant dans le système de marque ZackAI.' : 'This portal keeps the wiki depth, but presents it through the ZackAI brand system.'}</p>
+          <p>{locale === 'fr' ? 'Publié ' : 'Published '}{siteData.publishedAtHuman}. {locale === 'fr' ? 'Ce portail conserve la profondeur du wiki tout en l’alignant au système de marque actif.' : 'This portal keeps the wiki depth while presenting it through the active brand system.'}</p>
         </div>
         <div class="closing-banner__actions">
           <a class="cta cta--secondary" href={localizedPath(locale, siteData.docsHomeHref || '/docs/index')}>{copy.shell.openDocsIndex}</a>

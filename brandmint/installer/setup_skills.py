@@ -369,6 +369,7 @@ generation:
   resolution: "2K"
   output_format: "png"
   env_file: "~/.claude/.env"
+  asset_registry_paths: []     # Optional extra asset registries (merged in order)
 """
 
 

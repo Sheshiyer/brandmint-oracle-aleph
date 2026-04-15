@@ -1,5 +1,5 @@
 #!/bin/bash
-# init-astro-wiki.sh - Initialize the ZackAI-style Astro portal scaffold
+# init-astro-wiki.sh - Initialize the brand-native Astro portal scaffold
 # Usage: ./init-astro-wiki.sh <project-name>
 
 set -euo pipefail

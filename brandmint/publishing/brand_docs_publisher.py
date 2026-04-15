@@ -37,9 +37,9 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "index.md",
         "Launch Dossier Index",
-        "High-level index of the latest ZackAI launch documentation, key outputs, and research deliverables.",
+        "High-level index of the latest launch documentation, key outputs, and research deliverables.",
         "general",
-        ["overview", "launch", "beta-update"],
+        ["overview", "launch", "docs"],
         [],
         1,
         "🏠",
@@ -47,9 +47,9 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "getting-started/quickstart.md",
         "Quickstart",
-        "Fast navigation guide for the latest beta-update docs, visuals, NotebookLM artifacts, and published outputs.",
+        "Fast navigation guide for the latest docs, visuals, NotebookLM artifacts, and published outputs.",
         "general",
-        ["quickstart", "beta-update", "runbook"],
+        ["quickstart", "launch", "runbook"],
         [],
         2,
         "🚀",
@@ -57,7 +57,7 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "product/overview.md",
         "Product Overview",
-        "Core product story, positioning, and hero-product definition for the current ZackAI launch build.",
+        "Core product story, positioning, and hero-product definition for the current launch build.",
         "product",
         ["product", "overview", "hero"],
         ["detailed-product-description", "product-positioning-summary", "mds-messaging-direction-summary"],
@@ -67,7 +67,7 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "product/features.md",
         "Product Features",
-        "Feature-level framing, use-case context, and supporting campaign details for the ZackAI product line.",
+        "Feature-level framing, use-case context, and supporting campaign details for the current product line.",
         "product",
         ["product", "features", "detail"],
         ["detailed-product-description", "campaign-page-copy"],
@@ -87,7 +87,7 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "brand/voice-tone.md",
         "Voice & Tone",
-        "Voice system, writing guardrails, and narrative guidance for ZackAI across launch touchpoints and channels.",
+        "Voice system, writing guardrails, and narrative guidance across launch touchpoints and channels.",
         "brand",
         ["brand", "voice", "tone"],
         ["voice-and-tone"],
@@ -107,7 +107,7 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "brand/visual-assets.md",
         "Visual Assets Library",
-        "Curated library of generated visuals and surfaced NotebookLM infographics for the latest beta-update run.",
+        "Curated library of generated visuals and surfaced NotebookLM infographics for the latest launch run.",
         "brand",
         ["brand", "assets", "gallery"],
         [],
@@ -117,7 +117,7 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "audience/primary-persona.md",
         "Primary Persona",
-        "Primary buyer persona insights, motivations, and trust triggers for the ZackAI Kickstarter launch audience.",
+        "Primary buyer persona insights, motivations, and trust triggers for the current launch audience.",
         "audience",
         ["audience", "persona", "buyer"],
         ["buyer-persona"],
@@ -137,7 +137,7 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "market/competitive-landscape.md",
         "Competitive Landscape",
-        "Market context, competitor framing, and differentiation logic supporting the current ZackAI launch strategy.",
+        "Market context, competitor framing, and differentiation logic supporting the current launch strategy.",
         "audience",
         ["market", "competition", "landscape"],
         ["competitor-analysis"],
@@ -147,7 +147,7 @@ PAGE_SPECS: List[PageSpec] = [
     PageSpec(
         "marketing/campaign-copy.md",
         "Campaign Copy",
-        "Campaign-level launch messaging, narrative framing, and conversion-oriented copy assets for the Kickstarter push.",
+        "Campaign-level launch messaging, narrative framing, and conversion-oriented copy assets for the launch push.",
         "marketing",
         ["marketing", "campaign", "copy"],
         ["campaign-page-copy", "campaign-video-script", "press-release-copy"],
@@ -498,11 +498,11 @@ class BrandDocsPublisher:
         notebooklm: Dict[str, Any],
     ) -> None:
         for locale in ["fr"]:
-            localized_paths = set(localized_page_paths(locale))
+            localized_paths = set(localized_page_paths(locale, self.config))
             for spec in PAGE_SPECS:
                 if spec.path not in localized_paths:
                     continue
-                metadata = localized_page_metadata(locale, spec.path)
+                metadata = localized_page_metadata(locale, spec.path, self.config)
                 if not metadata:
                     continue
                 body = render_localized_page_body(
@@ -584,7 +584,7 @@ class BrandDocsPublisher:
     def _render_index(self, inventory: Dict[str, Any], notebooklm: Dict[str, Any]) -> List[str]:
         docs_count = len(list(self.outputs_dir.glob("*.json")))
         lines = [
-            "This dossier index summarizes the latest ZackAI beta-update documentation build.",
+            "This dossier index summarizes the latest launch documentation build.",
             "",
             "## Launch Snapshot",
             "",
@@ -620,7 +620,7 @@ class BrandDocsPublisher:
 
     def _render_quickstart(self, notebooklm: Dict[str, Any]) -> List[str]:
         lines = [
-            "Use this page to find the latest beta-update outputs quickly.",
+            "Use this page to find the latest launch outputs quickly.",
             "",
             "## Key Paths",
             "",
@@ -634,8 +634,8 @@ class BrandDocsPublisher:
             "",
             "## Product Reference Policy",
             "",
-            "- NotebookLM image sources in the latest beta run were restricted to the configured product reference images only.",
-            "- Visual generation references come from the beta-update product images declared in `brand-config.yaml`.",
+            "- NotebookLM image sources in this run were restricted to the configured product reference images only.",
+            "- Visual generation references come from the product images declared in `brand-config.yaml`.",
             "- NotebookLM generated deliverables are now ingested into the Wave 8 wiki system as first-class research and media artifacts.",
             "",
             "## NotebookLM Coverage",
@@ -688,7 +688,7 @@ class BrandDocsPublisher:
         generated_assets = gallery.get("all_assets", [])
         infographics = notebooklm.get("infographics", [])
         lines = [
-            "Curated visual library for the latest beta-update run.",
+            "Curated visual library for the latest launch run.",
             "",
             "## Brandmint Generated Visuals",
             "",
@@ -940,7 +940,7 @@ class BrandDocsPublisher:
         theme = self.config.get("theme", {})
         theme_description = theme.get("description", "")
         hero_description = (
-            f"{brand_name} brings together plush warmth, screen-free learning, and launch-ready research in one premium review portal."
+            f"{brand_name} brings together product narrative, visual direction, and launch-ready research in one review portal."
         )
         site_data = {
             "brandName": brand_name,
@@ -996,7 +996,7 @@ class BrandDocsPublisher:
         return [
             {
                 "title": "Product Overview",
-                "description": "Hero product definition, positioning, and messaging stack for the current ZackAI build.",
+                "description": "Hero product definition, positioning, and messaging stack for the current launch build.",
                 "href": "/docs/product/overview",
                 "icon": "📦",
                 "eyebrow": "Product",

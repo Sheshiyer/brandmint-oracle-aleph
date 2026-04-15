@@ -239,6 +239,69 @@
 
 ## 2026-03-31 Issue #113 Tauri Release Artifacts
 
+## 2026-04-16 Autoresearch 3-Pass Drift Remediation (Brand-Agnostic Hardening)
+
+- [x] Pass 1 (Detect + Stabilize): remove/parameterize brand-specific defaults in publishing + wiki templates (`ZackAI`/`Tryambakam` leakage)
+- [x] Pass 1 verification: run focused tests for publishing path and ensure no hardcoded brand strings remain in core publishing/template code paths
+- [x] Pass 2 (Selection Logic): harden visual asset selection to support external/extended registries and eliminate fixed small-registry drift assumptions
+- [x] Pass 2 verification: run selection/planner tests and validate manifest behavior for merged registry inputs
+- [x] Pass 3 (Skill/System Alignment): update skill docs/examples to match brand-agnostic behavior and remove project-specific defaults from core skills
+- [x] Pass 3 verification: run regression scan for leaked brand names across core skills/publishing code and run full targeted pytest suite
+- [x] Final review: summarize keep/discard decisions from each pass, residual risks, and exact follow-up tasks
+
+### Review
+
+- `autoresearch` Mode 2 loop completed with explicit 3-pass keep/discard decisions.
+
+- Pass 1 (detect + stabilize):
+  - kept:
+    - brand-agnostic copy defaults in `brandmint/publishing/brand_docs_publisher.py`
+    - config-aware localization routing (`localized_page_paths(locale, config)` and `localized_page_metadata(locale, path, config)`)
+    - FR localized docs generation only for ZackAI-branded configs (prevents cross-brand FR leakage into HeyZack/WHSPR/other brands).
+  - discarded:
+    - full rewrite of the ZackAI FR copy pack into generic FR (too destructive for an intentional brand-specific pack).
+  - template hardcode removals:
+    - `skills/publishing/markdown-to-astro-wiki/template/src/components/PortalHome.astro`
+    - `skills/publishing/markdown-to-astro-wiki/template/src/i18n/index.ts`
+    - `skills/publishing/markdown-to-astro-wiki/template/src/styles/global.css`
+    - `skills/publishing/markdown-to-astro-wiki/scripts/init-astro-wiki.sh`
+
+- Pass 2 (selection logic hardening):
+  - kept:
+    - multi-registry merge support (`asset_registry_paths`) in:
+      - `brandmint/core/asset_registry.py`
+      - `scripts/asset_registry.py`
+      - `scripts/generate_pipeline.py`
+      - `brandmint/core/wave_planner.py`
+    - schema/template support:
+      - `assets/brand-config-schema.yaml`
+      - `brandmint/installer/setup_skills.py`
+    - added tests for merged registry behavior in `tests/test_reference_selection_and_asset_exclusions.py`.
+  - discarded:
+    - replacing existing domain-tag selection heuristics; retained compatibility and added layered extensibility instead.
+
+- Pass 3 (system alignment + verification):
+  - kept:
+    - fixture-safe testing behavior: heyzack-dependent tests now skip when fixture config is absent.
+    - genericized core script comments that still referenced single-brand legacy defaults.
+  - discarded:
+    - deleting Kickstarter-capable pathways globally; those are channel features, not brand drifts.
+
+- Verification evidence:
+  - `pytest tests/test_brand_docs_publisher.py -q` -> `7 passed`
+  - `pytest tests/test_reference_selection_and_asset_exclusions.py::test_select_assets_supports_merged_registry_paths tests/test_reference_selection_and_asset_exclusions.py::test_wave_planner_uses_merged_registry_paths -q` -> `2 passed`
+  - `pytest tests/test_reference_selection_and_asset_exclusions.py -q` -> `2 passed, 3 skipped`
+  - `pytest tests/test_visual_backend.py::test_inference_scaffold_backend_merges_configured_asset_registry_paths tests/test_visual_backend.py::test_inference_scaffold_backend_writes_asset_scaffolds -q` -> `2 passed`
+  - `pytest tests/test_brand_docs_publisher.py tests/test_reference_selection_and_asset_exclusions.py -q` -> `9 passed, 3 skipped`
+  - `pytest tests/test_brand_docs_publisher.py tests/test_reference_selection_and_asset_exclusions.py tests/test_visual_backend.py -q` -> `21 passed, 3 skipped`
+  - drift scan commands:
+    - `rg -n "ZackAI|Kickstarter|beta-update" brandmint/publishing/brand_docs_publisher.py skills/publishing/markdown-to-astro-wiki/template/src/components/PortalHome.astro skills/publishing/markdown-to-astro-wiki/template/src/i18n/index.ts skills/publishing/markdown-to-astro-wiki/scripts/init-astro-wiki.sh`
+    - no matches in those core publishing/template paths after patching.
+
+- Residual risk:
+  - `brandmint/publishing/brand_docs_localization.py` intentionally remains ZackAI-specific content; this is now guarded by brand-name matching, but the pack is not yet generalized for non-ZackAI French output.
+  - the base bundled `assets/asset-registry.yaml` still has ~20 assets; larger catalogs now require explicit `generation.asset_registry_paths` overlays in brand configs.
+
 - [x] Load issue `#113` scope and acceptance criteria
 - [x] Audit current macOS release workflow/docs against local and remote state
 - [ ] Patch any remaining workflow or documentation gaps

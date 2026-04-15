@@ -229,6 +229,9 @@ generation:
   output_format: "png"        # Primary output format
   env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
   provider: "fal"             # fal | openrouter | openai | replicate | inference | auto
+  asset_registry_paths: []    # Optional ordered list of registry YAML files to merge with core registry
+                              # Relative paths resolve from brand-config.yaml directory
+  asset_registry_path: ""     # Optional single-path backward-compatible alias
   fallback_order:             # Optional provider fallback order for visual execution retries
     - "fal"                   # Valid values: fal | replicate | openrouter | openai | inference
     - "replicate"

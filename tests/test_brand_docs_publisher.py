@@ -177,8 +177,19 @@ def test_write_site_data_includes_notebooklm_highlights(tmp_path: Path) -> None:
     assert any(item["image"] == "/notebooklm/infographic-square.png" for item in data["visualHighlights"])
 
 
+def test_write_localized_wiki_docs_skips_non_zackai_brand(tmp_path: Path) -> None:
+    publisher = _make_publisher(tmp_path)
+    publisher.wiki_output_fr_dir.mkdir(parents=True, exist_ok=True)
+    notebooklm = {"reports": [], "infographics": [], "tables": [], "audio": [], "decks": [], "flashcards": [], "quizzes": [], "mind_maps": [], "counts": {}}
+
+    publisher._write_localized_wiki_docs(outputs={}, inventory={}, asset_map={}, notebooklm=notebooklm)
+
+    assert list(publisher.wiki_output_fr_dir.rglob("*.md")) == []
+
+
 def test_write_localized_wiki_docs_generates_french_priority_pages(tmp_path: Path) -> None:
     publisher = _make_publisher(tmp_path)
+    publisher.config.setdefault("brand", {})["name"] = "ZackAI"
     publisher.wiki_output_fr_dir.mkdir(parents=True, exist_ok=True)
 
     outputs = {

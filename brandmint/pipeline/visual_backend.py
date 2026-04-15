@@ -436,16 +436,42 @@ class InferenceScaffoldExecutionBackend:
         )
 
     def _load_asset_registry(self) -> Dict[str, Dict[str, Any]]:
-        if not _ASSET_REGISTRY_PATH.exists():
-            return {}
-        try:
-            data = yaml.safe_load(_ASSET_REGISTRY_PATH.read_text()) or {}
-        except Exception:
-            return {}
-        assets = data.get("assets", {})
-        if not isinstance(assets, dict):
-            return {}
-        return assets
+        generation = self.config.get("generation", {}) if isinstance(self.config, dict) else {}
+        raw_paths = [_ASSET_REGISTRY_PATH]
+        configured = generation.get("asset_registry_paths", []) or []
+        if isinstance(configured, list):
+            raw_paths.extend(configured)
+        elif configured:
+            raw_paths.append(configured)
+        single_path = generation.get("asset_registry_path") or self.config.get("asset_registry_path")
+        if single_path:
+            raw_paths.append(single_path)
+
+        resolved_paths: List[Path] = []
+        seen: set[str] = set()
+        for raw in raw_paths:
+            path = Path(str(raw)).expanduser()
+            if not path.is_absolute():
+                path = (self.brand_dir / path).resolve()
+            key = str(path)
+            if key in seen:
+                continue
+            seen.add(key)
+            resolved_paths.append(path)
+
+        merged: Dict[str, Dict[str, Any]] = {}
+        for path in resolved_paths:
+            if not path.exists():
+                continue
+            try:
+                data = yaml.safe_load(path.read_text()) or {}
+            except Exception:
+                continue
+            assets = data.get("assets", {})
+            if not isinstance(assets, dict):
+                continue
+            merged.update(assets)
+        return merged
 
     def _load_inference_skill_refs(self) -> Dict[str, _SkillRef]:
         refs: Dict[str, _SkillRef] = {}

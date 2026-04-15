@@ -63,7 +63,7 @@ export const translations = {
       marketing: 'Campaign',
     },
     featureCardLabels: {
-      '/docs/product/overview': { title: 'Product Overview', eyebrow: 'Product', description: 'Hero product definition, positioning, and messaging stack for the current ZackAI build.' },
+      '/docs/product/overview': { title: 'Product Overview', eyebrow: 'Product', description: 'Hero product definition, positioning, and messaging stack for the current launch build.' },
       '/docs/brand/visual-guidelines': { title: 'Visual Guidelines', eyebrow: 'Brand System', description: 'Palette, typography, art direction, and brand-system guardrails for the current run.' },
       '/docs/marketing/campaign-copy': { title: 'Campaign Copy', eyebrow: 'Campaign', description: 'Campaign narratives, key copy assets, and launch-ready messaging organized for review.' },
       '/docs/research/notebooklm-artifacts': { title: 'NotebookLM Artifacts', eyebrow: 'Research', description: 'Surfaced reports, infographics, decks, audio, and research tables produced during Wave 7.' },
@@ -123,7 +123,7 @@ export const translations = {
       marketing: 'Campagne',
     },
     featureCardLabels: {
-      '/docs/product/overview': { title: 'Vue d’ensemble produit', eyebrow: 'Produit', description: 'Définition du produit hero, positionnement et socle de messaging pour ZackAI.' },
+      '/docs/product/overview': { title: 'Vue d’ensemble produit', eyebrow: 'Produit', description: 'Définition du produit hero, positionnement et socle de messaging pour le lancement actif.' },
       '/docs/brand/visual-guidelines': { title: 'Lignes directrices visuelles', eyebrow: 'Système de marque', description: 'Palette, typographie, direction artistique et garde-fous de la marque pour le run actuel.' },
       '/docs/marketing/campaign-copy': { title: 'Copy de campagne', eyebrow: 'Campagne', description: 'Narratifs de campagne, assets copy clés et messaging prêt pour le lancement.' },
       '/docs/research/notebooklm-artifacts': { title: 'Artefacts NotebookLM', eyebrow: 'Recherche', description: 'Rapports, infographies, decks, audio et tables de recherche issus de Wave 7.' },

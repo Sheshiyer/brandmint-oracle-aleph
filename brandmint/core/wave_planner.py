@@ -191,12 +191,16 @@ ASSET_REGISTRY_PATH: Path = PACKAGE_ROOT / "assets" / "asset-registry.yaml"
 """Default path to the asset-registry.yaml file."""
 
 
-def load_asset_registry(config_path: Optional[Path] = None) -> Dict[str, Any]:
-    """Load and return the asset registry YAML as a dict.
+def load_asset_registry(
+    config_path: Optional[Path] = None,
+    config_paths: Optional[List[Path]] = None,
+) -> Dict[str, Any]:
+    """Load one or more asset registries and return a merged asset dict.
 
     Args:
-        config_path: Override path to asset-registry.yaml.
-                     Defaults to ``<repo>/assets/asset-registry.yaml``.
+        config_path: Optional single registry path for backward compatibility.
+        config_paths: Optional ordered list of registry paths to merge. Later
+                      files override earlier entries when asset IDs collide.
 
     Returns:
         Dict mapping asset IDs to their definitions.
@@ -205,15 +209,28 @@ def load_asset_registry(config_path: Optional[Path] = None) -> Dict[str, Any]:
         FileNotFoundError: If the registry file does not exist.
         yaml.YAMLError: If the file contains invalid YAML.
     """
-    path = Path(config_path) if config_path else ASSET_REGISTRY_PATH
-    if not path.exists():
-        raise FileNotFoundError(
-            f"Asset registry not found at {path}. "
-            f"Expected location: {ASSET_REGISTRY_PATH}"
-        )
-    with open(path) as fh:
-        data = yaml.safe_load(fh)
-    return data.get("assets", {})
+    candidates: List[Path]
+    if config_paths:
+        candidates = [Path(path) for path in config_paths]
+    elif config_path:
+        candidates = [Path(config_path)]
+    else:
+        candidates = [ASSET_REGISTRY_PATH]
+
+    merged: Dict[str, Any] = {}
+    for path in candidates:
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Asset registry not found at {path}. "
+                f"Expected location: {ASSET_REGISTRY_PATH}"
+            )
+        with open(path) as fh:
+            data = yaml.safe_load(fh) or {}
+        assets = data.get("assets", {})
+        if not isinstance(assets, dict):
+            raise ValueError(f"Invalid asset registry format at {path}: missing assets mapping")
+        merged.update(assets)
+    return merged
 
 
 # ---------------------------------------------------------------------------
@@ -311,8 +328,10 @@ def compute_wave_plan(
     Args:
         config: Brand configuration object. Must expose:
                 - ``config.domain_tags`` (``List[str]``) -- brand domain tags
-                - ``config.asset_registry_path`` (optional ``str``) -- override
-                  path to asset-registry.yaml
+                - ``config.asset_registry_path`` (optional ``str``) -- single
+                  registry override path
+                - ``config.asset_registry_paths`` (optional ``List[str]``) --
+                  ordered registry files to merge
         scenario_id: If provided, fetch the scenario from
                      ``ScenarioRecommender`` and restrict each wave's
                      text_skills to the scenario's ``skill_ids``.
@@ -339,14 +358,28 @@ def compute_wave_plan(
 
     # -- Load asset registry ---------------------------------------------
     if isinstance(config, dict):
-        registry_path = config.get("asset_registry_path")
+        generation = config.get("generation", {}) if isinstance(config.get("generation", {}), dict) else {}
+        registry_path = config.get("asset_registry_path") or generation.get("asset_registry_path")
+        registry_paths_raw = generation.get("asset_registry_paths", [])
         domain_tags_raw = config.get("brand", {}).get("domain_tags", [])
-        excluded_assets_raw = config.get("generation", {}).get("excluded_assets", [])
+        excluded_assets_raw = generation.get("excluded_assets", [])
     else:
         registry_path = getattr(config, "asset_registry_path", None)
+        registry_paths_raw = getattr(config, "asset_registry_paths", [])
         domain_tags_raw = getattr(config, "domain_tags", [])
         excluded_assets_raw = getattr(config, "excluded_assets", [])
-    asset_registry = load_asset_registry(registry_path)
+    registry_paths: List[Path] = []
+    if isinstance(registry_paths_raw, str):
+        registry_paths = [Path(registry_paths_raw)] if registry_paths_raw.strip() else []
+    elif registry_paths_raw:
+        registry_paths = [Path(path) for path in registry_paths_raw if str(path).strip()]
+    if registry_path:
+        registry_paths.append(Path(registry_path))
+    registry_paths = list(dict.fromkeys(registry_paths))
+    asset_registry = load_asset_registry(
+        config_path=Path(registry_path) if registry_path else None,
+        config_paths=registry_paths or None,
+    )
 
     # -- Read domain tags from config ------------------------------------
     domain_tags: List[str] = domain_tags_raw if domain_tags_raw else []
