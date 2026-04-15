@@ -229,6 +229,11 @@ generation:
   output_format: "png"        # Primary output format
   env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
   provider: "fal"             # fal | openrouter | openai | replicate | inference | auto
+  fallback_order:             # Optional provider fallback order for visual execution retries
+    - "fal"                   # Valid values: fal | replicate | openrouter | openai | inference
+    - "replicate"
+    - "openrouter"
+    - "openai"
   visual_backend: "scripts"   # scripts | inference (writes inference scaffolds)
   inference_endpoint: "https://api.inference.sh"
   inference_app: "infsh-ai-image-generation" # Optional app override for generation.provider=inference

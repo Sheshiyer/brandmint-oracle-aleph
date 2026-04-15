@@ -223,6 +223,7 @@ def load_asset_registry(config_path: Optional[Path] = None) -> Dict[str, Any]:
 def filter_assets_by_domain(
     asset_registry: Dict[str, Any],
     domain_tags: List[str],
+    excluded_assets: Optional[List[str]] = None,
 ) -> List[str]:
     """Return asset IDs whose tags overlap with *domain_tags*.
 
@@ -237,17 +238,21 @@ def filter_assets_by_domain(
     Returns:
         Sorted list of matching asset IDs.
     """
+    excluded = set(excluded_assets or [])
+
     if not domain_tags:
         # With no domain tags, only universal assets qualify.
         return sorted(
             aid for aid, adef in asset_registry.items()
-            if "*" in adef.get("tags", [])
+            if aid not in excluded and "*" in adef.get("tags", [])
         )
 
     domain_set = set(domain_tags)
     matched: List[str] = []
 
     for asset_id, asset_def in asset_registry.items():
+        if asset_id in excluded:
+            continue
         tags = set(asset_def.get("tags", []))
         if "*" in tags or tags & domain_set:
             matched.append(asset_id)
@@ -336,14 +341,17 @@ def compute_wave_plan(
     if isinstance(config, dict):
         registry_path = config.get("asset_registry_path")
         domain_tags_raw = config.get("brand", {}).get("domain_tags", [])
+        excluded_assets_raw = config.get("generation", {}).get("excluded_assets", [])
     else:
         registry_path = getattr(config, "asset_registry_path", None)
         domain_tags_raw = getattr(config, "domain_tags", [])
+        excluded_assets_raw = getattr(config, "excluded_assets", [])
     asset_registry = load_asset_registry(registry_path)
 
     # -- Read domain tags from config ------------------------------------
     domain_tags: List[str] = domain_tags_raw if domain_tags_raw else []
-    eligible_assets = set(filter_assets_by_domain(asset_registry, domain_tags))
+    excluded_assets: List[str] = excluded_assets_raw if excluded_assets_raw else []
+    eligible_assets = set(filter_assets_by_domain(asset_registry, domain_tags, excluded_assets))
 
     # -- Optionally fetch scenario skill filter --------------------------
     scenario_skill_ids: Optional[set] = None

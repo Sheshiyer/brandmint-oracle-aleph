@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -34,26 +35,37 @@ from .instruction_templates import (
 from .notebooklm_client import NotebookLMClient
 from .source_builder import build_source_documents
 from .source_curator import SourceCurator, SourceCandidate
+from ..models.state_validator import load_state_safe, save_state_safe
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
 # State persistence
 # ---------------------------------------------------------------------------
 
-def _load_state(path: Path) -> dict:
-    """Load publisher state from disk, or return empty state."""
-    if path.is_file():
-        try:
-            return json.loads(path.read_text())
-        except (json.JSONDecodeError, OSError):
-            pass
-    return {}
+def _load_state(path: Path, console: Optional[Console] = None) -> dict:
+    """Load publisher state from disk with validation and auto-repair."""
+    state, was_repaired = load_state_safe(path, state_type="notebooklm")
+    if was_repaired:
+        message = (
+            f"NotebookLM state was repaired at {path}. "
+            "A corrupted backup was created next to the state file."
+        )
+        logger.warning(message)
+        if console is not None:
+            console.print(f"[yellow]{message}[/yellow]")
+    return state
 
 
-def _save_state(state: dict, path: Path) -> None:
-    """Persist publisher state to disk."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(state, indent=2))
+def _save_state(state: dict, path: Path, console: Optional[Console] = None) -> None:
+    """Persist publisher state to disk with validation."""
+    saved = save_state_safe(state, path, state_type="notebooklm")
+    if not saved:
+        message = f"Failed to safely persist NotebookLM state at {path}"
+        logger.error(message)
+        if console is not None:
+            console.print(f"[yellow]{message}[/yellow]")
 
 
 # ---------------------------------------------------------------------------
@@ -109,8 +121,9 @@ class NotebookLMPublisher:
         self.report_path = self.deliverables_dir / "publish-report.json"
 
         # State
-        self.state: dict = {} if force else _load_state(self.state_path)
+        self.state: dict = {} if force else _load_state(self.state_path, console=self.console)
         self.client = NotebookLMClient(console=self.console)
+        self._reused_existing_notebook = False
 
         # Brand info
         self.brand_name = config.get("brand", {}).get("name", "Brand")
@@ -145,16 +158,19 @@ class NotebookLMPublisher:
                 return False
 
             # Step 3: Build and curate source documents
-            curated = self._build_sources()
-            if not curated:
-                self.console.print("[red]No source documents generated.[/red]")
-                return False
+            if self._should_reuse_sources_for_targeted_retry():
+                self._reuse_indexed_sources_for_targeted_retry()
+            else:
+                curated = self._build_sources()
+                if not curated:
+                    self.console.print("[red]No source documents generated.[/red]")
+                    return False
 
-            # Step 4: Upload curated sources
-            self._upload_sources(curated, notebook_id)
+                # Step 4: Upload curated sources
+                self._upload_sources(curated, notebook_id)
 
-            # Step 5: Wait for source indexing
-            self._wait_for_indexing(notebook_id)
+                # Step 5: Wait for source indexing
+                self._wait_for_indexing(notebook_id)
             self._persist_progress(started, artifact_defs)
 
             # Step 6a: On resume, reconcile any previously submitted artifacts first.
@@ -419,6 +435,7 @@ class NotebookLMPublisher:
         """Create or reuse a notebook. Returns notebook_id or None."""
         existing_id = self.state.get("notebook_id")
         existing_fingerprint = self.state.get("notebook_fingerprint")
+        self._reused_existing_notebook = False
         should_reuse = False
         reuse_reason = ""
 
@@ -440,6 +457,7 @@ class NotebookLMPublisher:
                 )
 
         if should_reuse:
+            self._reused_existing_notebook = True
             self.console.print(
                 f"  [green]✓[/green] Reusing notebook: {existing_id[:12]}... ({reuse_reason})"
             )
@@ -472,6 +490,41 @@ class NotebookLMPublisher:
         except RuntimeError as e:
             self.console.print(f"  [red]Failed to create notebook: {e}[/red]")
             return None
+
+    def _indexed_sources(self) -> Dict[str, dict]:
+        """Return the subset of persisted sources that are already indexed."""
+        sources_state: dict = self.state.get("sources", {})
+        indexed_names = sorted(
+            name for name, info in sources_state.items()
+            if info.get("status") == "indexed"
+        )
+        return {name: dict(sources_state[name]) for name in indexed_names}
+
+    def _should_reuse_sources_for_targeted_retry(self) -> bool:
+        """Return True when a narrow retry can safely reuse indexed notebook sources."""
+        return (
+            bool(self.artifact_filter)
+            and not self.force
+            and self._reused_existing_notebook
+            and bool(self._indexed_sources())
+        )
+
+    def _reuse_indexed_sources_for_targeted_retry(self) -> None:
+        """Normalize source state for targeted retries without rebuilding or uploading."""
+        indexed_sources = self._indexed_sources()
+        prior_selection = self.state.get("source_selection", {})
+        self.state["sources"] = indexed_sources
+        self.state["source_selection"] = {
+            "count": len(indexed_sources),
+            "files": list(indexed_sources),
+            "image_source_policy": prior_selection.get("image_source_policy", "manifest-only"),
+        }
+        self.console.print(
+            "\n[bold]Reusing indexed notebook sources for targeted retry...[/bold]"
+        )
+        self.console.print(
+            f"  [green]✓[/green] Using {len(indexed_sources)} indexed sources already attached to the notebook"
+        )
 
     def _build_sources(self) -> List[SourceCandidate]:
         """Build prose docs, then curate optimal source set."""

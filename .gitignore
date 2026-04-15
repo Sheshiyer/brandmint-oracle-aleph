@@ -29,6 +29,7 @@ generated/
 
 # Output directories (user brand data, not product code)
 brands/
+brandmint-run/
 configs/
 deliverables/
 .brandmint/

@@ -53,6 +53,37 @@ class FalProvider(ImageProvider):
         if not key:
             raise EnvironmentError("FAL_KEY environment variable not set")
         return key
+
+    def _normalize_recraft_color(self, color: Any) -> Optional[dict[str, int]]:
+        """Convert Brandmint color hints into FAL Recraft RGBColor objects."""
+        if isinstance(color, dict):
+            if {"r", "g", "b"}.issubset(color):
+                try:
+                    return {
+                        "r": int(color["r"]),
+                        "g": int(color["g"]),
+                        "b": int(color["b"]),
+                    }
+                except (TypeError, ValueError):
+                    return None
+            rgb_value = str(color.get("rgb", "")).strip()
+            if rgb_value:
+                color = rgb_value
+
+        value = str(color).strip()
+        if value.startswith("#"):
+            value = value[1:]
+        if len(value) != 6:
+            return None
+
+        try:
+            return {
+                "r": int(value[0:2], 16),
+                "g": int(value[2:4], 16),
+                "b": int(value[4:6], 16),
+            }
+        except ValueError:
+            return None
     
     def _submit_request(self, model_id: str, arguments: dict, api_key: str) -> dict:
         """Submit a generation request to fal.ai queue."""
@@ -223,7 +254,15 @@ class FalProvider(ImageProvider):
                 arguments["seed"] = seed
             colors = kwargs.get("colors")
             if isinstance(colors, list) and colors:
-                arguments["colors"] = [{"rgb": str(c)} for c in colors if str(c).strip()]
+                normalized_colors = [
+                    normalized
+                    for normalized in (
+                        self._normalize_recraft_color(color) for color in colors
+                    )
+                    if normalized
+                ]
+                if normalized_colors:
+                    arguments["colors"] = normalized_colors
             if negative_prompt:
                 arguments["negative_prompt"] = negative_prompt
             return arguments

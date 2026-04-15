@@ -13,6 +13,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -20,6 +21,8 @@ from typing import Any, Dict, List, Mapping, Optional, Protocol
 
 import yaml
 from rich.console import Console
+
+from ..core.providers import ProviderFallbackChain
 
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -31,6 +34,13 @@ _SUPPORTED_SCAFFOLD_SKILL_IDS = {"infsh-llm-models"}
 _SUPPORTED_MEDIA_SKILL_IDS = {
     "infsh-ai-image-generation",
     "infsh-agentic-browser",
+}
+_SUPPORTED_FALLBACK_PROVIDERS = {
+    "fal",
+    "replicate",
+    "openrouter",
+    "openai",
+    "inference",
 }
 _SUPPORTED_ROLLOUT_MODES = {"ring0", "ring1", "ring2"}
 _SCAFFOLD_SCHEMA_REQUIRED_KEYS = {
@@ -77,8 +87,27 @@ class SubprocessVisualExecutionBackend:
     name = "scripts"
     requires_script_path = True
 
-    def __init__(self, python_executable: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        python_executable: Optional[str] = None,
+        *,
+        config: Optional[Dict[str, Any]] = None,
+        console: Optional[Console] = None,
+    ) -> None:
         self.python_executable = python_executable or sys.executable
+        self.config = config or {}
+        self.console = console
+        self._last_batch_metadata: Dict[str, Dict[str, Any]] = {}
+        generation = self.config.get("generation", {}) if isinstance(self.config, dict) else {}
+        configured_order = _validate_fallback_order(generation.get("fallback_order"))
+        self._fallback_chain = ProviderFallbackChain(
+            self.config,
+            fallback_order=configured_order or None,
+        )
+        self._configured_fallback_order = (
+            configured_order
+            or [provider.value for provider in self._fallback_chain.fallback_order]
+        )
 
     def run_batch(
         self,
@@ -98,12 +127,130 @@ class SubprocessVisualExecutionBackend:
             "--batch",
             batch_name,
         ]
-        return subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=timeout_seconds,
+        provider_order = self._resolve_provider_attempt_order()
+        attempts: List[Dict[str, Any]] = []
+        final_result: Optional[subprocess.CompletedProcess[str]] = None
+
+        for provider_id in provider_order:
+            env = os.environ.copy()
+            env["IMAGE_PROVIDER"] = provider_id
+
+            started = time.monotonic()
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=timeout_seconds,
+                env=env,
+            )
+            attempt_duration = round(time.monotonic() - started, 3)
+            attempts.append(
+                {
+                    "provider": provider_id,
+                    "returncode": result.returncode,
+                    "duration_seconds": attempt_duration,
+                }
+            )
+            final_result = result
+            if result.returncode == 0:
+                break
+
+        if final_result is None:
+            final_result = subprocess.CompletedProcess(args=cmd, returncode=1, stdout="", stderr="")
+
+        successful_provider = next(
+            (entry["provider"] for entry in attempts if entry["returncode"] == 0),
+            None,
         )
+        providers_tried = [entry["provider"] for entry in attempts]
+        summary = {
+            "batch_name": batch_name,
+            "asset_ids": list(asset_ids),
+            "configured_fallback_order": list(self._configured_fallback_order),
+            "providers_tried": providers_tried,
+            "successful_provider": successful_provider,
+            "attempt_count": len(attempts),
+            "fallback_used": len(attempts) > 1,
+            "attempts": attempts,
+        }
+        self._last_batch_metadata[batch_name] = summary
+
+        if self.console and len(attempts) > 1:
+            self.console.print(
+                f"  [yellow]Provider fallback used for batch '{batch_name}': "
+                f"{' -> '.join(providers_tried)} "
+                f"(selected: {successful_provider or 'none'})[/yellow]"
+            )
+
+        stdout = final_result.stdout or ""
+        fallback_summary = (
+            f"provider_fallback attempts={summary['attempt_count']} "
+            f"providers={','.join(providers_tried)} "
+            f"selected={successful_provider or 'none'}"
+        )
+        stdout = (stdout.rstrip() + ("\n" if stdout else "") + fallback_summary).strip()
+
+        return subprocess.CompletedProcess(
+            args=final_result.args,
+            returncode=final_result.returncode,
+            stdout=stdout,
+            stderr=final_result.stderr,
+        )
+
+    def _resolve_provider_attempt_order(self) -> List[str]:
+        providers = self._fallback_chain._get_available_providers(require_image_reference=False)
+        ordered: List[str] = []
+        for provider in providers:
+            provider_name = getattr(getattr(provider, "name", None), "value", "")
+            provider_name = str(provider_name).strip().lower()
+            if provider_name and provider_name not in ordered:
+                ordered.append(provider_name)
+
+        if ordered:
+            return ordered
+
+        generation = self.config.get("generation", {}) if isinstance(self.config, dict) else {}
+        primary = str(generation.get("provider", "fal")).strip().lower() or "fal"
+        fallback = list(self._configured_fallback_order)
+        if primary not in fallback:
+            fallback.insert(0, primary)
+        return fallback or ["fal"]
+
+    def get_batch_routing_summary(self, batch_name: str) -> List[Dict[str, Any]]:
+        """Expose provider fallback metadata to execution reports."""
+        meta = self._last_batch_metadata.get(batch_name, {})
+        if not meta:
+            return []
+        provider_used = meta.get("successful_provider") or ""
+        providers_tried = meta.get("providers_tried", [])
+        fallback_order = meta.get("configured_fallback_order", [])
+        fallback_summary = {
+            "attempt_count": meta.get("attempt_count", 0),
+            "providers_tried": providers_tried,
+            "successful_provider": provider_used or None,
+            "fallback_used": bool(meta.get("fallback_used")),
+        }
+        rows: List[Dict[str, Any]] = []
+        for asset_id in meta.get("asset_ids", []):
+            rows.append(
+                {
+                    "asset_id": asset_id,
+                    "batch": batch_name,
+                    "media_skill_id": "",
+                    "reason": "provider_fallback_chain",
+                    "confidence": "",
+                    "provider_used": provider_used,
+                    "fallback_attempts": meta.get("attempt_count", 0),
+                    "fallback_providers_tried": ", ".join(providers_tried),
+                    "fallback_order": ", ".join(fallback_order),
+                    "fallback_attempt_summary": json.dumps(
+                        fallback_summary,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                    ),
+                }
+            )
+        return rows
 
 
 @dataclass
@@ -847,9 +994,9 @@ def create_visual_backend(
             return InferenceScaffoldExecutionBackend(config=config, brand_dir=brand_dir, console=console)
         if console:
             console.print("[yellow]Inference auth missing — falling back to scripts backend.[/yellow]")
-        return SubprocessVisualExecutionBackend()
+        return SubprocessVisualExecutionBackend(config=config, console=console)
 
-    return SubprocessVisualExecutionBackend()
+    return SubprocessVisualExecutionBackend(config=config, console=console)
 
 
 def _resolve_allowlist_path(path_value: Any, *, brand_dir: Path) -> Path:
@@ -970,6 +1117,35 @@ def _normalize_override_spec(value: Any) -> Dict[str, str]:
         if sid:
             out["media_skill_id"] = sid
     return out
+
+
+def _validate_fallback_order(value: Any) -> List[str]:
+    """Validate generation.fallback_order and return normalized providers."""
+    if value in (None, ""):
+        return []
+    if not isinstance(value, list):
+        raise ValueError("generation.fallback_order must be a list of provider names")
+
+    normalized: List[str] = []
+    invalid: List[str] = []
+    for raw_provider in value:
+        provider = str(raw_provider).strip().lower()
+        if not provider:
+            continue
+        if provider not in _SUPPORTED_FALLBACK_PROVIDERS:
+            invalid.append(provider)
+            continue
+        if provider not in normalized:
+            normalized.append(provider)
+
+    if invalid:
+        valid_values = ", ".join(sorted(_SUPPORTED_FALLBACK_PROVIDERS))
+        raise ValueError(
+            "generation.fallback_order contains unknown provider(s): "
+            + ", ".join(invalid)
+            + f". Valid options: {valid_values}"
+        )
+    return normalized
 
 
 def _parse_frontmatter(text: str) -> Dict[str, Any]:

@@ -31,7 +31,7 @@ def load_registry(registry_path=None):
         return yaml.safe_load(f)['assets']
 
 
-def select_assets(domain_tags, depth='focused', channel='dtc', registry=None):
+def select_assets(domain_tags, depth='focused', channel='dtc', registry=None, excluded_assets=None):
     """
     Select and prioritize assets based on domain tags, depth, and channel.
 
@@ -46,9 +46,12 @@ def select_assets(domain_tags, depth='focused', channel='dtc', registry=None):
     """
     if registry is None:
         registry = load_registry()
+    excluded = set(excluded_assets or [])
 
     selected = []
     for asset_id, asset_def in registry.items():
+        if asset_id in excluded:
+            continue
         tags = asset_def.get('tags', [])
 
         # Rule 1: Universal assets always included

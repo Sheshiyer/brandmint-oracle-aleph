@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Visual pipeline provider fallback retries in the scripts backend with configurable `generation.fallback_order` and fallback attempt summaries in execution reports.
+- Safe state load/save integration for execution + NotebookLM state files via `load_state_safe` / `save_state_safe`.
+- Focused resilience test coverage:
+  - `tests/test_visual_backend_fallback_chain.py`
+  - `tests/test_state_validation_integration.py`
+
+### Changed
+- `README.md` now documents resilience features and current fallback configuration.
+- Added `docs/INTEGRATION_EXAMPLES.md` to mirror operator integration guidance under docs.
+
 ## [4.3.0] - 2026-02-28
 
 ### Added

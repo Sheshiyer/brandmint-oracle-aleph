@@ -219,12 +219,12 @@ ASSET_CATALOG = {
         "aspect": "1:1",
     },
     "8A": {
-        "name": "The Seeker Poster",
+        "name": "Brand Presence Poster",
         "category": "posters",
         "model": "nano-banana-pro",
         "cost_per_seed": 0.08,
         "priority": 2,
-        "description": "Conceptual portrait poster with split reality/inner-architecture composition.",
+        "description": "Hero campaign poster with split reality/system-intelligence composition.",
         "when": "Campaign hero. Kickstarter headers. Brand manifesto visual.",
         "tags": ["poster", "hero", "campaign", "conceptual"],
         "aspect": "3:4",
@@ -310,6 +310,16 @@ BATCHES = {
 BATCH_ORDER = ["anchor", "identity", "products", "photography",
                "illustration", "narrative", "posters"]
 
+BATCH_EXPECTED_PREFIX_PATTERNS = {
+    "anchor": ["2A"],
+    "identity": ["2B", "2C", "APP-ICON"],
+    "products": ["3A", "3B", "3C", "APP-SCREENSHOT"],
+    "photography": ["4A", "4B", "OG-IMAGE", "TWITTER-HEADER"],
+    "illustration": ["5A", "5B", "5C", "5D"],
+    "narrative": ["7A", "EMAIL-HERO"],
+    "posters": ["8A", "9A", "10A", "10B", "10C", "IG-STORY", "PITCH-HERO"],
+}
+
 
 # =====================================================================
 # UTILITY FUNCTIONS
@@ -328,6 +338,49 @@ def get_brand_dir(config_path, cfg):
     brand_name = cfg["brand"]["name"]
     return os.path.join(os.path.dirname(os.path.abspath(config_path)),
                         slugify(brand_name))
+
+
+def load_manifest_asset_ids(brand_dir):
+    """Return generated manifest asset ids, or an empty list if unavailable."""
+    manifest_path = os.path.join(brand_dir, "generation-manifest.json")
+    if not os.path.exists(manifest_path):
+        return []
+    try:
+        with open(manifest_path) as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return []
+
+    asset_ids = []
+    for asset in data.get("assets", []):
+        aid = str(asset.get("id", "")).strip()
+        if aid:
+            asset_ids.append(aid)
+    return asset_ids
+
+
+def expected_asset_ids_for_batch(batch_name, manifest_asset_ids):
+    """Resolve expected asset ids for a batch using manifest data when present."""
+    patterns = BATCH_EXPECTED_PREFIX_PATTERNS.get(batch_name, [])
+    if not manifest_asset_ids:
+        return patterns
+
+    expected = []
+    for asset_id in manifest_asset_ids:
+        if any(asset_id == pat or asset_id.startswith(f"{pat}-") for pat in patterns):
+            expected.append(asset_id)
+    return expected or patterns
+
+
+def generated_files_for_prefix(assets_dir, prefix):
+    """List generated files whose basename starts with the asset prefix."""
+    files = []
+    for pattern in ("*.png", "*.svg", "*.webp"):
+        files.extend(
+            path for path in glob.glob(os.path.join(assets_dir, pattern))
+            if os.path.basename(path).startswith(prefix)
+        )
+    return sorted(files)
 
 
 def get_exec_context(config_path, cfg):
@@ -633,6 +686,8 @@ def cmd_execute(args):
     cfg = load_config(args.config)
     brand_dir = args.output_dir or get_brand_dir(args.config, cfg)
     scripts_dir = os.path.join(brand_dir, "scripts")
+    assets_dir = os.path.join(brand_dir, cfg["generation"].get("output_dir", "generated"))
+    manifest_asset_ids = load_manifest_asset_ids(brand_dir)
 
     if not os.path.isdir(scripts_dir):
         print(f"ERROR: Scripts directory not found: {scripts_dir}")
@@ -670,12 +725,17 @@ def cmd_execute(args):
     print(f"  Batches:   {', '.join(batches_to_run)}")
     print()
 
+    had_failures = False
+
     for batch_name in batches_to_run:
         scripts = BATCHES[batch_name]
+        batch_failed = False
         for script_name in scripts:
             script_path = os.path.join(scripts_dir, script_name)
             if not os.path.exists(script_path):
                 print(f"  SKIP: {script_name} (not found)")
+                batch_failed = True
+                had_failures = True
                 continue
 
             print(f"\n{'=' * 60}")
@@ -688,15 +748,39 @@ def cmd_execute(args):
             )
             if result.returncode != 0:
                 print(f"\n  ERROR: {script_name} failed (exit code {result.returncode})")
+                batch_failed = True
+                had_failures = True
                 if batch_name == "anchor":
                     print("  CRITICAL: Anchor failed. Cannot continue.")
                     sys.exit(1)
                 else:
                     print("  Continuing with next batch...")
 
+        expected_asset_ids = expected_asset_ids_for_batch(batch_name, manifest_asset_ids)
+        missing_asset_ids = [
+            asset_id for asset_id in expected_asset_ids
+            if not generated_files_for_prefix(assets_dir, asset_id)
+        ]
+        if missing_asset_ids:
+            batch_failed = True
+            had_failures = True
+            print(
+                f"\n  ERROR: Batch '{batch_name}' completed without expected outputs "
+                f"for: {', '.join(missing_asset_ids)}"
+            )
+            if batch_name == "anchor":
+                print("  CRITICAL: Anchor outputs missing. Cannot continue.")
+                sys.exit(1)
+        elif expected_asset_ids and not batch_failed:
+            print(
+                f"  VERIFIED: Batch '{batch_name}' produced outputs for "
+                f"{', '.join(expected_asset_ids)}"
+            )
+
     print(f"\n{'=' * 60}")
     print("  PIPELINE EXECUTION COMPLETE")
     print(f"{'=' * 60}")
+    sys.exit(1 if had_failures else 0)
 
 
 def cmd_status(args):
@@ -740,7 +824,7 @@ def cmd_status(args):
         ("5B", "Campaign Grid"),
         ("5C", "Art Panel"),
         ("7A", "Contact Sheet"),
-        ("8A", "Seeker Poster"),
+        ("8A", "Brand Presence Poster"),
     ]
 
     print(f"\n  {'ID':<6} {'Name':<25} {'Status':<10} {'Files'}")

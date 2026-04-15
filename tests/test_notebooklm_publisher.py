@@ -162,6 +162,55 @@ def test_publish_writes_partial_report_on_failure(monkeypatch, tmp_path: Path) -
     assert '"notebook_id": "nb-123"' in report
 
 
+def test_targeted_retry_reuses_indexed_sources_without_rebuilding(monkeypatch, tmp_path: Path) -> None:
+    publisher = _make_publisher(tmp_path)
+
+    publisher.artifact_filter = {"report-briefing"}
+    publisher.state["sources"] = {
+        "brand-foundation.md": {
+            "source_id": "src-indexed",
+            "status": "indexed",
+            "source_type": "prose",
+            "score": 94.0,
+        },
+        "primary-persona.md": {
+            "status": "failed",
+            "error": "Failed to add source",
+        },
+    }
+    publisher.state["source_selection"] = {
+        "count": 2,
+        "files": ["brand-foundation.md", "primary-persona.md"],
+        "image_source_policy": "manifest-only",
+    }
+
+    monkeypatch.setattr(publisher, "_build_artifact_defs", lambda: [MINIMAL_ARTIFACT_DEF])
+    monkeypatch.setattr(
+        publisher,
+        "_build_sources",
+        lambda: (_ for _ in ()).throw(AssertionError("_build_sources should not run")),
+    )
+    monkeypatch.setattr(
+        publisher,
+        "_upload_sources",
+        lambda curated, notebook_id: (_ for _ in ()).throw(AssertionError("_upload_sources should not run")),
+    )
+    monkeypatch.setattr(
+        publisher,
+        "_wait_for_indexing",
+        lambda notebook_id: (_ for _ in ()).throw(AssertionError("_wait_for_indexing should not run")),
+    )
+    monkeypatch.setattr(publisher, "_print_summary", lambda elapsed, defs: None)
+
+    ok = publisher.publish()
+
+    assert ok is True
+    assert publisher.client.generate_calls == [("report", "nb-123")]
+    assert list(publisher.state["sources"]) == ["brand-foundation.md"]
+    assert publisher.state["source_selection"]["count"] == 1
+    assert publisher.state["source_selection"]["files"] == ["brand-foundation.md"]
+
+
 
 def test_download_failure_persists_error(monkeypatch, tmp_path: Path) -> None:
     publisher = _make_publisher(tmp_path)

@@ -59,6 +59,7 @@ You can also set the provider in your `brand-config.yaml`:
 generation:
   output_dir: generated
   provider: fal  # or: inference, openrouter, openai, replicate, auto
+  fallback_order: [fal, replicate, openrouter, openai]  # optional retry order for visual execution
   visual_backend: scripts  # or: inference (writes asset-level inference scaffolds)
   inference_endpoint: https://api.inference.sh
   inference_rollout_mode: ring0  # ring0|ring1|ring2
@@ -153,22 +154,29 @@ The **style anchor cascade** is Brandmint's key feature for visual consistency. 
 
 ## Fallback Chain
 
-Brandmint currently has **two provider execution paths**:
+Brandmint now applies provider fallback in **both** paths:
 
 1. **Core provider API** (`brandmint.core.providers.generate_with_fallback`)
-   - Supports explicit fallback order and retry across providers.
-2. **Launch visual pipeline** (`bm launch` -> generated scripts via `scripts/run_pipeline.py`)
-   - Uses a single selected provider per run.
-   - Does **not** automatically hop to the next provider on runtime failure.
+2. **Launch visual pipeline** (`bm launch` -> `brandmint.pipeline.visual_backend`)
 
-Default core fallback order is:
+For launch visual execution, Brandmint retries the same batch with the next provider in
+the fallback chain by setting `IMAGE_PROVIDER` per attempt.
+
+Default fallback order is:
 1. FAL.AI
-2. OpenRouter
-3. Replicate
+2. Replicate
+3. OpenRouter
 4. OpenAI
-5. Inference
 
-If you need fallback semantics today, use the core provider API path or rerun launch with a different provider.
+You can override the order per brand:
+
+```yaml
+generation:
+  provider: fal
+  fallback_order: [fal, replicate, openrouter, openai, inference]
+```
+
+Invalid `generation.fallback_order` entries are rejected at backend initialization.
 
 ## Imported Inference Skills (Image Generation Scope)
 

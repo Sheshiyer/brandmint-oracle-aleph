@@ -112,6 +112,120 @@ def _extract_tags_from_filename(filename):
     return [t for t in base.split("-") if len(t) > 2]
 
 
+_SUPP_REF_STOPWORDS = {
+    "the", "and", "for", "with", "from", "that", "this", "into", "your", "their",
+    "our", "use", "using", "show", "shown", "across", "over", "under", "through",
+    "feel", "like", "looks", "look", "only", "plus", "without", "brand", "image",
+    "design", "style", "visual", "lighting", "premium", "modern", "clean", "high",
+    "real", "world", "hyper", "ultra", "professional", "commercial", "photo",
+    "photography", "video", "poster", "layout", "grid", "product", "products",
+}
+
+_SUPP_REF_LOW_SIGNAL_TERMS = {
+    "blue", "pink", "white", "black", "gold", "silver", "premium", "modern",
+    "clean", "visual", "design", "image", "commercial", "photo", "photography",
+    "product", "products", "lighting", "video", "poster", "layout", "grid",
+    "nano", "banana", "gemini", "prompt", "prompts", "google", "openai", "gpt",
+}
+
+_SUPP_REF_DEVICE_BRAND_CONFLICT_TERMS = {
+    "portrait", "portraits", "face", "faces", "fashion", "beauty", "skincare",
+    "makeup", "cosmetic", "cosmetics", "celebrity", "caricature", "female", "male",
+    "woman", "women", "man", "men", "person", "people", "model", "models",
+    "outfit", "outfits", "fragrance", "perfume", "lip", "lips", "food", "drink",
+    "beverage", "coffee", "cocktail",
+}
+
+_SUPP_REF_DEVICE_BRAND_TERMS = {
+    "automation", "app", "dashboard", "device", "devices", "hardware", "building",
+    "buildings", "home", "homes", "security", "control", "controls", "camera",
+    "cameras", "door", "doorbell", "lock", "energy", "climate", "access",
+    "architectural", "panel", "system", "systems",
+}
+
+
+def _normalize_ref_token(token):
+    token = (token or "").strip().lower()
+    if token.endswith("ies") and len(token) > 4:
+        return token[:-3] + "y"
+    if token.endswith("s") and len(token) > 4 and not token.endswith("ss"):
+        return token[:-1]
+    return token
+
+
+def _extract_ref_terms(*values):
+    terms = []
+    for value in values:
+        if not value:
+            continue
+        if isinstance(value, (list, tuple, set)):
+            for item in value:
+                terms.extend(_extract_ref_terms(item))
+            continue
+        for raw in re.findall(r"[a-z0-9]+", str(value).lower()):
+            token = _normalize_ref_token(raw)
+            if len(token) < 3 or token in _SUPP_REF_STOPWORDS:
+                continue
+            terms.append(token)
+    return terms
+
+
+def _derive_supp_ref_policy(cfg):
+    supp_cfg = cfg.get("generation", {}).get("supplementary_refs", {})
+    sources = [
+        cfg.get("brand", {}).get("domain", ""),
+        cfg.get("brand", {}).get("tagline", ""),
+        cfg.get("theme", {}).get("description", ""),
+        cfg.get("positioning", {}).get("statement", ""),
+        cfg.get("products", {}).get("hero", {}).get("name", ""),
+        cfg.get("products", {}).get("hero", {}).get("description", ""),
+        cfg.get("products", {}).get("hero", {}).get("physical_form", ""),
+        cfg.get("products", {}).get("detail", {}).get("focus", ""),
+        cfg.get("products", {}).get("category", ""),
+        cfg.get("photography", {}).get("style", ""),
+        cfg.get("photography", {}).get("environment", ""),
+        cfg.get("brand", {}).get("domain_tags", []),
+        cfg.get("theme", {}).get("mood_keywords", []),
+        cfg.get("products", {}).get("flatlay_objects", {}).get("items", []),
+    ]
+    context_terms = {
+        term for term in _extract_ref_terms(*sources)
+        if term not in _SUPP_REF_LOW_SIGNAL_TERMS
+    }
+
+    required_terms = {
+        term for term in _extract_ref_terms(supp_cfg.get("required_terms", []))
+        if term not in _SUPP_REF_LOW_SIGNAL_TERMS
+    }
+    if not required_terms:
+        required_terms = set(context_terms)
+
+    blocked_terms = set(_extract_ref_terms(supp_cfg.get("blocked_terms", [])))
+    if context_terms.intersection({_normalize_ref_token(t) for t in _SUPP_REF_DEVICE_BRAND_TERMS}):
+        blocked_terms.update(
+            _normalize_ref_token(term) for term in _SUPP_REF_DEVICE_BRAND_CONFLICT_TERMS
+        )
+
+    return {
+        "enabled": supp_cfg.get("enabled", True),
+        "required_terms": required_terms,
+        "context_terms": context_terms,
+        "blocked_terms": blocked_terms,
+        "minimum_required_matches": max(1, int(supp_cfg.get("minimum_required_matches", 1))),
+    }
+
+
+def _entry_ref_terms(entry_id, entry):
+    return set(_extract_ref_terms(
+        entry_id,
+        entry.get("file", ""),
+        entry.get("description", ""),
+        entry.get("composition_tags", []),
+        entry.get("model_affinity", []),
+        entry.get("tags", []),
+    ))
+
+
 # Prompt IDs that use Nano Banana Pro (support image_url references)
 _NANO_BANANA_PIDS = ["2A", "3A", "3B", "3C", "4A", "4B", "5B", "7A", "8A", "9A", "10A"]
 
@@ -167,14 +281,16 @@ def _aesthetic_distance(profile_a, profile_b):
 
 
 def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None,
-                     brand_domain_tags=None):
+                     brand_domain_tags=None, selection_policy=None):
     """Select supplementary refs using semantic + aesthetic scoring.
 
     Gated pipeline (when catalog YAML is available):
-      1. Domain filter: candidate domain_suitability must intersect brand domains
-      2. Subject filter: candidate subject_type must match PID (layout PIDs exempt)
-      3. Diversity slots: for multi-domain brands, spread refs across domains
-      4. Aesthetic tiebreaker: within filtered set, score by aesthetic distance
+      1. Relevance filter: candidate metadata must match brand/product terms
+      2. Conflict filter: reject candidates with blocked subject/style terms
+      3. Domain filter: candidate domain_suitability must intersect brand domains
+      4. Subject filter: candidate subject_type must match PID (layout PIDs exempt)
+      5. Diversity slots: for multi-domain brands, spread refs across domains
+      6. Aesthetic tiebreaker: within filtered set, score by aesthetic distance
 
     Falls back to keyword-overlap scoring if catalog YAML is not available.
 
@@ -184,12 +300,17 @@ def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None,
         max_per_pid: max supplementary refs per prompt ID
         catalog_yaml_path: path to reference-catalog.yaml (preferred)
         brand_domain_tags: list of brand domain tags (e.g. ["marketplace", "fashion"])
+        selection_policy: dict with required/context/blocked term sets
 
     Returns:
         dict mapping pid -> [{"file": str, "score": float}, ...]
     """
     if brand_domain_tags is None:
         brand_domain_tags = []
+    if selection_policy is None:
+        selection_policy = {"enabled": True, "required_terms": set(), "context_terms": set(), "blocked_terms": set(), "minimum_required_matches": 1}
+    if not selection_policy.get("enabled", True):
+        return {}
 
     # Try semantic + aesthetic scoring from YAML catalog
     if catalog_yaml_path and os.path.exists(catalog_yaml_path):
@@ -198,18 +319,24 @@ def select_supp_refs(catalog, brand_tags, max_per_pid=3, catalog_yaml_path=None,
                 yaml_catalog = yaml.safe_load(f)
             return _select_supp_refs_semantic(
                 yaml_catalog, max_per_pid, brand_domain_tags,
+                selection_policy=selection_policy,
             )
         except Exception:
             pass  # Fall through to keyword-based scoring
 
     # Fallback: keyword-overlap scoring (original behavior)
-    return _select_supp_refs_keyword(catalog, brand_tags, max_per_pid)
+    return _select_supp_refs_keyword(catalog, brand_tags, max_per_pid, selection_policy=selection_policy)
 
 
-def _select_supp_refs_semantic(yaml_catalog, max_per_pid, brand_domain_tags):
+def _select_supp_refs_semantic(yaml_catalog, max_per_pid, brand_domain_tags, selection_policy=None):
     """Select supplementary refs using semantic gates + aesthetic tiebreaker."""
     entries = yaml_catalog.get("entries", {})
     brand_domains = set(brand_domain_tags)
+    selection_policy = selection_policy or {}
+    required_terms = set(selection_policy.get("required_terms", set()))
+    context_terms = set(selection_policy.get("context_terms", set()))
+    blocked_terms = set(selection_policy.get("blocked_terms", set()))
+    min_required_matches = selection_policy.get("minimum_required_matches", 1)
 
     # Build primary ref profiles for aesthetic comparison
     primary_profiles = {}
@@ -233,6 +360,15 @@ def _select_supp_refs_semantic(yaml_catalog, max_per_pid, brand_domain_tags):
             if pid not in entry.get("asset_compatibility", []):
                 continue
 
+            entry_terms = _entry_ref_terms(entry_id, entry)
+            blocked_matches = blocked_terms.intersection(entry_terms)
+            if blocked_matches:
+                continue
+
+            required_matches = required_terms.intersection(entry_terms)
+            if required_terms and len(required_matches) < min_required_matches:
+                continue
+
             # Gate 1: Domain filter
             entry_domains = set(entry.get("domain_suitability", []))
             if entry_domains and brand_domains:
@@ -252,9 +388,12 @@ def _select_supp_refs_semantic(yaml_catalog, max_per_pid, brand_domain_tags):
             entry_profile = entry.get("aesthetic", {})
             dist = _aesthetic_distance(target_profile, entry_profile)
             similarity = round(1.0 / (1.0 + dist), 3)
+            context_matches = context_terms.intersection(entry_terms)
+            relevance = (len(required_matches) * 10) + len(context_matches)
             candidates.append({
                 "file": entry.get("file", ""),
                 "score": similarity,
+                "relevance": relevance,
                 "_domains": list(entry_domains),
             })
 
@@ -264,7 +403,7 @@ def _select_supp_refs_semantic(yaml_catalog, max_per_pid, brand_domain_tags):
                 candidates, brand_domains, max_per_pid,
             )
         else:
-            candidates.sort(key=lambda x: -x["score"])
+            candidates.sort(key=lambda x: (-x["relevance"], -x["score"], x["file"]))
             if candidates:
                 result[pid] = [
                     {"file": c["file"], "score": c["score"]}
@@ -290,7 +429,7 @@ def _fill_domain_diverse_slots(candidates, brand_domains, max_slots):
             if domain in c.get("_domains", []) and c["file"] not in used_files
         ]
         if domain_cands:
-            best = max(domain_cands, key=lambda x: x["score"])
+            best = max(domain_cands, key=lambda x: (x.get("relevance", 0), x["score"]))
             selected.append({"file": best["file"], "score": best["score"]})
             used_files.add(best["file"])
             if len(selected) >= max_slots:
@@ -300,7 +439,7 @@ def _fill_domain_diverse_slots(candidates, brand_domains, max_slots):
     if len(selected) < max_slots:
         remaining = sorted(
             [c for c in candidates if c["file"] not in used_files],
-            key=lambda x: -x["score"],
+            key=lambda x: (-x.get("relevance", 0), -x["score"], x["file"]),
         )
         for c in remaining:
             selected.append({"file": c["file"], "score": c["score"]})
@@ -310,8 +449,13 @@ def _fill_domain_diverse_slots(candidates, brand_domains, max_slots):
     return selected
 
 
-def _select_supp_refs_keyword(catalog, brand_tags, max_per_pid=3):
+def _select_supp_refs_keyword(catalog, brand_tags, max_per_pid=3, selection_policy=None):
     """Fallback: score catalog entries via keyword overlap."""
+    selection_policy = selection_policy or {}
+    required_terms = set(selection_policy.get("required_terms", set()))
+    context_terms = set(selection_policy.get("context_terms", set()))
+    blocked_terms = set(selection_policy.get("blocked_terms", set()))
+    min_required_matches = selection_policy.get("minimum_required_matches", 1)
     result = {}
     for pid, context_tags in _PID_CONTEXT.items():
         scored = []
@@ -319,11 +463,23 @@ def _select_supp_refs_keyword(catalog, brand_tags, max_per_pid=3):
         for entry in catalog:
             if not entry.get("file"):
                 continue
+            entry_terms = set(_extract_ref_terms(
+                entry.get("file", ""),
+                entry.get("description", ""),
+                entry.get("tags", []),
+            ))
+            if blocked_terms.intersection(entry_terms):
+                continue
+            required_matches = required_terms.intersection(entry_terms)
+            if required_terms and len(required_matches) < min_required_matches:
+                continue
             score = 0.0
             entry_text = " ".join(entry.get("tags", []) + [entry.get("description", ""), entry["file"]]).lower()
             for term in search_terms:
                 if term in entry_text:
                     score += 1.0
+            score += len(required_matches) * 10
+            score += len(context_terms.intersection(entry_terms))
             if entry.get("related_pid") == pid:
                 score += 2.0
             if entry.get("type") == "style":
@@ -1026,6 +1182,19 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["seeker_inner_detail"] = aes.get("seeker_inner_detail", dd["seeker_inner_detail"])
     v["sequence_type"] = aes.get("sequence_type", dd["sequence_type"])
     v["sequence_constraint"] = aes.get("sequence_constraint", dd["sequence_constraint"])
+    v["8a_title_text"] = aes.get("poster_title_text", "THE SEEKER")
+    v["8a_subject_directive"] = aes.get(
+        "poster_subject_directive",
+        "A solitary figure seen from behind -- standing still, contemplative posture.\nNo face visible. Full body, centered in frame.",
+    )
+    v["8a_left_half_detail"] = aes.get(
+        "poster_left_half_detail",
+        f"hand texture, fabric weave, polished floor, {v['photo_environment']} visible behind.",
+    )
+    v["8a_right_half_detail"] = aes.get(
+        "poster_right_half_detail",
+        "engineering nodes at key body points, network patterns from feet.",
+    )
 
     # ── Aesthetic variant structural holes (Phase D) ──
     # All default to "" — overridden by aesthetic engine with variant-specific text.
@@ -1446,9 +1615,8 @@ def gen_recraft(pid, slug, prompt, style, colors, size, seeds=({seed_a}, {seed_b
         variant = "v1" if seed == {seed_a} else f"v{{seed}}"
         out_path = os.path.join(OUT_DIR, f"{{pid}}-{{slug}}-recraft-{{variant}}.png")
         print(f"\\n  [{{pid}}] Recraft V3 ({{style}}) seed={{seed}} (provider: {{PROVIDER}})...")
-        enhanced_prompt = f"{{prompt}}. Style: {{style}}. Fine line art, detailed illustration."
         gen_with_provider(
-            enhanced_prompt,
+            prompt,
             "recraft-v3",
             out_path,
             w,
@@ -1590,19 +1758,18 @@ highlights. 2px {support_name} ({support_hex}) borders. {quality} detail.
 Audience aesthetic: {audience_aesthetic}. Must feel like it belongs in the world of {audience_aspiration}.
 {7a_atmosphere}{detail_suffix}"""
 
-PROMPT_8A_SEEKER = """{brand_name} "The Seeker" conceptual portrait poster.
+PROMPT_8A_SEEKER = """{brand_name} "{8a_title_text}" brand presence poster.
 Core metaphor: {theme_metaphor}.
-{8a_composition_approach}A solitary figure seen from behind -- standing still, contemplative posture.
-No face visible. Full body, centered in frame.
+{8a_composition_approach}{8a_subject_directive}
 {8a_split_style}SPLIT COMPOSITION: LEFT HALF shows material reality -- ultra-photorealistic detail:
-hand texture, fabric weave, polished floor, {photo_environment} visible behind.
+{8a_left_half_detail}
 RIGHT HALF shows inner architecture -- translucent technical blueprint revealing:
 {seeker_inner_detail} glowing {secondary_name} ({secondary_hex}),
-engineering nodes at key body points, network patterns from feet.
+{8a_right_half_detail}
 The split line glows {accent_name} ({accent_hex}).
 COLOR: {color_directive} {primary_name} dominant, {accent_name} highlights, {secondary_name} inner glow,
 {signal_name} ({signal_hex}) for living elements. Film grain.
-Typography: "THE SEEKER" in {header_font} {header_display_weight}, {support_name} ({support_hex}).
+Typography: "{8a_title_text}" in {header_font} {header_display_weight}, {support_name} ({support_hex}).
 Audience aesthetic: {audience_aesthetic}. Emotional register: {emotional_register}.
 {8a_atmosphere}{detail_suffix}"""
 
@@ -2101,52 +2268,76 @@ if __name__ == "__main__":
 
 def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
     """Generate generate-illustrations.py (5A-5C)."""
+    asset_ids = _get_asset_ids(asset_groups, "illustrations", {"5A", "5B", "5C"})
+    if not asset_ids:
+        return
+
     seeds = cfg["generation"].get("seeds", [42, 137])
     # Condense for Recraft 1000-char limit
     prompt_5a = render(PROMPT_5A_HERITAGE, v)[:990]
     prompt_5b = render(PROMPT_5B_CAMPAIGN, v)
     prompt_5c = render(PROMPT_5C_PANEL, v)[:990]
     out_sub = cfg["generation"].get("output_dir", "generated")
+    script_desc = "Illustrations"
 
     header = render(SCRIPT_HEADER, {
-        **v, "script_desc": "Illustrations (5A-5C)",
+        **v, "script_desc": script_desc,
         "output_subdir": out_sub,
     })
     func_rc = render(FUNC_RECRAFT, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_flux = ""
 
+    prompt_defs = []
+    if "5A" in asset_ids:
+        prompt_defs.append(f'PROMPT_5A = """{prompt_5a}"""')
+    if "5B" in asset_ids:
+        prompt_defs.append(f'PROMPT_5B = """{prompt_5b}"""')
+    if "5C" in asset_ids:
+        prompt_defs.append(f'PROMPT_5C = """{prompt_5c}"""')
+    prompt_defs_block = "\n\n".join(prompt_defs)
+    recraft_prompt_items = []
+    if "5A" in asset_ids:
+        recraft_prompt_items.append('"5A": PROMPT_5A')
+    if "5C" in asset_ids:
+        recraft_prompt_items.append('"5C": PROMPT_5C')
+    recraft_prompt_map = "{%s}" % ", ".join(recraft_prompt_items) if recraft_prompt_items else "{}"
+
     main_body = f'''
-PROMPT_5A = """{prompt_5a}"""
-
-PROMPT_5B = """{prompt_5b}"""
-
-PROMPT_5C = """{prompt_5c}"""
+{prompt_defs_block}
 
 STYLE_ANCHOR = os.path.join(OUT_DIR, "2A-brand-kit-bento-nanobananapro-v1.png")
 
 
 def main():
     print("=" * 60)
-    print(f"{{BRAND_NAME}} -- Illustrations (5A-5C)")
+    print(f"{{BRAND_NAME}} -- Illustrations")
     print("=" * 60)
 
     # Verify Recraft prompt lengths
-    for pid, p in {{"5A": PROMPT_5A, "5C": PROMPT_5C}}.items():
+    for pid, p in {recraft_prompt_map}.items():
+        if pid not in {sorted(asset_ids)!r}:
+            continue
         count = len(p)
         status = "OK" if count < 1000 else "OVER LIMIT"
         print(f"  {{pid}}: {{count}} chars [{{status}}]")
         if count >= 1000:
-            print("ERROR: Prompt exceeds 1000 char Recraft V3 limit. Condense it.")
+            print("ERROR: Prompt exceeds 1000 char Recraft V3 limit before submission.")
             sys.exit(1)
 
+'''
+    if "5A" in asset_ids:
+        main_body += f'''
     # 5A: Heritage Engraving (Recraft digital_illustration)
     print("\\n--- 5A: Heritage Engraving (Recraft V3 digital) ---")
     gen_recraft("5A", "heritage-engraving", PROMPT_5A,
                 "digital_illustration",
                 ["{v['primary_hex']}", "{v['secondary_hex']}", "{v['accent_hex']}"],
                 "square_hd")
+'''
 
+    if "5B" in asset_ids:
+        main_body += '''
     # 5B: Campaign Grid (Nano Banana Pro + anchor + comp ref)
     print("\\n--- 5B: Campaign Grid (Nano Banana Pro) ---")
     anchor_urls = []
@@ -2159,22 +2350,27 @@ def main():
         anchor_urls.append(logo_url)
     ref_5b = get_ref_image("5B")
     if ref_5b:
-        print(f"  Adding composition ref: {{os.path.basename(ref_5b)}}")
+        print(f"  Adding composition ref: {os.path.basename(ref_5b)}")
         ref_url = upload_reference(ref_5b)
         if ref_url:
             anchor_urls.append(ref_url)
     anchor_urls.extend(get_supp_ref_images("5B"))
     gen_nano_banana("5B", "campaign-grid", PROMPT_5B, "3:4", anchor_urls)
+'''
 
+    if "5C" in asset_ids:
+        main_body += f'''
     # 5C: Art Panel (Recraft digital_illustration)
     print("\\n--- 5C: Art Panel (Recraft V3 digital) ---")
     gen_recraft("5C", "art-panel", PROMPT_5C,
                 "digital_illustration",
                 ["{v['primary_hex']}", "{v['accent_hex']}", "{v['signal_hex']}"],
                 "portrait_4_3")
+'''
 
+    main_body += '''
     print("\\n" + "=" * 60)
-    print("  ILLUSTRATIONS COMPLETE (5A-5C)")
+    print("  ILLUSTRATIONS COMPLETE")
     print("=" * 60)
 
 
@@ -2278,6 +2474,7 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
     """Generate generate-posters.py (8A seeker + 9A engines + 10A-C sequences + domain-specific)."""
     asset_ids = _get_asset_ids(asset_groups, "posters", {"8A"})
     # Posters always generate (9A/10A come from config, not registry)
+    excluded_assets = set(cfg.get("generation", {}).get("excluded_assets", []) or [])
 
     seeds = cfg["generation"].get("seeds", [42, 137])
     # Check for brand-specific prompt overrides (Phase 4 — detemplatization)
@@ -2290,8 +2487,14 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
     # Load engine definitions from config
     engines = cfg.get("prompts", {}).get("posters", {})
     if isinstance(engines, dict):
-        engines_list = engines.get("engines", [])
-        sequences_list = engines.get("sequences", [])
+        engines_list = [
+            eng for eng in engines.get("engines", [])
+            if eng.get("id", "9A") not in excluded_assets
+        ]
+        sequences_list = [
+            seq for seq in engines.get("sequences", [])
+            if seq.get("id", "10A") not in excluded_assets
+        ]
     else:
         engines_list = []
         sequences_list = []
@@ -2351,8 +2554,8 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
 '''
 
     gen_8a = f'''
-    # 8A: Seeker poster (with composition reference)
-    print("\\n--- 8A: Seeker Poster ---")
+    # 8A: Brand presence poster (with composition reference)
+    print("\\n--- 8A: Brand Presence Poster ---")
     urls_8a = list(image_urls)
     ref_8a = get_ref_image("8A")
     if ref_8a:
@@ -2497,7 +2700,7 @@ def gen_cookbook(out_dir, v, cfg):
             "4a": "4A Catalog Layout",        "4b": "4B Flatlay",
             "5a": "5A Heritage Engraving",    "5b": "5B Campaign Grid",
             "5c": "5C Art Panel",             "7a": "7A Contact Sheet",
-            "8a": "8A Seeker Poster",
+            "8a": "8A Brand Presence Poster",
         }
 
         # Register → human-readable description
@@ -2587,7 +2790,7 @@ def gen_cookbook(out_dir, v, cfg):
         ("5B", "Campaign Grid", "fal-ai/nano-banana-pro", "3:4", PROMPT_5B_CAMPAIGN),
         ("5C", "Art Panel", "fal-ai/recraft/v3", "3:4", PROMPT_5C_PANEL),
         ("7A", "Contact Sheet", "fal-ai/nano-banana-pro", "1:1", PROMPT_7A_CONTACT),
-        ("8A", "Seeker Poster", "fal-ai/nano-banana-pro", "3:4", PROMPT_8A_SEEKER),
+        ("8A", "Brand Presence Poster", "fal-ai/nano-banana-pro", "3:4", PROMPT_8A_SEEKER),
     ]
 
     for pid, name, model, aspect, template in prompt_entries:
@@ -2679,6 +2882,7 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
     depth_cfg = DEPTH_CONFIG.get(depth, DEPTH_CONFIG["focused"])
     skip_ids = depth_cfg["skip_ids"]
     seeds_count = depth_cfg["seeds_count"]
+    excluded_assets = set(cfg.get("generation", {}).get("excluded_assets", []) or [])
 
     # Cost per call by model
     costs = {"nano-banana-pro": 0.08, "flux-2-pro": 0.05, "recraft-v3": 0.04}
@@ -2689,11 +2893,13 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
     if asset_groups is not None:
         for gen_name, group in asset_groups.items():
             for aid, adef in group:
+                if aid in excluded_assets:
+                    continue
                 model = adef.get("model", "nano-banana-pro")
                 cost_key = model if model in costs else "nano-banana-pro"
                 sc = seeds_count
                 if aid == "8A" and depth != "surface":
-                    sc = seeds_count + 1  # Seeker gets extra seed
+                    sc = seeds_count + 1  # Brand poster gets extra seed
                 assets.append({
                     "id": aid,
                     "name": adef.get("name", aid),
@@ -2705,32 +2911,33 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
     else:
         # Legacy mode: hardcoded 19 assets
         # 2A: Nano Banana
-        assets.append({"id": "2A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
+        if "2A" not in excluded_assets:
+            assets.append({"id": "2A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
         # 2B, 2C: Flux 2 Pro
         for pid in ["2B", "2C"]:
-            if pid not in skip_ids:
+            if pid not in skip_ids and pid not in excluded_assets:
                 assets.append({"id": pid, "model": "flux-2-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["flux-2-pro"]})
         # 3A, 3B, 3C: Nano Banana Pro
         for pid in ["3A", "3B", "3C"]:
-            if pid not in skip_ids:
+            if pid not in skip_ids and pid not in excluded_assets:
                 assets.append({"id": pid, "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
         # 4A, 4B: Nano Banana Pro
-        if "4A" not in skip_ids:
+        if "4A" not in skip_ids and "4A" not in excluded_assets:
             assets.append({"id": "4A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
-        if "4B" not in skip_ids:
+        if "4B" not in skip_ids and "4B" not in excluded_assets:
             assets.append({"id": "4B", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
         # 5A, 5C: Recraft
         for pid in ["5A", "5C"]:
-            if pid not in skip_ids:
+            if pid not in skip_ids and pid not in excluded_assets:
                 assets.append({"id": pid, "model": "recraft-v3", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["recraft-v3"]})
         # 5B: Nano Banana
-        if "5B" not in skip_ids:
+        if "5B" not in skip_ids and "5B" not in excluded_assets:
             assets.append({"id": "5B", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
         # 7A: Nano Banana
-        if "7A" not in skip_ids:
+        if "7A" not in skip_ids and "7A" not in excluded_assets:
             assets.append({"id": "7A", "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
         # 8A: Nano Banana (extra seed for seeker at non-surface depths)
-        if "8A" not in skip_ids:
+        if "8A" not in skip_ids and "8A" not in excluded_assets:
             seeker_seeds = seeds_count + 1 if depth != "surface" else seeds_count
             assets.append({"id": "8A", "model": "nano-banana-pro", "seeds": seeker_seeds, "calls": seeker_seeds, "est_cost": seeker_seeds * costs["nano-banana-pro"]})
 
@@ -2739,12 +2946,12 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
     engines_list = engines.get("engines", []) if isinstance(engines, dict) else []
     for eng in engines_list:
         eid = eng.get("id", "9A")
-        if eid not in skip_ids:
+        if eid not in skip_ids and eid not in excluded_assets:
             assets.append({"id": eid, "model": "nano-banana-pro", "seeds": 1, "calls": 1, "est_cost": costs["nano-banana-pro"]})
     sequences_list = engines.get("sequences", []) if isinstance(engines, dict) else []
     for seq in sequences_list:
         sid = seq.get("id", "10A")
-        if sid not in skip_ids:
+        if sid not in skip_ids and sid not in excluded_assets:
             assets.append({"id": sid, "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
 
     total_calls = sum(a["calls"] for a in assets)
@@ -2893,14 +3100,18 @@ def main():
     brand_domain_tags = v.get("domain_tags", [])
     if isinstance(brand_domain_tags, str):
         brand_domain_tags = [t.strip() for t in brand_domain_tags.split(",") if t.strip()]
+    supp_ref_policy = _derive_supp_ref_policy(cfg)
     supp_refs = select_supp_refs(
         full_catalog, brand_tags,
         catalog_yaml_path=catalog_yaml_path,
         brand_domain_tags=brand_domain_tags,
+        selection_policy=supp_ref_policy,
     ) if full_catalog or os.path.exists(catalog_yaml_path) else {}
     if supp_refs:
         total_supp = sum(len(refs) for refs in supp_refs.values())
         print(f"  Supp refs: {total_supp} supplementary refs selected across {len(supp_refs)} prompts")
+    else:
+        print("  Supp refs: no brand-relevant supplementary refs selected")
     v["supp_refs_block"] = build_supp_refs_block(supp_refs)
     v["_supp_refs_summary"] = supp_refs
 
@@ -2932,14 +3143,17 @@ def main():
     # ── Phase 3: Asset Registry Selection ──
     domain_tags = v.get("domain_tags", [])
     depth = exec_ctx.get("depth_level", "focused")
+    excluded_assets = cfg.get("generation", {}).get("excluded_assets", []) or []
 
     asset_groups = None  # None = legacy mode
     if domain_tags:
         try:
             from asset_registry import select_assets, get_assets_by_generator, print_selection_summary
-            selected = select_assets(domain_tags, depth, channel)
+            selected = select_assets(domain_tags, depth, channel, excluded_assets=excluded_assets)
             asset_groups = get_assets_by_generator(selected)
             print_selection_summary(selected, domain_tags, depth, channel)
+            if excluded_assets:
+                print(f"  Excluded assets: {sorted(excluded_assets)}")
         except ImportError:
             print("  WARNING: asset_registry.py not found, using legacy mode")
 

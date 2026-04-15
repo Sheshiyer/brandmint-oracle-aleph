@@ -27,6 +27,8 @@ outputs into brand-config.yaml so visual prompts use strategy data.
 from __future__ import annotations
 
 import json
+import logging
+import re
 import signal
 import subprocess
 import sys
@@ -62,6 +64,9 @@ from ..cli.report import (
 )
 from .visual_backend import create_visual_backend
 from ..core.cache import get_prompt_cache
+from ..models.state_validator import load_state_safe, save_state_safe
+
+logger = logging.getLogger(__name__)
 
 # Estimated costs per provider (USD per image)
 PROVIDER_COSTS = {
@@ -159,6 +164,7 @@ class WaveExecutor:
             brand_dir=self.brand_dir,
             console=self.console,
         )
+        self._visual_bundle_prepared = False
         
         # Execution report
         self._report = ExecutionReport(
@@ -536,6 +542,19 @@ class WaveExecutor:
                 self._update_state(wave_num, aid, "visual_assets", "skipped")
             return False
 
+        if self._visual_backend.requires_script_path and not self._ensure_visual_bundle_ready(
+            script_path
+        ):
+            for aid in asset_ids:
+                self._update_state(
+                    wave_num,
+                    aid,
+                    "visual_assets",
+                    "failed",
+                    error="Visual bundle preparation failed",
+                )
+            return False
+
         # Group by batch.
         batches: Dict[str, List[str]] = {}
         for aid in asset_ids:
@@ -643,61 +662,38 @@ class WaveExecutor:
             )
             duration = round(time.monotonic() - start_ts, 1)
             self._record_batch_routing_decisions(batch_name=batch_name, wave_num=wave_num)
+            error_msg = (result.stderr or result.stdout or "").strip()[:300]
+            succeeded_asset_ids, failed_asset_ids = self._reconcile_batch_asset_results(
+                batch_name=batch_name,
+                batch_asset_ids=batch_asset_ids,
+                wave_num=wave_num,
+                duration=duration,
+                error_msg=error_msg,
+            )
 
-            if result.returncode == 0:
-                # Calculate cost for this batch
-                batch_cost = len(batch_asset_ids) * PROVIDER_COSTS.get(self._provider, 0.08)
-                
-                for aid in batch_asset_ids:
-                    asset_cost = PROVIDER_COSTS.get(self._provider, 0.08)
-                    self._actual_costs[aid] = asset_cost
-                    self._update_state(
-                        wave_num,
-                        aid,
-                        "visual_assets",
-                        "completed",
-                        duration_seconds=duration,
-                        cost_usd=asset_cost,
-                    )
-                    # Track in report
-                    self._report.assets.append(AssetExecution(
-                        asset_id=aid,
-                        batch=batch_name,
-                        status="success",
-                        provider=self._provider,
-                        cost_usd=asset_cost,
-                        duration_seconds=duration / len(batch_asset_ids),
-                    ))
-                
+            if not failed_asset_ids:
+                batch_cost = len(succeeded_asset_ids) * PROVIDER_COSTS.get(self._provider, 0.08)
                 self.console.print(
                     f"  [green]Batch '{batch_name}' completed "
                     f"({duration}s, ${batch_cost:.2f})[/green]"
                 )
                 return True
+
+            if succeeded_asset_ids:
+                self.console.print(
+                    f"  [yellow]Batch '{batch_name}' partially completed "
+                    f"({len(succeeded_asset_ids)}/{len(batch_asset_ids)} assets). "
+                    f"Completed: {', '.join(succeeded_asset_ids)} | "
+                    f"Missing: {', '.join(failed_asset_ids)}[/yellow]"
+                )
             else:
-                error_msg = (result.stderr or result.stdout or "")[:300]
-                for aid in batch_asset_ids:
-                    self._update_state(
-                        wave_num,
-                        aid,
-                        "visual_assets",
-                        "failed",
-                        error=error_msg,
-                    )
-                    self._report.assets.append(AssetExecution(
-                        asset_id=aid,
-                        batch=batch_name,
-                        status="failed",
-                        provider=self._provider,
-                        error=error_msg[:100],
-                    ))
                 self.console.print(
                     f"  [red]Batch '{batch_name}' failed "
                     f"(exit {result.returncode})[/red]"
                 )
-                if error_msg:
-                    self.console.print(f"  [dim]{error_msg}[/dim]")
-                return False
+            if error_msg:
+                self.console.print(f"  [dim]{error_msg}[/dim]")
+            return False
 
         except subprocess.TimeoutExpired:
             for aid in batch_asset_ids:
@@ -737,6 +733,162 @@ class WaveExecutor:
                 f"  [red]Batch '{batch_name}' error: {exc}[/red]"
             )
             return False
+
+    def _reconcile_batch_asset_results(
+        self,
+        *,
+        batch_name: str,
+        batch_asset_ids: List[str],
+        wave_num: int,
+        duration: float,
+        error_msg: str,
+    ) -> Tuple[List[str], List[str]]:
+        """Reconcile batch results against actual generated files.
+
+        Some provider-backed batches can partially succeed even when the batch
+        wrapper exits non-zero. We treat generated files as the source of truth
+        per asset so later waves can resume from the real artifact state.
+        """
+        asset_cost = PROVIDER_COSTS.get(self._provider, 0.08)
+        succeeded_asset_ids: List[str] = []
+        failed_asset_ids: List[str] = []
+
+        for aid in batch_asset_ids:
+            outputs = self._generated_visual_outputs(aid)
+            if outputs:
+                succeeded_asset_ids.append(aid)
+                self._actual_costs[aid] = asset_cost
+                self._update_state(
+                    wave_num,
+                    aid,
+                    "visual_assets",
+                    "completed",
+                    duration_seconds=duration,
+                    cost_usd=asset_cost,
+                )
+                self._report.assets.append(
+                    AssetExecution(
+                        asset_id=aid,
+                        batch=batch_name,
+                        status="success",
+                        provider=self._provider,
+                        cost_usd=asset_cost,
+                        duration_seconds=duration / max(len(batch_asset_ids), 1),
+                        file_path=str(outputs[0]),
+                    )
+                )
+                continue
+
+            failed_asset_ids.append(aid)
+            self._update_state(
+                wave_num,
+                aid,
+                "visual_assets",
+                "failed",
+                error=error_msg or "Batch did not produce expected output files",
+            )
+            self._report.assets.append(
+                AssetExecution(
+                    asset_id=aid,
+                    batch=batch_name,
+                    status="failed",
+                    provider=self._provider,
+                    error=(error_msg or "missing generated output")[:100],
+                )
+            )
+
+        return succeeded_asset_ids, failed_asset_ids
+
+    def _generated_visual_outputs(self, asset_id: str) -> List[Path]:
+        """Return generated files whose basename starts with the asset prefix."""
+        output_dir = self._resolve_visual_output_dir()
+        matches: List[Path] = []
+        for pattern in ("*.png", "*.svg", "*.webp"):
+            matches.extend(
+                path for path in output_dir.glob(pattern) if path.name.startswith(f"{asset_id}-")
+            )
+        return sorted(matches)
+
+    def _resolve_visual_output_dir(self) -> Path:
+        """Resolve the generated asset directory for the current brand config."""
+        output_subdir = (
+            str(self.config.get("generation", {}).get("output_dir", "generated")).strip()
+            or "generated"
+        )
+        brand_name = str(self.config.get("brand", {}).get("name", "")).strip()
+        brand_slug = re.sub(r"[^a-z0-9]+", "-", brand_name.lower()).strip("-")
+
+        candidates: List[Path] = []
+        if brand_slug:
+            candidates.append(self.brand_dir / brand_slug / output_subdir)
+        candidates.append(self.brand_dir / output_subdir)
+        if brand_name:
+            candidates.append(self.brand_dir / brand_name / output_subdir)
+
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate
+
+        return candidates[0] if candidates else (self.brand_dir / output_subdir)
+
+    def _ensure_visual_bundle_ready(self, script_path: Path) -> bool:
+        """Generate the per-brand visual script bundle once per execution run.
+
+        Fresh launches and resumed runs should not depend on a manually prepared
+        ``brand_slug/scripts`` folder. Regenerate the bundle from the approved
+        config before the first visual batch so Wave 3+ can run end-to-end.
+        """
+        if self._visual_bundle_prepared:
+            return True
+
+        python_executable = getattr(self._visual_backend, "python_executable", sys.executable)
+        timeout_seconds = int(
+            self.config.get("generation", {}).get("bundle_prepare_timeout_seconds", 300)
+        )
+        timeout_seconds = max(60, timeout_seconds)
+
+        self.console.print(
+            "  [cyan]Preparing visual bundle from approved config...[/cyan]"
+        )
+
+        try:
+            result = subprocess.run(
+                [
+                    python_executable,
+                    str(script_path),
+                    "generate",
+                    "--config",
+                    str(self.config_path),
+                ],
+                capture_output=True,
+                text=True,
+                timeout=timeout_seconds,
+            )
+        except subprocess.TimeoutExpired:
+            self.console.print(
+                "  [red]Visual bundle preparation timed out.[/red]"
+            )
+            return False
+        except Exception as exc:
+            self.console.print(
+                f"  [red]Visual bundle preparation error: {exc}[/red]"
+            )
+            return False
+
+        if result.returncode != 0:
+            error_msg = (result.stderr or result.stdout or "").strip()[:500]
+            self.console.print(
+                "  [red]Visual bundle preparation failed.[/red]"
+            )
+            if error_msg:
+                self.console.print(f"  [dim]{error_msg}[/dim]")
+            return False
+
+        self._visual_bundle_prepared = True
+        self.console.print(
+            "  [green]Visual bundle ready.[/green]"
+        )
+        return True
 
     # ------------------------------------------------------------------
     # Auto-hydration
@@ -850,8 +1002,17 @@ class WaveExecutor:
         """Resume from persisted state or create a fresh one."""
         if self.state_path.exists():
             try:
-                return ExecutionState.load(str(self.state_path))
-            except (json.JSONDecodeError, Exception) as exc:
+                state_data, was_repaired = load_state_safe(
+                    self.state_path,
+                    state_type="execution",
+                )
+                if was_repaired:
+                    self.console.print(
+                        "[yellow]Execution state was repaired and a corrupted backup was created.[/yellow]"
+                    )
+                return ExecutionState.model_validate(state_data)
+            except Exception as exc:
+                logger.warning("Failed to load execution state from %s: %s", self.state_path, exc)
                 self.console.print(
                     f"[yellow]Could not load state ({exc}), "
                     f"starting fresh.[/yellow]"
@@ -880,7 +1041,16 @@ class WaveExecutor:
     def _save_state(self) -> None:
         """Persist current execution state to disk."""
         self.state.updated_at = datetime.now().isoformat()
-        self.state.save(str(self.state_path))
+        saved = save_state_safe(
+            self.state.model_dump(),
+            self.state_path,
+            state_type="execution",
+        )
+        if not saved:
+            logger.error("Failed to save execution state to %s", self.state_path)
+            self.console.print(
+                "[yellow]Could not safely persist execution state; continuing with in-memory state.[/yellow]"
+            )
 
     def _is_wave_complete(self, wave_num: int) -> bool:
         """Return True when the given wave is marked completed in state."""

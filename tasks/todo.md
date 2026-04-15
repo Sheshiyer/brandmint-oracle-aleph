@@ -1,3 +1,222 @@
+## 2026-04-16 Issue #119 State File Validation Integration
+
+- [x] Audit current state load/save paths in executor + NotebookLM publisher
+- [x] Integrate `load_state_safe` / `save_state_safe` in executor state lifecycle
+- [x] Integrate `load_state_safe` / `save_state_safe` in NotebookLM publisher state lifecycle
+- [x] Surface repaired/corrupted state events clearly via existing console/logging channels
+- [x] Add focused tests for corrupted-state auto-repair, backup creation, and safe save/load behavior in integrated paths
+- [x] Run targeted pytest verification and record outcomes
+
+### Review
+
+- Integrated safe state load/save into:
+  - `brandmint/pipeline/executor.py` (`_load_or_create_state`, `_save_state`)
+  - `brandmint/publishing/notebooklm_publisher.py` (`_load_state`, `_save_state`, constructor load path)
+- Added compatibility/repair hardening in `brandmint/models/state_validator.py` so execution-state validation matches current `ExecutionState` shape (`brand`, `waves`, etc.) while preserving healthy files.
+- Added focused integration tests in `tests/test_state_validation_integration.py` for:
+  - healthy executor state preservation,
+  - corrupted executor state auto-repair + backup creation + notice surfacing,
+  - safe-save invocation for executor,
+  - corrupted NotebookLM state auto-repair + backup creation + notice surfacing,
+  - safe-save invocation for NotebookLM persistence path.
+- Verification commands:
+  - `pytest tests/test_state_validation_integration.py tests/test_notebooklm_publisher.py tests/test_wave_executor_visual_reconciliation.py -q`
+  - Result: `14 passed`.
+
+## 2026-04-16 Issue #118 Provider Fallback Chain Integration
+
+- [x] Review current visual backend provider selection + report metadata wiring
+- [x] Integrate fallback-order-aware provider retries in `brandmint/pipeline/visual_backend.py`
+- [x] Add fallback attempt summary rendering in `brandmint/cli/report.py`
+- [x] Add schema/docs support for `generation.fallback_order`
+- [x] Add focused tests for fallback usage + invalid `fallback_order` rejection
+- [x] Run targeted tests and record exact commands/results
+
+### Review
+
+- `SubprocessVisualExecutionBackend` now initializes a validated provider fallback order from `generation.fallback_order`, uses `ProviderFallbackChain` ordering, retries visual batch execution with per-attempt `IMAGE_PROVIDER`, and records per-batch attempt metadata.
+- Provider fallback metadata is now surfaced via backend routing rows (`provider_used`, `fallback_attempts`, `fallback_providers_tried`, `fallback_order`, `fallback_attempt_summary`) so execution reporting captures fallback behavior without broad executor refactors.
+- `brandmint/cli/report.py` now renders a dedicated **Provider Fallback Summary** in markdown/html outputs and exposes fallback summary counts in console output.
+- `assets/brand-config-schema.yaml` includes `generation.fallback_order` with valid provider values; `docs/providers.md` now documents launch-path fallback behavior and config override examples.
+- Verification:
+  - `pytest tests/test_visual_backend_fallback_chain.py -q` → `3 passed in 0.18s`
+  - `pytest tests/test_visual_backend.py -q` → `11 passed in 0.29s`
+
+## 2026-04-16 Next Wave Execution (Parallel)
+
+- [x] Lane A: Resolve/rebase PR `#116`, rerun checks, and merge or close with rationale
+- [x] Lane B: Triage issue `#66` with explicit owner + deadline, or close/defer with rationale
+- [x] Lane C: Batch-deliver `#118`, `#119`, `#120` as active release lane
+- [x] Verify outcomes (commands, checks, links) and record residual risks
+
+### Review
+
+- Lane A (`#116`):
+  - attempted rebase in isolated worktree (`git worktree add ...`, `git rebase origin/main`), hit repeated conflicts across `ui/src-tauri/src/lib.rs`, `ui/src-tauri/tauri.conf.json`, `CHANGELOG.md`, and `tasks/todo.md`;
+  - validated supersession evidence on `main` (`429710c`, `862fb35`) and confirmed issue `#113` already `CLOSED`;
+  - closed PR `#116` with rationale instead of forcing a high-risk conflict merge.
+- Lane B (`#66`):
+  - assigned owner via `gh issue edit 66 --add-assignee Sheshiyer`;
+  - deferred explicitly with deadline comment (`2026-05-15`) and re-evaluation rule.
+- Lane C (`#118`/`#119`/`#120`):
+  - implemented fallback chain integration in visual backend/reporting/schema/docs;
+  - integrated safe state load/save paths in executor + NotebookLM publisher;
+  - added resilience docs updates (`README.md`, `CHANGELOG.md`) and synced `docs/INTEGRATION_EXAMPLES.md`;
+  - added focused tests (`tests/test_visual_backend_fallback_chain.py`, `tests/test_state_validation_integration.py`);
+  - closed issues `#118`, `#119`, and `#120` with implementation and verification evidence.
+- Verification:
+  - `pytest tests/test_visual_backend_fallback_chain.py tests/test_visual_backend.py tests/test_state_validation_integration.py tests/test_notebooklm_publisher.py tests/test_wave_executor_visual_reconciliation.py -q`
+  - result: `28 passed`.
+- Post-execution GitHub state:
+  - `#116` closed,
+  - `#118/#119/#120` closed,
+  - open non-vision issue count reduced to `1` (`#66`),
+  - open PR count is `0`.
+- Residual risk:
+  - JSON parse-failure path in state validation currently falls back to default state without writing a corrupted backup file; backup creation is covered for schema-invalid-but-parseable JSON.
+
+## 2026-04-16 Repo Review (Vision-Upgrades Omitted)
+
+- [x] Review instructions, current task tracker, and scope assumptions
+- [x] Gather fresh repo state (issues, PRs, recent activity) for `Sheshiyer/brandmint-oracle-aleph`
+- [x] Exclude `vision-upgrade` items from issue analysis and compute actionable queue state
+- [x] Produce severity-ordered review findings with file/line evidence where applicable
+- [x] Add review notes and residual risks to this task file
+
+### Review
+
+- Scope interpreted as: review current GitHub repo execution state while explicitly omitting `vision-upgrade` issues from actionable analysis.
+- Verification evidence gathered:
+  - `gh issue list --repo Sheshiyer/brandmint-oracle-aleph --state all --limit 500 --json ...`
+  - `gh pr list --repo Sheshiyer/brandmint-oracle-aleph --state all --limit 200 --json ...`
+  - `gh pr view 116 --repo Sheshiyer/brandmint-oracle-aleph --json number,title,state,isDraft,mergeStateStatus,headRefOid,updatedAt,statusCheckRollup,url`
+  - `git log --date=iso --pretty=format:'%h|%ad|%an|%s' -n 30`
+- Current counts (latest snapshot):
+  - issues: `109` total (`47` open / `62` closed)
+  - open issues with `vision-upgrade`: `43`
+  - open actionable issues excluding `vision-upgrade`: `4` (`#66`, `#118`, `#119`, `#120`)
+  - pull requests: `11` total (`1` open / `10` merged)
+- Actionable queue health after omitting `vision-upgrade`:
+  - only one stale issue over 30 days: `#66` (last updated `2026-03-08`)
+  - three recently opened assigned issues (`#118`, `#119`, `#120`) from `2026-04-02`
+  - no open draft PRs
+- High-risk finding from active PR lane:
+  - PR `#116` is still open and stale (~38.5 days) with `mergeStateStatus=DIRTY`; despite one successful check run, it is conflicted and currently not merge-ready.
+- Residual risk:
+  - even excluding `vision-upgrade`, delivery is still partially blocked by the stale conflicted PR path (`#116`) and one unowned stale issue (`#66`).
+
+## 2026-04-05 NotebookLM Retry Hardening
+
+- [x] Review current retry behavior, lessons, and NotebookLM publisher/source-curator flow
+- [x] Add regression tests for targeted retry source reuse
+- [x] Patch NotebookLM targeted retries to reuse indexed notebook sources instead of rebuilding and re-uploading wiki sources
+- [x] Run focused verification on the publisher tests
+- [x] Add review notes with the retry-hardening outcome and residual risks
+
+### Review
+
+- Root cause confirmed:
+  - `bm publish notebooklm --artifacts ...` still runs `_build_sources()`, `SourceCurator`, `_upload_sources()`, and `_wait_for_indexing()` before artifact generation, even when reusing the existing notebook for a narrow retry.
+  - Once `wiki-output/` exists, the curator can pull those markdown pages into the 50-source set, causing noisy failed source-add attempts that are unrelated to the artifact retry itself.
+- Hardening shipped in `brandmint/publishing/notebooklm_publisher.py`:
+  - the publisher now tracks whether `publish()` is reusing an existing notebook,
+  - targeted retries only skip source rebuild/upload/indexing when all of these are true:
+    - `--artifacts` filter is active,
+    - `--force` is not active,
+    - the current notebook was reused rather than recreated,
+    - at least one source is already marked `indexed` in publisher state.
+  - in that safe retry path, the publisher prunes stale failed source entries from `state["sources"]` and rewrites `source_selection` from the remaining indexed set before artifact generation starts.
+- Regression coverage added in `tests/test_notebooklm_publisher.py`:
+  - targeted retries now fail the test suite if `_build_sources()`, `_upload_sources()`, or `_wait_for_indexing()` are called while reusing indexed sources.
+- Verification:
+  - `pytest tests/test_notebooklm_publisher.py -q` passed (`8` tests).
+- Residual risk:
+  - this change does not solve NotebookLM-side generation failures for `deck-presenter-full`, `video-explainer`, or `video-brief`; it only removes the unnecessary source re-upload step and cleans retry state so those retries are quieter and more reliable.
+
+## 2026-04-05 HeyZack Wiki Refresh + NotebookLM Retry
+
+- [x] Review current wiki source, site data, navigation, styles, and NotebookLM publish state
+- [x] Retry the failed NotebookLM artifacts (`deck-presenter-full`, `video-explainer`, `video-brief`)
+- [x] Refresh HeyZack wiki mappings, navigation labels, and page copy around the actual completed asset set
+- [x] Improve the HeyZack wiki visual system so the site matches the brand palette and smart-building aesthetic
+- [x] Rebuild the Astro wiki and verify the updated output
+- [x] Add review notes with the retry outcome, wiki changes, and residual gaps
+
+### Review
+
+- Targeted NotebookLM retry was re-run with:
+  - `bm publish notebooklm --config brandmint-run/heyzack-ai/brand-config.yaml --artifacts deck-presenter-full,video-explainer,video-brief`
+- Retry result:
+  - all three artifacts failed again at generation time,
+  - failure is reproducible in the current NotebookLM pipeline state,
+  - existing successful NotebookLM artifacts remain intact and reusable for the wiki refresh.
+- Portal refresh completed directly in `brandmint-run/heyzack-ai/wiki-site/src`:
+  - rewrote the home-page site data around the live HeyZack run instead of stale ZackAI/beta placeholder copy,
+  - reorganized navigation into `Portal`, `Product`, `Brand System`, `Audience`, `Market`, `Campaign`, and `Research`,
+  - rewrote the English docs pages so the portal no longer collapses into `_No source outputs were available_` placeholders,
+  - promoted the real `17`-asset mapping, including `APP-SCREENSHOT`, `PITCH-HERO`, and the active Wave `5` set,
+  - explicitly recorded the three still-missing NotebookLM artifacts in the research hub.
+- Visual system updates:
+  - replaced the old purple/warm default theme with the HeyZack blue-grey-pink palette,
+  - tightened the portal shell, hero, cards, and nav styling around a cleaner smart-building look,
+  - removed the broken locale toggle for this delivery and stopped publishing the stale `/fr/*` route branch.
+- Verification:
+  - `bun run build` passed in `brandmint-run/heyzack-ai/wiki-site`.
+  - built output now contains `/en/*` and unlocalized `/docs/*` routes only; `/fr/*` is no longer emitted.
+  - rendered output verification passed by inspecting `dist/en/index.html`, confirming the new hero copy, quick links, category nav, and HeyZack palette variables.
+  - local HTTP verification passed after serving `wiki-site/dist` on port `4280`; the server returned `200` for `/en/`, the CSS bundle, and the refreshed hero/highlight images.
+- Residual gaps:
+  - NotebookLM still cannot generate `deck-presenter-full`, `video-explainer`, or `video-brief` in the current state.
+  - The French source content still exists on disk, but it is no longer surfaced in the published site for this HeyZack delivery.
+
+## 2026-04-04 HeyZack Pipeline Review + Full Rerun
+
+- [x] Review project instructions, current task notes, and lessons
+- [x] Audit the HeyZack config, current generated files, and live pipeline code paths
+- [x] Confirm the current tag-based mapping inventory for references + template variants
+- [x] Patch the launch flow so Wave 3+ visual execution can self-bootstrap from a fresh config
+- [x] Patch any legacy product/template prompt paths that can hallucinate the wrong asset semantics
+- [x] Patch supplementary-reference selection so generic scripted example refs cannot be reused when they do not match the current brand/product context
+- [x] Enforce explicit asset exclusions in both script generation and wave planning so HeyZack does not regenerate Recraft/icon lanes
+- [x] Rebuild the HeyZack generated bundle from the approved config
+- [x] Run the pipeline from Wave 1 through the available end-to-end path and capture evidence
+- [x] Add review notes with findings, fixes, outputs, and residual risks
+
+### Review
+
+- Confirmed review findings and fixes so far:
+  - Fixed Wave 3+ bootstrap drift: `bm launch` now regenerates the per-brand visual bundle from the approved config before the first visual batch, so a fresh run no longer depends on pre-existing scripts.
+  - Fixed false-success execution: `scripts/run_pipeline.py execute` now exits non-zero when a batch finishes without the expected output files.
+  - Fixed Wave 5 mixed-batch state handling: the executor now reconciles batch results per asset from actual generated files instead of flattening the whole batch to failed.
+  - Fixed a product-semantic prompt drift: HeyZack `8A` now uses the `system_presence` variant instead of the generic `"The Seeker"` portrait path.
+  - Fixed a hidden Recraft prompt-limit bug: the illustration generator no longer appends extra suffix text after truncating `5A`/`5C`, which previously pushed both prompts over FAL Recraft's `1000`-character cap.
+- Current inventory confirmation:
+  - `160` semantic reference-catalog entries in `references/reference-catalog.yaml`
+  - `52` template variants across `13` asset groups in `assets/template-variants.yaml`
+  - combined mapping surface: `212`
+- User correction recorded:
+  - HeyZack should not keep the legacy Recraft/icon lane in scope. The next rerun must remove those assets/providers from the active run plan before attempting the remaining waves.
+- New root-cause finding for the recurring drift:
+  - HeyZack generated scripts still embed generic `SUPP_REFS` because the supplementary-ref selector does not require any brand/product relevance; it falls back to aesthetic similarity and reuses legacy Twitter/style examples.
+  - `generate-illustrations.py` also ignores the selected asset registry and emits `5A`/`5C` unconditionally, so exclusions were not fully enforceable even after domain-aware planning.
+- Verification completed for the new fix:
+  - `pytest tests/test_reference_selection_and_asset_exclusions.py tests/test_generate_pipeline_spec_lock.py tests/test_wave_executor_visual_reconciliation.py tests/test_visual_backend.py` passed (`20` tests).
+  - Regenerated HeyZack in-place with `python3 scripts/generate_pipeline.py brandmint-run/heyzack-ai/brand-config.yaml`.
+  - The regenerated `brandmint-run/heyzack-ai/heyzack/generation-manifest.json` now excludes `APP-ICON`, `5A`, and `5C`; Wave 5 is limited to `5B`, `7A`, `8A`, `OG-IMAGE`, `TWITTER-HEADER`, and `IG-STORY`.
+  - The regenerated `brandmint-run/heyzack-ai/heyzack/scripts/generate-anchor.py` now emits `SUPP_REFS = {}` for HeyZack, so no generic scripted example images are injected.
+  - The regenerated `brandmint-run/heyzack-ai/heyzack/scripts/generate-illustrations.py` now executes only `5B`; there are no `5A`/`5C` prompt definitions or Recraft calls left in the active script body.
+- Clean rerun evidence:
+  - Archived stale state and outputs to `brandmint-run/heyzack-ai/run-archive-20260404-151743`, preserving the old `5A`, `5C`, and `APP-ICON` artifacts outside the active run.
+  - A fresh `bm launch --config brandmint-run/heyzack-ai/brand-config.yaml --scenario custom-hybrid --waves 1-8 --non-interactive` hit a provider-side Wave `3` adapter failure inside sandboxed execution; rerunning live with `bm launch --config brandmint-run/heyzack-ai/brand-config.yaml --scenario custom-hybrid --resume-from 3 --non-interactive` completed successfully through Wave `8`.
+  - Final state is now clean in `brandmint-run/heyzack-ai/.brandmint-state.json`: Waves `1`-`8` all show `completed`.
+  - Active generated output contains no `5A`, `5C`, or `APP-ICON` files; those excluded assets exist only in the archive path.
+  - Final active manifest remains aligned with the fix: `17` assets total, with Wave `5` limited to `5B`, `7A`, `8A`, `OG-IMAGE`, `TWITTER-HEADER`, and `IG-STORY`.
+  - NotebookLM publishing executed against the manifest-only image set and created notebook `e659ab03-9c01-4c49-a8ed-837f628c4494`.
+  - NotebookLM downloaded `20` artifact files into `brandmint-run/heyzack-ai/deliverables/notebooklm/artifacts`, including decks, audio, reports, quizzes, flashcards, infographics, and comparison tables.
+  - NotebookLM still failed three artifacts in `publish-report.json`: `deck-presenter-full`, `video-explainer`, and `video-brief`.
+  - Wave `8` completed after publishing and built the Astro wiki successfully at `brandmint-run/heyzack-ai/wiki-site/dist`.
+  - Residual risk is now narrowed to those three failed NotebookLM artifact types; the original recurring image-drift problem did not reappear in the live rerun.
+
 ## 2026-04-03 Upgraded Brandmint Pipeline Run
 
 - [x] Review project instructions, lessons, and Brandmint pipeline contract

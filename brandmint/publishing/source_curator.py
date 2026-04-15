@@ -45,7 +45,7 @@ IMAGE_CATEGORY_MAP: Dict[str, tuple] = {
     "5C": ("visual", 70, "Art panel"),
     "5D": ("visual", 66, "Icon set"),
     "7A": ("product", 60, "Contact sheet"),
-    "8A": ("campaign", 58, "Seeker poster"),
+    "8A": ("campaign", 58, "Brand presence poster"),
     "9A": ("campaign", 55, "Display poster"),
     "10A": ("campaign", 52, "Narrative sequence — artisan"),
     "10B": ("campaign", 52, "Narrative sequence — custodian"),

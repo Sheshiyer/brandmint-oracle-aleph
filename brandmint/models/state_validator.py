@@ -21,8 +21,11 @@ logger = logging.getLogger(__name__)
 EXECUTION_STATE_SCHEMA = {
     "type": "object",
     "properties": {
+        "brand": {"type": ["string", "null"]},
         "scenario": {"type": ["string", "null"]},
-        "wave_states": {
+        "started_at": {"type": ["string", "null"]},
+        "updated_at": {"type": ["string", "null"]},
+        "waves": {
             "type": "object",
             "patternProperties": {
                 "^[0-9]+$": {
@@ -30,21 +33,16 @@ EXECUTION_STATE_SCHEMA = {
                     "properties": {
                         "status": {
                             "type": "string",
-                            "enum": ["pending", "in_progress", "completed", "failed", "skipped"]
+                            "enum": ["pending", "in_progress", "completed", "failed", "skipped"],
                         },
-                        "started_at": {"type": ["string", "null"]},
-                        "completed_at": {"type": ["string", "null"]},
-                        "skill_outputs": {"type": "object"},
+                        "text_skills": {"type": "object"},
+                        "visual_assets": {"type": "object"},
                     },
-                    "required": ["status"],
                 }
-            }
+            },
         },
-        "completed_skills": {"type": "array", "items": {"type": "string"}},
-        "failed_skills": {"type": "array", "items": {"type": "string"}},
-        "last_checkpoint": {"type": ["string", "null"]},
     },
-    "required": ["wave_states"],
+    "required": ["brand", "waves"],
 }
 
 NOTEBOOKLM_STATE_SCHEMA = {
@@ -183,34 +181,54 @@ class StateValidator:
         # Auto-repair: create minimal valid state
         logger.warning(f"Invalid execution state: {error}. Attempting repair...")
         
+        valid_statuses = {"pending", "in_progress", "completed", "failed", "skipped"}
         repaired = {
-            "scenario": state.get("scenario"),
-            "wave_states": {},
-            "completed_skills": [],
-            "failed_skills": [],
-            "last_checkpoint": None,
+            "brand": state.get("brand") if isinstance(state.get("brand"), str) else "unknown",
+            "scenario": state.get("scenario") if isinstance(state.get("scenario"), str) else None,
+            "started_at": state.get("started_at") if isinstance(state.get("started_at"), str) else None,
+            "updated_at": datetime.now().isoformat(),
+            "waves": {},
         }
-        
-        # Try to preserve wave states
-        if isinstance(state.get("wave_states"), dict):
+
+        # Try to preserve current wave format used by ExecutionState.
+        if isinstance(state.get("waves"), dict):
+            for wave_num, wave_state in state["waves"].items():
+                if not isinstance(wave_state, dict):
+                    continue
+                sanitized = dict(wave_state)
+                status = wave_state.get("status", "pending")
+                sanitized["status"] = status if status in valid_statuses else "pending"
+                sanitized["text_skills"] = (
+                    wave_state.get("text_skills")
+                    if isinstance(wave_state.get("text_skills"), dict)
+                    else {}
+                )
+                sanitized["visual_assets"] = (
+                    wave_state.get("visual_assets")
+                    if isinstance(wave_state.get("visual_assets"), dict)
+                    else {}
+                )
+                repaired["waves"][str(wave_num)] = sanitized
+
+        # Backward-compatibility: preserve legacy "wave_states" if present.
+        elif isinstance(state.get("wave_states"), dict):
             for wave_num, wave_state in state["wave_states"].items():
-                if isinstance(wave_state, dict):
-                    repaired["wave_states"][str(wave_num)] = {
-                        "status": wave_state.get("status", "pending"),
-                        "started_at": wave_state.get("started_at"),
-                        "completed_at": wave_state.get("completed_at"),
-                        "skill_outputs": wave_state.get("skill_outputs", {}),
-                    }
-        
-        # Preserve skill lists
-        if isinstance(state.get("completed_skills"), list):
-            repaired["completed_skills"] = [
-                s for s in state["completed_skills"] if isinstance(s, str)
-            ]
-        if isinstance(state.get("failed_skills"), list):
-            repaired["failed_skills"] = [
-                s for s in state["failed_skills"] if isinstance(s, str)
-            ]
+                if not isinstance(wave_state, dict):
+                    continue
+                status = wave_state.get("status", "pending")
+                repaired["waves"][str(wave_num)] = {
+                    "status": status if status in valid_statuses else "pending",
+                    "text_skills": (
+                        wave_state.get("text_skills")
+                        if isinstance(wave_state.get("text_skills"), dict)
+                        else {}
+                    ),
+                    "visual_assets": (
+                        wave_state.get("visual_assets")
+                        if isinstance(wave_state.get("visual_assets"), dict)
+                        else {}
+                    ),
+                }
         
         logger.info("State repaired successfully")
         return False, error, repaired
@@ -234,9 +252,13 @@ class StateValidator:
         logger.warning(f"Invalid NotebookLM state: {error}. Attempting repair...")
         
         repaired = {
-            "notebook_id": state.get("notebook_id"),
-            "notebook_fingerprint": state.get("notebook_fingerprint"),
-            "notebook_url": state.get("notebook_url"),
+            "notebook_id": state.get("notebook_id") if isinstance(state.get("notebook_id"), str) else None,
+            "notebook_fingerprint": (
+                state.get("notebook_fingerprint")
+                if isinstance(state.get("notebook_fingerprint"), str)
+                else None
+            ),
+            "notebook_url": state.get("notebook_url") if isinstance(state.get("notebook_url"), str) else None,
             "sources_uploaded": [],
             "artifacts_generated": {},
             "last_updated": datetime.now().isoformat(),
@@ -253,12 +275,36 @@ class StateValidator:
             for artifact_id, artifact_data in state["artifacts_generated"].items():
                 if isinstance(artifact_data, dict):
                     repaired["artifacts_generated"][artifact_id] = {
-                        "id": artifact_data.get("id", artifact_id),
-                        "status": artifact_data.get("status", "unknown"),
-                        "artifact_id": artifact_data.get("artifact_id"),
-                        "local_path": artifact_data.get("local_path"),
-                        "submitted_at": artifact_data.get("submitted_at"),
-                        "completed_at": artifact_data.get("completed_at"),
+                        "id": (
+                            artifact_data.get("id")
+                            if isinstance(artifact_data.get("id"), str)
+                            else str(artifact_id)
+                        ),
+                        "status": (
+                            artifact_data.get("status")
+                            if isinstance(artifact_data.get("status"), str)
+                            else "unknown"
+                        ),
+                        "artifact_id": (
+                            artifact_data.get("artifact_id")
+                            if isinstance(artifact_data.get("artifact_id"), str)
+                            else None
+                        ),
+                        "local_path": (
+                            artifact_data.get("local_path")
+                            if isinstance(artifact_data.get("local_path"), str)
+                            else None
+                        ),
+                        "submitted_at": (
+                            artifact_data.get("submitted_at")
+                            if isinstance(artifact_data.get("submitted_at"), str)
+                            else None
+                        ),
+                        "completed_at": (
+                            artifact_data.get("completed_at")
+                            if isinstance(artifact_data.get("completed_at"), str)
+                            else None
+                        ),
                     }
         
         logger.info("NotebookLM state repaired successfully")

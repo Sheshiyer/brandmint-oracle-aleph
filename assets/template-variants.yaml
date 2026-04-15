@@ -776,7 +776,7 @@ variants:
   # ═══════════════════════════════════════════════════════════════════════
 
   8A:
-    name: "Seeker Poster"
+    name: "Brand Presence Poster"
     default: seeker_split
     variants:
       seeker_split:
@@ -814,6 +814,23 @@ variants:
           composition_approach: "Figure surrounded by brand materials — {materials_list} arranged around them as if drawn by gravity. The seeker is of this material world, inseparable from it. "
           split_style: "SPLIT OVERRIDE: LEFT HALF figure in material abundance — all textures visible, craft materials touching the figure. RIGHT HALF the materials' invisible life — their origin stories as flowing organic forms. "
           atmosphere: "Material ancestry, seeker as keeper of craft wisdom across generations."
+
+      system_presence:
+        description: "Hero product/system poster — installed reality on the left, spatial intelligence on the right"
+        aesthetic_tags:
+          composition_density: [moderate, dense]
+          temporal_register: [contemporary, speculative]
+          material_richness: [minimal, synthetic, natural]
+          visual_boldness: [bold, architectural]
+          editorial_vs_commercial: [editorial, commercial]
+        template_variables:
+          title_text: "SYSTEM INTELLIGENCE"
+          composition_approach: "Approved hero system staged as an architectural artifact — no human portrait, no symbolic character insert. "
+          subject_directive: "Approved hero subject only: {product_hero_physical}. Installed or staged in a believable architectural context. Centered, calm, and dominant in frame."
+          split_style: "SPLIT OVERRIDE: LEFT HALF installed material reality — real device presence, real surfaces, believable room context. RIGHT HALF invisible system intelligence — automation topology, energy pathways, and control layers mapped across space. "
+          left_half_detail: "tempered-glass surfaces, refined hardware edges, {hero_surface}, {photo_environment} visible behind."
+          right_half_detail: "engineering nodes at device edges, room-to-room routing, climate/access/lighting/energy signals mapped across the environment."
+          atmosphere: "Architectural control made visible, product intelligence rendered as spatial calm."
 
       shadow_silhouette:
         description: "Pure silhouette — exterior simplicity, interior filled with brand visual vocabulary"

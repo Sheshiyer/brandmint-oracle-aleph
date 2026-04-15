@@ -7,7 +7,7 @@
 <!-- readme-gen:start:badges -->
 <p align="center">
   <a href="https://pypi.org/project/brandmint/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white"></a>
-  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.4.0-1f883d?style=flat-square"></a>
+  <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.5.0-1f883d?style=flat-square"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest"><img alt="Latest GitHub Release" src="https://img.shields.io/github/v/release/Sheshiyer/brandmint-oracle-aleph?style=flat-square&logo=github"></a>
   <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.4.0-6f42c1?style=flat-square"></a>
   <a href="https://brandmint-openclaw.vercel.app"><img alt="OpenClaw Integration" src="https://img.shields.io/badge/OpenClaw-Integrated-0ea5e9?style=flat-square&logo=github&logoColor=white"></a>
@@ -40,6 +40,23 @@
 - **Vision intelligence** *(coming soon)*: CLIP embeddings, pixel feature extraction, and Gemini Vision for true image understanding.
 - **Agent-friendly**: non-interactive mode for CI/desktop/API contexts.
 - **OpenClaw integration**: documentation and orchestration flows are aligned for OpenClaw-powered agent setups.
+
+## Resilience Features
+
+Brandmint now includes two built-in resilience protections in the active pipeline path:
+
+- **Provider fallback chain in visual execution**: script-backed visual batches retry across providers using `generation.fallback_order` until one succeeds.
+- **Safe state persistence and auto-repair**: execution and NotebookLM state files are validated on load/save; corrupted files are repaired with backup snapshots.
+
+```yaml
+generation:
+  provider: fal
+  fallback_order: [fal, replicate, openrouter, openai, inference]
+```
+
+Relevant docs:
+- [docs/providers.md](./docs/providers.md)
+- [docs/INTEGRATION_EXAMPLES.md](./docs/INTEGRATION_EXAMPLES.md)
 
 ## Quick Start
 

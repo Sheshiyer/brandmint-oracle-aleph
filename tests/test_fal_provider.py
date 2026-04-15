@@ -509,6 +509,11 @@ class TestExistingModelsUnchanged:
             negative_prompt="",
             guidance_scale=7.5,
             num_steps=50,
+            colors=["#243984", "#E82F89"],
         )
         assert args["prompt"] == "illustration"
         assert args["style"] == "digital_illustration"
+        assert args["colors"] == [
+            {"r": 36, "g": 57, "b": 132},
+            {"r": 232, "g": 47, "b": 137},
+        ]
