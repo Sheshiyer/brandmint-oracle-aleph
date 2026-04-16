@@ -1,6 +1,6 @@
 [package]
 name = "brandmint-app"
-version = "4.4.1"
+version = "5.0.1"
 description = "Brandmint — Unified brand orchestration desktop app"
 authors = ["Sheshiyer"]
 license = "MIT"

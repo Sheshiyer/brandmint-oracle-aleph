@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [4.4.1] - 2026-04-16
+## [5.0.1] - 2026-04-16
 
 ### Added
 - Signed macOS bootstrap release artifacts for the Tauri desktop app:
-  - `Brandmint_4.4.1_macos-aarch64.dmg`
-  - `Brandmint_4.4.1_macos-aarch64.app.zip`
+  - `Brandmint_5.0.1_macos-aarch64.dmg`
+  - `Brandmint_5.0.1_macos-aarch64.app.zip`
   - `Brandmint.app.tar.gz`
   - `Brandmint.app.tar.gz.sig`
   - `latest.json`
@@ -25,10 +25,10 @@ All notable changes to this project will be documented in this file.
 - Brandmint desktop updater now trusts the new Brandmint-specific signing key and targets the custom Cloudflare updater hostname with R2 fallback support.
 - Local Tauri builds now auto-load both `~/.tauri/brandmint.key` and `~/.tauri/brandmint.key.password` for unattended signed desktop builds.
 - `README.md` now documents resilience features, desktop bootstrap release behavior, and current updater release channels.
-- Release-facing docs now describe the `4.4.1` bootstrap rollout and asset set consistently.
+- Release-facing docs now describe the `5.0.1` bootstrap rollout and asset set consistently.
 
 ### Release Notes
-- `4.4.1` is a bootstrap desktop release because the updater trust root rotated.
+- `5.0.1` is a bootstrap desktop release because the updater trust root rotated.
 - Existing desktop installs must manually reinstall from the DMG or `.app.zip` once before future OTA releases can update on the new signing key.
 
 ## [4.3.0] - 2026-02-28

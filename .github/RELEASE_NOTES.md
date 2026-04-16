@@ -1,12 +1,12 @@
 # Release Notes
 
-## What's New in v4.4.1
+## What's New in v5.0.1
 
 ### Bootstrap Desktop Release
-- **One-time manual reinstall release** — `v4.4.1` rotates the Brandmint desktop updater trust root, so existing installs need one manual reinstall before future OTA updates can continue normally.
+- **One-time manual reinstall release** — `v5.0.1` rotates the Brandmint desktop updater trust root, so existing installs need one manual reinstall before future OTA updates can continue normally.
 - **Prepared macOS release assets** — GitHub release payload should include:
-  - `Brandmint_4.4.1_macos-aarch64.dmg`
-  - `Brandmint_4.4.1_macos-aarch64.app.zip`
+  - `Brandmint_5.0.1_macos-aarch64.dmg`
+  - `Brandmint_5.0.1_macos-aarch64.app.zip`
   - `Brandmint.app.tar.gz`
   - `Brandmint.app.tar.gz.sig`
   - `latest.json`

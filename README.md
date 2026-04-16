@@ -9,7 +9,7 @@
   <a href="https://pypi.org/project/brandmint/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white"></a>
   <a href="./pyproject.toml"><img alt="Codebase Version" src="https://img.shields.io/badge/codebase-v4.5.0-1f883d?style=flat-square"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest"><img alt="Latest GitHub Release" src="https://img.shields.io/github/v/release/Sheshiyer/brandmint-oracle-aleph?style=flat-square&logo=github"></a>
-  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v4.4.1-6f42c1?style=flat-square"></a>
+  <a href="./.github/RELEASE_NOTES.md"><img alt="Release Notes" src="https://img.shields.io/badge/release_notes-v4.0~v5.0.1-6f42c1?style=flat-square"></a>
   <a href="https://brandmint-openclaw.vercel.app"><img alt="OpenClaw Integration" src="https://img.shields.io/badge/OpenClaw-Integrated-0ea5e9?style=flat-square&logo=github&logoColor=white"></a>
   <a href="https://github.com/Sheshiyer/brandmint-oracle-aleph/pkgs/container/brandmint"><img alt="GHCR Package" src="https://img.shields.io/badge/GHCR-package-blue?style=flat-square&logo=docker&logoColor=white"></a>
   <a href="./ui/"><img alt="Desktop App" src="https://img.shields.io/badge/Desktop-Tauri_v2-FFC131?style=flat-square&logo=tauri&logoColor=white"></a>
@@ -268,7 +268,7 @@ Every pipeline run generates a complete brand asset suite. Here's what a single 
 - **v4.3.0** — Semantic reference matching: 4-gate pipeline, 5 new semantic metadata fields on 138 catalog entries, 5D icon removal, 3A/3B/4B migrated to Nano Banana Pro, `brandmint[vision]` + `brandmint[embeddings]` optional dependency groups, 43-task vision upgrade roadmap (issues #9-#51).
 - **v4.3.1** — Twitter sync pipeline: automated community prompt discovery via bird CLI, AmirMushich tracking with per-account overrides, unified `twitter_sync_all.sh` runner, launchd weekly automation, 73 curated references from 41 contributors, rebuilt reference catalog (160 entries).
 - **v4.4.0** — Full NotebookLM artifact matrix: 23 artifacts across all 9 types (was 5), LLM prose synthesis for source documents, 5-phase parallel execution engine (~35 min wall clock), brand archetype-matched video styles, configurable artifact filtering and parallelism, Tauri v2 Phase 1 shell prototype, removed local generators (Remotion/Marp/report/diagram).
-- **v4.4.1** *(current bootstrap desktop release)* — Provider fallback chain + safe state validation, Brandmint-specific signed updater trust root, custom OTA path at `brandmintupdates.thoughtseed.space`, and prepared manual-install assets (`.dmg` + `.app.zip`) for the one-time desktop bootstrap reinstall.
+- **v5.0.1** *(current bootstrap desktop release)* — Provider fallback chain + safe state validation, Brandmint-specific signed updater trust root, custom OTA path at `brandmintupdates.thoughtseed.space`, and prepared manual-install assets (`.dmg` + `.app.zip`) for the one-time desktop bootstrap reinstall.
 
 See: [GitHub Releases](https://github.com/Sheshiyer/brandmint-oracle-aleph/releases) and [repo release notes](./.github/RELEASE_NOTES.md).
 
@@ -291,9 +291,9 @@ Brandmint includes a native desktop app built with **Tauri v2** (Rust backend + 
 
 **Phase 1 (current):** Shell and sidecar prototype — Tauri window embeds the `bm` CLI as a sidecar process, with a React UI for config loading, wave selection, and live pipeline output streaming.
 
-**Current desktop release line:** `v4.4.1` is a bootstrap desktop release. Manual-install assets are prepared as `Brandmint_4.4.1_macos-aarch64.dmg` and `Brandmint_4.4.1_macos-aarch64.app.zip`, while the OTA payload is staged at `https://brandmintupdates.thoughtseed.space/bootstrap/latest.json`.
+**Current desktop release line:** `v5.0.1` is a bootstrap desktop release. Manual-install assets are prepared as `Brandmint_5.0.1_macos-aarch64.dmg` and `Brandmint_5.0.1_macos-aarch64.app.zip`, while the OTA payload is staged at `https://brandmintupdates.thoughtseed.space/bootstrap/latest.json`.
 
-**Important:** the updater trust root changed for Brandmint desktop. Existing pre-`4.4.1` installs need one manual reinstall from the DMG or `.app.zip`; later OTA releases can then continue on the new signing key.
+**Important:** the updater trust root changed for Brandmint desktop. Existing pre-`5.0.1` installs need one manual reinstall from the DMG or `.app.zip`; later OTA releases can then continue on the new signing key.
 
 ```bash
 # Development
