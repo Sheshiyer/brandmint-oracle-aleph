@@ -1,3 +1,4 @@
+import { getVersion } from "@tauri-apps/api/app";
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   abortPipelineRun,
@@ -12,6 +13,7 @@ import {
   listenEvent,
   loadIntake as apiLoadIntake,
   readArtifact,
+  restartSidecar,
   retryPipelineRun,
   saveConfigDocument,
   startPipelineRun,
@@ -30,6 +32,11 @@ import {
   semanticConfigToDraft,
 } from "./lib/brandConfig";
 import type { ConfigApproval, ConfigDraft, ExtractedDraft, ReviewSummary } from "./lib/brandConfig";
+import {
+  fetchDesktopUpdate,
+  installPendingDesktopUpdate,
+  type DesktopUpdateMetadata,
+} from "./lib/updater";
 
 type RunState = "idle" | "running" | "retrying" | "aborted";
 
@@ -694,7 +701,13 @@ export default function App() {
   const [preferences, setPreferences] = useState<AppPreferences>(DEFAULT_PREFERENCES);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [logSearchQuery, setLogSearchQuery] = useState("");
-  const [updateAvailable, setUpdateAvailable] = useState<string | null>(null);
+  const [availableUpdate, setAvailableUpdate] = useState<DesktopUpdateMetadata | null>(null);
+  const [updateState, setUpdateState] = useState<"idle" | "checking" | "available" | "up-to-date" | "installing" | "installed" | "error">("idle");
+  const [updateError, setUpdateError] = useState<string | null>(null);
+  const [updateProgress, setUpdateProgress] = useState<{ downloaded: number; contentLength: number | null } | null>(null);
+  const [updateLastCheckedAt, setUpdateLastCheckedAt] = useState<string | null>(null);
+  const [bridgeRestarting, setBridgeRestarting] = useState(false);
+  const [runtimeProductVersion, setRuntimeProductVersion] = useState(PRODUCT_VERSION);
   const [pageTransitionKey, setPageTransitionKey] = useState(0);
   const [selectedOutputFile, setSelectedOutputFile] = useState<string | null>(null);
   const [outputViewerData, setOutputViewerData] = useState<unknown | null>(null);
@@ -708,6 +721,25 @@ export default function App() {
 
   const lastLogIdRef = useRef(0);
   const outputAbortRef = useRef<AbortController | null>(null);
+  const updateAvailable = availableUpdate?.version ?? null;
+  const currentDesktopVersion = runtimeProductVersion || PRODUCT_VERSION;
+  const updateStatusLabel =
+    updateState === "checking"
+      ? "checking"
+      : updateState === "available"
+        ? `ready: v${availableUpdate?.version ?? "unknown"}`
+        : updateState === "up-to-date"
+          ? "up to date"
+          : updateState === "installing"
+            ? "installing"
+            : updateState === "installed"
+              ? "installed"
+              : updateState === "error"
+                ? "error"
+                : "idle";
+  const updateProgressLabel = updateProgress
+    ? `${bytesToHuman(updateProgress.downloaded)} / ${updateProgress.contentLength ? bytesToHuman(updateProgress.contentLength) : "unknown size"}`
+    : null;
 
   const processPages = useMemo(() => buildProcessPages(), []);
 
@@ -1405,25 +1437,6 @@ export default function App() {
     try { localStorage.setItem(PREFS_KEY, JSON.stringify(preferences)); } catch { /* noop */ }
   }, [preferences]);
 
-  // ── #15 Auto-update check ──
-  useEffect(() => {
-    const checkUpdate = async () => {
-      try {
-        const res = await fetch("https://api.github.com/repos/Sheshiyer/brandmint-oracle-aleph/releases/latest", {
-          headers: { Accept: "application/vnd.github.v3+json" },
-        });
-        if (!res.ok) return;
-        const data = await res.json();
-        const latest = (data.tag_name || "").replace(/^v/, "");
-        const current = PRODUCT_VERSION;
-        if (latest && latest !== current && latest > current) {
-          setUpdateAvailable(latest);
-        }
-      } catch { /* noop */ }
-    };
-    checkUpdate();
-  }, []);
-
   // ── #7 Native file dialog helper ──
   async function openFileDialog(title: string, filters: { name: string; extensions: string[] }[]) {
     try {
@@ -1835,6 +1848,118 @@ export default function App() {
     }
   }
 
+  async function checkForUpdates(options?: { manual?: boolean }) {
+    const manual = Boolean(options?.manual);
+    setUpdateState("checking");
+    setUpdateError(null);
+    setUpdateProgress(null);
+
+    try {
+      const update = await fetchDesktopUpdate();
+      setUpdateLastCheckedAt(new Date().toISOString());
+      setAvailableUpdate(update);
+      if (update?.currentVersion) {
+        setRuntimeProductVersion(update.currentVersion);
+      }
+
+      if (update) {
+        setUpdateState("available");
+        setStatusMessage(`Update v${update.version} is ready to install.`);
+        if (manual) {
+          showToast(`Update v${update.version} available`, "info");
+        }
+      } else {
+        setUpdateState("up-to-date");
+        setStatusMessage(`Brandmint Desktop v${currentDesktopVersion} is current.`);
+        if (manual) {
+          showToast("Brandmint is already up to date", "success");
+        }
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown update check failure";
+      setUpdateState("error");
+      setUpdateError(message);
+      if (manual) {
+        showToast(`Update check failed: ${message}`, "error");
+      }
+    }
+  }
+
+  async function installAvailableUpdate() {
+    if (!availableUpdate || updateState === "installing") {
+      return;
+    }
+
+    setUpdateState("installing");
+    setUpdateError(null);
+    setUpdateProgress({ downloaded: 0, contentLength: null });
+    setStatusMessage(`Installing Brandmint v${availableUpdate.version}…`);
+
+    try {
+      await installPendingDesktopUpdate();
+      setUpdateState("installed");
+      setStatusMessage(`Installed Brandmint v${availableUpdate.version}. Restarting…`);
+      showToast(`Installed v${availableUpdate.version}. Restarting…`, "success");
+      const { relaunch } = await import("@tauri-apps/plugin-process");
+      await relaunch();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown update install failure";
+      setUpdateState("error");
+      setUpdateError(message);
+      showToast(`Update install failed: ${message}`, "error");
+    }
+  }
+
+  async function triggerBridgeRestart(fromSettings = false) {
+    if (bridgeRestarting) return;
+    setBridgeRestarting(true);
+    showToast(bridgeOnline ? "Restarting bridge…" : "Starting bridge…", "info");
+    try {
+      await restartSidecar();
+      setStatusMessage(bridgeOnline ? "Bridge restart requested." : "Bridge start requested.");
+      showToast(
+        fromSettings
+          ? bridgeOnline
+            ? "Bridge restart requested from Settings"
+            : "Bridge start requested from Settings"
+          : bridgeOnline
+            ? "Bridge restart requested"
+            : "Bridge start requested",
+        "success",
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown bridge restart failure";
+      showToast(`Bridge action failed: ${message}`, "error");
+    } finally {
+      setBridgeRestarting(false);
+    }
+  }
+
+  useEffect(() => {
+    void checkForUpdates();
+  }, []);
+
+  useEffect(() => {
+    if (!isTauri()) {
+      return;
+    }
+
+    let cancelled = false;
+    void getVersion()
+      .then((version) => {
+        if (!cancelled && version) {
+          setRuntimeProductVersion(version);
+        }
+      })
+      .catch(() => {
+        // Ignore runtime version lookup failure and keep config fallback.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   useEffect(() => {
     let disposed = false;
     let timer: ReturnType<typeof setInterval> | null = null;
@@ -1896,6 +2021,58 @@ export default function App() {
           return;
         }
         unlistenFns.push(offLog);
+
+        const offUpdater = await listenEvent("updater-status", (payload) => {
+          if (disposed || typeof payload !== "object" || payload === null) return;
+          const event = (payload as { event?: string }).event;
+          const data = (payload as { data?: Record<string, unknown> }).data || {};
+
+          if (event === "checking") {
+            if (typeof data.currentVersion === "string" && data.currentVersion) {
+              setRuntimeProductVersion(data.currentVersion);
+            }
+            setUpdateState("checking");
+            setUpdateError(null);
+          } else if (event === "available") {
+            setAvailableUpdate(data as unknown as DesktopUpdateMetadata);
+            if (typeof data.currentVersion === "string" && data.currentVersion) {
+              setRuntimeProductVersion(data.currentVersion);
+            }
+            setUpdateState("available");
+            setUpdateError(null);
+          } else if (event === "notAvailable") {
+            setAvailableUpdate(null);
+            if (typeof data.currentVersion === "string" && data.currentVersion) {
+              setRuntimeProductVersion(data.currentVersion);
+            }
+            setUpdateState("up-to-date");
+            setUpdateError(null);
+          } else if (event === "started") {
+            setUpdateState("installing");
+            setUpdateProgress({
+              downloaded: 0,
+              contentLength: typeof data.contentLength === "number" ? data.contentLength : null,
+            });
+          } else if (event === "progress") {
+            setUpdateProgress({
+              downloaded: typeof data.downloaded === "number" ? data.downloaded : 0,
+              contentLength: typeof data.contentLength === "number" ? data.contentLength : null,
+            });
+          } else if (event === "installed") {
+            setUpdateState("installed");
+            setUpdateProgress(null);
+          } else if (event === "error") {
+            const message = typeof data.message === "string" ? data.message : "Unknown updater failure";
+            setUpdateState("error");
+            setUpdateError(message);
+            setUpdateProgress(null);
+          }
+        });
+        if (disposed) {
+          offUpdater();
+          return;
+        }
+        unlistenFns.push(offUpdater);
       })();
     } else {
       void syncRuntime();
@@ -3209,6 +3386,79 @@ export default function App() {
               </div>
             </div>
 
+            {isTauri() && (
+              <div className="settings-section">
+                <h4>Desktop Runtime</h4>
+                <div className="metric-grid">
+                  <article className="metric-card">
+                    <span>Running version</span>
+                    <strong>v{currentDesktopVersion}</strong>
+                  </article>
+                  <article className="metric-card">
+                    <span>Bridge status</span>
+                    <strong>{bridgeOnline ? "online" : "offline"}</strong>
+                  </article>
+                  <article className="metric-card">
+                    <span>Updater status</span>
+                    <strong>{updateStatusLabel}</strong>
+                  </article>
+                  <article className="metric-card">
+                    <span>Last checked</span>
+                    <strong>{updateLastCheckedAt ? formatTime(updateLastCheckedAt) : "not yet"}</strong>
+                  </article>
+                </div>
+                <div className="settings-row">
+                  <div>
+                    <div className="settings-row-label">Bridge sidecar</div>
+                    <div className="settings-row-desc">
+                      {bridgeOnline
+                        ? "The local bridge is responding on 127.0.0.1:4191."
+                        : "The local bridge is offline. Use the manual control below to start or restart it without rebuilding the app."}
+                    </div>
+                  </div>
+                  <div className="settings-row-control">
+                    <button className="btn" onClick={() => void triggerBridgeRestart(true)} disabled={bridgeRestarting}>
+                      {bridgeRestarting ? (bridgeOnline ? "Restarting..." : "Starting...") : (bridgeOnline ? "Restart Bridge" : "Start Bridge")}
+                    </button>
+                  </div>
+                </div>
+                <div className="settings-row">
+                  <div>
+                    <div className="settings-row-label">Desktop updates</div>
+                    <div className="settings-row-desc">
+                      {availableUpdate
+                        ? `Version v${availableUpdate.version} is ready to install${availableUpdate.date ? ` · published ${formatTime(availableUpdate.date)}` : ""}.`
+                        : updateState === "up-to-date"
+                          ? `Running v${currentDesktopVersion}. No newer signed update is available.`
+                          : updateState === "installing"
+                            ? `Installing update${updateProgressLabel ? ` · ${updateProgressLabel}` : ""}.`
+                            : updateState === "error"
+                              ? (updateError || "Update check failed.")
+                              : "Check for a signed desktop build and install it in-place when available."}
+                    </div>
+                  </div>
+                  <div className="settings-row-control">
+                    {updateProgressLabel && <span className="settings-row-desc">{updateProgressLabel}</span>}
+                  </div>
+                </div>
+                <div className="controls-row">
+                  <button className="btn" onClick={() => void checkForUpdates({ manual: true })} disabled={updateState === "checking" || updateState === "installing"}>
+                    {updateState === "checking" ? "Checking..." : "Check for Updates"}
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => void installAvailableUpdate()}
+                    disabled={!availableUpdate || updateState === "checking" || updateState === "installing"}
+                  >
+                    {updateState === "installing" ? "Installing..." : availableUpdate ? `Install v${availableUpdate.version}` : "No Update Ready"}
+                  </button>
+                  <button className="btn" onClick={() => window.open("https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest", "_blank")}>
+                    Release Notes
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Recent Projects */}
             {recentProjects.length > 0 && (
               <div className="settings-section">
@@ -3329,7 +3579,10 @@ export default function App() {
               <div className="settings-row">
                 <div>
                   <div className="settings-row-label">Version</div>
-                  <div className="settings-row-desc">{DESKTOP_PRODUCT_LABEL} v{PRODUCT_VERSION}</div>
+                  <div className="settings-row-desc">
+                    {DESKTOP_PRODUCT_LABEL} v{currentDesktopVersion}
+                    {currentDesktopVersion !== PRODUCT_VERSION ? ` · config baseline v${PRODUCT_VERSION}` : ""}
+                  </div>
                 </div>
                 {updateAvailable && <span className="update-badge" onClick={() => window.open("https://github.com/Sheshiyer/brandmint-oracle-aleph/releases/latest", "_blank")}>v{updateAvailable} available</span>}
               </div>

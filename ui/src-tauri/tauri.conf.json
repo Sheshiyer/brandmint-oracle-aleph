@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Brandmint",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "identifier": "com.brandmint.app",
   "build": {
     "frontendDist": "../dist",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Brandmint v4.4.0",
+        "title": "Brandmint v4.4.1",
         "width": 1280,
         "height": 800,
         "minWidth": 900,
@@ -42,5 +42,10 @@
     "externalBin": [
       "binaries/brandmint-bridge"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZGRDZDQ0JGNjQzQUUyQkUKUldTKzRqcGt2OHpXLzYzZHNQYks2OW9JT0JGQXVSY3JPYnAzVWUzbEhmTEFuak9MQjVDd3J2S1IK"
+    }
   }
 }

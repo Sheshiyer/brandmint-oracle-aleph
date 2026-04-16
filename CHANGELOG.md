@@ -4,16 +4,32 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [4.4.1] - 2026-04-16
+
 ### Added
-- Visual pipeline provider fallback retries in the scripts backend with configurable `generation.fallback_order` and fallback attempt summaries in execution reports.
-- Safe state load/save integration for execution + NotebookLM state files via `load_state_safe` / `save_state_safe`.
+- Signed macOS bootstrap release artifacts for the Tauri desktop app:
+  - `Brandmint_4.4.1_macos-aarch64.dmg`
+  - `Brandmint_4.4.1_macos-aarch64.app.zip`
+  - `Brandmint.app.tar.gz`
+  - `Brandmint.app.tar.gz.sig`
+  - `latest.json`
+- Isolated bootstrap OTA publication path at `https://brandmintupdates.thoughtseed.space/bootstrap/...`
 - Focused resilience test coverage:
   - `tests/test_visual_backend_fallback_chain.py`
   - `tests/test_state_validation_integration.py`
+- Added `docs/INTEGRATION_EXAMPLES.md` to mirror operator integration guidance under docs.
 
 ### Changed
-- `README.md` now documents resilience features and current fallback configuration.
-- Added `docs/INTEGRATION_EXAMPLES.md` to mirror operator integration guidance under docs.
+- Visual pipeline scripts backend now retries across providers using configurable `generation.fallback_order`, with fallback attempt summaries surfaced in execution reports.
+- Execution + NotebookLM state files now use safe load/save validation via `load_state_safe` / `save_state_safe`.
+- Brandmint desktop updater now trusts the new Brandmint-specific signing key and targets the custom Cloudflare updater hostname with R2 fallback support.
+- Local Tauri builds now auto-load both `~/.tauri/brandmint.key` and `~/.tauri/brandmint.key.password` for unattended signed desktop builds.
+- `README.md` now documents resilience features, desktop bootstrap release behavior, and current updater release channels.
+- Release-facing docs now describe the `4.4.1` bootstrap rollout and asset set consistently.
+
+### Release Notes
+- `4.4.1` is a bootstrap desktop release because the updater trust root rotated.
+- Existing desktop installs must manually reinstall from the DMG or `.app.zip` once before future OTA releases can update on the new signing key.
 
 ## [4.3.0] - 2026-02-28
 

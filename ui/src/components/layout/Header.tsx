@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { usePipelineStore } from "../../stores/pipelineStore";
 import { useUiStore } from "../../stores/uiStore";
 import { useSettingsStore } from "../../stores/settingsStore";
 import { buildProcessPages } from "../../lib/utils";
+import { isTauri, restartSidecar } from "../../api";
 
 export default function Header() {
   const bridgeOnline = usePipelineStore((s) => s.bridgeOnline);
@@ -13,14 +14,32 @@ export default function Header() {
   const toggleSidebar = useUiStore((s) => s.toggleSidebar);
   const setCommandPaletteOpen = useUiStore((s) => s.setCommandPaletteOpen);
   const setSelectedPageId = useUiStore((s) => s.setSelectedPageId);
+  const addToast = useUiStore((s) => s.addToast);
 
   const selectedPageId = useUiStore((s) => s.selectedPageId);
   const processPages = useMemo(() => buildProcessPages(), []);
+  const tauriRuntime = useMemo(() => isTauri(), []);
+  const [bridgeRestarting, setBridgeRestarting] = useState(false);
 
   const selectedPage = useMemo(
     () => processPages.find((p: { id: string }) => p.id === selectedPageId) ?? processPages[0],
     [processPages, selectedPageId],
   );
+
+  async function onRestartBridge() {
+    if (bridgeRestarting) return;
+    setBridgeRestarting(true);
+    addToast("Restarting bridge…", "info");
+    try {
+      await restartSidecar();
+      addToast("Bridge restart requested", "success");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown restart failure";
+      addToast(`Bridge restart failed: ${message}`, "error");
+    } finally {
+      setBridgeRestarting(false);
+    }
+  }
 
   return (
     <header className="studio-header hud-header">
@@ -63,6 +82,18 @@ export default function Header() {
           <span className={`status-dot ${bridgeOnline ? "pulse" : "danger"}`} />
           {bridgeOnline ? "online" : "offline"}
         </span>
+        {tauriRuntime ? (
+          <button
+            className={`bridge-restart-btn${bridgeOnline ? "" : " offline"}${bridgeRestarting ? " loading" : ""}`}
+            onClick={() => {
+              void onRestartBridge();
+            }}
+            disabled={bridgeRestarting}
+            title={bridgeOnline ? "Restart bridge manually" : "Start bridge manually"}
+          >
+            {bridgeRestarting ? "Starting..." : bridgeOnline ? "Restart Bridge" : "Start Bridge"}
+          </button>
+        ) : null}
         <span
           className={`status-pill ${
             runState === "running" || runState === "retrying" ? "ok" : ""

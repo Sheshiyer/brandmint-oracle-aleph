@@ -8,6 +8,7 @@ import { useProjectStore } from "../../stores/projectStore";
 import { useSettingsStore } from "../../stores/settingsStore";
 import { useReferenceStore } from "../../stores/referenceStore";
 import { useArtifactStore } from "../../stores/artifactStore";
+import { restartSidecar } from "../../api";
 import { buildProcessPages, waveForPage } from "../../lib/utils";
 import { notify, requestNotificationPermission } from "../../lib/notifications";
 import { readTextFile } from "../../lib/native";
@@ -555,11 +556,32 @@ export default function Shell({ children }: ShellProps) {
         setCommandPaletteOpen(false);
       },
     }));
+    const bridgeActions = isTauri()
+      ? [
+          {
+            id: "restart-bridge",
+            label: "Restart Bridge",
+            hint: bridgeOnline ? "Manual bridge recovery" : "Bridge is offline",
+            run: () => {
+              setCommandPaletteOpen(false);
+              addToast("Restarting bridge…", "info");
+              void restartSidecar()
+                .then(() => addToast("Bridge restart requested", "success"))
+                .catch((error) => {
+                  const message =
+                    error instanceof Error ? error.message : "Unknown restart failure";
+                  addToast(`Bridge restart failed: ${message}`, "error");
+                });
+            },
+          },
+        ]
+      : [];
     return [
       { id: "open-settings", label: "Open Provider Settings", hint: "Open model/API config", run: () => { setSelectedPageId("process-settings"); setCommandPaletteOpen(false); } },
+      ...bridgeActions,
       ...pageActions,
     ];
-  }, [processPages]);
+  }, [processPages, bridgeOnline]);
 
   const filteredCommandActions = useMemo(() => {
     const needle = commandQuery.trim().toLowerCase();

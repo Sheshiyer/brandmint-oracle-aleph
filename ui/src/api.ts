@@ -61,3 +61,24 @@ export function startPublishStage<T = unknown>(payload: Record<string, unknown>)
 export function loadIntake<T = unknown>(payload: Record<string, unknown>) {
   return apiBridge<T>("load_intake", { payload });
 }
+
+export async function checkDesktopUpdate<T = unknown>() {
+  if (!isTauri()) {
+    throw new Error("Desktop update checks are only available in the Tauri app.");
+  }
+  return apiBridge<T>("check_for_update");
+}
+
+export async function installDesktopUpdate<T = unknown>() {
+  if (!isTauri()) {
+    throw new Error("Desktop update install is only available in the Tauri app.");
+  }
+  return apiBridge<T>("install_update");
+}
+
+export async function restartSidecar<T = unknown>() {
+  if (!isTauri()) {
+    throw new Error("Manual sidecar restart is only available in the Tauri app.");
+  }
+  return apiBridge<T>("restart_sidecar");
+}

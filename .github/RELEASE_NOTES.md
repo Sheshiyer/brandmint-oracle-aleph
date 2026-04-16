@@ -1,5 +1,26 @@
 # Release Notes
 
+## What's New in v4.4.1
+
+### Bootstrap Desktop Release
+- **One-time manual reinstall release** — `v4.4.1` rotates the Brandmint desktop updater trust root, so existing installs need one manual reinstall before future OTA updates can continue normally.
+- **Prepared macOS release assets** — GitHub release payload should include:
+  - `Brandmint_4.4.1_macos-aarch64.dmg`
+  - `Brandmint_4.4.1_macos-aarch64.app.zip`
+  - `Brandmint.app.tar.gz`
+  - `Brandmint.app.tar.gz.sig`
+  - `latest.json`
+- **Bootstrap OTA channel** — Signed updater payload is staged at `https://brandmintupdates.thoughtseed.space/bootstrap/latest.json` so `stable` can remain untouched until the post-bootstrap OTA cut.
+
+### Desktop Distribution Hardening
+- **Brandmint-specific updater key** — Tauri updater config now embeds the final Brandmint public key instead of the superseded trust root.
+- **Custom updater host** — Desktop updater prefers `brandmintupdates.thoughtseed.space` and keeps the public R2 host as fallback.
+- **Noninteractive local signing** — Local Tauri release builds now auto-load both `~/.tauri/brandmint.key` and `~/.tauri/brandmint.key.password`, removing the prior failure mode around unattended signing.
+
+### Resilience Features Landed in the Release Line
+- **Provider fallback chain** — Script-backed visual execution retries across `generation.fallback_order` providers and records fallback attempt summaries in reports.
+- **Safe state validation** — Execution and NotebookLM state files now load/save through repair-aware validation with backup snapshots for corrupted state.
+
 ## What's New in v4.4.0
 
 ### Full NotebookLM Artifact Matrix (23 artifacts)

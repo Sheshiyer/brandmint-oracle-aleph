@@ -1,7 +1,8 @@
 # Publish Brandmint Desktop — macOS (Tauri v2)
 #
 # Builds the Tauri desktop app on macOS and uploads .dmg + .app.zip
-# to the GitHub Release that triggered this workflow.
+# plus the signed OTA updater payload (`.app.tar.gz`, `.sig`, `latest.json`)
+# to both Cloudflare R2 (primary OTA channel) and the triggering GitHub Release.
 #
 # Triggers alongside publish-ghcr.yml and update-homebrew-tap.yml
 # on the same `release: published` event.
@@ -21,6 +22,14 @@
 # creates the DMG with `hdiutil` so CI does not depend on Finder/AppleScript.
 # The `.app` can be signed during build; notarization/stapling of release assets
 # remains an operator decision for public distribution.
+#
+# ── OTA Hosting ──────────────────────────────────────────────────
+# OTA update assets are published to Cloudflare R2 so the app can update in-place
+# without replacing DMGs manually. For published releases, set:
+#   CLOUDFLARE_API_TOKEN   — token with R2 object write access for Brandmint updater bucket
+#   CLOUDFLARE_ACCOUNT_ID  — Cloudflare account id containing the bucket
+# The app prefers `brandmintupdates.thoughtseed.space` and falls back to the live
+# `r2.dev` URL until the custom domain finishes activation.
 
 name: Publish Brandmint Desktop (macOS)
 
@@ -37,7 +46,12 @@ permissions:
   contents: write
 
 env:
-  TAURI_SIGNING_PRIVATE_KEY: ""
+  BRANDMINT_UPDATE_PRIMARY_BASE_URL: https://brandmintupdates.thoughtseed.space
+  BRANDMINT_UPDATE_BASE_URL: https://pub-1a0540bfbd114ca7aa86f0abdfbe154f.r2.dev
+  BRANDMINT_UPDATE_CHANNEL: stable
+  BRANDMINT_UPDATE_BUCKET: brandmint-updater
+  TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY || '' }}
+  TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD || '' }}
 
 jobs:
   build-macos:
@@ -102,6 +116,29 @@ jobs:
       - name: Install frontend dependencies
         run: npm ci
 
+      - name: Validate OTA signing configuration
+        if: github.event_name == 'release'
+        run: |
+          if [ -z "${TAURI_SIGNING_PRIVATE_KEY:-}" ]; then
+            echo "::error::TAURI_SIGNING_PRIVATE_KEY secret is required for published OTA assets."
+            exit 1
+          fi
+
+      - name: Validate Cloudflare OTA publish configuration
+        if: github.event_name == 'release'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || '' }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || '' }}
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN secret is required for published OTA uploads."
+            exit 1
+          fi
+          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "::error::CLOUDFLARE_ACCOUNT_ID secret is required for published OTA uploads."
+            exit 1
+          fi
+
       - name: Build Tauri app
         env:
           APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY || '' }}
@@ -131,6 +168,39 @@ jobs:
 
           echo "app=$APP" >> "$GITHUB_OUTPUT"
           echo "Found APP: $APP"
+
+      - name: Locate updater artifacts
+        id: updater
+        run: |
+          BUNDLE_ROOT="${{ steps.version.outputs.bundle_root }}"
+          ARCHIVE="$(find "$BUNDLE_ROOT" -type f -name '*.app.tar.gz' | head -n 1)"
+          SIGNATURE="$(find "$BUNDLE_ROOT" -type f -name '*.app.tar.gz.sig' | head -n 1)"
+          MANIFEST="$(find "$BUNDLE_ROOT" -type f -name 'latest.json' | head -n 1)"
+
+          if [ -n "${TAURI_SIGNING_PRIVATE_KEY:-}" ]; then
+            if [ ! -f "$ARCHIVE" ]; then echo "::error::Updater archive not found under $BUNDLE_ROOT"; exit 1; fi
+            if [ ! -f "$SIGNATURE" ]; then echo "::error::Updater signature not found under $BUNDLE_ROOT"; exit 1; fi
+            if [ ! -f "$MANIFEST" ]; then echo "::error::Updater manifest not found under $BUNDLE_ROOT"; exit 1; fi
+            echo "Found updater archive: $ARCHIVE"
+            echo "Found updater signature: $SIGNATURE"
+            echo "Found updater manifest: $MANIFEST"
+          else
+            echo "No OTA signing key configured; updater artifacts are optional for this run."
+          fi
+
+          echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
+          echo "signature=$SIGNATURE" >> "$GITHUB_OUTPUT"
+          echo "manifest=$MANIFEST" >> "$GITHUB_OUTPUT"
+
+      - name: Upload OTA artifacts to Cloudflare R2
+        if: steps.updater.outputs.archive != ''
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || '' }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || '' }}
+        run: |
+          bash scripts/upload_updater_artifacts_to_r2.sh \
+            --bundle-root "${{ steps.version.outputs.bundle_root }}" \
+            --channel "${BRANDMINT_UPDATE_CHANNEL}"
 
       - name: Archive .app bundle
         id: archive
@@ -179,6 +249,9 @@ jobs:
           files: |
             ui/${{ steps.dmg.outputs.dmg }}
             ui/${{ steps.archive.outputs.zip }}
+            ui/${{ steps.updater.outputs.archive }}
+            ui/${{ steps.updater.outputs.signature }}
+            ui/${{ steps.updater.outputs.manifest }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -190,6 +263,17 @@ jobs:
           path: |
             ui/${{ steps.dmg.outputs.dmg }}
             ui/${{ steps.archive.outputs.zip }}
+          retention-days: 14
+
+      - name: Upload OTA artifacts (workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch' && steps.updater.outputs.archive != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: brandmint-macos-ota-${{ steps.version.outputs.version }}
+          path: |
+            ui/${{ steps.updater.outputs.archive }}
+            ui/${{ steps.updater.outputs.signature }}
+            ui/${{ steps.updater.outputs.manifest }}
           retention-days: 14
 
       # ── Cleanup ────────────────────────────────────────────────

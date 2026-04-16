@@ -21,6 +21,7 @@
     "dialog:allow-save",
     "process:default",
     "process:allow-exit",
-    "process:allow-restart"
+    "process:allow-restart",
+    "updater:default"
   ]
 }

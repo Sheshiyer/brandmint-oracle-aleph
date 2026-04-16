@@ -1,8 +1,10 @@
 mod sidecar;
+mod updates;
 
 use sidecar::SidecarState;
 use std::sync::Arc;
 use tauri::Emitter;
+use updates::PendingUpdate;
 
 fn encode_query_param(name: &str, value: &str) -> Result<String, String> {
     let mut url = reqwest::Url::parse("http://127.0.0.1")
@@ -142,6 +144,7 @@ async fn restart_sidecar(
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let sidecar_state = Arc::new(SidecarState::new());
+    let pending_update = PendingUpdate::default();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -149,6 +152,7 @@ pub fn run() {
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup({
             let state = sidecar_state.clone();
             move |app| {
@@ -211,6 +215,7 @@ pub fn run() {
             }
         })
         .manage(sidecar_state)
+        .manage(pending_update)
         .invoke_handler(tauri::generate_handler![
             get_health,
             get_state,
@@ -228,6 +233,8 @@ pub fn run() {
             start_publish,
             load_intake,
             restart_sidecar,
+            updates::check_for_update,
+            updates::install_update,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

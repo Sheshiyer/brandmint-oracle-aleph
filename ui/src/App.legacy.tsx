@@ -1531,7 +1531,7 @@ export default function App() {
   }
 
   // ── #12 Output Viewer ──
-  function renderJsonTree(data: unknown, depth: number = 0, path: string = "root"): JSX.Element {
+  function renderJsonTree(data: unknown, depth: number = 0, path: string = "root") {
     if (data === null) return <span className="json-null">null</span>;
     if (typeof data === "boolean") return <span className="json-boolean">{String(data)}</span>;
     if (typeof data === "number") return <span className="json-number">{data}</span>;
