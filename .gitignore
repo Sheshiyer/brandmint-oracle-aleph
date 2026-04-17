@@ -15,6 +15,7 @@ __pycache__/
 node_modules/
 package.json
 package-lock.json
+!ui/package-lock.json
 
 # Generated assets (user brand images, not product code)
 generated/
