@@ -29,8 +29,8 @@
 #     APPLE_PASSWORD
 #     APPLE_TEAM_ID
 #   App Store Connect API flow:
-#     APPLE_API_KEY        — App Store Connect key ID
-#     APPLE_API_ISSUER     — issuer UUID (team keys only)
+#     APPLE_API_KEY         — App Store Connect Team Key ID
+#     APPLE_API_ISSUER      — issuer UUID shown above Team Keys in App Store Connect
 #     APPLE_API_PRIVATE_KEY — raw `.p8` private key contents
 #
 # ── OTA Hosting ──────────────────────────────────────────────────
@@ -146,6 +146,40 @@ jobs:
           chmod 600 "$KEY_PATH"
           echo "APPLE_API_KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
 
+      - name: Validate notarization credentials
+        run: |
+          if [ -n "${APPLE_ID:-}${APPLE_PASSWORD:-}${APPLE_TEAM_ID:-}" ]; then
+            if [ -z "${APPLE_ID:-}" ] || [ -z "${APPLE_PASSWORD:-}" ] || [ -z "${APPLE_TEAM_ID:-}" ]; then
+              echo "::error::Apple ID notarization requires APPLE_ID, APPLE_PASSWORD, and APPLE_TEAM_ID together."
+              exit 1
+            fi
+
+            echo "Using Apple ID notarization flow."
+            exit 0
+          fi
+
+          if [ -n "${APPLE_API_KEY:-}${APPLE_API_PRIVATE_KEY:-}${APPLE_API_ISSUER:-}" ]; then
+            if [ -z "${APPLE_API_KEY:-}" ] || [ -z "${APPLE_API_KEY_PATH:-}" ]; then
+              echo "::error::App Store Connect notarization requires APPLE_API_KEY and a materialized APPLE_API_KEY_PATH."
+              exit 1
+            fi
+
+            if [ -z "${APPLE_API_ISSUER:-}" ]; then
+              echo "::error::APPLE_API_ISSUER is missing. Use the issuer UUID from App Store Connect > Users and Access > Integrations > Team Keys."
+              exit 1
+            fi
+
+            if ! [[ "${APPLE_API_ISSUER}" =~ ^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$ ]]; then
+              echo "::error::APPLE_API_ISSUER must be the Team Key issuer UUID, not the 10-character Apple Team ID."
+              exit 1
+            fi
+
+            echo "Using App Store Connect Team Key notarization flow."
+            exit 0
+          fi
+
+          echo "No notarization credentials configured; build will proceed without notarization."
+
       # ── Build ──────────────────────────────────────────────────
 
       - name: Install frontend dependencies
@@ -175,7 +209,17 @@ jobs:
           fi
 
       - name: Build Tauri app
-        run: npm run tauri:build -- --bundles app --target aarch64-apple-darwin
+        run: |
+          # Tauri's notarization auth selection checks only for env-var presence.
+          # Strip empty Apple auth vars so API-key auth is chosen when Apple ID
+          # secrets are unset.
+          for key in APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID APPLE_API_KEY APPLE_API_ISSUER APPLE_API_PRIVATE_KEY; do
+            if [ -z "${!key:-}" ]; then
+              unset "$key"
+            fi
+          done
+
+          npm run tauri:build -- --bundles app --target aarch64-apple-darwin
 
       # ── Package artifacts ──────────────────────────────────────
 
