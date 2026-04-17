@@ -23,6 +23,16 @@
 # The `.app` can be signed during build; notarization/stapling of release assets
 # remains an operator decision for public distribution.
 #
+# Notarization credentials can be supplied either as:
+#   Apple ID flow:
+#     APPLE_ID
+#     APPLE_PASSWORD
+#     APPLE_TEAM_ID
+#   App Store Connect API flow:
+#     APPLE_API_KEY        — App Store Connect key ID
+#     APPLE_API_ISSUER     — issuer UUID (team keys only)
+#     APPLE_API_PRIVATE_KEY — raw `.p8` private key contents
+#
 # ── OTA Hosting ──────────────────────────────────────────────────
 # OTA update assets are published to Cloudflare R2 so the app can update in-place
 # without replacing DMGs manually. For published releases, set:
@@ -38,6 +48,9 @@ on:
     types: [published]
   workflow_dispatch:
     inputs:
+      ref:
+        description: "Branch, tag, or SHA to build (defaults to the workflow dispatch ref)"
+        required: false
       tag:
         description: "Release tag to attach artifacts to (leave empty for artifact-only build)"
         required: false
@@ -56,6 +69,16 @@ env:
 jobs:
   build-macos:
     runs-on: macos-latest
+    env:
+      APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE || '' }}
+      APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD || '' }}
+      APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY || '' }}
+      APPLE_ID: ${{ secrets.APPLE_ID || '' }}
+      APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD || '' }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || '' }}
+      APPLE_API_KEY: ${{ secrets.APPLE_API_KEY || '' }}
+      APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER || '' }}
+      APPLE_API_PRIVATE_KEY: ${{ secrets.APPLE_API_PRIVATE_KEY || '' }}
     defaults:
       run:
         working-directory: ui
@@ -63,6 +86,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || github.ref }}
 
       # ── Toolchain ──────────────────────────────────────────────
 
@@ -92,9 +117,6 @@ jobs:
 
       - name: Import Apple certificate
         if: env.APPLE_CERTIFICATE != ''
-        env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         run: |
           CERT_PATH=$RUNNER_TEMP/certificate.p12
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
@@ -110,6 +132,19 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple: \
             -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+      - name: Materialize App Store Connect API key
+        if: env.APPLE_API_PRIVATE_KEY != ''
+        run: |
+          if [ -z "${APPLE_API_KEY:-}" ]; then
+            echo "::error::APPLE_API_KEY secret is required when APPLE_API_PRIVATE_KEY is configured."
+            exit 1
+          fi
+
+          KEY_PATH="$RUNNER_TEMP/AuthKey_${APPLE_API_KEY}.p8"
+          printf '%s' "$APPLE_API_PRIVATE_KEY" > "$KEY_PATH"
+          chmod 600 "$KEY_PATH"
+          echo "APPLE_API_KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
 
       # ── Build ──────────────────────────────────────────────────
 
@@ -140,11 +175,6 @@ jobs:
           fi
 
       - name: Build Tauri app
-        env:
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY || '' }}
-          APPLE_ID: ${{ secrets.APPLE_ID || '' }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD || '' }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || '' }}
         run: npm run tauri:build -- --bundles app --target aarch64-apple-darwin
 
       # ── Package artifacts ──────────────────────────────────────
@@ -168,6 +198,12 @@ jobs:
 
           echo "app=$APP" >> "$GITHUB_OUTPUT"
           echo "Found APP: $APP"
+
+      - name: Verify macOS app bundle integrity
+        run: |
+          APP="${{ steps.artifacts.outputs.app }}"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          codesign -dv --verbose=4 "$APP" 2>&1 | sed 's/^/[codesign] /'
 
       - name: Locate updater artifacts
         id: updater
