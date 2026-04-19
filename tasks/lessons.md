@@ -15,3 +15,4 @@
 - When the user asks for `autoresearch` loops, explicitly run and document a minimum three-pass keep/discard cycle (detect -> remediate -> verify), not a single-pass patch.
 - Keep brand-specific localization packs behind explicit config guards; never let one brand's localized narrative auto-generate for every brand.
 - Tests that depend on local fixture repos/paths should skip cleanly when the fixture is absent, rather than failing the whole suite.
+- When an isolated clean-checkout baseline is red, fix that baseline before doing feature work or preparing a push; do not stack new work on top of a known pre-existing failure.

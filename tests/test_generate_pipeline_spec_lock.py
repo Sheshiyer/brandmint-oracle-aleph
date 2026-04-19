@@ -2,6 +2,8 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import sys
 
+import pytest
+
 
 def _load_generate_pipeline():
     repo_root = Path(__file__).resolve().parents[1]
@@ -107,6 +109,8 @@ def test_heyzack_system_presence_override_updates_8a_prompt() -> None:
     ae = _load_aesthetic_engine()
     repo_root = Path(__file__).resolve().parents[1]
     config_path = repo_root / "brandmint-run" / "heyzack-ai" / "brand-config.yaml"
+    if not config_path.exists():
+        pytest.skip(f"heyzack fixture config not present: {config_path}")
 
     cfg = gp.load_config(str(config_path))
     exec_ctx = gp.load_execution_context(str(config_path), cfg)

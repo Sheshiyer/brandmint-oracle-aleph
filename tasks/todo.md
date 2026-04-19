@@ -780,3 +780,49 @@ Source plan: `/Users/sheshnarayaniyer/.craft-agent/workspaces/my-workspace/sessi
 - Beta-update isolated rerun completed under `/Volumes/madara/2026/twc-vault/01-Projects/HeyZack/zackai-launch/beta-update/`: fresh generated visuals landed under `beta-update/zackai/generated`, fresh NotebookLM deliverables landed under `beta-update/deliverables/notebooklm`, and NotebookLM image sourcing was restricted to the five product photos in `beta-update/products/` via `image_source_policy: product-reference-only`. The only remaining publish limitation in this isolated run is the two NotebookLM video artifacts, which again failed upstream while the other 21 artifacts downloaded successfully.
 - Wave 8 is now implemented and executed: Brandmint can generate wiki markdown and build/publish an Astro wiki after Wave 7. The latest published docs for beta-update now live at `beta-update/wiki-site/dist`, with `beta-update/published-site` pointing to that build and a publish report at `beta-update/deliverables/brand-docs/publish-report.json`.
 - Wave 8 architecture is now richer than the initial prototype: the publisher ingests NotebookLM artifacts from `deliverables/notebooklm/artifacts`, generates a dedicated `research/notebooklm-artifacts.md` hub plus imported report pages, copies all NotebookLM deliverables into the published static site under `wiki-site/dist/notebooklm`, and surfaces NotebookLM infographics inside the visual library. The Astro homepage was also redesigned into a branded launch portal with hero/product/research cards instead of the previous generic text-heavy wiki directory.
+
+## 2026-04-19 Isolated Worktree Branch For Pending Pipeline Task
+
+- [x] Create a clean worktree and branch from `HEAD` without touching the dirty primary checkout
+- [x] Verify the isolated worktree baseline for the relevant pipeline tests
+- [x] Fix the pre-existing baseline failure in the isolated worktree
+- [x] Re-run targeted verification for the changed files
+- [ ] Commit and push the isolated branch
+
+### Plan
+
+- Work only inside `.worktrees/codex-isolated-head-20260419` on branch `codex/isolated-head-20260419`.
+- Use the dirty primary checkout as read-only context only; do not stage, stash, or rewrite its local changes.
+- Verify a clean baseline with targeted Python tests around:
+  - `scripts/generate_pipeline.py`
+  - `scripts/run_pipeline.py`
+  - `brandmint/core/wave_planner.py`
+  - related visual backend / asset selection paths
+- After the exact task is confirmed, implement the change in the isolated worktree, rerun focused verification, then commit and push only that isolated branch.
+
+### Review
+
+- Isolated worktree created successfully at `/Volumes/madara/2026/twc-vault/01-Projects/brandmint/.worktrees/codex-isolated-head-20260419`.
+- Branch created from `HEAD`:
+  - `codex/isolated-head-20260419`
+- Project-local worktree directory `.worktrees/` was already safely ignored via `.git/info/exclude`.
+- Baseline verification results:
+  - `../../.venv/bin/python3 -m pytest ...` is not a usable baseline runner because the project venv is Python `3.10.19`, and collection fails on `from datetime import UTC` in `brandmint/pipeline/visual_backend.py`.
+  - `python3 -m pytest tests/test_reference_selection_and_asset_exclusions.py tests/test_generate_pipeline_spec_lock.py tests/test_visual_backend.py tests/test_visual_backend_fallback_chain.py tests/test_generate_pipeline_template.py -q`
+    - `27 passed`
+    - `3 skipped`
+    - `1 failed`
+- Current known baseline failure on clean `HEAD` before fix:
+  - `tests/test_generate_pipeline_spec_lock.py::test_heyzack_system_presence_override_updates_8a_prompt`
+  - cause: missing fixture path `brandmint-run/heyzack-ai/brand-config.yaml` in the clean worktree checkout
+- Root cause:
+  - the repo already had an established skip-cleanly pattern for the optional `brandmint-run/heyzack-ai` fixture in `tests/test_reference_selection_and_asset_exclusions.py`
+  - `tests/test_generate_pipeline_spec_lock.py` still assumed the generated fixture existed and did not guard for the post-purge clean-checkout case
+- Fix:
+  - added `pytest` import to `tests/test_generate_pipeline_spec_lock.py`
+  - updated `test_heyzack_system_presence_override_updates_8a_prompt` to skip cleanly when `brandmint-run/heyzack-ai/brand-config.yaml` is absent
+- Verification after fix:
+  - `python3 -m pytest tests/test_reference_selection_and_asset_exclusions.py tests/test_generate_pipeline_spec_lock.py tests/test_visual_backend.py tests/test_visual_backend_fallback_chain.py tests/test_generate_pipeline_template.py -q`
+  - result:
+    - `27 passed`
+    - `4 skipped`
