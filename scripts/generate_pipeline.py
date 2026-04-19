@@ -1283,6 +1283,7 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     # ── Provider configuration ──
     gen = cfg.get("generation", {})
     v["provider"] = gen.get("provider", os.environ.get("IMAGE_PROVIDER", "fal"))
+    v["env_file"] = str(gen.get("env_file", "")).strip()
     v["inference_endpoint"] = str(gen.get("inference_endpoint", "https://api.inference.sh")).strip()
     v["inference_app"] = str(gen.get("inference_app", "")).strip()
     v["brandmint_repo_root"] = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -1312,7 +1313,9 @@ Provider: {provider}
 import os, sys, subprocess
 from dotenv import load_dotenv
 
-load_dotenv(os.path.expanduser("~/.claude/.env"))
+ENV_FILE = "{env_file}"
+if ENV_FILE:
+    load_dotenv(os.path.expanduser(ENV_FILE), override=False)
 
 BRAND_NAME = "{brand_name}"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -1896,12 +1899,16 @@ def write_script(path, content):
     print(f"  Generated: {os.path.basename(path)}")
 
 
-def _get_asset_ids(asset_groups, generator_name, legacy_ids):
+def _get_asset_ids(asset_groups, generator_name, legacy_ids, selected_asset_ids=None):
     """Get asset IDs for a generator. Returns legacy_ids if not in registry mode."""
     if asset_groups is None:
-        return legacy_ids
-    group = asset_groups.get(generator_name, [])
-    return {aid for aid, _ in group}
+        asset_ids = set(legacy_ids)
+    else:
+        group = asset_groups.get(generator_name, [])
+        asset_ids = {aid for aid, _ in group}
+    if selected_asset_ids is not None:
+        return {aid for aid in asset_ids if aid in selected_asset_ids}
+    return asset_ids
 
 
 def _flux_to_nb_aspect(aspect):
@@ -1917,16 +1924,30 @@ def _flux_to_nb_aspect(aspect):
     return mapping.get(aspect, aspect)  # Pass through if already ratio format
 
 
-def _get_new_assets(asset_groups, generator_name):
+def _get_new_assets(asset_groups, generator_name, selected_asset_ids=None):
     """Get Phase 3 domain-specific assets for a generator (IDs that don't start with a digit)."""
     if asset_groups is None:
         return []
     group = asset_groups.get(generator_name, [])
-    return [(aid, adef) for aid, adef in group if not aid[0].isdigit()]
+    return [
+        (aid, adef)
+        for aid, adef in group
+        if not aid[0].isdigit() and (selected_asset_ids is None or aid in selected_asset_ids)
+    ]
 
 
-def gen_anchor_script(scripts_dir, v, cfg, asset_groups=None):
+def _parse_selected_asset_ids(raw_assets):
+    """Parse an optional comma-separated asset allowlist."""
+    if not raw_assets:
+        return None
+    selected = {item.strip() for item in str(raw_assets).split(",") if item.strip()}
+    return selected or None
+
+
+def gen_anchor_script(scripts_dir, v, cfg, asset_groups=None, selected_asset_ids=None):
     """Generate generate-anchor.py (2A bento grid — MUST run first)."""
+    if selected_asset_ids is not None and "2A" not in selected_asset_ids:
+        return
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt = render(PROMPT_2A_BENTO, v)
     out_sub = cfg["generation"].get("output_dir", "generated")
@@ -1985,9 +2006,9 @@ if __name__ == "__main__":
     write_script(os.path.join(scripts_dir, "generate-anchor.py"), header + func + main_body)
 
 
-def gen_identity_script(scripts_dir, v, cfg, asset_groups=None):
+def gen_identity_script(scripts_dir, v, cfg, asset_groups=None, selected_asset_ids=None):
     """Generate generate-identity.py (2B seal + 2C logo + domain-specific identity assets)."""
-    asset_ids = _get_asset_ids(asset_groups, "identity", {"2B", "2C"})
+    asset_ids = _get_asset_ids(asset_groups, "identity", {"2B", "2C"}, selected_asset_ids)
     if not asset_ids:
         return  # No identity assets selected
 
@@ -1997,7 +2018,7 @@ def gen_identity_script(scripts_dir, v, cfg, asset_groups=None):
     out_sub = cfg["generation"].get("output_dir", "generated")
 
     # Build new asset prompts
-    new_assets = _get_new_assets(asset_groups, "identity")
+    new_assets = _get_new_assets(asset_groups, "identity", selected_asset_ids)
     new_asset_code = ""
     new_prompt_defs = ""
     extended = v.get("extended_prompts", {})
@@ -2068,9 +2089,9 @@ if __name__ == "__main__":
     write_script(os.path.join(scripts_dir, "generate-identity.py"), header + func + main_body)
 
 
-def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
+def gen_products_script(scripts_dir, v, cfg, asset_groups=None, selected_asset_ids=None):
     """Generate generate-products.py (3A capsule + 3B hero + 3C product detail + domain-specific)."""
-    asset_ids = _get_asset_ids(asset_groups, "products", {"3A", "3B", "3C"})
+    asset_ids = _get_asset_ids(asset_groups, "products", {"3A", "3B", "3C"}, selected_asset_ids)
     if not asset_ids:
         return
 
@@ -2081,7 +2102,7 @@ def gen_products_script(scripts_dir, v, cfg, asset_groups=None):
     out_sub = cfg["generation"].get("output_dir", "generated")
 
     # Build new asset code (Nano Banana Pro for domain-specific product assets)
-    new_assets = _get_new_assets(asset_groups, "products")
+    new_assets = _get_new_assets(asset_groups, "products", selected_asset_ids)
     new_prompt_defs = ""
     new_asset_code = ""
     extended = v.get("extended_prompts", {})
@@ -2192,7 +2213,7 @@ if __name__ == "__main__":
     write_script(os.path.join(scripts_dir, "generate-products.py"), header + func_flux + func_nb + main_body)
 
 
-def gen_photography_script(scripts_dir, v, cfg, asset_groups=None):
+def gen_photography_script(scripts_dir, v, cfg, asset_groups=None, selected_asset_ids=None):
     """Generate generate-photography.py (4A catalog + 4B flatlay + domain-specific)."""
     seeds = cfg["generation"].get("seeds", [42, 137])
     prompt_4a = render(PROMPT_4A_CATALOG, v)
@@ -2206,12 +2227,12 @@ def gen_photography_script(scripts_dir, v, cfg, asset_groups=None):
     func_nb = render(FUNC_NANO_BANANA, {"seed_a": seeds[0], "seed_b": seeds[1]})
     func_flux = render(FUNC_FLUX_PRO, {"seed_a": seeds[0], "seed_b": seeds[1]})
 
-    asset_ids = _get_asset_ids(asset_groups, "photography", {"4A", "4B"})
+    asset_ids = _get_asset_ids(asset_groups, "photography", {"4A", "4B"}, selected_asset_ids)
     if not asset_ids:
         return
 
     # Build new asset code
-    new_assets = _get_new_assets(asset_groups, "photography")
+    new_assets = _get_new_assets(asset_groups, "photography", selected_asset_ids)
     new_prompt_defs = ""
     new_asset_code = ""
     extended = v.get("extended_prompts", {})
@@ -2302,9 +2323,9 @@ if __name__ == "__main__":
                  header + func_nb + func_flux + main_body)
 
 
-def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None):
+def gen_illustrations_script(scripts_dir, v, cfg, asset_groups=None, selected_asset_ids=None):
     """Generate generate-illustrations.py (5A-5C)."""
-    asset_ids = _get_asset_ids(asset_groups, "illustrations", {"5A", "5B", "5C"})
+    asset_ids = _get_asset_ids(asset_groups, "illustrations", {"5A", "5B", "5C"}, selected_asset_ids)
     if not asset_ids:
         return
 
@@ -2417,9 +2438,9 @@ if __name__ == "__main__":
                  header + func_rc + func_nb + func_flux + main_body)
 
 
-def gen_narrative_script(scripts_dir, v, cfg, asset_groups=None):
+def gen_narrative_script(scripts_dir, v, cfg, asset_groups=None, selected_asset_ids=None):
     """Generate generate-narrative.py (7A contact sheets + domain-specific)."""
-    asset_ids = _get_asset_ids(asset_groups, "narrative", {"7A"})
+    asset_ids = _get_asset_ids(asset_groups, "narrative", {"7A"}, selected_asset_ids)
     if not asset_ids:
         return
 
@@ -2428,7 +2449,7 @@ def gen_narrative_script(scripts_dir, v, cfg, asset_groups=None):
     out_sub = cfg["generation"].get("output_dir", "generated")
 
     # Build new asset code
-    new_assets = _get_new_assets(asset_groups, "narrative")
+    new_assets = _get_new_assets(asset_groups, "narrative", selected_asset_ids)
     new_prompt_defs = ""
     new_asset_code = ""
     extended = v.get("extended_prompts", {})
@@ -2506,9 +2527,9 @@ if __name__ == "__main__":
     write_script(os.path.join(scripts_dir, "generate-narrative.py"), header + func + main_body)
 
 
-def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
+def gen_posters_script(scripts_dir, v, cfg, asset_groups=None, selected_asset_ids=None):
     """Generate generate-posters.py (8A seeker + 9A engines + 10A-C sequences + domain-specific)."""
-    asset_ids = _get_asset_ids(asset_groups, "posters", {"8A"})
+    asset_ids = _get_asset_ids(asset_groups, "posters", {"8A"}, selected_asset_ids)
     # Posters always generate (9A/10A come from config, not registry)
     excluded_assets = set(cfg.get("generation", {}).get("excluded_assets", []) or [])
 
@@ -2526,10 +2547,12 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
         engines_list = [
             eng for eng in engines.get("engines", [])
             if eng.get("id", "9A") not in excluded_assets
+            and (selected_asset_ids is None or eng.get("id", "9A") in selected_asset_ids)
         ]
         sequences_list = [
             seq for seq in engines.get("sequences", [])
             if seq.get("id", "10A") not in excluded_assets
+            and (selected_asset_ids is None or seq.get("id", "10A") in selected_asset_ids)
         ]
     else:
         engines_list = []
@@ -2568,7 +2591,7 @@ def gen_posters_script(scripts_dir, v, cfg, asset_groups=None):
     seq_dict += "}\n"
 
     # Build new asset code for posters
-    new_assets = _get_new_assets(asset_groups, "posters")
+    new_assets = _get_new_assets(asset_groups, "posters", selected_asset_ids)
     new_prompt_defs = ""
     new_asset_code = ""
     extended = v.get("extended_prompts", {})
@@ -2912,7 +2935,7 @@ def gen_cookbook(out_dir, v, cfg):
 # MANIFEST GENERATOR
 # =====================================================================
 
-def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
+def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None, selected_asset_ids=None):
     """Generate generation-manifest.json for orchv2 budget validation."""
     depth = exec_ctx.get("depth_level", "focused")
     depth_cfg = DEPTH_CONFIG.get(depth, DEPTH_CONFIG["focused"])
@@ -2930,6 +2953,8 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
         for gen_name, group in asset_groups.items():
             for aid, adef in group:
                 if aid in excluded_assets:
+                    continue
+                if selected_asset_ids is not None and aid not in selected_asset_ids:
                     continue
                 model = adef.get("model", "nano-banana-pro")
                 cost_key = model if model in costs else "nano-banana-pro"
@@ -2983,11 +3008,15 @@ def gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups=None):
     for eng in engines_list:
         eid = eng.get("id", "9A")
         if eid not in skip_ids and eid not in excluded_assets:
+            if selected_asset_ids is not None and eid not in selected_asset_ids:
+                continue
             assets.append({"id": eid, "model": "nano-banana-pro", "seeds": 1, "calls": 1, "est_cost": costs["nano-banana-pro"]})
     sequences_list = engines.get("sequences", []) if isinstance(engines, dict) else []
     for seq in sequences_list:
         sid = seq.get("id", "10A")
         if sid not in skip_ids and sid not in excluded_assets:
+            if selected_asset_ids is not None and sid not in selected_asset_ids:
+                continue
             assets.append({"id": sid, "model": "nano-banana-pro", "seeds": seeds_count, "calls": seeds_count, "est_cost": seeds_count * costs["nano-banana-pro"]})
 
     total_calls = sum(a["calls"] for a in assets)
@@ -3023,6 +3052,7 @@ def main():
     )
     parser.add_argument("config", help="Path to brand-config.yaml")
     parser.add_argument("--output-dir", help="Output directory (default: derived from brand name)")
+    parser.add_argument("--assets", help="Comma-separated asset IDs to include in the generated bundle")
     parser.add_argument("--refresh-refs", action="store_true",
                         help="Re-scan references/images/ and regenerate reference-map.json before generating pipeline")
     args = parser.parse_args()
@@ -3168,6 +3198,7 @@ def main():
         out_dir = os.path.abspath(args.output_dir)
     else:
         out_dir = os.path.join(os.path.dirname(config_path), slugify(v["brand_name"]))
+    selected_asset_ids = _parse_selected_asset_ids(args.assets)
 
     scripts_dir = os.path.join(out_dir, "scripts")
     output_subdir = cfg["generation"].get("output_dir", "generated")
@@ -3211,22 +3242,24 @@ def main():
     print(f"  Tone: {exec_ctx.get('tone', 'default') or 'default'}")
     if not domain_tags:
         print(f"  Mode: Legacy (all 19 assets — no domain_tags)")
+    if selected_asset_ids:
+        print(f"  Asset allowlist: {sorted(selected_asset_ids)}")
     print()
 
     print("Generating pipeline scripts...")
-    gen_anchor_script(scripts_dir, v, cfg, asset_groups)
-    gen_identity_script(scripts_dir, v, cfg, asset_groups)
-    gen_products_script(scripts_dir, v, cfg, asset_groups)
-    gen_photography_script(scripts_dir, v, cfg, asset_groups)
-    gen_illustrations_script(scripts_dir, v, cfg, asset_groups)
-    gen_narrative_script(scripts_dir, v, cfg, asset_groups)
-    gen_posters_script(scripts_dir, v, cfg, asset_groups)
+    gen_anchor_script(scripts_dir, v, cfg, asset_groups, selected_asset_ids)
+    gen_identity_script(scripts_dir, v, cfg, asset_groups, selected_asset_ids)
+    gen_products_script(scripts_dir, v, cfg, asset_groups, selected_asset_ids)
+    gen_photography_script(scripts_dir, v, cfg, asset_groups, selected_asset_ids)
+    gen_illustrations_script(scripts_dir, v, cfg, asset_groups, selected_asset_ids)
+    gen_narrative_script(scripts_dir, v, cfg, asset_groups, selected_asset_ids)
+    gen_posters_script(scripts_dir, v, cfg, asset_groups, selected_asset_ids)
 
     print("\nGenerating prompt cookbook...")
     gen_cookbook(out_dir, v, cfg)
 
     print("\nGenerating manifest...")
-    gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups)
+    gen_manifest(out_dir, v, cfg, exec_ctx, asset_groups, selected_asset_ids)
 
     print(f"\n{'=' * 60}")
     print("  PIPELINE GENERATION COMPLETE")

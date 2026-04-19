@@ -31,6 +31,14 @@ def test_template_supports_inference_provider_env_bridge() -> None:
     assert 'os.environ.setdefault("INFERENCE_IMAGE_APP", INFERENCE_APP)' in src
 
 
+def test_template_loads_configured_env_file_when_present() -> None:
+    src = _template_source()
+
+    assert 'ENV_FILE = "{env_file}"' in src
+    assert 'if ENV_FILE:' in src
+    assert 'load_dotenv(os.path.expanduser(ENV_FILE), override=False)' in src
+
+
 def test_generated_batches_route_references_through_upload_helper() -> None:
     src = _template_source()
     expected = [

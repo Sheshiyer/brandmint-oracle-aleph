@@ -826,3 +826,50 @@ Source plan: `/Users/sheshnarayaniyer/.craft-agent/workspaces/my-workspace/sessi
   - result:
     - `27 passed`
     - `4 skipped`
+
+## 2026-04-19 Pipeline Allowlist And Model Alignment
+
+- [x] Port the intended four-file pipeline patch into the isolated branch without touching the dirty primary checkout
+- [x] Add failing tests that lock the missing behaviors before patching production code
+- [x] Implement allowlist plumbing in `scripts/generate_pipeline.py`
+- [x] Align product/flatlay model and cost metadata across registry, planner, and run pipeline catalog
+- [x] Remove the stale unsupported `5D` studio/catalog lane from `scripts/run_pipeline.py`
+- [x] Re-run focused and broader targeted verification
+- [ ] Commit and push the updated isolated branch to `main`
+
+### Plan
+
+- Treat the quarantined dirty diff as the intended feature bundle only where it matches actual repo gaps:
+  - `generate_pipeline.py` accepts `--assets` at call sites but clean `HEAD` ignored it
+  - product/flatlay model metadata was stale relative to the generated prompt matrix
+  - `run_pipeline.py` still exposed `5D` even though `generate_pipeline.py` does not generate that legacy illustration lane
+- Use tests to pin the intended contract before patching:
+  - generated template respects `generation.env_file`
+  - selected asset IDs prune generated manifests/batches
+  - registry/catalog metadata uses `nano-banana-pro` for `3A/3B/3C/4B`
+  - wave planner gives `8A` an extra seed outside `surface`
+- Update only the isolated worktree and keep the original checkout untouched.
+
+### Review
+
+- Root cause summary:
+  - clean `HEAD` already passed `--assets` into `generate_pipeline.py` from multiple call sites, but the script itself still lacked parser support and per-generator filtering
+  - `scripts/run_pipeline.py`, `assets/asset-registry.yaml`, and `brandmint/core/wave_planner.py` still carried stale `flux-2-pro` / `$0.05` metadata for assets that the current generation matrix already treats as `nano-banana-pro`
+  - `scripts/run_pipeline.py` still advertised the stale `5D` icon lane although the generation script only supports `5A/5B/5C`
+- Tests added/updated:
+  - `tests/test_generate_pipeline_template.py`
+  - `tests/test_reference_selection_and_asset_exclusions.py`
+  - `tests/test_pipeline_catalog_and_costs.py`
+  - `tests/test_visual_backend.py`
+- Production files updated:
+  - `assets/asset-registry.yaml`
+  - `brandmint/core/wave_planner.py`
+  - `scripts/generate_pipeline.py`
+  - `scripts/run_pipeline.py`
+- Verification:
+  - focused red/green pass:
+    - `python3 -m pytest tests/test_generate_pipeline_template.py tests/test_reference_selection_and_asset_exclusions.py tests/test_pipeline_catalog_and_costs.py -q`
+    - result: `14 passed, 3 skipped`
+  - broader targeted regression:
+    - `python3 -m pytest tests/test_reference_selection_and_asset_exclusions.py tests/test_generate_pipeline_spec_lock.py tests/test_visual_backend.py tests/test_visual_backend_fallback_chain.py tests/test_generate_pipeline_template.py tests/test_pipeline_catalog_and_costs.py -q`
+    - result: `33 passed, 4 skipped`

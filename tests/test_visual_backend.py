@@ -103,7 +103,7 @@ def test_inference_scaffold_backend_writes_asset_scaffolds(tmp_path: Path) -> No
     assert "confidence" in app_screenshot_payload["routing"]
     assert app_screenshot_payload["skills"]["media_skill_id"] == "infsh-agentic-browser"
     assert three_a_payload["skills"]["media_skill_id"] == "infsh-ai-image-generation"
-    assert three_a_payload["media_input"]["app_id_hint"] == "falai/flux-2-klein-lora"
+    assert three_a_payload["media_input"]["app_id_hint"] == "falai/flux-dev-lora"
     assert len(three_a_payload["run_id"]) == 12
     assert len(three_a_payload["asset_run_id"]) == 12
     assert runbook["asset_count"] == 2

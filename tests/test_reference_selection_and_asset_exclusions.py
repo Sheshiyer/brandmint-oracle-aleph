@@ -152,3 +152,40 @@ def test_wave_planner_uses_merged_registry_paths(tmp_path: Path) -> None:
 
     assert "APP-ICON" not in planned_without_ext
     assert "APP-ICON" in planned_with_ext
+
+
+def test_product_and_flatlay_registry_models_use_nano_banana() -> None:
+    registry = load_registry()
+
+    assert registry["3A"]["model"] == "nano-banana-pro"
+    assert registry["3B"]["model"] == "nano-banana-pro"
+    assert registry["3C"]["model"] == "nano-banana-pro"
+    assert registry["4B"]["model"] == "nano-banana-pro"
+
+
+def test_generate_pipeline_manifest_filters_selected_asset_ids(tmp_path: Path) -> None:
+    gp = _load_generate_pipeline()
+
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+    v = {"brand_name": "Test Brand", "domain_tags": ["app"]}
+    cfg = {"generation": {"excluded_assets": []}, "prompts": {"posters": {}}}
+    exec_ctx = {"depth_level": "focused", "budget_tier": "standard", "launch_channel": "dtc"}
+    asset_groups = {
+        "products": [
+            ("3A", {"name": "Capsule Collection", "model": "nano-banana-pro"}),
+            ("3B", {"name": "Hero Product", "model": "nano-banana-pro"}),
+        ]
+    }
+
+    gp.gen_manifest(
+        str(out_dir),
+        v,
+        cfg,
+        exec_ctx,
+        asset_groups=asset_groups,
+        selected_asset_ids={"3B"},
+    )
+
+    manifest = yaml.safe_load((out_dir / "generation-manifest.json").read_text(encoding="utf-8"))
+    assert [asset["id"] for asset in manifest["assets"]] == ["3B"]

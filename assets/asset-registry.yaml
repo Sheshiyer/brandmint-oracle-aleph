@@ -49,32 +49,32 @@ assets:
   3A:
     name: "Capsule Collection"
     generator: "products"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "ecommerce", "crowdfunding", "physical-product"]
     priority: 8
     required: false
     aspect: "landscape_16_9"
-    cost_usd: 0.05
+    cost_usd: 0.08
 
   3B:
     name: "Hero Product"
     generator: "products"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "ecommerce", "crowdfunding", "physical-product", "marketplace", "app"]
     priority: 8
     required: false
     aspect: "square_hd"
-    cost_usd: 0.05
+    cost_usd: 0.08
 
   3C:
     name: "Product Detail"
     generator: "products"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "wellness", "beauty", "physical-product"]
     priority: 5
     required: false
     aspect: "portrait_hd"
-    cost_usd: 0.05
+    cost_usd: 0.08
 
   # ═══════════════════════════════════════════════════════════
   # PHOTOGRAPHY ASSETS
@@ -93,12 +93,12 @@ assets:
   4B:
     name: "Flatlay"
     generator: "photography"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "ecommerce", "physical-product", "lifestyle"]
     priority: 6
     required: false
     aspect: "square_hd"
-    cost_usd: 0.05
+    cost_usd: 0.08
 
   # ═══════════════════════════════════════════════════════════
   # ILLUSTRATION ASSETS
