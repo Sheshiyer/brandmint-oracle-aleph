@@ -19,9 +19,14 @@
 ## Tauri Desktop App
 - [ ] Choose release mode:
   - unsigned internal build: no Apple secrets, artifacts publish for internal/right-click-open use
-  - signed distribution build: configure `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`, `APPLE_ID`, `APPLE_PASSWORD`, and `APPLE_TEAM_ID`
+  - signed distribution build: configure `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, and `APPLE_SIGNING_IDENTITY`
+  - notarization credentials:
+    - Apple ID flow: `APPLE_ID`, `APPLE_PASSWORD`, and `APPLE_TEAM_ID`
+    - App Store Connect API flow: `APPLE_API_KEY`, `APPLE_API_ISSUER`, and `APPLE_API_PRIVATE_KEY`
+    - `APPLE_API_ISSUER` must be the issuer UUID from `App Store Connect > Users and Access > Integrations > Team Keys`, not the 10-character Apple Developer Team ID
   - bootstrap trust-rotation release: publish manual-install assets first, keep OTA payload on `bootstrap`, and call out the one-time reinstall requirement in the GitHub release notes
 - [ ] `publish-tauri-macos.yml` workflow triggered and succeeded
+- [ ] Final `.app` bundle passes `codesign --verify --deep --strict`
 - [ ] GitHub Release includes `Brandmint_{VERSION}_macos-aarch64.dmg`
 - [ ] GitHub Release includes `Brandmint_{VERSION}_macos-aarch64.app.zip`
 - [ ] If doing a bootstrap trust-rotation release, GitHub Release notes explicitly say existing installs must reinstall manually once
@@ -36,4 +41,5 @@
 - [ ] `bm --help`
 - [ ] Download DMG from GitHub Release and verify it mounts
 - [ ] Download .app.zip and verify app launches
+- [ ] If shipping without Developer ID signing/notarization, explicitly confirm the release is internal-only before sharing it broadly
 - [ ] If this was a bootstrap trust-rotation release, install `v{VERSION}` manually once and confirm later OTA checks use the new updater line

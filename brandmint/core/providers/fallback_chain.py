@@ -86,7 +86,12 @@ class ProviderFallbackChain:
         
         for provider_name in self.fallback_order:
             try:
-                provider = get_provider(str(provider_name))
+                resolved_name = (
+                    provider_name.value
+                    if isinstance(provider_name, ProviderName)
+                    else str(provider_name)
+                )
+                provider = get_provider(resolved_name)
                 
                 # Skip if provider is not configured
                 if self.skip_unavailable and not provider.is_available():
@@ -154,7 +159,7 @@ class ProviderFallbackChain:
             error_msg = (
                 "No available providers configured. "
                 f"Required: {'image reference support' if require_image_ref else 'any provider'}. "
-                f"Fallback order: {[str(p) for p in self.fallback_order]}"
+                f"Fallback order: {[p.value if isinstance(p, ProviderName) else str(p) for p in self.fallback_order]}"
             )
             logger.error(error_msg)
             return GenerationResult(

@@ -22,7 +22,7 @@ import urllib.error
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(os.path.expanduser("~/.claude/.env"))
+load_dotenv(os.path.expanduser("~/.codex/.env"), override=False)
 
 FAL_KEY = os.environ.get("FAL_KEY", "")
 FAL_ENDPOINT = "fal-ai/nano-banana-pro"

@@ -15,7 +15,7 @@ import subprocess
 import sys
 import time
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Protocol
 
@@ -23,6 +23,7 @@ import yaml
 from rich.console import Console
 
 from ..core.providers import ProviderFallbackChain
+from ..runtime_env import load_runtime_env
 
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -98,6 +99,7 @@ class SubprocessVisualExecutionBackend:
         self.config = config or {}
         self.console = console
         self._last_batch_metadata: Dict[str, Dict[str, Any]] = {}
+        load_runtime_env(self.config, override=False)
         generation = self.config.get("generation", {}) if isinstance(self.config, dict) else {}
         configured_order = _validate_fallback_order(generation.get("fallback_order"))
         self._fallback_chain = ProviderFallbackChain(
@@ -392,7 +394,7 @@ class InferenceScaffoldExecutionBackend:
 
         runbook = {
             "schema_version": "v1",
-            "generated_at": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
+            "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "backend": self.name,
             "run_id": run_id,
             "rollout_mode": self.rollout_mode,

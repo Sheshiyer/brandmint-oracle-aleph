@@ -275,7 +275,7 @@ ASSETS = {
 
 def get_api_key() -> str:
     from dotenv import load_dotenv
-    load_dotenv(os.path.expanduser("~/.claude/.env"))
+    load_dotenv(os.path.expanduser("~/.codex/.env"), override=False)
     key = os.environ.get("FAL_KEY")
     if not key:
         print("ERROR: FAL_KEY not set", file=sys.stderr)

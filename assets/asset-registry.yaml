@@ -49,7 +49,7 @@ assets:
   3A:
     name: "Capsule Collection"
     generator: "products"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "ecommerce", "crowdfunding", "physical-product"]
     priority: 8
     required: false
@@ -59,7 +59,7 @@ assets:
   3B:
     name: "Hero Product"
     generator: "products"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "ecommerce", "crowdfunding", "physical-product", "marketplace", "app"]
     priority: 8
     required: false
@@ -69,7 +69,7 @@ assets:
   3C:
     name: "Product Detail"
     generator: "products"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "wellness", "beauty", "physical-product"]
     priority: 5
     required: false
@@ -93,7 +93,7 @@ assets:
   4B:
     name: "Flatlay"
     generator: "photography"
-    model: "flux-2-pro"
+    model: "nano-banana-pro"
     tags: ["dtc", "ecommerce", "physical-product", "lifestyle"]
     priority: 6
     required: false

@@ -1,0 +1,285 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "Hide sidebar" [ref=e5] [cursor=pointer]:
+      - img [ref=e6]
+    - generic [ref=e8]:
+      - paragraph [ref=e9]:
+        - strong [ref=e10]: Brandmint
+        - generic [ref=e11]: /
+        - generic [ref=e12]: Wave 0 · Config Triage
+      - generic [ref=e13]:
+        - strong [ref=e14]: Welcome & Brand Setup
+        - generic [ref=e15]: Page 1 of 41
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: Bridge offline
+        - generic [ref=e20]: Run idle
+      - generic [ref=e22]:
+        - button "Run History" [ref=e23] [cursor=pointer]:
+          - img [ref=e24]
+        - button "Settings (⌘,)" [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+        - button "⌘K" [ref=e31] [cursor=pointer]
+  - generic [ref=e32]:
+    - complementary [ref=e33]:
+      - generic [ref=e35]:
+        - generic [ref=e36]: Workspace
+        - generic [ref=e37]:
+          - button "Settings" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Settings
+          - button "History" [ref=e42] [cursor=pointer]:
+            - img [ref=e43]
+            - text: History
+          - button "Outputs" [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Outputs
+      - generic [ref=e51]:
+        - text: Find page
+        - textbox "Find page" [ref=e52]:
+          - /placeholder: search page, track, objective
+      - generic [ref=e53]:
+        - button "Wave 0 · Config Triage 0/14 done ▾ 1 attention" [ref=e54] [cursor=pointer]:
+          - generic [ref=e55]:
+            - heading "Wave 0 · Config Triage" [level=3] [ref=e56]
+            - generic [ref=e57]: 0/14 done
+            - emphasis [ref=e58]: ▾
+          - generic [ref=e61]: 1 attention
+        - generic [ref=e62]:
+          - button "1 Welcome & Brand Setup Give users a clean, premium first screen to start a brand run confidently." [ref=e63] [cursor=pointer]:
+            - generic [ref=e64]: "1"
+            - generic [ref=e65]:
+              - strong [ref=e66]: Welcome & Brand Setup
+              - generic [ref=e67]: Give users a clean, premium first screen to start a brand run confidently.
+            - emphasis [ref=e68]
+          - button "2 Campaign Intent & Success Criteria" [ref=e69] [cursor=pointer]:
+            - generic [ref=e70]: "2"
+            - strong [ref=e72]: Campaign Intent & Success Criteria
+            - emphasis [ref=e73]
+          - button "3 Product MD Intake" [ref=e74] [cursor=pointer]:
+            - generic [ref=e75]: "3"
+            - strong [ref=e77]: Product MD Intake
+            - emphasis [ref=e78]
+          - button "4 Input Quality Diagnostics" [ref=e79] [cursor=pointer]:
+            - generic [ref=e80]: "4"
+            - strong [ref=e82]: Input Quality Diagnostics
+            - emphasis [ref=e83]
+          - button "5 Wave 0 Quiz Triage" [ref=e84] [cursor=pointer]:
+            - generic [ref=e85]: "5"
+            - strong [ref=e87]: Wave 0 Quiz Triage
+            - emphasis [ref=e88]
+          - button "6 Signal Confidence Tuning" [ref=e89] [cursor=pointer]:
+            - generic [ref=e90]: "6"
+            - strong [ref=e92]: Signal Confidence Tuning
+            - emphasis [ref=e93]
+          - button "7 Brand Basics Setup" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]: "7"
+            - strong [ref=e97]: Brand Basics Setup
+            - emphasis [ref=e98]
+          - button "8 Audience Definition" [ref=e99] [cursor=pointer]:
+            - generic [ref=e100]: "8"
+            - strong [ref=e102]: Audience Definition
+            - emphasis [ref=e103]
+          - button "9 Positioning & Promise" [ref=e104] [cursor=pointer]:
+            - generic [ref=e105]: "9"
+            - strong [ref=e107]: Positioning & Promise
+            - emphasis [ref=e108]
+          - button "10 Voice & Tone Crafting" [ref=e109] [cursor=pointer]:
+            - generic [ref=e110]: "10"
+            - strong [ref=e112]: Voice & Tone Crafting
+            - emphasis [ref=e113]
+          - button "11 Visual Direction Curation" [ref=e114] [cursor=pointer]:
+            - generic [ref=e115]: "11"
+            - strong [ref=e117]: Visual Direction Curation
+            - emphasis [ref=e118]
+          - button "12 Brand Config Wizard" [ref=e119] [cursor=pointer]:
+            - generic [ref=e120]: "12"
+            - strong [ref=e122]: Brand Config Wizard
+            - emphasis [ref=e123]
+          - button "13 Configuration QA Review" [ref=e124] [cursor=pointer]:
+            - generic [ref=e125]: "13"
+            - strong [ref=e127]: Configuration QA Review
+            - emphasis [ref=e128]
+          - button "14 Config Export" [ref=e129] [cursor=pointer]:
+            - generic [ref=e130]: "14"
+            - strong [ref=e132]: Config Export
+            - emphasis [ref=e133]
+      - generic [ref=e134]:
+        - button "Wave 1 · References + Prompting 0/6 done ▾ 0%" [ref=e135] [cursor=pointer]:
+          - generic [ref=e136]:
+            - heading "Wave 1 · References + Prompting" [level=3] [ref=e137]
+            - generic [ref=e138]: 0/6 done
+            - emphasis [ref=e139]: ▾
+          - generic [ref=e142]: 0%
+        - generic [ref=e143]:
+          - button "15 Reference Prioritization Logic" [ref=e144] [cursor=pointer]:
+            - generic [ref=e145]: "15"
+            - strong [ref=e147]: Reference Prioritization Logic
+            - emphasis [ref=e148]
+          - button "16 Reference Curation (Top 30)" [ref=e149] [cursor=pointer]:
+            - generic [ref=e150]: "16"
+            - strong [ref=e152]: Reference Curation (Top 30)
+            - emphasis [ref=e153]
+          - button "17 Reference Library (Show More)" [ref=e154] [cursor=pointer]:
+            - generic [ref=e155]: "17"
+            - strong [ref=e157]: Reference Library (Show More)
+            - emphasis [ref=e158]
+          - button "18 Style Cluster Explorer" [ref=e159] [cursor=pointer]:
+            - generic [ref=e160]: "18"
+            - strong [ref=e162]: Style Cluster Explorer
+            - emphasis [ref=e163]
+          - button "19 Prompt Scaffold Builder" [ref=e164] [cursor=pointer]:
+            - generic [ref=e165]: "19"
+            - strong [ref=e167]: Prompt Scaffold Builder
+            - emphasis [ref=e168]
+          - button "20 Prompt QA Harness" [ref=e169] [cursor=pointer]:
+            - generic [ref=e170]: "20"
+            - strong [ref=e172]: Prompt QA Harness
+            - emphasis [ref=e173]
+      - generic [ref=e174]:
+        - button "Wave 2 · Generation Prep 0/3 done ▾ 0%" [ref=e175] [cursor=pointer]:
+          - generic [ref=e176]:
+            - heading "Wave 2 · Generation Prep" [level=3] [ref=e177]
+            - generic [ref=e178]: 0/3 done
+            - emphasis [ref=e179]: ▾
+          - generic [ref=e182]: 0%
+        - generic [ref=e183]:
+          - button "21 FAL Selection Dry Run" [ref=e184] [cursor=pointer]:
+            - generic [ref=e185]: "21"
+            - strong [ref=e187]: FAL Selection Dry Run
+            - emphasis [ref=e188]
+          - button "22 Generation Queue Preview" [ref=e189] [cursor=pointer]:
+            - generic [ref=e190]: "22"
+            - strong [ref=e192]: Generation Queue Preview
+            - emphasis [ref=e193]
+          - button "23 Variant Compare Board" [ref=e194] [cursor=pointer]:
+            - generic [ref=e195]: "23"
+            - strong [ref=e197]: Variant Compare Board
+            - emphasis [ref=e198]
+      - generic [ref=e199]:
+        - button "Wave 3 · Run Orchestration 2/5 done ▾ 40%" [ref=e200] [cursor=pointer]:
+          - generic [ref=e201]:
+            - heading "Wave 3 · Run Orchestration" [level=3] [ref=e202]
+            - generic [ref=e203]: 2/5 done
+            - emphasis [ref=e204]: ▾
+          - generic [ref=e208]: 40%
+        - generic [ref=e209]:
+          - button "24 Launch Controls" [ref=e210] [cursor=pointer]:
+            - generic [ref=e211]: "24"
+            - strong [ref=e213]: Launch Controls
+            - emphasis [ref=e214]
+          - button "25 Live Activity Stream" [ref=e215] [cursor=pointer]:
+            - generic [ref=e216]: "25"
+            - strong [ref=e218]: Live Activity Stream
+            - emphasis [ref=e219]
+          - button "26 Failure Triage" [ref=e220] [cursor=pointer]:
+            - generic [ref=e221]: "26"
+            - strong [ref=e223]: Failure Triage
+            - emphasis [ref=e224]
+          - button "28 Runner Workbench" [ref=e225] [cursor=pointer]:
+            - generic [ref=e226]: "28"
+            - strong [ref=e228]: Runner Workbench
+            - emphasis [ref=e229]
+          - button "29 Runner Availability Matrix" [ref=e230] [cursor=pointer]:
+            - generic [ref=e231]: "29"
+            - strong [ref=e233]: Runner Availability Matrix
+            - emphasis [ref=e234]
+      - generic [ref=e235]:
+        - button "Wave 4 · Delivery + Handoff 0/2 done ▾ 0%" [ref=e236] [cursor=pointer]:
+          - generic [ref=e237]:
+            - heading "Wave 4 · Delivery + Handoff" [level=3] [ref=e238]
+            - generic [ref=e239]: 0/2 done
+            - emphasis [ref=e240]: ▾
+          - generic [ref=e243]: 0%
+        - generic [ref=e244]:
+          - button "30 Artifacts Browser" [ref=e245] [cursor=pointer]:
+            - generic [ref=e246]: "30"
+            - strong [ref=e248]: Artifacts Browser
+            - emphasis [ref=e249]
+          - button "31 Delivery Handoff" [ref=e250] [cursor=pointer]:
+            - generic [ref=e251]: "31"
+            - strong [ref=e253]: Delivery Handoff
+            - emphasis [ref=e254]
+      - generic [ref=e255]:
+        - button "Wave 5 · Visual Surfaces 0/5 done ▾ 0%" [ref=e256] [cursor=pointer]:
+          - generic [ref=e257]:
+            - heading "Wave 5 · Visual Surfaces" [level=3] [ref=e258]
+            - generic [ref=e259]: 0/5 done
+            - emphasis [ref=e260]: ▾
+          - generic [ref=e263]: 0%
+        - generic [ref=e264]:
+          - button "37 Logo Direction Studio" [ref=e265] [cursor=pointer]:
+            - generic [ref=e266]: "37"
+            - strong [ref=e268]: Logo Direction Studio
+            - emphasis [ref=e269]
+          - button "38 Typography Pairing Studio" [ref=e270] [cursor=pointer]:
+            - generic [ref=e271]: "38"
+            - strong [ref=e273]: Typography Pairing Studio
+            - emphasis [ref=e274]
+          - button "39 Palette Application Board" [ref=e275] [cursor=pointer]:
+            - generic [ref=e276]: "39"
+            - strong [ref=e278]: Palette Application Board
+            - emphasis [ref=e279]
+          - button "40 Campaign Asset Matrix" [ref=e280] [cursor=pointer]:
+            - generic [ref=e281]: "40"
+            - strong [ref=e283]: Campaign Asset Matrix
+            - emphasis [ref=e284]
+          - button "41 Final Delivery Package" [ref=e285] [cursor=pointer]:
+            - generic [ref=e286]: "41"
+            - strong [ref=e288]: Final Delivery Package
+            - emphasis [ref=e289]
+      - generic [ref=e290]:
+        - button "Wave 7 · Publishing Deliverables 0/1 done ▾ 0%" [ref=e291] [cursor=pointer]:
+          - generic [ref=e292]:
+            - heading "Wave 7 · Publishing Deliverables" [level=3] [ref=e293]
+            - generic [ref=e294]: 0/1 done
+            - emphasis [ref=e295]: ▾
+          - generic [ref=e298]: 0%
+        - button "32 Wave 7B · NotebookLM Publish" [ref=e300] [cursor=pointer]:
+          - generic [ref=e301]: "32"
+          - strong [ref=e303]: Wave 7B · NotebookLM Publish
+          - emphasis [ref=e304]
+      - generic [ref=e305]:
+        - button "Wave 8 · Docs + Astro Handoff 0/2 done ▾ 0%" [ref=e306] [cursor=pointer]:
+          - generic [ref=e307]:
+            - heading "Wave 8 · Docs + Astro Handoff" [level=3] [ref=e308]
+            - generic [ref=e309]: 0/2 done
+            - emphasis [ref=e310]: ▾
+          - generic [ref=e313]: 0%
+        - generic [ref=e314]:
+          - button "33 Wave 8A · Wiki Docs Handoff" [ref=e315] [cursor=pointer]:
+            - generic [ref=e316]: "33"
+            - strong [ref=e318]: Wave 8A · Wiki Docs Handoff
+            - emphasis [ref=e319]
+          - button "34 Wave 8B · Astro Build Handoff" [ref=e320] [cursor=pointer]:
+            - generic [ref=e321]: "34"
+            - strong [ref=e323]: Wave 8B · Astro Build Handoff
+            - emphasis [ref=e324]
+    - main [ref=e325]:
+      - generic [ref=e326]:
+        - paragraph [ref=e327]: Wave 0 · Config Triage · Page 1 of 41
+        - heading "Welcome & Brand Setup" [level=2] [ref=e328]
+        - paragraph [ref=e329]: Give users a clean, premium first screen to start a brand run confidently.
+        - generic [ref=e330]:
+          - generic [ref=e331]: Project setup
+          - generic [ref=e332]: Scenario intent
+          - generic [ref=e333]: Guided start
+      - generic [ref=e336]:
+        - heading "Bridge Offline" [level=4] [ref=e337]
+        - paragraph [ref=e338]:
+          - text: The desktop bridge is not responding on
+          - code [ref=e339]: 127.0.0.1:4191
+          - text: . Start it manually here, open Settings, or use
+          - code [ref=e340]: ⌘K
+          - text: and run
+          - code [ref=e341]: Start Bridge
+          - text: .
+        - generic [ref=e342]:
+          - button "Start Bridge" [ref=e343] [cursor=pointer]
+          - button "Open Provider Settings" [ref=e344] [cursor=pointer]
+  - contentinfo [ref=e345]:
+    - generic [ref=e346]: Ready.
+    - generic [ref=e347]: brandmint
+    - generic [ref=e348]: focused
+    - generic [ref=e349]: 5% complete
+    - generic [ref=e350]: 2 attention

@@ -440,7 +440,7 @@ def interactive_brand() -> dict:
     seeds = [int(s.strip()) for s in seed_str.split(",") if s.strip().isdigit()]
     resolution = prompt_input("Resolution", "1024x1024")
     output_format = prompt_input("Output format", "png")
-    env_file = prompt_input("Env file path", "~/.claude/.env")
+    env_file = prompt_input("Env file path", "~/.codex/.env")
 
     # -- Prompt categories ----------------------------------------------------
     print(f"\n  {C.YELLOW}Prompt categories to enable:{C.RESET}")
@@ -522,7 +522,7 @@ def _ask_illustration() -> dict:
 # Non-interactive (preset) mode
 # ---------------------------------------------------------------------------
 def preset_brand(preset_key: str, brand_name: str, tagline: str = "",
-                 output_dir: str = "", env_file: str = "~/.claude/.env") -> dict:
+                 output_dir: str = "", env_file: str = "~/.codex/.env") -> dict:
     if preset_key not in THEME_PRESETS:
         print(f"{C.RED}ERROR: Unknown preset '{preset_key}'.{C.RESET}")
         print(f"Available: {', '.join(PRESET_KEYS)}")
@@ -633,8 +633,8 @@ Available presets:
     )
     parser.add_argument(
         "--env-file",
-        default="~/.claude/.env",
-        help="Path to .env file with API keys (default: ~/.claude/.env)",
+        default="~/.codex/.env",
+        help="Path to .env file with API keys (default: ~/.codex/.env)",
     )
     return parser
 

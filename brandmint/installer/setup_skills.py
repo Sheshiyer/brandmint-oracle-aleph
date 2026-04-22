@@ -21,7 +21,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
 BRAND_SKILLS_DIR = PACKAGE_ROOT / "skills"
 CLAUDE_SKILLS_DIR = Path.home() / ".claude" / "skills"
 BRANDMINT_SKILL_DIR = CLAUDE_SKILLS_DIR / "brandmint"
-CLAUDE_ENV_PATH = Path.home() / ".claude" / ".env"
+CODEX_ENV_PATH = Path.home() / ".codex" / ".env"
 
 
 # ---------------------------------------------------------------------------
@@ -219,7 +219,7 @@ def check_fal_key() -> bool:
 
     Tries in order:
     1. os.environ.get("FAL_KEY")
-    2. Load from ~/.claude/.env via dotenv
+    2. Load from ~/.codex/.env via dotenv
     3. Load from PACKAGE_ROOT/.env
 
     Returns True if FAL_KEY is found and non-empty.
@@ -232,7 +232,7 @@ def check_fal_key() -> bool:
     except ImportError:
         return False
 
-    for env_path in (CLAUDE_ENV_PATH, PACKAGE_ROOT / ".env"):
+    for env_path in (CODEX_ENV_PATH, PACKAGE_ROOT / ".env"):
         if env_path.exists():
             load_dotenv(env_path, override=False)
             if os.environ.get("FAL_KEY"):
@@ -368,7 +368,7 @@ generation:
   seeds: [42, 137]
   resolution: "2K"
   output_format: "png"
-  env_file: "~/.claude/.env"
+  env_file: "~/.codex/.env"
   asset_registry_paths: []     # Optional extra asset registries (merged in order)
 """
 

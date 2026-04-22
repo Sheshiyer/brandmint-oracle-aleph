@@ -60,11 +60,11 @@ VISUAL_ASSET_COSTS: Dict[str, float] = {
     "2B": 0.05,
     "2C": 0.05,
     # Wave 4 -- Products & Content
-    "3A": 0.05,
-    "3B": 0.05,
-    "3C": 0.05,
+    "3A": 0.08,
+    "3B": 0.08,
+    "3C": 0.08,
     "4A": 0.08,
-    "4B": 0.05,
+    "4B": 0.08,
     # Wave 5 -- Campaign Assets
     "5A": 0.04,
     "5B": 0.08,
@@ -289,6 +289,7 @@ def _text_skill_cost(skill_count: int) -> float:
 def _visual_asset_cost(
     asset_ids: List[str],
     seeds: int = DEFAULT_SEEDS,
+    depth: Optional[str] = None,
 ) -> float:
     """Estimate USD cost for generating *asset_ids* with *seeds* per asset.
 
@@ -299,7 +300,10 @@ def _visual_asset_cost(
     total = 0.0
     for aid in asset_ids:
         per_seed = VISUAL_ASSET_COSTS.get(aid, fallback)
-        total += per_seed * seeds
+        seed_count = seeds
+        if aid == "8A" and depth != "surface":
+            seed_count += 1
+        total += per_seed * seed_count
     return total
 
 
@@ -424,7 +428,7 @@ def compute_wave_plan(
 
         # Cost estimation
         text_cost = _text_skill_cost(len(text_skills))
-        visual_cost = _visual_asset_cost(visual_assets)
+        visual_cost = _visual_asset_cost(visual_assets, depth=depth)
         estimated_cost = text_cost + visual_cost
 
         wave = Wave(

@@ -852,14 +852,24 @@ class WaveExecutor:
         )
 
         try:
+            selected_asset_ids = sorted(
+                {
+                    asset_id
+                    for wave in self.waves
+                    for asset_id in getattr(wave, "visual_assets", [])
+                }
+            )
+            cmd = [
+                python_executable,
+                str(script_path),
+                "generate",
+                "--config",
+                str(self.config_path),
+            ]
+            if selected_asset_ids:
+                cmd.extend(["--assets", ",".join(selected_asset_ids)])
             result = subprocess.run(
-                [
-                    python_executable,
-                    str(script_path),
-                    "generate",
-                    "--config",
-                    str(self.config_path),
-                ],
+                cmd,
                 capture_output=True,
                 text=True,
                 timeout=timeout_seconds,

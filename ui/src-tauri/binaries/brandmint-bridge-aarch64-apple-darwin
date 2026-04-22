@@ -9,6 +9,7 @@ set -euo pipefail
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:$PATH"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_HINT_FILE="$SCRIPT_DIR/../Resources/brandmint-root.txt"
 
 # Find repo root by walking up from script dir looking for pyproject.toml
 find_repo_root() {
@@ -23,9 +24,28 @@ find_repo_root() {
     return 1
 }
 
+read_root_hint() {
+    if [ ! -f "$ROOT_HINT_FILE" ]; then
+        return 1
+    fi
+
+    local hinted_root
+    hinted_root="$(tr -d '\r' < "$ROOT_HINT_FILE" | head -n 1 | xargs)"
+    if [ -z "$hinted_root" ]; then
+        return 1
+    fi
+    if [ -f "$hinted_root/pyproject.toml" ] && [ -d "$hinted_root/scripts" ]; then
+        echo "$hinted_root"
+        return 0
+    fi
+    return 1
+}
+
 # Try to find bridge script
 BRIDGE_SCRIPT=""
 if REPO_ROOT="$(find_repo_root)"; then
+    BRIDGE_SCRIPT="$REPO_ROOT/scripts/ui_backend_bridge.py"
+elif REPO_ROOT="$(read_root_hint)"; then
     BRIDGE_SCRIPT="$REPO_ROOT/scripts/ui_backend_bridge.py"
 elif [ -f "$SCRIPT_DIR/../Resources/ui_backend_bridge.py" ]; then
     BRIDGE_SCRIPT="$SCRIPT_DIR/../Resources/ui_backend_bridge.py"
@@ -51,6 +71,7 @@ fi
 
 if [ -n "${REPO_ROOT:-}" ]; then
     export BRANDMINT_ROOT="$REPO_ROOT"
+    cd "$REPO_ROOT"
 fi
 
 PYTHON_BIN="python3"

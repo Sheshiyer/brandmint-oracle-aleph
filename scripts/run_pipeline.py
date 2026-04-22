@@ -111,8 +111,8 @@ ASSET_CATALOG = {
     "3A": {
         "name": "Capsule Collection",
         "category": "products",
-        "model": "flux-2-pro",
-        "cost_per_seed": 0.05,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 2,
         "description": "Three-product lineup on polished surface. The hero product shot.",
         "when": "Any brand with physical or conceptual products.",
@@ -122,8 +122,8 @@ ASSET_CATALOG = {
     "3B": {
         "name": "Hero Product",
         "category": "products",
-        "model": "flux-2-pro",
-        "cost_per_seed": 0.05,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 3,
         "description": "Primary hero product render anchored to the approved product specification.",
         "when": "Any product-led brand that needs the canonical hero item.",
@@ -133,8 +133,8 @@ ASSET_CATALOG = {
     "3C": {
         "name": "Product Detail",
         "category": "products",
-        "model": "flux-2-pro",
-        "cost_per_seed": 0.05,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 4,
         "description": "Close-up product detail render anchored to the approved product specification.",
         "when": "Any product-led brand that needs material and feature close-ups.",
@@ -155,8 +155,8 @@ ASSET_CATALOG = {
     "4B": {
         "name": "Product Flatlay",
         "category": "photography",
-        "model": "flux-2-pro",
-        "cost_per_seed": 0.05,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 3,
         "description": "Overhead arrangement of 5 brand objects with architectural spacing.",
         "when": "Instagram, Pinterest, social media hero images.",
@@ -195,17 +195,6 @@ ASSET_CATALOG = {
         "when": "Art-forward brands. Wall art or merch potential.",
         "tags": ["illustration", "art", "decorative"],
         "aspect": "3:4",
-    },
-    "5D": {
-        "name": "Engine Icon Sets",
-        "category": "illustration",
-        "model": "recraft-v3",
-        "cost_per_seed": 0.04,
-        "priority": 3,
-        "description": "Minimalist vector icon sets grouped by system (from config).",
-        "when": "Brands with categorized features, tools, or frameworks.",
-        "tags": ["icons", "vector", "system"],
-        "aspect": "1:1",
     },
     "7A": {
         "name": "Editorial Contact Sheet",
@@ -315,7 +304,7 @@ BATCH_EXPECTED_PREFIX_PATTERNS = {
     "identity": ["2B", "2C", "APP-ICON"],
     "products": ["3A", "3B", "3C", "APP-SCREENSHOT"],
     "photography": ["4A", "4B", "OG-IMAGE", "TWITTER-HEADER"],
-    "illustration": ["5A", "5B", "5C", "5D"],
+    "illustration": ["5A", "5B", "5C"],
     "narrative": ["7A", "EMAIL-HERO"],
     "posters": ["8A", "9A", "10A", "10B", "10C", "IG-STORY", "PITCH-HERO"],
 }
@@ -573,10 +562,6 @@ def recommend_assets(cfg, exec_ctx):
             score += 10
             reasons.append("Leverage your sigil design")
 
-        if exec_ctx.get("has_icon_groups") and asset_id == "5D":
-            score += 25
-            reasons.append("Icon groups configured")
-
         if exec_ctx.get("has_engines") and asset_id == "9A":
             score += 25
             reasons.append(f"{exec_ctx['engines_count']} engines configured")
@@ -630,8 +615,6 @@ def calculate_budget(asset_ids, cfg, exec_ctx):
         # Calculate call count (varies by asset type)
         if asset_id == "9A" and exec_ctx.get("has_engines"):
             calls = exec_ctx["engines_count"]
-        elif asset_id == "5D" and exec_ctx.get("has_icon_groups"):
-            calls = exec_ctx.get("icon_groups_count", 0)
         elif asset_id == "10A-C" and exec_ctx.get("has_sequences"):
             calls = exec_ctx["sequences_count"]
         else:
@@ -1097,7 +1080,7 @@ def cmd_studio(args):
         batches_needed.add("products")
     if any(a in selected_assets for a in ["4A", "4B"]):
         batches_needed.add("photography")
-    if any(a in selected_assets for a in ["5A", "5B", "5C", "5D"]):
+    if any(a in selected_assets for a in ["5A", "5B", "5C"]):
         batches_needed.add("illustration")
     if "7A" in selected_assets:
         batches_needed.add("narrative")

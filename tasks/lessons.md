@@ -1,5 +1,8 @@
 # Lessons
 
+- For Brandmint desktop release work, never reuse Teamforge-local signing defaults or artifact namespaces; verify the signing key path, updater bucket, and hostnames are brand-specific before wiring OTA automation.
+- When the user picks a specific infrastructure hostname, replace the previous naming scheme immediately in both the live retry and the checked-in defaults; do not keep the old hostname around as the preferred path.
+- When users report `OFFLINE` bridge state in desktop UX, ship an in-app manual recovery control in the main header (start/restart bridge) instead of relying only on startup autoload scripts.
 - When the user explicitly excludes providers or asset classes (for example, "no Recraft" or "no icons"), remove those lanes from the active plan/config before rerunning anything; do not treat an ambiguous provider mention as permission to keep the legacy assets in scope.
 - When a brand run starts reusing old scripted example imagery, treat supplementary references as untrusted until they prove brand relevance: require explicit brand/product term matches or leave `SUPP_REFS` empty instead of falling back to generic community/style examples.
 - When the user reframes scope (for example, from "integrate skills" to "replace core provider architecture"), update `tasks/todo.md` immediately with a dedicated migration track and explicit rollback gates.
@@ -15,3 +18,16 @@
 - When the user asks for `autoresearch` loops, explicitly run and document a minimum three-pass keep/discard cycle (detect -> remediate -> verify), not a single-pass patch.
 - Keep brand-specific localization packs behind explicit config guards; never let one brand's localized narrative auto-generate for every brand.
 - Tests that depend on local fixture repos/paths should skip cleanly when the fixture is absent, rather than failing the whole suite.
+- When shipping a UI feature, do not stop at "feature works locally" if the production build is red; close the loop by either fixing baseline compile blockers in the same pass or explicitly securing user approval to defer them.
+- When the user asks for Tauri rebuild behavior changes, include runtime ergonomics in the script (for example post-build app launch to trigger bridge autoload), not just compilation and bundling.
+- When publishing a GitHub release into a repo that already has a newer semver release, do not summarize it as "the release is published" without explicitly stating whether it is a prerelease vs the repo-visible `Latest` release page; verify the exact GitHub surface the user is likely checking.
+- When a release version correction is needed after publish, rebuild the artifacts under the corrected version, republish the corrected release immediately, and retire the mistaken release/tag instead of leaving both version lines live.
+- When a user says they already updated a secret or credential, immediately re-check the authoritative scope that the workflow actually reads from and explicitly distinguish repo secrets from environment/org-level secrets before concluding anything is missing.
+- For Brandmint macOS releases, never ship a `.app` just because Tauri built it successfully; verify the final bundle with `codesign --verify --deep --strict` and remember that updater archives must be regenerated if the bundle is re-signed after build.
+- For Brandmint local macOS builds, do not rely on Tauri's generated DMG wrapper as the default path; build the `.app`, repair/verify the bundle first, and then create the DMG with the simpler CI-style `hdiutil create` flow.
+- When adding or fixing desktop UI controls, verify which entrypoint `main.tsx` actually mounts before claiming the feature shipped; matching code in unused shell components does not mean the packaged app has the behavior.
+- When a mounted Brandmint DMG cannot start its sidecar, inspect the packaged `Contents/MacOS/brandmint-bridge` wrapper directly before blaming the UI; mounted bundles lose repo-relative paths unless the bridge runtime is explicitly re-rooted.
+- For packaged Brandmint sidecars, never let `BaseHTTPRequestHandler` log to inherited stderr by default; orphaned or detached sidecar pipes can turn healthy endpoints into “empty reply from server” failures before any JSON response is written.
+- When guiding signing-secret setup, do not ask the user to paste certificate base64 or export passwords into chat; once exposed in the transcript, require a fresh `.p12` export password and treat the prior secret material as compromised.
+- When a Brandmint run is supposed to use Codex-local credentials, verify the unsandboxed Codex env/file presence first; do not assume `~/.codex/.env` or provider keys exist just because `~/.claude/.env` exists on disk.
+- When the user wants visuals on a single provider, do not rely on Brandmint's default fallback chain; set `generation.provider` and an explicit single-entry `generation.fallback_order` in the active brand config.

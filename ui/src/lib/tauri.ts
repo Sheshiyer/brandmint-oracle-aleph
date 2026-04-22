@@ -5,8 +5,34 @@
  * When running in a browser, API calls fall back to `fetch()` against localhost:4191.
  */
 
-// @ts-expect-error — __TAURI__ is injected by Tauri runtime
-export const isTauri = (): boolean => typeof window !== "undefined" && Boolean(window.__TAURI__);
+import { isTauri as detectTauriRuntime } from "@tauri-apps/api/core";
+
+type TauriWindow = Window & {
+  __TAURI__?: unknown;
+  __TAURI_INTERNALS__?: unknown;
+};
+
+type TauriGlobal = typeof globalThis & {
+  isTauri?: boolean;
+};
+
+export const isTauri = (): boolean => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const runtimeWindow = window as TauriWindow;
+  const runtimeGlobal = globalThis as TauriGlobal;
+
+  // Tauri v2 sets `globalThis.isTauri`; older/dev paths may still expose the
+  // legacy globals, so we accept either to keep desktop-only UX visible.
+  return (
+    detectTauriRuntime() ||
+    Boolean(runtimeGlobal.isTauri) ||
+    Boolean(runtimeWindow.__TAURI_INTERNALS__) ||
+    Boolean(runtimeWindow.__TAURI__)
+  );
+};
 
 const BRIDGE_BASE = "http://127.0.0.1:4191";
 

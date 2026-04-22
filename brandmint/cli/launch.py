@@ -37,6 +37,7 @@ from rich.prompt import Prompt
 from rich.table import Table
 
 from ..config_approval import build_approval_error, config_launch_status
+from ..runtime_env import default_codex_env_string, load_runtime_env
 from ..core.kickstarter_blueprint import (
     MANDATORY_KICKSTARTER_SECTIONS,
     build_kickstarter_readiness_from_outputs,
@@ -89,6 +90,7 @@ def run_launch(
 
     # -- 1. Load brand config -----------------------------------------------
     cfg = _load_config(config)
+    load_runtime_env(cfg, override=False)
     approval_status = config_launch_status(cfg)
     if not approval_status["is_launchable"]:
         console.print(f"[red]{build_approval_error(config, approval_status.get('pending_fields'))}[/red]")
@@ -304,7 +306,7 @@ def run_init(output: Path) -> None:
             "seeds": [42, 137],
             "resolution": "2K",
             "output_format": "png",
-            "env_file": "~/.claude/.env",
+            "env_file": default_codex_env_string(),
         },
     }
 

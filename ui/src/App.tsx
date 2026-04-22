@@ -1110,6 +1110,19 @@ export default function App() {
           setCommandPaletteOpen(false);
         },
       },
+      ...(isTauri()
+        ? [
+            {
+              id: "restart-bridge",
+              label: bridgeOnline ? "Restart Bridge" : "Start Bridge",
+              hint: bridgeOnline ? "Manual bridge recovery" : "Bridge is offline",
+              run: () => {
+                void triggerBridgeRestart();
+                setCommandPaletteOpen(false);
+              },
+            },
+          ]
+        : []),
       {
         id: "toggle-dry-run",
         label: dryRunMode ? "Disable Dry Run" : "Enable Dry Run",
@@ -1121,7 +1134,7 @@ export default function App() {
       },
       ...pageActions,
     ];
-  }, [dryRunMode, processPages]);
+  }, [bridgeOnline, dryRunMode, processPages]);
 
   const filteredCommandActions = useMemo(() => {
     const needle = commandQuery.trim().toLowerCase();
@@ -3476,9 +3489,16 @@ export default function App() {
             )}
 
             {/* Provider Integrations */}
-            <div className="settings-section">
-              <h4>Provider Integrations</h4>
-              <div className="metric-grid">
+            <div className="settings-section settings-section-provider">
+              <div className="settings-section-header">
+                <div className="settings-section-copy">
+                  <h4>Provider Integrations</h4>
+                  <p className="settings-section-intro">
+                    Keep keys, routing, and fallback behavior readable at a glance instead of collapsing everything into one dense control wall.
+                  </p>
+                </div>
+              </div>
+              <div className="metric-grid settings-summary-grid">
                 <article className="metric-card">
                   <span>OpenRouter key</span>
                   <strong>{integrationSettings.openrouter.hasApiKey ? integrationSettings.openrouter.apiKeyMasked : "not set"}</strong>
@@ -3500,76 +3520,139 @@ export default function App() {
                   <strong>{integrationSettings.defaults.preferredRunner}</strong>
                 </article>
               </div>
-              <div className="page-form-grid">
-                <label className="field">
-                  OpenRouter API key
-                  <input type="password" value={openrouterApiKeyInput} onChange={(e) => setOpenrouterApiKeyInput(e.target.value)} placeholder={integrationSettings.openrouter.hasApiKey ? "set new to rotate" : "sk-or-v1-..."} />
-                </label>
-                <label className="field">
-                  OpenRouter model
-                  <input value={integrationSettings.openrouter.model} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, openrouter: { ...prev.openrouter, model: e.target.value } }))} />
-                </label>
-                <label className="field">
-                  Inference API key
-                  <input type="password" value={inferenceApiKeyInput} onChange={(e) => setInferenceApiKeyInput(e.target.value)} placeholder={integrationSettings.inference.hasApiKey ? "set new to rotate" : "inf_..."} />
-                </label>
-                <label className="field">
-                  Inference endpoint
-                  <input value={integrationSettings.inference.endpoint} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, endpoint: e.target.value } }))} />
-                </label>
-                <label className="field">
-                  Inference visual backend
-                  <select value={integrationSettings.inference.visualBackend} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, visualBackend: (e.target.value === "inference" ? "inference" : "scripts") } }))}>
-                    <option value="scripts">scripts</option>
-                    <option value="inference">inference</option>
-                  </select>
-                </label>
-                <label className="field">
-                  Inference rollout mode
-                  <select value={integrationSettings.inference.rolloutMode} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, rolloutMode: (e.target.value as "ring0" | "ring1" | "ring2") } }))}>
-                    <option value="ring0">ring0</option>
-                    <option value="ring1">ring1</option>
-                    <option value="ring2">ring2</option>
-                  </select>
-                </label>
-                <label className="field">
-                  Semantic domain pack
-                  <input value={integrationSettings.inference.semanticDomainPack} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, semanticDomainPack: e.target.value } }))} placeholder="auto | app | saas | ecommerce | social" />
-                </label>
-                <label className="field">
-                  Fallback to scripts
-                  <select value={integrationSettings.inference.fallbackToScripts ? "on" : "off"} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, fallbackToScripts: e.target.value === "on" } }))}>
-                    <option value="on">on</option>
-                    <option value="off">off</option>
-                  </select>
-                </label>
-                <label className="field">
-                  Semantic routing
-                  <select value={integrationSettings.inference.semanticRoutingEnabled ? "on" : "off"} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, semanticRoutingEnabled: e.target.value === "on" } }))}>
-                    <option value="on">on</option>
-                    <option value="off">off</option>
-                  </select>
-                </label>
-                <label className="field">
-                  Model router mode
-                  <select value={integrationSettings.openrouter.routeMode} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, openrouter: { ...prev.openrouter, routeMode: e.target.value } }))}>
-                    <option value="balanced">balanced</option>
-                    <option value="quality">quality</option>
-                    <option value="speed">speed</option>
-                  </select>
-                </label>
-                <label className="field">
-                  Preferred runner
-                  <select value={integrationSettings.defaults.preferredRunner} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, defaults: { ...prev.defaults, preferredRunner: e.target.value } }))}>
-                    {runners.map((runner) => (<option key={runner.id} value={runner.id}>{runner.label}</option>))}
-                  </select>
-                </label>
+              <div className="settings-group-grid">
+                <section className="settings-group-card">
+                  <div className="settings-group-heading">
+                    <h5>OpenRouter</h5>
+                    <p>Hosted model access and routing policy for the main planning path.</p>
+                  </div>
+                  <div className="field-stack">
+                    <label className="field">
+                      OpenRouter API key
+                      <input type="password" value={openrouterApiKeyInput} onChange={(e) => setOpenrouterApiKeyInput(e.target.value)} placeholder={integrationSettings.openrouter.hasApiKey ? "set new to rotate" : "sk-or-v1-..."} />
+                    </label>
+                    <label className="field">
+                      OpenRouter model
+                      <input value={integrationSettings.openrouter.model} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, openrouter: { ...prev.openrouter, model: e.target.value } }))} />
+                    </label>
+                    <label className="field">
+                      Model router mode
+                      <select value={integrationSettings.openrouter.routeMode} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, openrouter: { ...prev.openrouter, routeMode: e.target.value } }))}>
+                        <option value="balanced">balanced</option>
+                        <option value="quality">quality</option>
+                        <option value="speed">speed</option>
+                      </select>
+                    </label>
+                  </div>
+                </section>
+
+                <section className="settings-group-card">
+                  <div className="settings-group-heading">
+                    <h5>Inference Runtime</h5>
+                    <p>Bridge endpoint, backend selection, and rollout lane for visual generation.</p>
+                  </div>
+                  <div className="field-stack">
+                    <label className="field">
+                      Inference API key
+                      <input type="password" value={inferenceApiKeyInput} onChange={(e) => setInferenceApiKeyInput(e.target.value)} placeholder={integrationSettings.inference.hasApiKey ? "set new to rotate" : "inf_..."} />
+                    </label>
+                    <label className="field">
+                      Inference endpoint
+                      <input value={integrationSettings.inference.endpoint} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, endpoint: e.target.value } }))} />
+                    </label>
+                    <div className="page-form-grid settings-inline-grid">
+                      <label className="field">
+                        Inference visual backend
+                        <select value={integrationSettings.inference.visualBackend} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, visualBackend: (e.target.value === "inference" ? "inference" : "scripts") } }))}>
+                          <option value="scripts">scripts</option>
+                          <option value="inference">inference</option>
+                        </select>
+                      </label>
+                      <label className="field">
+                        Inference rollout mode
+                        <select value={integrationSettings.inference.rolloutMode} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, rolloutMode: (e.target.value as "ring0" | "ring1" | "ring2") } }))}>
+                          <option value="ring0">ring0</option>
+                          <option value="ring1">ring1</option>
+                          <option value="ring2">ring2</option>
+                        </select>
+                      </label>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="settings-group-card">
+                  <div className="settings-group-heading">
+                    <h5>Routing Defaults</h5>
+                    <p>Choose how Brandmint falls back when the preferred provider is unavailable.</p>
+                  </div>
+                  <div className="field-stack">
+                    <label className="field">
+                      Preferred runner
+                      <select value={integrationSettings.defaults.preferredRunner} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, defaults: { ...prev.defaults, preferredRunner: e.target.value } }))}>
+                        {runners.map((runner) => (<option key={runner.id} value={runner.id}>{runner.label}</option>))}
+                      </select>
+                    </label>
+                    <label className="field">
+                      Semantic domain pack
+                      <input value={integrationSettings.inference.semanticDomainPack} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, semanticDomainPack: e.target.value } }))} placeholder="auto | app | saas | ecommerce | social" />
+                    </label>
+                    <div className="page-form-grid settings-inline-grid">
+                      <label className="field">
+                        Semantic routing
+                        <select value={integrationSettings.inference.semanticRoutingEnabled ? "on" : "off"} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, semanticRoutingEnabled: e.target.value === "on" } }))}>
+                          <option value="on">on</option>
+                          <option value="off">off</option>
+                        </select>
+                      </label>
+                      <label className="field">
+                        Fallback to scripts
+                        <select value={integrationSettings.inference.fallbackToScripts ? "on" : "off"} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, inference: { ...prev.inference, fallbackToScripts: e.target.value === "on" } }))}>
+                          <option value="on">on</option>
+                          <option value="off">off</option>
+                        </select>
+                      </label>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="settings-group-card">
+                  <div className="settings-group-heading">
+                    <h5>NBrain</h5>
+                    <p>Optional secondary provider for model execution when you want a dedicated runner.</p>
+                  </div>
+                  <div className="field-stack">
+                    <label className="field">
+                      NBrain enabled
+                      <select value={integrationSettings.nbrain.enabled ? "on" : "off"} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, nbrain: { ...prev.nbrain, enabled: e.target.value === "on" } }))}>
+                        <option value="on">on</option>
+                        <option value="off">off</option>
+                      </select>
+                    </label>
+                    <label className="field">
+                      NBrain API key
+                      <input type="password" value={nbrainApiKeyInput} onChange={(e) => setNbrainApiKeyInput(e.target.value)} placeholder={integrationSettings.nbrain.hasApiKey ? "set new to rotate" : "nb_..."} />
+                    </label>
+                    <label className="field">
+                      NBrain endpoint
+                      <input value={integrationSettings.nbrain.endpoint} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, nbrain: { ...prev.nbrain, endpoint: e.target.value } }))} placeholder="https://..." />
+                    </label>
+                    <label className="field">
+                      NBrain model
+                      <input value={integrationSettings.nbrain.model} onChange={(e) => setIntegrationSettings((prev) => ({ ...prev, nbrain: { ...prev.nbrain, model: e.target.value } }))} />
+                    </label>
+                  </div>
+                </section>
               </div>
-              <div className="controls-row">
-                <button className="btn btn-primary" onClick={() => { void saveIntegrationSettings(); showToast("Settings saved", "success"); }} disabled={settingsSaving}>{settingsSaving ? "Saving..." : "Save Settings"}</button>
-                <button className="btn" onClick={() => void loadIntegrationSettings()}>Reload</button>
-                <button className="btn btn-danger" onClick={() => void saveIntegrationSettings({ clearOpenrouter: true })}>Clear OpenRouter Key</button>
-                <button className="btn btn-danger" onClick={() => void saveIntegrationSettings({ clearInference: true })}>Clear Inference Key</button>
+              <div className="settings-actions-bar">
+                <div className="controls-row">
+                  <button className="btn btn-primary" onClick={() => { void saveIntegrationSettings(); showToast("Settings saved", "success"); }} disabled={settingsSaving}>{settingsSaving ? "Saving..." : "Save Settings"}</button>
+                  <button className="btn" onClick={() => void loadIntegrationSettings()}>Reload</button>
+                </div>
+                <div className="controls-row settings-danger-row">
+                  <button className="btn btn-danger" onClick={() => void saveIntegrationSettings({ clearOpenrouter: true })}>Clear OpenRouter Key</button>
+                  <button className="btn btn-danger" onClick={() => void saveIntegrationSettings({ clearInference: true })}>Clear Inference Key</button>
+                  <button className="btn btn-danger" onClick={() => void saveIntegrationSettings({ clearNbrain: true })}>Clear NBrain Key</button>
+                </div>
               </div>
             </div>
 
@@ -4043,27 +4126,42 @@ cd my-wiki && bun run build`}
             )}
           </svg>
         </button>
-        <div className="header-breadcrumb">
-          <strong>Brandmint</strong>
-          <span style={{ color: "var(--fg-tertiary)" }}>/</span>
-          <strong>{selectedPage?.title}</strong>
+        <div className="header-context">
+          <p className="header-context-kicker">
+            <strong>Brandmint</strong>
+            <span>/</span>
+            <span>{selectedPage ? waveForPage(selectedPage).label : "Workspace"}</span>
+          </p>
+          <div className="header-context-title">
+            <strong>{selectedPage?.title}</strong>
+            <span>{selectedPage ? `Page ${selectedPageIndex + 1} of ${processPages.length}` : ""}</span>
+          </div>
         </div>
         <div className="hud-cell-right">
-          <span className={`status-pill ${bridgeOnline ? "ok" : "warn"}`}>
-            <span className={`status-dot ${bridgeOnline ? "pulse" : "danger"}`} />
-            {bridgeOnline ? "online" : "offline"}
-          </span>
-          <span className={`status-pill ${runState === "running" || runState === "retrying" ? "ok" : ""}`}>
-            <span className={`status-dot ${runState === "running" || runState === "retrying" ? "pulse" : ""}`} />
-            {runState}
-          </span>
-          <button className="header-icon-btn" onClick={() => setSelectedPageId("process-history")} title="Run History">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </button>
-          <button className="header-icon-btn" onClick={() => setSelectedPageId("process-settings")} title="Settings (⌘,)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-          </button>
-          <button className="btn" onClick={() => setCommandPaletteOpen(true)} title="Command palette (⌘K)">⌘K</button>
+          <div className="header-status-group">
+            <span className={`status-pill ${bridgeOnline ? "ok" : "warn"}`}>
+              <span className={`status-dot ${bridgeOnline ? "pulse" : "danger"}`} />
+              {bridgeOnline ? "Bridge online" : "Bridge offline"}
+            </span>
+            <span className={`status-pill ${runState === "running" || runState === "retrying" ? "ok" : ""}`}>
+              <span className={`status-dot ${runState === "running" || runState === "retrying" ? "pulse" : ""}`} />
+              {`Run ${runState}`}
+            </span>
+          </div>
+          <div className="header-action-group">
+            {isTauri() && (
+              <button className="btn" onClick={() => void triggerBridgeRestart()} disabled={bridgeRestarting} title={bridgeOnline ? "Restart bridge sidecar" : "Start bridge sidecar"}>
+                {bridgeRestarting ? (bridgeOnline ? "Restarting..." : "Starting...") : (bridgeOnline ? "Restart Bridge" : "Start Bridge")}
+              </button>
+            )}
+            <button className="header-icon-btn" onClick={() => setSelectedPageId("process-history")} title="Run History">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </button>
+            <button className="header-icon-btn" onClick={() => setSelectedPageId("process-settings")} title="Settings (⌘,)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            </button>
+            <button className="btn" onClick={() => setCommandPaletteOpen(true)} title="Command palette (⌘K)">⌘K</button>
+          </div>
         </div>
       </header>
 
@@ -4071,19 +4169,22 @@ cd my-wiki && bun run build`}
         <aside className="process-sidebar" style={{ position: "relative" }}>
           <div className={`sidebar-resize-handle${isResizingSidebar ? " dragging" : ""}`} onMouseDown={() => setIsResizingSidebar(true)} />
           {/* Quick-access app section */}
-          <div className="sidebar-quick-access">
-            <button className={`quick-access-btn${selectedPage?.kind === "settings" ? " active" : ""}`} onClick={() => setSelectedPageId("process-settings")}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-              Settings
-            </button>
-            <button className={`quick-access-btn${selectedPage?.kind === "history" ? " active" : ""}`} onClick={() => setSelectedPageId("process-history")}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              History
-            </button>
-            <button className={`quick-access-btn${selectedPage?.kind === "output-viewer" ? " active" : ""}`} onClick={() => setSelectedPageId("process-output-viewer")}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              Outputs
-            </button>
+          <div className="sidebar-toolbar">
+            <small className="sidebar-section-label">Workspace</small>
+            <div className="sidebar-quick-access">
+              <button className={`quick-access-btn${selectedPage?.kind === "settings" ? " active" : ""}`} onClick={() => setSelectedPageId("process-settings")}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                Settings
+              </button>
+              <button className={`quick-access-btn${selectedPage?.kind === "history" ? " active" : ""}`} onClick={() => setSelectedPageId("process-history")}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                History
+              </button>
+              <button className={`quick-access-btn${selectedPage?.kind === "output-viewer" ? " active" : ""}`} onClick={() => setSelectedPageId("process-output-viewer")}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Outputs
+              </button>
+            </div>
           </div>
 
           {recentProjects.length > 0 && (
@@ -4104,10 +4205,12 @@ cd my-wiki && bun run build`}
             </div>
           )}
 
-          <label className="field">
-            Find page
-            <input value={pageSearch} onChange={(e) => setPageSearch(e.target.value)} placeholder="search page, track, objective" />
-          </label>
+          <div className="sidebar-search-panel">
+            <label className="field sidebar-search-field">
+              Find page
+              <input value={pageSearch} onChange={(e) => setPageSearch(e.target.value)} placeholder="search page, track, objective" />
+            </label>
+          </div>
 
           {waveGroups.map((wave) => {
             const done = wave.pages.filter((page) => pageStatusMap[page.id] === "done").length;
@@ -4168,11 +4271,19 @@ cd my-wiki && bun run build`}
           <div key={pageTransitionKey} className="content-main-layout page-transition-enter page-transition-active">
             {!bridgeOnline && !selectedPage?.kind?.startsWith("settings") && !selectedPage?.kind?.startsWith("history") ? (
               <div style={{ padding: 24 }}>
-                <div className="skeleton skeleton-block" />
-                <div className="skeleton skeleton-line" style={{ width: "80%" }} />
-                <div className="skeleton skeleton-line" style={{ width: "55%" }} />
-                <div className="skeleton skeleton-line" />
-                <div className="skeleton skeleton-block" style={{ marginTop: 16 }} />
+                <div className="content-block nested-block">
+                  <h4>Bridge Offline</h4>
+                  <p>
+                    The desktop bridge is not responding on <code>127.0.0.1:4191</code>. Start it manually here, open
+                    Settings, or use <code>⌘K</code> and run {bridgeOnline ? <code>Restart Bridge</code> : <code>Start Bridge</code>}.
+                  </p>
+                  <div className="controls-row">
+                    <button className="btn btn-primary" onClick={() => void triggerBridgeRestart()} disabled={bridgeRestarting}>
+                      {bridgeRestarting ? (bridgeOnline ? "Restarting..." : "Starting...") : (bridgeOnline ? "Restart Bridge" : "Start Bridge")}
+                    </button>
+                    <button className="btn" onClick={() => setSelectedPageId("process-settings")}>Open Provider Settings</button>
+                  </div>
+                </div>
               </div>
             ) : selectedPage ? renderProcessPage(selectedPage) : <p>No page selected.</p>}
           </div>

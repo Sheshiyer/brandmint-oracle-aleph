@@ -269,8 +269,8 @@ def render_cost_summary(waves: List[Wave], console: Console) -> None:
 # Asset cost per seed (mirrors VISUAL_ASSET_COSTS in wave_planner.py)
 _ASSET_COSTS = {
     "2A": 0.08, "2B": 0.05, "2C": 0.05,
-    "3A": 0.05, "3B": 0.05, "3C": 0.05,
-    "4A": 0.08, "4B": 0.05,
+    "3A": 0.08, "3B": 0.08, "3C": 0.08,
+    "4A": 0.08, "4B": 0.08,
     "5A": 0.04, "5B": 0.08, "5C": 0.04,
     "7A": 0.08, "8A": 0.08,
     "APP-ICON": 0.05, "OG-IMAGE": 0.08, "IG-STORY": 0.08,
@@ -280,13 +280,13 @@ _ASSET_COSTS = {
 
 _ASSET_MODELS = {
     "2A": "nano-banana-pro", "2B": "flux-2-pro", "2C": "flux-2-pro",
-    "3A": "flux-2-pro", "3B": "flux-2-pro", "3C": "flux-2-pro",
-    "4A": "nano-banana-pro", "4B": "flux-2-pro",
+    "3A": "nano-banana-pro", "3B": "nano-banana-pro", "3C": "nano-banana-pro",
+    "4A": "nano-banana-pro", "4B": "nano-banana-pro",
     "5A": "recraft-v3", "5B": "nano-banana-pro", "5C": "recraft-v3",
     "7A": "nano-banana-pro", "8A": "nano-banana-pro",
     "APP-ICON": "flux-2-pro", "OG-IMAGE": "nano-banana-pro",
     "IG-STORY": "nano-banana-pro", "APP-SCREENSHOT": "nano-banana-pro",
-    "PITCH-HERO": "nano-banana-pro", "TWITTER-HEADER": "flux-2-pro",
+    "PITCH-HERO": "nano-banana-pro", "TWITTER-HEADER": "nano-banana-pro",
     "EMAIL-HERO": "nano-banana-pro",
 }
 

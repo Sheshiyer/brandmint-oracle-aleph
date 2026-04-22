@@ -918,6 +918,13 @@ def abort_run() -> dict:
 
 
 class Handler(BaseHTTPRequestHandler):
+    def log_message(self, format: str, *args: object) -> None:
+        try:
+            runtime.append_log("info", f"http: {format % args}")
+        except Exception:
+            # Avoid failing API responses if request logging cannot be recorded.
+            return
+
     def _send(self, status: int, data: object) -> None:
         body = json.dumps(data).encode("utf-8")
         self.send_response(status)

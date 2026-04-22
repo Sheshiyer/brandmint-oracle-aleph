@@ -1,0 +1,424 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "Hide sidebar" [ref=e5] [cursor=pointer]:
+      - img [ref=e6]
+    - generic [ref=e8]:
+      - paragraph [ref=e9]:
+        - strong [ref=e10]: Brandmint
+        - generic [ref=e11]: /
+        - generic [ref=e12]: App
+      - generic [ref=e13]:
+        - strong [ref=e14]: Provider Settings
+        - generic [ref=e15]: Page 27 of 41
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: Bridge online
+        - generic [ref=e20]: Run idle
+      - generic [ref=e22]:
+        - button "Run History" [ref=e23] [cursor=pointer]:
+          - img [ref=e24]
+        - button "Settings (⌘,)" [active] [ref=e27] [cursor=pointer]:
+          - img [ref=e28]
+        - button "⌘K" [ref=e31] [cursor=pointer]
+  - generic [ref=e32]:
+    - complementary [ref=e33]:
+      - generic [ref=e35]:
+        - generic [ref=e36]: Workspace
+        - generic [ref=e37]:
+          - button "Settings" [ref=e38] [cursor=pointer]:
+            - img [ref=e39]
+            - text: Settings
+          - button "History" [ref=e42] [cursor=pointer]:
+            - img [ref=e43]
+            - text: History
+          - button "Outputs" [ref=e46] [cursor=pointer]:
+            - img [ref=e47]
+            - text: Outputs
+      - generic [ref=e51]:
+        - text: Find page
+        - textbox "Find page" [ref=e52]:
+          - /placeholder: search page, track, objective
+      - generic [ref=e53]:
+        - button "Wave 0 · Config Triage 10/14 done ▾ 1 attention" [ref=e406] [cursor=pointer]:
+          - generic [ref=e55]:
+            - heading "Wave 0 · Config Triage" [level=3] [ref=e56]
+            - generic [ref=e57]: 10/14 done
+            - emphasis [ref=e58]: ▾
+          - generic [ref=e61]: 1 attention
+        - generic [ref=e62]:
+          - button "1 Welcome & Brand Setup" [ref=e408] [cursor=pointer]:
+            - generic [ref=e64]: "1"
+            - strong [ref=e66]: Welcome & Brand Setup
+            - emphasis [ref=e68]
+          - button "2 Campaign Intent & Success Criteria" [ref=e69] [cursor=pointer]:
+            - generic [ref=e70]: "2"
+            - strong [ref=e72]: Campaign Intent & Success Criteria
+            - emphasis [ref=e73]
+          - button "3 Product MD Intake" [ref=e74] [cursor=pointer]:
+            - generic [ref=e75]: "3"
+            - strong [ref=e77]: Product MD Intake
+            - emphasis [ref=e78]
+          - button "4 Input Quality Diagnostics" [ref=e79] [cursor=pointer]:
+            - generic [ref=e80]: "4"
+            - strong [ref=e82]: Input Quality Diagnostics
+            - emphasis [ref=e83]
+          - button "5 Wave 0 Quiz Triage" [ref=e84] [cursor=pointer]:
+            - generic [ref=e85]: "5"
+            - strong [ref=e87]: Wave 0 Quiz Triage
+            - emphasis [ref=e88]
+          - button "6 Signal Confidence Tuning" [ref=e89] [cursor=pointer]:
+            - generic [ref=e90]: "6"
+            - strong [ref=e92]: Signal Confidence Tuning
+            - emphasis [ref=e93]
+          - button "7 Brand Basics Setup" [ref=e94] [cursor=pointer]:
+            - generic [ref=e95]: "7"
+            - strong [ref=e97]: Brand Basics Setup
+            - emphasis [ref=e98]
+          - button "8 Audience Definition" [ref=e99] [cursor=pointer]:
+            - generic [ref=e100]: "8"
+            - strong [ref=e102]: Audience Definition
+            - emphasis [ref=e103]
+          - button "9 Positioning & Promise" [ref=e104] [cursor=pointer]:
+            - generic [ref=e105]: "9"
+            - strong [ref=e107]: Positioning & Promise
+            - emphasis [ref=e108]
+          - button "10 Voice & Tone Crafting" [ref=e109] [cursor=pointer]:
+            - generic [ref=e110]: "10"
+            - strong [ref=e112]: Voice & Tone Crafting
+            - emphasis [ref=e113]
+          - button "11 Visual Direction Curation" [ref=e114] [cursor=pointer]:
+            - generic [ref=e115]: "11"
+            - strong [ref=e117]: Visual Direction Curation
+            - emphasis [ref=e118]
+          - button "12 Brand Config Wizard" [ref=e119] [cursor=pointer]:
+            - generic [ref=e120]: "12"
+            - strong [ref=e122]: Brand Config Wizard
+            - emphasis [ref=e123]
+          - button "13 Configuration QA Review" [ref=e124] [cursor=pointer]:
+            - generic [ref=e125]: "13"
+            - strong [ref=e127]: Configuration QA Review
+            - emphasis [ref=e128]
+          - button "14 Config Export" [ref=e129] [cursor=pointer]:
+            - generic [ref=e130]: "14"
+            - strong [ref=e132]: Config Export
+            - emphasis [ref=e133]
+      - generic [ref=e134]:
+        - button "Wave 1 · References + Prompting 6/6 done ▾ 100%" [ref=e409] [cursor=pointer]:
+          - generic [ref=e136]:
+            - heading "Wave 1 · References + Prompting" [level=3] [ref=e137]
+            - generic [ref=e138]: 6/6 done
+            - emphasis [ref=e139]: ▾
+          - generic [ref=e142]: 100%
+        - generic [ref=e143]:
+          - button "15 Reference Prioritization Logic" [ref=e144] [cursor=pointer]:
+            - generic [ref=e145]: "15"
+            - strong [ref=e147]: Reference Prioritization Logic
+            - emphasis [ref=e148]
+          - button "16 Reference Curation (Top 30)" [ref=e149] [cursor=pointer]:
+            - generic [ref=e150]: "16"
+            - strong [ref=e152]: Reference Curation (Top 30)
+            - emphasis [ref=e153]
+          - button "17 Reference Library (Show More)" [ref=e154] [cursor=pointer]:
+            - generic [ref=e155]: "17"
+            - strong [ref=e157]: Reference Library (Show More)
+            - emphasis [ref=e158]
+          - button "18 Style Cluster Explorer" [ref=e159] [cursor=pointer]:
+            - generic [ref=e160]: "18"
+            - strong [ref=e162]: Style Cluster Explorer
+            - emphasis [ref=e163]
+          - button "19 Prompt Scaffold Builder" [ref=e164] [cursor=pointer]:
+            - generic [ref=e165]: "19"
+            - strong [ref=e167]: Prompt Scaffold Builder
+            - emphasis [ref=e168]
+          - button "20 Prompt QA Harness" [ref=e169] [cursor=pointer]:
+            - generic [ref=e170]: "20"
+            - strong [ref=e172]: Prompt QA Harness
+            - emphasis [ref=e173]
+      - generic [ref=e174]:
+        - button "Wave 2 · Generation Prep 2/3 done ▾ 67%" [ref=e410] [cursor=pointer]:
+          - generic [ref=e176]:
+            - heading "Wave 2 · Generation Prep" [level=3] [ref=e177]
+            - generic [ref=e178]: 2/3 done
+            - emphasis [ref=e179]: ▾
+          - generic [ref=e182]: 67%
+        - generic [ref=e183]:
+          - button "21 FAL Selection Dry Run" [ref=e184] [cursor=pointer]:
+            - generic [ref=e185]: "21"
+            - strong [ref=e187]: FAL Selection Dry Run
+            - emphasis [ref=e188]
+          - button "22 Generation Queue Preview" [ref=e189] [cursor=pointer]:
+            - generic [ref=e190]: "22"
+            - strong [ref=e192]: Generation Queue Preview
+            - emphasis [ref=e193]
+          - button "23 Variant Compare Board" [ref=e194] [cursor=pointer]:
+            - generic [ref=e195]: "23"
+            - strong [ref=e197]: Variant Compare Board
+            - emphasis [ref=e198]
+      - generic [ref=e199]:
+        - button "Wave 3 · Run Orchestration 3/5 done ▾ 60%" [ref=e353] [cursor=pointer]:
+          - generic [ref=e201]:
+            - heading "Wave 3 · Run Orchestration" [level=3] [ref=e202]
+            - generic [ref=e203]: 3/5 done
+            - emphasis [ref=e204]: ▾
+          - generic [ref=e208]: 60%
+        - generic [ref=e209]:
+          - button "24 Launch Controls" [ref=e210] [cursor=pointer]:
+            - generic [ref=e211]: "24"
+            - strong [ref=e213]: Launch Controls
+            - emphasis [ref=e214]
+          - button "25 Live Activity Stream" [ref=e215] [cursor=pointer]:
+            - generic [ref=e216]: "25"
+            - strong [ref=e218]: Live Activity Stream
+            - emphasis [ref=e219]
+          - button "26 Failure Triage" [ref=e220] [cursor=pointer]:
+            - generic [ref=e221]: "26"
+            - strong [ref=e223]: Failure Triage
+            - emphasis [ref=e224]
+          - button "28 Runner Workbench" [ref=e225] [cursor=pointer]:
+            - generic [ref=e226]: "28"
+            - strong [ref=e228]: Runner Workbench
+            - emphasis [ref=e229]
+          - button "29 Runner Availability Matrix" [ref=e230] [cursor=pointer]:
+            - generic [ref=e231]: "29"
+            - strong [ref=e233]: Runner Availability Matrix
+            - emphasis [ref=e234]
+      - generic [ref=e235]:
+        - button "Wave 4 · Delivery + Handoff 1/2 done ▾ 50%" [ref=e354] [cursor=pointer]:
+          - generic [ref=e237]:
+            - heading "Wave 4 · Delivery + Handoff" [level=3] [ref=e238]
+            - generic [ref=e239]: 1/2 done
+            - emphasis [ref=e240]: ▾
+          - generic [ref=e243]: 50%
+        - generic [ref=e244]:
+          - button "30 Artifacts Browser" [ref=e245] [cursor=pointer]:
+            - generic [ref=e246]: "30"
+            - strong [ref=e248]: Artifacts Browser
+            - emphasis [ref=e249]
+          - button "31 Delivery Handoff" [ref=e250] [cursor=pointer]:
+            - generic [ref=e251]: "31"
+            - strong [ref=e253]: Delivery Handoff
+            - emphasis [ref=e254]
+      - generic [ref=e255]:
+        - button "Wave 5 · Visual Surfaces 0/5 done ▾ 0%" [ref=e256] [cursor=pointer]:
+          - generic [ref=e257]:
+            - heading "Wave 5 · Visual Surfaces" [level=3] [ref=e258]
+            - generic [ref=e259]: 0/5 done
+            - emphasis [ref=e260]: ▾
+          - generic [ref=e263]: 0%
+        - generic [ref=e264]:
+          - button "37 Logo Direction Studio" [ref=e265] [cursor=pointer]:
+            - generic [ref=e266]: "37"
+            - strong [ref=e268]: Logo Direction Studio
+            - emphasis [ref=e269]
+          - button "38 Typography Pairing Studio" [ref=e270] [cursor=pointer]:
+            - generic [ref=e271]: "38"
+            - strong [ref=e273]: Typography Pairing Studio
+            - emphasis [ref=e274]
+          - button "39 Palette Application Board" [ref=e275] [cursor=pointer]:
+            - generic [ref=e276]: "39"
+            - strong [ref=e278]: Palette Application Board
+            - emphasis [ref=e279]
+          - button "40 Campaign Asset Matrix" [ref=e280] [cursor=pointer]:
+            - generic [ref=e281]: "40"
+            - strong [ref=e283]: Campaign Asset Matrix
+            - emphasis [ref=e284]
+          - button "41 Final Delivery Package" [ref=e285] [cursor=pointer]:
+            - generic [ref=e286]: "41"
+            - strong [ref=e288]: Final Delivery Package
+            - emphasis [ref=e289]
+      - generic [ref=e290]:
+        - button "Wave 7 · Publishing Deliverables 0/1 done ▾ 0%" [ref=e291] [cursor=pointer]:
+          - generic [ref=e292]:
+            - heading "Wave 7 · Publishing Deliverables" [level=3] [ref=e293]
+            - generic [ref=e294]: 0/1 done
+            - emphasis [ref=e295]: ▾
+          - generic [ref=e298]: 0%
+        - button "32 Wave 7B · NotebookLM Publish" [ref=e300] [cursor=pointer]:
+          - generic [ref=e301]: "32"
+          - strong [ref=e303]: Wave 7B · NotebookLM Publish
+          - emphasis [ref=e304]
+      - generic [ref=e305]:
+        - button "Wave 8 · Docs + Astro Handoff 0/2 done ▾ 0%" [ref=e306] [cursor=pointer]:
+          - generic [ref=e307]:
+            - heading "Wave 8 · Docs + Astro Handoff" [level=3] [ref=e308]
+            - generic [ref=e309]: 0/2 done
+            - emphasis [ref=e310]: ▾
+          - generic [ref=e313]: 0%
+        - generic [ref=e314]:
+          - button "33 Wave 8A · Wiki Docs Handoff" [ref=e315] [cursor=pointer]:
+            - generic [ref=e316]: "33"
+            - strong [ref=e318]: Wave 8A · Wiki Docs Handoff
+            - emphasis [ref=e319]
+          - button "34 Wave 8B · Astro Build Handoff" [ref=e320] [cursor=pointer]:
+            - generic [ref=e321]: "34"
+            - strong [ref=e323]: Wave 8B · Astro Build Handoff
+            - emphasis [ref=e324]
+    - main [ref=e325]:
+      - generic [ref=e326]:
+        - paragraph [ref=e327]: App · Page 27 of 41
+        - heading "Provider Settings" [level=2] [ref=e412]
+        - paragraph [ref=e329]: Configure OpenRouter/Inference/NBrain keys and model routing defaults.
+        - generic [ref=e330]:
+          - generic [ref=e413]: API keys
+          - generic [ref=e414]: Model router
+          - generic [ref=e415]: Provider readiness
+      - generic [ref=e416]:
+        - generic [ref=e417]:
+          - heading "Appearance" [level=4] [ref=e418]
+          - generic [ref=e419]:
+            - generic [ref=e420]:
+              - generic [ref=e421]: Notifications
+              - generic [ref=e422]: Show native OS notifications for run events
+            - combobox [ref=e424]:
+              - option "On" [selected]
+              - option "Off"
+          - generic [ref=e425]:
+            - generic [ref=e426]:
+              - generic [ref=e427]: Auto-save drafts
+              - generic [ref=e428]: Automatically persist work to local storage
+            - combobox [ref=e430]:
+              - option "On" [selected]
+              - option "Off"
+          - generic [ref=e431]:
+            - generic [ref=e432]:
+              - generic [ref=e433]: Log retention
+              - generic [ref=e434]: Maximum number of log entries to keep in memory
+            - combobox [ref=e436]:
+              - option "200"
+              - option "500" [selected]
+              - option "1000"
+        - generic [ref=e437]:
+          - generic [ref=e439]:
+            - heading "Provider Integrations" [level=4] [ref=e440]
+            - paragraph [ref=e441]: Keep keys, routing, and fallback behavior readable at a glance instead of collapsing everything into one dense control wall.
+          - generic [ref=e442]:
+            - article [ref=e443]:
+              - generic [ref=e444]: OpenRouter key
+              - strong [ref=e445]: sk-o…a4bd
+            - article [ref=e446]:
+              - generic [ref=e447]: OpenRouter model
+              - strong [ref=e448]: openai/gpt-4o-mini
+            - article [ref=e449]:
+              - generic [ref=e450]: Inference key
+              - strong [ref=e451]: not set
+            - article [ref=e452]:
+              - generic [ref=e453]: NBrain key
+              - strong [ref=e454]: not set
+            - article [ref=e455]:
+              - generic [ref=e456]: Preferred runner
+              - strong [ref=e457]: bm
+          - generic [ref=e458]:
+            - generic [ref=e459]:
+              - generic [ref=e460]:
+                - heading "OpenRouter" [level=5] [ref=e461]
+                - paragraph [ref=e462]: Hosted model access and routing policy for the main planning path.
+              - generic [ref=e463]:
+                - generic [ref=e464]:
+                  - text: OpenRouter API key
+                  - textbox "OpenRouter API key" [ref=e465]:
+                    - /placeholder: set new to rotate
+                - generic [ref=e466]:
+                  - text: OpenRouter model
+                  - textbox "OpenRouter model" [ref=e467]: openai/gpt-4o-mini
+                - generic [ref=e468]:
+                  - text: Model router mode
+                  - combobox "Model router mode" [ref=e469]:
+                    - option "balanced" [selected]
+                    - option "quality"
+                    - option "speed"
+            - generic [ref=e470]:
+              - generic [ref=e471]:
+                - heading "Inference Runtime" [level=5] [ref=e472]
+                - paragraph [ref=e473]: Bridge endpoint, backend selection, and rollout lane for visual generation.
+              - generic [ref=e474]:
+                - generic [ref=e475]:
+                  - text: Inference API key
+                  - textbox "Inference API key" [ref=e476]:
+                    - /placeholder: inf_...
+                - generic [ref=e477]:
+                  - text: Inference endpoint
+                  - textbox "Inference endpoint" [ref=e478]: https://api.inference.sh
+                - generic [ref=e479]:
+                  - generic [ref=e480]:
+                    - text: Inference visual backend
+                    - combobox "Inference visual backend" [ref=e481]:
+                      - option "scripts" [selected]
+                      - option "inference"
+                  - generic [ref=e482]:
+                    - text: Inference rollout mode
+                    - combobox "Inference rollout mode" [ref=e483]:
+                      - option "ring0" [selected]
+                      - option "ring1"
+                      - option "ring2"
+            - generic [ref=e484]:
+              - generic [ref=e485]:
+                - heading "Routing Defaults" [level=5] [ref=e486]
+                - paragraph [ref=e487]: Choose how Brandmint falls back when the preferred provider is unavailable.
+              - generic [ref=e488]:
+                - generic [ref=e489]:
+                  - text: Preferred runner
+                  - combobox "Preferred runner" [ref=e490]:
+                    - option "Brandmint Pipeline" [selected]
+                    - option "Claude Code CLI"
+                    - option "Codex CLI"
+                    - option "Gemini CLI"
+                    - option "OpenRouter API"
+                    - option "NBrain API"
+                - generic [ref=e491]:
+                  - text: Semantic domain pack
+                  - textbox "Semantic domain pack" [ref=e492]:
+                    - /placeholder: auto | app | saas | ecommerce | social
+                - generic [ref=e493]:
+                  - generic [ref=e494]:
+                    - text: Semantic routing
+                    - combobox "Semantic routing" [ref=e495]:
+                      - option "on" [selected]
+                      - option "off"
+                  - generic [ref=e496]:
+                    - text: Fallback to scripts
+                    - combobox "Fallback to scripts" [ref=e497]:
+                      - option "on" [selected]
+                      - option "off"
+            - generic [ref=e498]:
+              - generic [ref=e499]:
+                - heading "NBrain" [level=5] [ref=e500]
+                - paragraph [ref=e501]: Optional secondary provider for model execution when you want a dedicated runner.
+              - generic [ref=e502]:
+                - generic [ref=e503]:
+                  - text: NBrain enabled
+                  - combobox "NBrain enabled" [ref=e504]:
+                    - option "on"
+                    - option "off" [selected]
+                - generic [ref=e505]:
+                  - text: NBrain API key
+                  - textbox "NBrain API key" [ref=e506]:
+                    - /placeholder: nb_...
+                - generic [ref=e507]:
+                  - text: NBrain endpoint
+                  - textbox "NBrain endpoint" [ref=e508]:
+                    - /placeholder: https://...
+                - generic [ref=e509]:
+                  - text: NBrain model
+                  - textbox "NBrain model" [ref=e510]: nbrain/pro
+          - generic [ref=e511]:
+            - generic [ref=e512]:
+              - button "Save Settings" [ref=e513] [cursor=pointer]
+              - button "Reload" [ref=e514] [cursor=pointer]
+            - generic [ref=e515]:
+              - button "Clear OpenRouter Key" [ref=e516] [cursor=pointer]
+              - button "Clear Inference Key" [ref=e517] [cursor=pointer]
+              - button "Clear NBrain Key" [ref=e518] [cursor=pointer]
+        - generic [ref=e519]:
+          - heading "About" [level=4] [ref=e520]
+          - generic [ref=e522]:
+            - generic [ref=e523]: Version
+            - generic [ref=e524]: Brandmint Desktop v5.0.1
+          - generic [ref=e526]:
+            - generic [ref=e527]: Keyboard shortcuts
+            - generic [ref=e528]: Cmd+K command palette · Cmd+, settings · Cmd+B sidebar · Cmd+[/] prev/next · Arrows navigate
+  - contentinfo [ref=e345]:
+    - generic [ref=e346]: Brandmint Desktop v5.0.1 is current.
+    - generic [ref=e347]: brandmint
+    - generic [ref=e348]: focused
+    - generic [ref=e349]: 56% complete
+    - generic [ref=e350]: 1 attention
