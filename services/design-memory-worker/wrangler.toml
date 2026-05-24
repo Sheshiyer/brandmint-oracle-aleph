@@ -1,0 +1,16 @@
+name = "brandmint-design-memory"
+main = "src/index.ts"
+compatibility_date = "2026-05-20"
+
+[vars]
+NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
+
+[[kv_namespaces]]
+binding = "DESIGN_KV"
+id = "ac0d055900e04c5da828aaa4ca03f064"
+preview_id = "fb70fdaf72f0431da808862c47cf4c2a"
+
+# Secrets, never KV:
+# wrangler secret put NVIDIA_API_KEY
+# Optional admin guard:
+# wrangler secret put ADMIN_TOKEN

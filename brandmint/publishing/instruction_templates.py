@@ -52,17 +52,35 @@ def _typography_block(config: dict) -> str:
     return "\n".join(lines) if lines else "  (no typography defined)"
 
 
-def _voice_excerpt(config: dict) -> str:
-    """Extract a short voice/tone description."""
+def _voice_excerpt(config: dict, voice_skill_output: Optional[dict] = None) -> str:
+    """Extract a short voice/tone description written AS the brand.
+
+    Checks voice-and-tone skill output for meta_prompt first (brand-native),
+    then falls back to voice/tone fields from brand config.
+    """
+    # Prefer the LLM-generated meta_prompt from voice-and-tone skill output
+    if voice_skill_output and isinstance(voice_skill_output, dict):
+        meta = voice_skill_output.get("meta_prompt", "")
+        if meta and isinstance(meta, str) and len(meta.strip()) > 10:
+            return meta.strip()
+
+    # Fallback: construct from brand config fields
     brand = config.get("brand", {})
     voice = brand.get("voice", "")
     tone = brand.get("tone", "")
+    archetype = brand.get("archetype", "")
     if voice and tone:
         return f"{voice}, {tone}"
-    return voice or tone or "authentic and engaging"
+    if voice:
+        return voice
+    if tone:
+        return tone
+    if archetype:
+        return f"{archetype} voice, authentic and engaging"
+    return "authentic and engaging"
 
 
-def _brand_context_block(config: dict) -> str:
+def _brand_context_block(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Build a compact brand context block reusable across instruction fns."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -70,7 +88,7 @@ def _brand_context_block(config: dict) -> str:
     return (
         f"BRAND: {brand_name} — {tagline}\n"
         f"ARCHETYPE: {archetype}\n"
-        f"VOICE: {_voice_excerpt(config)}"
+        f"VOICE: {_voice_excerpt(config, voice_skill_output)}"
     )
 
 
@@ -127,7 +145,7 @@ def resolve_video_style(config: dict) -> str:
 # Slide Deck instructions
 # ---------------------------------------------------------------------------
 
-def brand_overview_deck(config: dict) -> str:
+def brand_overview_deck(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Generate instructions for a comprehensive brand overview slide deck."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -141,7 +159,7 @@ BRAND IDENTITY:
 - Brand: {brand_name}
 - Tagline: {tagline}
 - Archetype: {archetype}
-- Voice: {_voice_excerpt(config)}
+- Voice: {_voice_excerpt(config, voice_skill_output)}
 
 VISUAL IDENTITY (reference these in slide design recommendations):
 Colour Palette:
@@ -165,12 +183,11 @@ SLIDE STRUCTURE (10 slides):
 9. Brand Identity — Visual system, voice, and tone summary
 10. Call to Action — Next steps and contact
 
-TONE: Use the brand's {_voice_excerpt(config)} voice throughout.
-Write with conviction and specificity. Avoid generic business jargon.
-Reference specific data, quotes, and findings from the source materials."""
+TONE: Write in {brand_name}'s voice — {_voice_excerpt(config, voice_skill_output)}.
+Specific, confident, never generic. Reference real data and findings from the source materials."""
 
 
-def product_showcase_deck(config: dict) -> str:
+def product_showcase_deck(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Generate instructions for a product/service showcase slide deck."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -209,14 +226,14 @@ SLIDE STRUCTURE (8-10 slides):
 
 Focus on the PRODUCT, not the company. Lead with features and benefits.
 Use specific details, measurements, and material descriptions from the sources.
-Voice: {_voice_excerpt(config)}"""
+Voice: {_voice_excerpt(config, voice_skill_output)}"""
 
 
 # ---------------------------------------------------------------------------
 # Video instructions
 # ---------------------------------------------------------------------------
 
-def video_explainer(config: dict) -> str:
+def video_explainer(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a full-length brand explainer video."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -224,7 +241,7 @@ def video_explainer(config: dict) -> str:
 
     return f"""Create a comprehensive brand explainer video for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 VIDEO STRUCTURE:
 - Hook: Open with the core problem {brand_name} solves
@@ -244,13 +261,13 @@ Colour Palette:
 Typography:
 {_typography_block(config)}
 
-Use the brand's {_voice_excerpt(config)} voice. Make it feel like a
+Use the brand's {_voice_excerpt(config, voice_skill_output)} voice. Make it feel like a
 documentary-style deep dive — authoritative but engaging. Reference specific
 data, personas, and competitive insights from the source materials.
 This should feel like an exclusive behind-the-scenes look at {brand_name}."""
 
 
-def video_brief(config: dict) -> str:
+def video_brief(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a short social-ready brand introduction video."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -258,7 +275,7 @@ def video_brief(config: dict) -> str:
 
     return f"""Create a short, punchy brand introduction video for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 HERO HEADLINE: {hero}
 
@@ -273,7 +290,7 @@ Colour Palette:
 {_palette_block(config)}
 
 Make it fast-paced, visually dynamic, and memorable. Use the brand's
-{_voice_excerpt(config)} voice but cranked up for social media impact.
+{_voice_excerpt(config, voice_skill_output)} voice but cranked up for social media impact.
 Think trailer energy, not corporate presentation."""
 
 
@@ -281,7 +298,7 @@ Think trailer energy, not corporate presentation."""
 # Audio instructions
 # ---------------------------------------------------------------------------
 
-def audio_deep_dive(config: dict) -> str:
+def audio_deep_dive(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a deep-dive audio overview (long podcast)."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -300,7 +317,7 @@ PODCAST STRUCTURE:
 - Close with the brand's vision and next steps
 
 VOICE AND PERSONALITY:
-Use a {_voice_excerpt(config)} tone throughout. The podcast should feel
+Use a {_voice_excerpt(config, voice_skill_output)} tone throughout. The podcast should feel
 like a conversation with someone who deeply understands {brand_name} —
 knowledgeable but approachable, passionate but not salesy.
 
@@ -315,7 +332,7 @@ Make this feel like an exclusive insider briefing on {brand_name}'s
 brand DNA — not a generic company overview."""
 
 
-def audio_brief(config: dict) -> str:
+def audio_brief(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a short audio brand primer."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -333,12 +350,12 @@ Keep it tight and punchy — this is a quick brand primer:
 - What makes it different (2-3 key differentiators)
 - Where to learn more
 
-Voice: {_voice_excerpt(config)} — energetic but informative.
+Voice: {_voice_excerpt(config, voice_skill_output)} — energetic but informative.
 Think elevator pitch meets podcast intro. No filler, all signal.
 Reference specific details from the sources, not generalities."""
 
 
-def audio_debate(config: dict) -> str:
+def audio_debate(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a two-host debate format audio."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -365,7 +382,7 @@ TOPICS TO DEBATE:
 Keep it spirited but informed. Both hosts should reference actual
 competitive analysis, persona data, and positioning strategy from the
 sources. End with a shared summary of strengths and watch-outs.
-Voice: {_voice_excerpt(config)}"""
+Voice: {_voice_excerpt(config, voice_skill_output)}"""
 
 
 # Backward-compatible alias
@@ -376,7 +393,7 @@ audio_overview = audio_deep_dive
 # Report instructions
 # ---------------------------------------------------------------------------
 
-def brand_report(config: dict) -> str:
+def brand_report(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Generate instructions for a comprehensive brand report (briefing doc)."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
@@ -398,10 +415,10 @@ SECTIONS:
 
 STYLE: Professional, data-driven, actionable. Use bullet points for
 scanability. Include specific numbers, quotes, and findings from the sources.
-Voice: {_voice_excerpt(config)}"""
+Voice: {_voice_excerpt(config, voice_skill_output)}"""
 
 
-def report_blog_post(config: dict) -> str:
+def report_blog_post(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a blog-post-style brand story."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -409,7 +426,7 @@ def report_blog_post(config: dict) -> str:
 
     return f"""Write a compelling brand story blog post about {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 BLOG STRUCTURE:
 - Opening hook — a vivid scene or bold statement that captures the brand's essence
@@ -421,20 +438,20 @@ BLOG STRUCTURE:
 - The road ahead — vision and upcoming milestones
 - CTA — invite the reader into the brand's world
 
-TONE: Write in the brand's {_voice_excerpt(config)} voice.
+TONE: Write in the brand's {_voice_excerpt(config, voice_skill_output)} voice.
 This is NOT a press release. It's a story. Use narrative techniques:
 specific details, sensory language, and human moments.
 Reference real data from the sources but weave it into the narrative.
 The {archetype} archetype should infuse the storytelling style."""
 
 
-def report_study_guide(config: dict) -> str:
+def report_study_guide(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a brand team onboarding study guide."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create a Brand Study Guide for onboarding new team members at {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 STUDY GUIDE STRUCTURE:
 1. Brand at a Glance — One-page cheat sheet (name, tagline, archetype, voice)
@@ -458,13 +475,13 @@ everything they need to know about {brand_name} in one sitting."""
 # Quiz instructions
 # ---------------------------------------------------------------------------
 
-def quiz_brand_knowledge(config: dict) -> str:
+def quiz_brand_knowledge(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a standard brand knowledge quiz."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create a brand knowledge quiz about {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 Focus on core brand fundamentals:
 - Brand identity (name, tagline, archetype, voice)
@@ -478,13 +495,13 @@ Questions should reference specific facts from the source materials.
 Good for onboarding and team alignment checks."""
 
 
-def quiz_deep_dive(config: dict) -> str:
+def quiz_deep_dive(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for an advanced brand strategy quiz."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create an advanced brand strategy quiz about {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 Focus on strategic depth:
 - Competitive positioning (specific competitors, differentiation points)
@@ -503,13 +520,13 @@ Reference specific data and analysis from the sources."""
 # Flashcards instructions
 # ---------------------------------------------------------------------------
 
-def flashcards_brand(config: dict) -> str:
+def flashcards_brand(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for standard brand terminology flashcards."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create brand knowledge flashcards for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 FLASHCARD CATEGORIES:
 - Brand Identity: name, tagline, archetype, personality traits
@@ -526,13 +543,13 @@ These should help someone quickly memorize {brand_name}'s core brand
 elements. Use specific data from the sources — not generic definitions."""
 
 
-def flashcards_detailed(config: dict) -> str:
+def flashcards_detailed(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for deep-cut brand data flashcards."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create detailed brand intelligence flashcards for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 FLASHCARD CATEGORIES (advanced):
 - Competitive Intelligence: competitor names, strengths, weaknesses
@@ -554,13 +571,13 @@ numbers, competitor names, and tactical recommendations from the sources."""
 # Infographic instructions
 # ---------------------------------------------------------------------------
 
-def infographic_overview(config: dict) -> str:
+def infographic_overview(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a landscape brand overview infographic."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create a comprehensive brand overview infographic for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 VISUAL IDENTITY:
 Colour Palette:
@@ -582,13 +599,13 @@ Use the brand's colour palette for the design recommendations.
 This should work as a one-page brand summary for stakeholders."""
 
 
-def infographic_product(config: dict) -> str:
+def infographic_product(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a portrait product showcase infographic."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create a product showcase infographic for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 VISUAL IDENTITY:
 Colour Palette:
@@ -610,7 +627,7 @@ from the source materials. Portrait orientation for mobile and
 print-friendly layout. Reference brand colours and typography."""
 
 
-def infographic_social(config: dict) -> str:
+def infographic_social(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a square social-media-ready brand card."""
     brand_name = _get(config, "brand", "name", default="the brand")
     tagline = _get(config, "brand", "tagline")
@@ -642,13 +659,13 @@ This is the brand's social media calling card."""
 # Data Table instructions
 # ---------------------------------------------------------------------------
 
-def table_competitive_analysis(config: dict) -> str:
+def table_competitive_analysis(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a competitive analysis comparison table."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create a competitive analysis comparison table for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 TABLE STRUCTURE:
 - Rows: {brand_name} and its top 3-5 competitors
@@ -662,13 +679,13 @@ and market positioning from the source materials. Highlight where
 decision support tool for stakeholders."""
 
 
-def table_product_features(config: dict) -> str:
+def table_product_features(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a product features vs benefits table."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create a product features vs. benefits table for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 TABLE STRUCTURE:
 - Rows: Each product feature or capability
@@ -681,13 +698,13 @@ features if available. This should map every feature to a
 concrete customer outcome."""
 
 
-def table_persona_matrix(config: dict) -> str:
+def table_persona_matrix(config: dict, voice_skill_output: Optional[dict] = None) -> str:
     """Instructions for a customer persona attributes matrix."""
     brand_name = _get(config, "brand", "name", default="the brand")
 
     return f"""Create a customer persona matrix for {brand_name}.
 
-{_brand_context_block(config)}
+{_brand_context_block(config, voice_skill_output)}
 
 TABLE STRUCTURE:
 - Rows: Persona attributes (demographics, psychographics, behaviours)

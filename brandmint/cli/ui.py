@@ -279,16 +279,28 @@ _ASSET_COSTS = {
 }
 
 _ASSET_MODELS = {
-    "2A": "nano-banana-pro", "2B": "flux-2-pro", "2C": "flux-2-pro",
-    "3A": "flux-2-pro", "3B": "flux-2-pro", "3C": "flux-2-pro",
-    "4A": "nano-banana-pro", "4B": "flux-2-pro",
-    "5A": "recraft-v3", "5B": "nano-banana-pro", "5C": "recraft-v3",
+    "2A": "nano-banana-pro", "2B": "nano-banana-pro", "2C": "nano-banana-pro",
+    "3A": "nano-banana-pro", "3B": "nano-banana-pro", "3C": "nano-banana-pro",
+    "4A": "nano-banana-pro", "4B": "nano-banana-pro",
+    "5A": "nano-banana-pro", "5B": "nano-banana-pro", "5C": "nano-banana-pro",
+    "5D": "nano-banana-pro",
     "7A": "nano-banana-pro", "8A": "nano-banana-pro",
-    "APP-ICON": "flux-2-pro", "OG-IMAGE": "nano-banana-pro",
+    "9A": "nano-banana-pro",
+    "10A": "nano-banana-pro", "10B": "nano-banana-pro", "10C": "nano-banana-pro",
+    "APP-ICON": "nano-banana-pro", "OG-IMAGE": "nano-banana-pro",
     "IG-STORY": "nano-banana-pro", "APP-SCREENSHOT": "nano-banana-pro",
-    "PITCH-HERO": "nano-banana-pro", "TWITTER-HEADER": "flux-2-pro",
+    "PITCH-HERO": "nano-banana-pro", "TWITTER-HEADER": "nano-banana-pro",
     "EMAIL-HERO": "nano-banana-pro",
 }
+
+
+def _resolve_display_model(asset_id: str, config: Optional[dict] = None) -> str:
+    """Resolve the effective model for display, checking config overrides."""
+    registry_model = _ASSET_MODELS.get(asset_id, "nano-banana-pro")
+    if config:
+        from ..core.providers.model_mapping import resolve_model
+        return resolve_model(asset_id, registry_model, config)
+    return registry_model
 
 
 def render_cost_preview(
@@ -323,7 +335,7 @@ def render_cost_preview(
             all_assets.extend(w.visual_assets)
 
         for asset_id in sorted(set(all_assets)):
-            model = _ASSET_MODELS.get(asset_id, "unknown")
+            model = _resolve_display_model(asset_id)
             cost_per = _ASSET_COSTS.get(asset_id, 0.08)
             cost = cost_per * seeds
             total_asset_cost += cost

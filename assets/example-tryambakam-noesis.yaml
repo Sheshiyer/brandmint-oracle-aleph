@@ -163,6 +163,13 @@ generation:
   resolution: "2K"
   output_format: "png"
   env_file: "~/.claude/.env"
+  provider: "gpt-image2"
+  fallback_order: ["gpt-image2", "fal", "replicate", "openrouter", "openai", "inference"]
+  design_memory:
+    enabled: true
+    worker_url: "https://brandmint-design-memory.tirak-court.workers.dev"
+    max_refs: 3
+    timeout_sec: 10
   reference_overrides: {}
 
 prompts:
@@ -172,8 +179,8 @@ prompts:
     - logo_emboss
   products:
     - capsule_collection
-    - hero_book
-    - essence_vial
+    - hero_product
+    - product_detail
   photography:
     - catalog_layout
     - flatlay

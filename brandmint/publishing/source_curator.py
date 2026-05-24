@@ -356,10 +356,10 @@ class SourceCurator:
             path=config_md_path,
             source_type="config",
             category="brand-identity",
-            label="Brand Configuration (source of truth)",
+            label="Brand Identity & Strategy",
             size_bytes=config_md_path.stat().st_size,
             content_value=78.0,
-            uniqueness=60.0,  # Partially included in prose docs
+            uniqueness=60.0,
         )]
 
     def _scan_images(self) -> List[SourceCandidate]:
@@ -725,39 +725,52 @@ def _parse_image_filename(filename: str) -> tuple:
 
 
 def _config_to_markdown(config: dict) -> str:
-    """Convert brand-config.yaml to a readable markdown source document."""
+    """Convert brand-config.yaml to a brand-native markdown source document."""
     parts: List[str] = []
     brand = config.get("brand", {})
-    parts.append(f"# {brand.get('name', 'Brand')} — Brand Configuration\n")
-    parts.append(f"> Source of truth for all brand decisions.\n")
+    brand_name = brand.get("name", "Brand")
+    tagline = brand.get("tagline", "")
+    parts.append(f"# {brand_name}\n")
+    if tagline:
+        parts.append(f"{tagline}\n")
 
     # Brand core
-    parts.append("## Brand Core\n")
-    for key in ("name", "tagline", "archetype", "voice", "tone", "domain"):
+    parts.append(f"\n## Who We Are\n")
+    for key in ("archetype", "voice", "tone", "domain"):
         val = brand.get(key)
         if val:
-            parts.append(f"- **{key.title()}:** {val}")
+            label = key.replace("_", " ")
+            parts.append(f"- **{label}:** {val}")
+    if brand.get("name"):
+        parts.append(f"- **name:** {brand['name']}")
+    if tagline:
+        parts.append(f"- **tagline:** {tagline}")
 
     # Theme
     theme = config.get("theme", {})
     if theme:
-        parts.append("\n## Theme\n")
+        parts.append("\n## Our World\n")
+        metaphor = theme.get("metaphor")
+        if metaphor:
+            parts.append(f"- **metaphor:** {metaphor}")
+        aesthetic = theme.get("aesthetic")
+        if aesthetic:
+            parts.append(f"- **aesthetic:** {aesthetic}")
         for k, v in theme.items():
-            if isinstance(v, str):
-                parts.append(f"- **{k.title()}:** {v}")
-            elif isinstance(v, list):
-                parts.append(f"- **{k.title()}:** {', '.join(str(i) for i in v)}")
+            if k in ("metaphor", "aesthetic") or not isinstance(v, str):
+                continue
+            parts.append(f"- **{k.replace('_', ' ')}:** {v}")
 
     # Palette
     palette = config.get("palette", {})
     if palette:
-        parts.append("\n## Colour Palette\n")
+        parts.append("\n## Colour System\n")
         for role, entry in palette.items():
             if isinstance(entry, dict):
-                name = entry.get("name", role)
+                name = entry.get("name", role.title())
                 hex_val = entry.get("hex", "")
                 desc = entry.get("role", "")
-                parts.append(f"- **{role.title()}:** {name} ({hex_val}) — {desc}")
+                parts.append(f"- **{name}** ({hex_val}) — {desc}")
 
     # Typography
     typo = config.get("typography", {})
@@ -771,11 +784,11 @@ def _config_to_markdown(config: dict) -> str:
     # Materials
     materials = config.get("materials", [])
     if materials:
-        parts.append("\n## Materials\n")
+        parts.append("\n## Materials & Texture\n")
         if isinstance(materials, list):
             for m in materials:
                 if isinstance(m, dict):
-                    parts.append(f"- **{m.get('name', '')}:** {m.get('role', '')}")
+                    parts.append(f"- **{m.get('name', '')}**: {m.get('role', '')}")
                 else:
                     parts.append(f"- {m}")
 
@@ -795,20 +808,20 @@ def _config_to_markdown(config: dict) -> str:
     # Audience
     audience = config.get("audience", {})
     if audience:
-        parts.append("\n## Target Audience\n")
+        parts.append("\n## Our Audience\n")
         for k, v in audience.items():
             if isinstance(v, str):
-                parts.append(f"- **{k.replace('_', ' ').title()}:** {v}")
+                parts.append(f"- **{k.replace('_', ' ')}:** {v}")
             elif isinstance(v, list):
-                parts.append(f"- **{k.replace('_', ' ').title()}:** {', '.join(str(i) for i in v)}")
+                parts.append(f"- **{k.replace('_', ' ')}:** {', '.join(str(i) for i in v)}")
 
     # Photography
     photo = config.get("photography", {})
     if photo:
-        parts.append("\n## Photography Style\n")
+        parts.append("\n## Photography Direction\n")
         for k, v in photo.items():
             if isinstance(v, str):
-                parts.append(f"- **{k.replace('_', ' ').title()}:** {v}")
+                parts.append(f"- **{k.replace('_', ' ')}:** {v}")
 
     # Illustration
     illust = config.get("illustration", {})
@@ -816,9 +829,9 @@ def _config_to_markdown(config: dict) -> str:
         parts.append("\n## Illustration Style\n")
         for k, v in illust.items():
             if isinstance(v, str):
-                parts.append(f"- **{k.replace('_', ' ').title()}:** {v}")
+                parts.append(f"- **{k.replace('_', ' ')}:** {v}")
             elif isinstance(v, list):
-                parts.append(f"- **{k.replace('_', ' ').title()}:** {', '.join(str(i) for i in v)}")
+                parts.append(f"- **{k.replace('_', ' ')}:** {', '.join(str(i) for i in v)}")
 
     return "\n".join(parts) + "\n"
 

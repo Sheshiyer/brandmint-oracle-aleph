@@ -228,20 +228,29 @@ generation:
   resolution: "2K"            # Resolution for Nano Banana Pro
   output_format: "png"        # Primary output format
   env_file: "~/.claude/.env"  # Path to .env file with FAL_KEY
-  provider: "fal"             # fal | openrouter | openai | replicate | inference | auto
+  provider: "fal"             # fal | openrouter | openai | replicate | inference | gpt-image2 | auto
+  default_model: "nano-banana-pro"  # Default model for all assets (nano-banana-pro | nano-banana-2 | gpt-image-2 | flux-2-pro | recraft-v3 | recraft-v4-pro)
+  model_overrides: {}         # Per-asset model overrides, e.g. {"2A": "gpt-image-2", "5A": "nano-banana-pro"}
   asset_registry_paths: []    # Optional ordered list of registry YAML files to merge with core registry
-                              # Relative paths resolve from brand-config.yaml directory
+                               # Relative paths resolve from brand-config.yaml directory
   asset_registry_path: ""     # Optional single-path backward-compatible alias
   fallback_order:             # Optional provider fallback order for visual execution retries
-    - "fal"                   # Valid values: fal | replicate | openrouter | openai | inference
+    - "gpt-image2"            # Valid values: gpt-image2 | fal | replicate | openrouter | openai | inference
+    - "fal"
     - "replicate"
     - "openrouter"
     - "openai"
+    - "inference"
   visual_backend: "scripts"   # scripts | inference (writes inference scaffolds)
   inference_endpoint: "https://api.inference.sh"
   inference_app: "infsh-ai-image-generation" # Optional app override for generation.provider=inference
   inference_rollout_mode: "ring0" # ring0|ring1|ring2 (ring0 keeps scripts as recommended executor)
-  reference_overrides: {}     # Override default ref images: {"2B": "ref-alt-chrome-logos.jpg"}
+  design_memory:             # Optional Design Memory Worker reference retrieval
+    enabled: false           # Set true to retrieve reusable reference images
+    worker_url: ""           # e.g. https://brandmint-design-memory.<subdomain>.workers.dev
+    max_refs: 3              # Maximum retrieved references per visual prompt
+    timeout_sec: 10          # Keep low so retrieval never stalls generation
+  reference_overrides: {}     # Override default ref images per channel: {"dtc": {"3A": "ref-alt.jpg"}}
   inference_skill_policy:     # Optional image-skill mapping (inference scaffold backend only)
     allowlist_file: "skills/external/inference-sh/normalized/allowlist.yaml"
     fallback_to_scripts: true

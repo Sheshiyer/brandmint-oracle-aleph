@@ -24,6 +24,16 @@ def test_backend_factory_defaults_to_scripts(tmp_path: Path) -> None:
     assert backend.name == "scripts"
 
 
+def test_backend_factory_accepts_gpt_image2_fallback_order(tmp_path: Path) -> None:
+    backend = create_visual_backend(
+        config={"generation": {"fallback_order": ["gpt-image2", "fal"]}},
+        brand_dir=tmp_path,
+    )
+
+    assert isinstance(backend, SubprocessVisualExecutionBackend)
+    assert backend._configured_fallback_order == ["gpt-image2", "fal"]
+
+
 def test_backend_factory_falls_back_to_scripts_when_inference_auth_missing(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.delenv("INFERENCE_API_KEY", raising=False)
     backend = create_visual_backend(

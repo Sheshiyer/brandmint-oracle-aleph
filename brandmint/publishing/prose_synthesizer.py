@@ -45,60 +45,51 @@ GROUP_PROMPTS: Dict[str, Dict[str, Any]] = {
     "brand-foundation": {
         "title": "Brand Foundation",
         "narrative_structure": [
-            "The Market Landscape — Open with the market reality this brand enters. "
-            "Weave in niche validation findings, market size, opportunity gaps, and "
-            "competitive white space as a cohesive narrative.",
-            "The Target Customer — Paint a vivid portrait of the ideal customer. "
-            "Transform buyer persona data into a story: who they are, what keeps them "
-            "up at night, what they've tried before, and what they're really looking for.",
-            "The Competitive Terrain — Map the competitive landscape as strategic "
-            "analysis. Position competitors as characters in the market story, "
-            "highlighting differentiators and the gap this brand fills.",
+            "The Market Landscape — Speak directly to the audience about the market reality "
+            "this brand enters. Paint the opportunity with specificity: market gaps, unmet needs, "
+            "and the white space this brand owns.",
+            "The Target Customer — Describe the ideal customer as if you know them personally. "
+            "What drives them, what frustrates them, what they've tried before, and what they "
+            "really need. Make the reader feel recognized.",
+            "The Competitive Terrain — Name competitors directly and explain what they get wrong. "
+            "State clearly where this brand dominates and why the competition can't follow.",
         ],
     },
     "brand-strategy": {
         "title": "Brand Strategy",
         "narrative_structure": [
-            "Positioning Architecture — Articulate the brand's position in the market "
-            "with precision. Transform positioning frameworks into clear strategic "
-            "statements: what the brand is, what it's not, and why that matters.",
-            "The Messaging System — Present the messaging hierarchy as a communication "
-            "toolkit. Weave taglines, value propositions, proof points, and key messages "
-            "into a system that reads like a communications playbook.",
-            "Voice and Personality — Bring the brand's voice to life with examples. "
-            "Transform tone descriptors and guidelines into a personality profile that "
-            "reads like a character study, not a style guide.",
-            "Visual Identity System — Describe the visual system as design intent. "
-            "Transform palette codes, typography specs, and visual principles into a "
-            "narrative about what the brand looks and feels like.",
+            "Our Position — State the brand's position with conviction. What we are, what we're not, "
+            "and why that distinction matters to every person reading this.",
+            "How We Communicate — Demonstrate the messaging system in action. Present taglines and "
+            "proof points as live ammunition, not museum pieces. Write copy that could ship tomorrow.",
+            "Our Voice in Action — Write in the brand's voice throughout — do not describe the voice. "
+            "The reader should experience the personality directly, never see it explained.",
+            "What We Look Like — Describe the visual system as brand experience, not spec sheet. "
+            "Write about what the brand feels like to see, touch, and inhabit.",
         ],
     },
     "campaign-content": {
         "title": "Campaign Content",
         "narrative_structure": [
-            "The Campaign Narrative — Set the stage with the overarching campaign "
-            "story. What is the brand saying to the world, and why now?",
-            "Launch Copy and Creative — Present campaign page copy, headlines, CTAs, "
-            "and advertising creative as polished deliverables ready for deployment, "
-            "not as drafts to be reviewed.",
-            "Visual Storytelling — Describe video scripts and visual content as "
-            "creative briefs brought to life. Include the emotional arc and key moments.",
-            "Press and Public Relations — Present press releases and PR materials as "
-            "the brand's public voice. Professional, newsworthy, quotable.",
+            "The Campaign Story — Open with the campaign narrative as if launching today. "
+            "What is the brand saying to the world, and why does it matter right now?",
+            "Launch-Ready Copy — Present headlines, CTAs, and ad copy as finished deliverables. "
+            "Write copy that could go live without revision.",
+            "Visual Storytelling — Describe video and visual content as creative direction "
+            "brought to life. Include the emotional arc and key visual moments.",
+            "Press and Public Voice — Write press materials as if the brand's publicist. "
+            "Professional, quotable, newsworthy.",
         ],
     },
     "communications-social": {
         "title": "Communications & Social Strategy",
         "narrative_structure": [
-            "The Email Journey — Present email sequences as a relationship arc. "
-            "From first touch to loyal customer, describe each email's purpose, "
-            "tone, and role in the journey.",
-            "Social Content Engine — Transform the social media calendar and content "
-            "strategy into a living content system. Show the rhythm, themes, and "
-            "voice across platforms.",
-            "Community Voice — Weave influencer outreach, review responses, and "
-            "community management into a unified strategy for how the brand shows "
-            "up in conversation.",
+            "The Relationship Arc — Present email sequences as the brand's ongoing conversation. "
+            "From first touch to loyal customer — write in the voice at each stage.",
+            "Social Content System — Show the social strategy as a living system. "
+            "Present content themes and voice examples across platforms.",
+            "Community Presence — Write the influencer and community strategy as if you're "
+            "the brand speaking directly to its community.",
         ],
     },
 }
@@ -392,32 +383,34 @@ class ProseSynthesizer:
         parts: List[str] = []
 
         parts.append(
-            f"Transform the following raw brand data for {brand_name} into a "
-            f"polished narrative document titled \"{prompt_def['title']}\".\n"
+            f"Write the \"{prompt_def['title']}\" section for {brand_name}.\n"
+            f"You are {brand_name}. Write directly as the brand, not about the brand.\n"
         )
 
         # Narrative structure guidance
-        parts.append("DOCUMENT STRUCTURE (follow this arc):\n")
+        parts.append("STRUCTURE:\n")
         for i, section in enumerate(prompt_def["narrative_structure"], 1):
             parts.append(f"{i}. {section}\n")
 
         # Config sections
         if config_sections:
-            parts.append("\n--- BRAND CONFIGURATION DATA ---\n")
+            parts.append(f"\n--- {brand_name.upper()} IDENTITY ---\n")
             parts.append(json.dumps(config_sections, indent=2, default=str))
 
         # Skill outputs
         if group_data:
-            parts.append("\n--- SKILL OUTPUT DATA ---\n")
+            parts.append(f"\n--- {brand_name.upper()} STRATEGY DATA ---\n")
             for skill_id, data in group_data.items():
                 parts.append(f"\n### {skill_id}\n")
                 parts.append(json.dumps(data, indent=2, default=str))
 
         parts.append(
-            "\n--- END DATA ---\n\n"
-            "Now write the complete narrative document. Use ## headings for "
-            "major sections and ### for subsections. Every fact and data point "
-            "from the source data must appear in the prose. Write prose, not bullets."
+            f"\n--- END DATA ---\n\n"
+            f"Write the complete \"{prompt_def['title']}\" document now. "
+            f"Use ## headings for major sections and ### for subsections. "
+            f"Every fact and data point from the source data must appear in the prose. "
+            f"Write as {brand_name} — direct, confident, specific. "
+            f"Prose paragraphs, not bullet lists."
         )
 
         return "\n".join(parts)

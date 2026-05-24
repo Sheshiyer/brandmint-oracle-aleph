@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """Generate wing-specific artworks for Tryambakam Noesis infinite-canvas website.
 
-Each image is crafted to visually represent the specific concept of its wing,
-using Nano Banana Pro via FAL AI with the brand's bioluminescent solarpunk aesthetic.
+⚠️  NOESIS-SPECIFIC SCRIPT — This script is hardcoded for the Tryambakam Noesis
+brand. It is retained for historical reference and Noesis regeneration only.
 
-Usage:
-    python scripts/generate_wing_artworks.py --all
-    python scripts/generate_wing_artworks.py --ids W00 W01 W02
-    python scripts/generate_wing_artworks.py --wings  # Only 13 wings (no supplementary)
-    python scripts/generate_wing_artworks.py --supplementary  # Only 7 supplementary
-    python scripts/generate_wing_artworks.py --dry-run --all
+For new brands, use `bm launch` which reads from brand-config.yaml and generates
+assets through the pipeline. Do NOT use this script for non-Noesis brands.
+
+Usage (Noesis only):
+    python scripts/generate_wing_artworks.py --noesis --all
+    python scripts/generate_wing_artworks.py --noesis --ids W00 W01 W02
+    python scripts/generate_wing_artworks.py --noesis --wings
+    python scripts/generate_wing_artworks.py --noesis --supplementary
+    python scripts/generate_wing_artworks.py --noesis --dry-run --all
 """
 
 import argparse
@@ -21,6 +24,13 @@ import urllib.request
 import urllib.error
 from pathlib import Path
 from dotenv import load_dotenv
+
+# Guard: this script is for Tryambakam Noesis ONLY.
+# Require --noesis flag to prevent accidental execution for other brands.
+if "--noesis" not in sys.argv:
+    print("ERROR: This script is Tryambakam Noesis-specific and requires --noesis flag.")
+    print("For new brands, use: bm launch --config brand-config.yaml")
+    sys.exit(1)
 
 load_dotenv(os.path.expanduser("~/.claude/.env"))
 

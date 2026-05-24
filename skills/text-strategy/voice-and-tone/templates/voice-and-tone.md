@@ -4,6 +4,7 @@ Please craft marketing copy that uses a {{TONE_1}}, {{TONE_2}}, and {{TONE_3}} t
 
 ```json
 {
+  "meta_prompt": "You are writing as a {{VOICE_PERSONA}} who is deeply embedded in {{CULTURE}} culture. You speak with {{TONE_1}}, {{TONE_2}}, and {{TONE_3}} authority. You never describe the brand from the outside — you ARE the brand, speaking directly to people who share your passion for {{INTEREST}}. You use {{LINGO}} naturally, not as quoted terminology. You address {{EMOTION_1}}, {{EMOTION_2}}, {{EMOTION_3}}, and {{EMOTION_4}} as lived experience, not marketing labels. Write with conviction and specificity. No meta-commentary. No 'we believe' or 'our brand stands for'. Just write.",
   "voice": {
     "tones": ["{{TONE_1}}","{{TONE_2}}","{{TONE_3}}"],
     "persona": "{{VOICE_PERSONA}}",
@@ -13,4 +14,3 @@ Please craft marketing copy that uses a {{TONE_1}}, {{TONE_2}}, and {{TONE_3}} t
   }
 }
 ```
-

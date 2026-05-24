@@ -69,9 +69,17 @@ class NotebookLMClient:
             return False
 
     def check_authenticated(self) -> bool:
-        """Return True if the CLI has valid authentication."""
-        r = self._run(["notebooklm", "status"], timeout=15)
-        return r.success
+        """Return True if the CLI has valid authentication.
+
+        ``notebooklm status`` can succeed even when the session has expired,
+        so we use a lightweight JSON command that hits authenticated APIs.
+        """
+        r = self._run_json(["notebooklm", "list", "--json"], timeout=20)
+        if not r.success:
+            return False
+        if isinstance(r.data, dict) and r.data.get("error"):
+            return False
+        return True
 
     # -- Notebooks ---------------------------------------------------------
 

@@ -1,0 +1,104 @@
+{
+  "scenario_id": "brand-genesis",
+  "depth": "comprehensive",
+  "wave_count": 8,
+  "waves": [
+    {
+      "number": 1,
+      "name": "Foundation",
+      "text_skill_count": 3,
+      "visual_asset_count": 0,
+      "post_hook": null,
+      "is_empty_execution_wave": false
+    },
+    {
+      "number": 2,
+      "name": "Strategy",
+      "text_skill_count": 3,
+      "visual_asset_count": 0,
+      "post_hook": null,
+      "is_empty_execution_wave": false
+    },
+    {
+      "number": 3,
+      "name": "Visual Identity",
+      "text_skill_count": 1,
+      "visual_asset_count": 2,
+      "post_hook": null,
+      "is_empty_execution_wave": false
+    },
+    {
+      "number": 4,
+      "name": "Products & Content",
+      "text_skill_count": 0,
+      "visual_asset_count": 0,
+      "post_hook": null,
+      "is_empty_execution_wave": true
+    },
+    {
+      "number": 5,
+      "name": "Campaign Assets",
+      "text_skill_count": 0,
+      "visual_asset_count": 0,
+      "post_hook": null,
+      "is_empty_execution_wave": true
+    },
+    {
+      "number": 6,
+      "name": "Distribution",
+      "text_skill_count": 0,
+      "visual_asset_count": 0,
+      "post_hook": null,
+      "is_empty_execution_wave": true
+    },
+    {
+      "number": 7,
+      "name": "Publishing",
+      "text_skill_count": 0,
+      "visual_asset_count": 0,
+      "post_hook": "publishing",
+      "is_empty_execution_wave": false
+    },
+    {
+      "number": 8,
+      "name": "Brand Docs & Wiki",
+      "text_skill_count": 0,
+      "visual_asset_count": 0,
+      "post_hook": "brand_docs",
+      "is_empty_execution_wave": false
+    }
+  ],
+  "planned_text_skills": [
+    "buyer-persona",
+    "competitor-analysis",
+    "mds-messaging-direction-summary",
+    "niche-validator",
+    "product-positioning-summary",
+    "visual-identity-core",
+    "voice-and-tone"
+  ],
+  "planned_visual_assets": [
+    "2A",
+    "2B"
+  ],
+  "missing_mandatory_source_skills": [
+    "detailed-product-description",
+    "campaign-page-copy",
+    "pre-launch-ads",
+    "welcome-email-sequence",
+    "pre-launch-email-sequence",
+    "launch-email-sequence",
+    "campaign-video-script",
+    "live-campaign-ads",
+    "press-release-copy"
+  ],
+  "empty_execution_waves": [
+    4,
+    5,
+    6
+  ],
+  "warnings": [
+    "Mandatory source skills missing from wave plan; source docs may degrade to placeholders.",
+    "One or more core content waves (4-6) are empty; expect weak Wave 7 source quality."
+  ]
+}

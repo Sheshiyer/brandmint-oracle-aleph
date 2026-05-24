@@ -1,0 +1,455 @@
+{
+  "sources_dir": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources",
+  "file_count": 18,
+  "average_score": 56.91,
+  "failing_files": 8,
+  "warning_files": 7,
+  "passing_files": 3,
+  "total_forbidden_hits": 40,
+  "total_placeholder_markers": 25,
+  "files": [
+    {
+      "file": "kickstarter-campaign-messaging.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/kickstarter-campaign-messaging.md",
+      "score": 0.0,
+      "classification": "fail",
+      "word_count": 91,
+      "char_count": 745,
+      "line_count": 13,
+      "heading_count": 4,
+      "bullet_count": 4,
+      "bullet_ratio": 0.3077,
+      "forbidden_hit_count": 6,
+      "forbidden_weighted_hits": 16,
+      "placeholder_marker_count": 5,
+      "meta_density_per_1k_words": 65.93,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 2,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        },
+        {
+          "key": "missing_artifact_stub",
+          "count": 2,
+          "severity": 3,
+          "reason": "Placeholder stubs should never ship to NotebookLM."
+        },
+        {
+          "key": "waiting_on_stub",
+          "count": 2,
+          "severity": 3,
+          "reason": "Dependency placeholders indicate incomplete source material."
+        }
+      ]
+    },
+    {
+      "file": "kickstarter-crafting-compelling-copy.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/kickstarter-crafting-compelling-copy.md",
+      "score": 0.0,
+      "classification": "fail",
+      "word_count": 89,
+      "char_count": 726,
+      "line_count": 13,
+      "heading_count": 4,
+      "bullet_count": 4,
+      "bullet_ratio": 0.3077,
+      "forbidden_hit_count": 6,
+      "forbidden_weighted_hits": 16,
+      "placeholder_marker_count": 5,
+      "meta_density_per_1k_words": 67.42,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 2,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        },
+        {
+          "key": "missing_artifact_stub",
+          "count": 2,
+          "severity": 3,
+          "reason": "Placeholder stubs should never ship to NotebookLM."
+        },
+        {
+          "key": "waiting_on_stub",
+          "count": 2,
+          "severity": 3,
+          "reason": "Dependency placeholders indicate incomplete source material."
+        }
+      ]
+    },
+    {
+      "file": "kickstarter-driving-continual-interest.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/kickstarter-driving-continual-interest.md",
+      "score": 0.0,
+      "classification": "fail",
+      "word_count": 91,
+      "char_count": 732,
+      "line_count": 13,
+      "heading_count": 4,
+      "bullet_count": 4,
+      "bullet_ratio": 0.3077,
+      "forbidden_hit_count": 6,
+      "forbidden_weighted_hits": 16,
+      "placeholder_marker_count": 5,
+      "meta_density_per_1k_words": 65.93,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 2,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        },
+        {
+          "key": "missing_artifact_stub",
+          "count": 2,
+          "severity": 3,
+          "reason": "Placeholder stubs should never ship to NotebookLM."
+        },
+        {
+          "key": "waiting_on_stub",
+          "count": 2,
+          "severity": 3,
+          "reason": "Dependency placeholders indicate incomplete source material."
+        }
+      ]
+    },
+    {
+      "file": "kickstarter-email-strategy.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/kickstarter-email-strategy.md",
+      "score": 0.0,
+      "classification": "fail",
+      "word_count": 111,
+      "char_count": 963,
+      "line_count": 17,
+      "heading_count": 5,
+      "bullet_count": 5,
+      "bullet_ratio": 0.2941,
+      "forbidden_hit_count": 9,
+      "forbidden_weighted_hits": 24,
+      "placeholder_marker_count": 7,
+      "meta_density_per_1k_words": 81.08,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 3,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        },
+        {
+          "key": "missing_artifact_stub",
+          "count": 3,
+          "severity": 3,
+          "reason": "Placeholder stubs should never ship to NotebookLM."
+        },
+        {
+          "key": "waiting_on_stub",
+          "count": 3,
+          "severity": 3,
+          "reason": "Dependency placeholders indicate incomplete source material."
+        }
+      ]
+    },
+    {
+      "file": "kickstarter-product-detailing.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/kickstarter-product-detailing.md",
+      "score": 7.0,
+      "classification": "fail",
+      "word_count": 220,
+      "char_count": 2044,
+      "line_count": 48,
+      "heading_count": 18,
+      "bullet_count": 19,
+      "bullet_ratio": 0.3958,
+      "forbidden_hit_count": 6,
+      "forbidden_weighted_hits": 14,
+      "placeholder_marker_count": 3,
+      "meta_density_per_1k_words": 27.27,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 4,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        },
+        {
+          "key": "missing_artifact_stub",
+          "count": 1,
+          "severity": 3,
+          "reason": "Placeholder stubs should never ship to NotebookLM."
+        },
+        {
+          "key": "waiting_on_stub",
+          "count": 1,
+          "severity": 3,
+          "reason": "Dependency placeholders indicate incomplete source material."
+        }
+      ]
+    },
+    {
+      "file": "artifact-voice-and-tone.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/artifact-voice-and-tone.md",
+      "score": 60.71,
+      "classification": "fail",
+      "word_count": 103,
+      "char_count": 966,
+      "line_count": 28,
+      "heading_count": 7,
+      "bullet_count": 19,
+      "bullet_ratio": 0.6786,
+      "forbidden_hit_count": 1,
+      "forbidden_weighted_hits": 2,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 9.71,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 1,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        }
+      ]
+    },
+    {
+      "file": "artifact-competitor-summary.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/artifact-competitor-summary.md",
+      "score": 61.67,
+      "classification": "fail",
+      "word_count": 62,
+      "char_count": 629,
+      "line_count": 18,
+      "heading_count": 5,
+      "bullet_count": 12,
+      "bullet_ratio": 0.6667,
+      "forbidden_hit_count": 1,
+      "forbidden_weighted_hits": 2,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 16.13,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 1,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        }
+      ]
+    },
+    {
+      "file": "kickstarter-market-understanding.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/kickstarter-market-understanding.md",
+      "score": 66.0,
+      "classification": "fail",
+      "word_count": 109,
+      "char_count": 1023,
+      "line_count": 28,
+      "heading_count": 10,
+      "bullet_count": 14,
+      "bullet_ratio": 0.5,
+      "forbidden_hit_count": 2,
+      "forbidden_weighted_hits": 4,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 18.35,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 2,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        }
+      ]
+    },
+    {
+      "file": "artifact-market-buyer-persona.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/artifact-market-buyer-persona.md",
+      "score": 75.0,
+      "classification": "warn",
+      "word_count": 37,
+      "char_count": 339,
+      "line_count": 12,
+      "heading_count": 4,
+      "bullet_count": 6,
+      "bullet_ratio": 0.5,
+      "forbidden_hit_count": 1,
+      "forbidden_weighted_hits": 2,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 27.03,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 1,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        }
+      ]
+    },
+    {
+      "file": "artifact-mds.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/artifact-mds.md",
+      "score": 79.0,
+      "classification": "warn",
+      "word_count": 36,
+      "char_count": 353,
+      "line_count": 10,
+      "heading_count": 4,
+      "bullet_count": 3,
+      "bullet_ratio": 0.3,
+      "forbidden_hit_count": 1,
+      "forbidden_weighted_hits": 2,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 27.78,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 1,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        }
+      ]
+    },
+    {
+      "file": "artifact-product-positioning-summary.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/artifact-product-positioning-summary.md",
+      "score": 79.0,
+      "classification": "warn",
+      "word_count": 42,
+      "char_count": 391,
+      "line_count": 10,
+      "heading_count": 4,
+      "bullet_count": 3,
+      "bullet_ratio": 0.3,
+      "forbidden_hit_count": 1,
+      "forbidden_weighted_hits": 2,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 23.81,
+      "forbidden_hits": [
+        {
+          "key": "source_skill_label",
+          "count": 1,
+          "severity": 2,
+          "reason": "Pipeline-internal labels leak into published prose."
+        }
+      ]
+    },
+    {
+      "file": "brand-config-source.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/brand-config-source.md",
+      "score": 80.0,
+      "classification": "warn",
+      "word_count": 391,
+      "char_count": 3372,
+      "line_count": 66,
+      "heading_count": 13,
+      "bullet_count": 52,
+      "bullet_ratio": 0.7879,
+      "forbidden_hit_count": 0,
+      "forbidden_weighted_hits": 0,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 0.0,
+      "forbidden_hits": []
+    },
+    {
+      "file": "brand-foundation.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/brand-foundation.md",
+      "score": 80.0,
+      "classification": "warn",
+      "word_count": 388,
+      "char_count": 3618,
+      "line_count": 122,
+      "heading_count": 29,
+      "bullet_count": 88,
+      "bullet_ratio": 0.7213,
+      "forbidden_hit_count": 0,
+      "forbidden_weighted_hits": 0,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 0.0,
+      "forbidden_hits": []
+    },
+    {
+      "file": "kickstarter-readiness.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/kickstarter-readiness.md",
+      "score": 80.0,
+      "classification": "warn",
+      "word_count": 201,
+      "char_count": 1931,
+      "line_count": 32,
+      "heading_count": 3,
+      "bullet_count": 28,
+      "bullet_ratio": 0.875,
+      "forbidden_hit_count": 0,
+      "forbidden_weighted_hits": 0,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 0.0,
+      "forbidden_hits": []
+    },
+    {
+      "file": "visual-asset-catalog.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/visual-asset-catalog.md",
+      "score": 80.0,
+      "classification": "warn",
+      "word_count": 134,
+      "char_count": 1349,
+      "line_count": 41,
+      "heading_count": 8,
+      "bullet_count": 31,
+      "bullet_ratio": 0.7561,
+      "forbidden_hit_count": 0,
+      "forbidden_weighted_hits": 0,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 0.0,
+      "forbidden_hits": []
+    },
+    {
+      "file": "campaign-content.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/campaign-content.md",
+      "score": 88.0,
+      "classification": "pass",
+      "word_count": 9,
+      "char_count": 83,
+      "line_count": 2,
+      "heading_count": 1,
+      "bullet_count": 0,
+      "bullet_ratio": 0.0,
+      "forbidden_hit_count": 0,
+      "forbidden_weighted_hits": 0,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 0.0,
+      "forbidden_hits": []
+    },
+    {
+      "file": "communications-social.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/communications-social.md",
+      "score": 88.0,
+      "classification": "pass",
+      "word_count": 13,
+      "char_count": 130,
+      "line_count": 2,
+      "heading_count": 1,
+      "bullet_count": 0,
+      "bullet_ratio": 0.0,
+      "forbidden_hit_count": 0,
+      "forbidden_weighted_hits": 0,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 0.0,
+      "forbidden_hits": []
+    },
+    {
+      "file": "brand-strategy.md",
+      "path": "/Volumes/madara/2026/twc-vault/01-Projects/thoughtseed/thoughtseed-labs/60-client-ecosystem/newsense/deliverables/notebooklm/sources/brand-strategy.md",
+      "score": 100.0,
+      "classification": "pass",
+      "word_count": 135,
+      "char_count": 1251,
+      "line_count": 40,
+      "heading_count": 16,
+      "bullet_count": 16,
+      "bullet_ratio": 0.4,
+      "forbidden_hit_count": 0,
+      "forbidden_weighted_hits": 0,
+      "placeholder_marker_count": 0,
+      "meta_density_per_1k_words": 0.0,
+      "forbidden_hits": []
+    }
+  ]
+}

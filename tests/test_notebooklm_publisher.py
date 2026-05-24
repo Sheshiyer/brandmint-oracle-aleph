@@ -2,6 +2,7 @@ from pathlib import Path
 
 from brandmint.publishing.instruction_templates import DEFAULT_ARTIFACT_DEFINITIONS, ext_for_type
 from brandmint.publishing.notebooklm_publisher import NotebookLMPublisher
+from brandmint.publishing.config_normalization import resolve_notebooklm_config
 
 
 class FakeClient:
@@ -243,3 +244,48 @@ def test_data_table_artifacts_use_csv_output() -> None:
     assert filenames["table-competitive"].endswith(".csv")
     assert filenames["table-product"].endswith(".csv")
     assert filenames["table-persona"].endswith(".csv")
+
+
+def test_resolve_notebooklm_config_prefers_nested_path() -> None:
+    cfg = {
+        "notebooklm": {
+            "max_parallel_workers": 1,
+            "reuse_policy": "reuse-existing",
+        },
+        "publishing": {
+            "notebooklm": {
+                "max_parallel_workers": 7,
+                "reuse_policy": "fresh-per-spec",
+            }
+        },
+    }
+
+    resolved = resolve_notebooklm_config(cfg)
+
+    assert resolved["max_parallel_workers"] == 7
+    assert resolved["reuse_policy"] == "fresh-per-spec"
+
+
+def test_publisher_reads_nested_notebooklm_config(tmp_path: Path) -> None:
+    brand_dir = tmp_path / "brand"
+    brand_dir.mkdir(parents=True, exist_ok=True)
+    config_path = brand_dir / "brand-config.yaml"
+    config_path.write_text("brand:\n  name: Test Brand\n", encoding="utf-8")
+
+    publisher = NotebookLMPublisher(
+        brand_dir=brand_dir,
+        config={
+            "brand": {"name": "Test Brand"},
+            "notebooklm": {"max_parallel_workers": 1},
+            "publishing": {
+                "notebooklm": {
+                    "max_parallel_workers": 6,
+                    "inter_artifact_delay": 2.5,
+                }
+            },
+        },
+        config_path=config_path,
+    )
+
+    assert publisher.max_parallel == 6
+    assert publisher.inter_artifact_delay == 2.5

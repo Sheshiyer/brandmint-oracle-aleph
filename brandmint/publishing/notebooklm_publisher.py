@@ -33,6 +33,7 @@ from .instruction_templates import (
     resolve_video_style,
 )
 from .notebooklm_client import NotebookLMClient
+from .config_normalization import resolve_notebooklm_config, notebooklm_config_warnings
 from .source_builder import build_source_documents
 from .source_curator import SourceCurator, SourceCandidate
 from ..models.state_validator import load_state_safe, save_state_safe
@@ -99,7 +100,9 @@ class NotebookLMPublisher:
         self.synthesis_model = synthesis_model
 
         # NotebookLM config overrides from brand-config.yaml
-        nb_config = config.get("notebooklm", {})
+        nb_config = resolve_notebooklm_config(config)
+        for warning in notebooklm_config_warnings(config):
+            self.console.print(f"  [yellow]{warning}[/yellow]")
         artifacts_config = nb_config.get("artifacts", {})
         self.max_parallel = nb_config.get("max_parallel_workers", max_parallel)
         self.inter_artifact_delay = nb_config.get("inter_artifact_delay", 1.0)

@@ -48,18 +48,25 @@ INTERACTIVE = sys.stdin.isatty()
 # =====================================================================
 
 class C:
-    """ANSI color codes mapped to brand palette."""
+    """ANSI color codes — reads from brand config at runtime via get_palette()."""
     RESET = "\033[0m"
     BOLD = "\033[1m"
     DIM = "\033[2m"
     UNDERLINE = "\033[4m"
 
-    # Brand palette
-    TEAL = "\033[38;2;10;22;40m"        # Void Teal #0A1628
-    CREAM = "\033[38;2;240;237;227m"    # Phosphor Cream #F0EDE3
-    BRONZE = "\033[38;2;196;135;59m"    # Solar Bronze #C4873B
-    TITANIUM = "\033[38;2;138;155;168m" # Titanium #8A9BA8
-    GREEN = "\033[38;2;74;124;89m"      # Chlorophyll #4A7C59
+    # Default palette (overridden by brand config at runtime)
+    PRIMARY = "\033[38;2;10;22;40m"
+    SECONDARY = "\033[38;2;240;237;227m"
+    ACCENT = "\033[38;2;196;135;59m"
+    SUPPORT = "\033[38;2;138;155;168m"
+    SIGNAL = "\033[38;2;74;124;89m"
+
+    # Legacy names (aliases)
+    TEAL = PRIMARY
+    CREAM = SECONDARY
+    BRONZE = ACCENT
+    TITANIUM = SUPPORT
+    GREEN = SIGNAL
 
     # Standard UI colors
     WHITE = "\033[97m"
@@ -68,6 +75,25 @@ class C:
     RED = "\033[91m"
     GRAY = "\033[90m"
     BG_DARK = "\033[48;2;10;22;40m"
+
+    @classmethod
+    def apply_brand_palette(cls, cfg):
+        """Apply brand palette from config, converting hex to ANSI."""
+        palette = cfg.get("palette", {})
+        for role, attr in [
+            ("primary", "PRIMARY"), ("secondary", "SECONDARY"),
+            ("accent", "ACCENT"), ("support", "SUPPORT"), ("signal", "SIGNAL"),
+        ]:
+            entry = palette.get(role, {})
+            hex_color = entry.get("hex", "")
+            if hex_color and hex_color.startswith("#") and len(hex_color) == 7:
+                r, g, b = int(hex_color[1:3], 16), int(hex_color[3:5], 16), int(hex_color[5:7], 16)
+                setattr(cls, attr, f"\033[38;2;{r};{g};{b}m")
+        cls.TEAL = cls.PRIMARY
+        cls.CREAM = cls.SECONDARY
+        cls.BRONZE = cls.ACCENT
+        cls.TITANIUM = cls.SUPPORT
+        cls.GREEN = cls.SIGNAL
 
 
 # =====================================================================
@@ -89,8 +115,8 @@ ASSET_CATALOG = {
     "2B": {
         "name": "Brand Seal Emblem",
         "category": "brand_identity",
-        "model": "flux-2-pro",
-        "cost_per_seed": 0.05,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 2,
         "description": "Oxidized copper circular seal with Art Deco geometry. Logo mark.",
         "when": "Core brand identity piece. Essential for any launch.",
@@ -100,8 +126,8 @@ ASSET_CATALOG = {
     "2C": {
         "name": "Glass Logo Emboss",
         "category": "brand_identity",
-        "model": "flux-2-pro",
-        "cost_per_seed": 0.05,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 3,
         "description": "Stained-glass logo panel with backlit colored shadows.",
         "when": "Premium brand identity. Great for hero sections.",
@@ -166,8 +192,8 @@ ASSET_CATALOG = {
     "5A": {
         "name": "Heritage Engraving",
         "category": "illustration",
-        "model": "recraft-v3",
-        "cost_per_seed": 0.04,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 3,
         "description": "Fine-line botanical heritage engraving of brand sigil.",
         "when": "Brands wanting heritage, craft, or artisanal feel.",
@@ -188,8 +214,8 @@ ASSET_CATALOG = {
     "5C": {
         "name": "Art Panel",
         "category": "illustration",
-        "model": "recraft-v3",
-        "cost_per_seed": 0.04,
+        "model": "nano-banana-pro",
+        "cost_per_seed": 0.08,
         "priority": 4,
         "description": "Conceptual panel illustration with flowing organic curves.",
         "when": "Art-forward brands. Wall art or merch potential.",
@@ -799,7 +825,7 @@ def cmd_status(args):
         ("2B", "Brand Seal"),
         ("2C", "Logo Emboss"),
         ("3A", "Capsule Collection"),
-        ("3B", "Hero Book"),
+        ("3B", "Hero Product"),
         ("3C", "Product Detail"),
         ("4A", "Catalog Layout"),
         ("4B", "Flatlay"),

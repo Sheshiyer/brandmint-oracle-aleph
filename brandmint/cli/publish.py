@@ -38,9 +38,14 @@ def run_notebooklm_publish(
     synthesis_model: str = "",
     clear_prose_cache: bool = False,
     max_parallel: int = 3,
+    source_profile: str = "",
 ) -> None:
     """Publish brand intelligence to NotebookLM."""
     config, cfg, brand_dir = _load_config(config)
+
+    # Apply source profile override if provided via CLI
+    if source_profile:
+        cfg.setdefault("publishing", {}).setdefault("notebooklm", {})["source_profile"] = source_profile
 
     # Clear prose synthesis cache if requested
     if clear_prose_cache:

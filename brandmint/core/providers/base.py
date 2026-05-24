@@ -89,6 +89,7 @@ class ProviderName(str, Enum):
     OPENAI = "openai"
     REPLICATE = "replicate"
     INFERENCE = "inference"
+    GPT_IMAGE2 = "gpt-image2"
 
 
 @dataclass

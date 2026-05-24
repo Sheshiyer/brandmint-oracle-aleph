@@ -2,13 +2,16 @@
 """
 Generate Tryambakam Noesis visual assets using FAL AI Nano Banana Pro.
 
-Reads prompt templates from references/twitter-sync/assets/, substitutes brand
-variables, and calls the FAL API. Generates 2 seed variants per asset.
+⚠️  NOESIS-SPECIFIC SCRIPT — This script is hardcoded for the Tryambakam Noesis
+brand. It is retained for historical reference and Noesis regeneration only.
 
-Usage:
-    python scripts/generate_noesis_assets.py --priority 1
-    python scripts/generate_noesis_assets.py --ids BK-01 LG-01 LG-02
-    python scripts/generate_noesis_assets.py --all
+For new brands, use `bm launch` which reads from brand-config.yaml and generates
+assets through the pipeline. Do NOT use this script for non-Noesis brands.
+
+Usage (Noesis only):
+    python scripts/generate_noesis_assets.py --noesis --priority 1
+    python scripts/generate_noesis_assets.py --noesis --ids BK-01 LG-01 LG-02
+    python scripts/generate_noesis_assets.py --noesis --all
 """
 
 import json
@@ -20,6 +23,13 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 from typing import Optional
+
+# Guard: this script is for Tryambakam Noesis ONLY.
+# Require --noesis flag to prevent accidental execution for other brands.
+if "--noesis" not in sys.argv:
+    print("ERROR: This script is Tryambakam Noesis-specific and requires --noesis flag.")
+    print("For new brands, use: bm launch --config brand-config.yaml")
+    sys.exit(1)
 
 # ---------------------------------------------------------------------------
 # Configuration

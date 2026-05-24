@@ -1,0 +1,171 @@
+# Brandmint — Generic Brand Config Template
+# Copy this file to brand-config.yaml and fill in your brand details.
+# All fields shown are optional unless marked [REQUIRED].
+# Reference: assets/brand-config-schema.yaml for full schema documentation.
+
+# ─── EXECUTION CONTEXT ──────────────────────────────────────
+execution_context:
+  budget_tier: "standard"          # standard | premium | luxury
+  launch_channel: "dtc"            # dtc | kickstarter | saas | b2b | marketplace
+  maturity_stage: "pre-launch"    # pre-launch | launch | growth | mature
+  depth_level: "focused"          # focused | comprehensive
+  tone: "conversion-focused"      # conversion-focused | comprehensive | minimal | premium
+  quality_bar: "standard"         # standard | premium
+
+# ─── BRAND IDENTITY [REQUIRED] ─────────────────────────────
+brand:
+  name: ""                         # [REQUIRED] Your brand name
+  tagline: ""                      # [REQUIRED] One-line brand promise
+  archetype: ""                     # e.g. "The Seasoned Cartographer", "The Rebel", "The Sage"
+  voice: ""                        # e.g. "Grounded, direct, respectful-challenging"
+  domain: ""                       # e.g. "Philosophical Practice", "SaaS", "DTC Wellness"
+  domain_tags:                     # Tags for domain-aware visual defaults
+    - ""
+
+# ─── THEME ──────────────────────────────────────────────────
+theme:
+  name: ""                         # Theme name, e.g. "Bioluminescent Architecture"
+  description: ""                   # 1-2 sentence visual concept
+  metaphor: ""                      # e.g. "An Art Nouveau conservatory where..."
+  mood_keywords:
+    - ""
+
+# ─── PALETTE [REQUIRED] ─────────────────────────────────────
+palette:
+  primary:
+    name: ""                        # e.g. "Deep Navy"
+    hex: ""                         # e.g. "#0A1628"
+    role: ""                        # e.g. "60% backgrounds, anchoring surfaces"
+  secondary:
+    name: ""
+    hex: ""
+    role: ""                        # e.g. "30% text, light surfaces"
+  accent:
+    name: ""
+    hex: ""
+    role: ""                        # e.g. "10% CTAs, highlights"
+  support:
+    name: ""
+    hex: ""
+    role: ""                        # e.g. "Borders, metadata"
+  signal:
+    name: ""
+    hex: ""
+    role: ""                        # e.g. "Growth indicators, alive elements"
+
+# ─── TYPOGRAPHY ──────────────────────────────────────────────
+typography:
+  header:
+    font: ""                        # e.g. "Exo 2"
+    weights: ["Light", "Regular", "SemiBold"]
+    display_weight: "Light"
+    emphasis_weight: "SemiBold"
+    case: "all caps"               # all caps | title case | sentence case
+  body:
+    font: ""                        # e.g. "Space Grotesk"
+    weights: ["Regular", "Medium"]
+  data:
+    font: ""                        # e.g. "Fira Code"
+    weights: ["Regular"]
+
+# ─── MATERIALS ──────────────────────────────────────────────
+materials: []                       # 8-15 material descriptors
+                                    # e.g. "brushed titanium", "polished concrete"
+
+# ─── PHOTOGRAPHY ─────────────────────────────────────────────
+photography:
+  style: ""                         # e.g. "High contrast, reflective surfaces"
+  environment: ""                   # e.g. "Minimal editorial studio"
+  constraint: ""                     # e.g. "No faces. No stock photo aesthetics."
+  camera: ""                        # e.g. "Phase One XF, 80mm, f/8"
+
+# ─── ILLUSTRATION ────────────────────────────────────────────
+illustration:
+  style: ""                         # e.g. "Organic curves + geometric precision"
+  references: ""                    # e.g. "Mucha meets Bauhaus"
+
+# ─── SIGIL / BRAND MARK ────────────────────────────────────
+sigil:
+  description: ""                   # e.g. "Three converging lines forming a dynamic mark"
+  components: []                    # e.g. ["source signal", "witness capacity", "grounding"]
+
+# ─── AUDIENCE (hydrated by buyer-persona skill) ──────────────
+audience:
+  persona_name: ""
+  aesthetic_affinity: ""
+  aspirational_brands: ""
+  emotional_register: ""
+
+# ─── COMPETITIVE CONTEXT (hydrated by competitor-analysis skill)
+competitive_context:
+  avoid_visual_patterns: ""
+  differentiate_from: ""
+  occupy_territory: ""
+
+# ─── POSITIONING (hydrated by positioning skill) ─────────────
+positioning:
+  statement: ""
+  hero_headline: ""
+  identity_pillars: []
+
+# ─── PRODUCTS ───────────────────────────────────────────────
+products:
+  hero:
+    name: ""                        # [REQUIRED] Hero product name
+    description: ""                  # [REQUIRED] Hero product description
+    physical_form: ""               # e.g. "hardcover book with custom spine"
+  capsule_lineup: []                # List of {name, description} dicts
+  essence:
+    name: ""
+    container: ""
+    size: ""
+  flatlay_objects:
+    count: 5
+    items: []                       # e.g. ["open notebook", "glass vessel", ...]
+  category: ""                     # e.g. "philosophical practice product"
+
+# ─── NEGATIVE PROMPT ────────────────────────────────────────
+negative_prompt: ""
+  # e.g. "stock photo, posed faces, gradient backgrounds, cartoon, pixel art"
+
+# ─── GENERATION SETTINGS ────────────────────────────────────
+generation:
+  output_dir: "generated"
+  seeds: [42, 137]
+  resolution: "2K"
+  output_format: "png"
+  provider: "fal"                   # fal | openrouter | openai | replicate | inference | auto
+  fallback_order: ["fal", "replicate", "openrouter", "openai", "inference"]
+  default_model: "nano-banana-pro"  # Default model for all assets
+  model_overrides: {}               # Per-asset model overrides, e.g. {"2A": "gpt-image-2", "5A": "nano-banana-pro"}
+  env_file: "~/.claude/.env"
+  reference_overrides: {}           # Per-channel reference overrides (was CHANNEL_REF_OVERRIDES)
+
+# ─── AESTHETIC OVERRIDES ────────────────────────────────────
+aesthetic: {}                       # Per-asset visual style overrides
+                                    # See brand-config-schema.yaml for full list
+
+# ─── PROMPTS (which asset types to generate) ─────────────────
+prompts:
+  brand_identity:
+    - bento_grid
+    - seal
+    - logo_emboss
+  products:
+    - capsule_collection
+    - hero_product
+    - product_detail
+  photography:
+    - catalog_layout
+    - flatlay
+  illustration:
+    types:
+      - heritage_engraving
+      - campaign_grid
+      - art_panel
+  narrative:
+    types:
+      - contact_sheet
+  posters:
+    types:
+      - seeker_poster

@@ -31,6 +31,7 @@ from .openrouter_provider import OpenRouterProvider
 from .openai_provider import OpenAIProvider
 from .replicate_provider import ReplicateProvider
 from .inference_provider import InferenceProvider
+from .gpt_image2_provider import GptImage2Provider
 from .model_mapping import (
     get_model_id,
     get_cost_estimate,
@@ -52,6 +53,7 @@ __all__ = [
     "OpenAIProvider",
     "ReplicateProvider",
     "InferenceProvider",
+    "GptImage2Provider",
     # Fallback orchestration
     "ProviderFallbackChain",
     # Factory functions
@@ -74,10 +76,11 @@ PROVIDERS: Dict[str, Type[ImageProvider]] = {
     "openai": OpenAIProvider,
     "replicate": ReplicateProvider,
     "inference": InferenceProvider,
+    "gpt-image2": GptImage2Provider,
 }
 
-# Default fallback order
-DEFAULT_FALLBACK_CHAIN = ["fal", "openrouter", "replicate", "openai", "inference"]
+# Default fallback order — gpt-image2 first if available (free with subscription)
+DEFAULT_FALLBACK_CHAIN = ["gpt-image2", "fal", "openrouter", "replicate", "openai", "inference"]
 
 
 def get_provider(name: Optional[str] = None) -> ImageProvider:
@@ -109,7 +112,8 @@ def get_provider(name: Optional[str] = None) -> ImageProvider:
         
         raise ValueError(
             "No image provider available. Set one of: "
-            "FAL_KEY, OPENROUTER_API_KEY, OPENAI_API_KEY, REPLICATE_API_TOKEN, or INFERENCE_API_KEY"
+            "FAL_KEY, OPENROUTER_API_KEY, OPENAI_API_KEY, REPLICATE_API_TOKEN, INFERENCE_API_KEY, "
+            "or install gpt-image-2 skill with ChatGPT Plus/Pro subscription"
         )
     
     name = name.lower()
@@ -127,6 +131,7 @@ def get_provider(name: Optional[str] = None) -> ImageProvider:
             "openai": "OPENAI_API_KEY",
             "replicate": "REPLICATE_API_TOKEN",
             "inference": "INFERENCE_API_KEY",
+            "gpt-image2": "ChatGPT Plus/Pro subscription + codex CLI + gpt-image-2 skill",
         }.get(name, "API_KEY")
         raise ValueError(f"Provider {name} requires {env_var} to be set")
     

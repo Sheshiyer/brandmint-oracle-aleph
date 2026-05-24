@@ -65,6 +65,10 @@ from ..cli.report import (
 from .visual_backend import create_visual_backend
 from ..core.cache import get_prompt_cache
 from ..models.state_validator import load_state_safe, save_state_safe
+from ..publishing.config_normalization import (
+    resolve_synthesis_settings,
+    notebooklm_config_warnings,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -366,10 +370,10 @@ class WaveExecutor:
         try:
             from ..publishing.notebooklm_publisher import NotebookLMPublisher
 
-            # Read synthesis config from brand-config.yaml publishing section
-            pub_config = self.config.get("publishing", {})
-            synthesize = pub_config.get("synthesize", True)
-            synthesis_model = pub_config.get("synthesis_model", "")
+            for warning in notebooklm_config_warnings(self.config):
+                self.console.print(f"  [yellow]{warning}[/yellow]")
+
+            synthesize, synthesis_model = resolve_synthesis_settings(self.config)
 
             publisher = NotebookLMPublisher(
                 brand_dir=self.brand_dir,

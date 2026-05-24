@@ -34,6 +34,7 @@ class ProviderFallbackChain:
         ProviderName.REPLICATE,
         ProviderName.OPENROUTER,
         ProviderName.OPENAI,
+        ProviderName.INFERENCE,
     ]
     
     def __init__(
@@ -86,7 +87,12 @@ class ProviderFallbackChain:
         
         for provider_name in self.fallback_order:
             try:
-                provider = get_provider(str(provider_name))
+                provider_key = (
+                    provider_name.value
+                    if isinstance(provider_name, ProviderName)
+                    else str(provider_name)
+                )
+                provider = get_provider(provider_key)
                 
                 # Skip if provider is not configured
                 if self.skip_unavailable and not provider.is_available():

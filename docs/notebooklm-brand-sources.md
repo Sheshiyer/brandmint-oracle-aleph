@@ -33,12 +33,20 @@ User-provided logos and product images from `logo_files` in brand config are upl
 
 ```yaml
 publishing:
-  synthesize: true                    # LLM prose synthesis
-  include_brand_materials: true       # Upload logos, style guide, visual descriptions
-  vision_descriptions: true           # Generate LLM descriptions for visual assets
-  vision_model: ""                    # Override model (default: claude-3.5-haiku)
-  max_sources: 50                     # NotebookLM Standard plan limit
+  notebooklm:
+    synthesize: true                  # LLM prose synthesis (canonical path)
+    synthesis_model: ""              # Optional override
+    include_brand_materials: true     # Upload logos, style guide, visual descriptions
+    vision_descriptions: true         # Generate LLM descriptions for visual assets
+    vision_model: ""                 # Override model (default: claude-3.5-haiku)
+    max_sources: 50                   # NotebookLM Standard plan limit
 ```
+
+### Backward Compatibility
+
+- Legacy paths (`notebooklm.*` and `publishing.{synthesize,synthesis_model}`) are still read.
+- Canonical keys under `publishing.notebooklm` always take precedence when both are present.
+- Migration warnings are emitted during Wave 7 publishing when legacy keys are detected.
 
 ### CLI Flags
 

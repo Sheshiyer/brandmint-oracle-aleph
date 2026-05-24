@@ -41,6 +41,7 @@ _SUPPORTED_FALLBACK_PROVIDERS = {
     "openrouter",
     "openai",
     "inference",
+    "gpt-image2",
 }
 _SUPPORTED_ROLLOUT_MODES = {"ring0", "ring1", "ring2"}
 _SCAFFOLD_SCHEMA_REQUIRED_KEYS = {
@@ -840,7 +841,10 @@ class InferenceScaffoldExecutionBackend:
         meta = self._asset_registry.get(asset_id, {})
         name = str(meta.get("name", asset_id)).strip()
         prompt_key = str(meta.get("prompt_key", asset_id.lower().replace("-", "_"))).strip()
-        model = str(meta.get("model", "nano-banana-pro")).strip()
+        registry_model = str(meta.get("model", "nano-banana-pro")).strip()
+        # Resolve model with per-asset overrides and brand default
+        from ..core.providers.model_mapping import resolve_model
+        model = resolve_model(asset_id, registry_model, self.config)
         aspect = str(meta.get("aspect", "landscape_16_9")).strip()
         batch_norm = self._normalize_batch_name(batch_name)
 

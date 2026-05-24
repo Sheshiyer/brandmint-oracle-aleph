@@ -262,7 +262,9 @@ def _entry_ref_terms(entry_id, entry):
     ))
 
 
-# Prompt IDs that use Nano Banana Pro (support image_url references)
+# Prompt IDs that support image_url style references (Nano Banana Pro / Nano Banana 2)
+# These use gen_nano_banana() which supports image_url cascading.
+# All other IDs use their configured model via gen_with_provider().
 _NANO_BANANA_PIDS = ["2A", "3A", "3B", "3C", "4A", "4B", "5B", "7A", "8A", "9A", "10A"]
 
 # Subject type per PID — what the asset conceptually depicts
@@ -648,10 +650,14 @@ TONE_PREAMBLES = {
 
 CHANNEL_REF_OVERRIDES = {
     "kickstarter": {},
-    "dtc": {"3A": "ref-alt-leather-duffles.jpg"},
-    "saas": {"2B": "ref-alt-chrome-logos.jpg"},
-    "b2b": {"2B": "ref-alt-chrome-logos.jpg"},
+    "dtc": {},
+    "saas": {},
+    "b2b": {},
 }
+
+def get_channel_ref_overrides(cfg):
+    """Get channel-specific reference overrides from config, falling back to empty dict."""
+    return cfg.get("generation", {}).get("reference_overrides", cfg.get("generation", {}).get("reference_overrides", {}))
 
 
 # =====================================================================
@@ -911,7 +917,9 @@ def _resolve_logo_path(path_str, config_dir):
 
 LEGACY_PRODUCT_PROMPT_IDS = {
     "hero_book": "hero_product",
+    "hero_product": "hero_product",
     "essence_vial": "product_detail",
+    "product_detail": "product_detail",
 }
 
 
@@ -1218,10 +1226,12 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["seeker_inner_detail"] = aes.get("seeker_inner_detail", dd["seeker_inner_detail"])
     v["sequence_type"] = aes.get("sequence_type", dd["sequence_type"])
     v["sequence_constraint"] = aes.get("sequence_constraint", dd["sequence_constraint"])
-    v["8a_title_text"] = aes.get("poster_title_text", "THE SEEKER")
+    poster_title = b.get("name", "THE BRAND")
+    v["8a_title_text"] = aes.get("poster_title_text", poster_title)
+    brand_metaphor = t.get("metaphor", "the brand concept")
     v["8a_subject_directive"] = aes.get(
         "poster_subject_directive",
-        "A solitary figure seen from behind -- standing still, contemplative posture.\nNo face visible. Full body, centered in frame.",
+        f"A figure embodying {brand_metaphor}. Centered, powerful, iconic.",
     )
     v["8a_left_half_detail"] = aes.get(
         "poster_left_half_detail",
@@ -1286,6 +1296,13 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["env_file"] = str(gen.get("env_file", "")).strip()
     v["inference_endpoint"] = str(gen.get("inference_endpoint", "https://api.inference.sh")).strip()
     v["inference_app"] = str(gen.get("inference_app", "")).strip()
+    design_memory = gen.get("design_memory", {}) if isinstance(gen.get("design_memory", {}), dict) else {}
+    design_memory_url = str(design_memory.get("worker_url", "")).strip()
+    design_memory_enabled = bool(design_memory.get("enabled", bool(design_memory_url)))
+    v["design_memory_enabled"] = "true" if design_memory_enabled else ""
+    v["design_memory_url"] = design_memory_url
+    v["design_memory_max_refs"] = int(design_memory.get("max_refs", 3) or 3)
+    v["design_memory_timeout_sec"] = int(design_memory.get("timeout_sec", 10) or 10)
     v["brandmint_repo_root"] = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
     return v
@@ -1333,11 +1350,11 @@ SKILL_REF_DIR = os.path.expanduser("~/.claude/skills/brandmint/references/images
 # =============================================================================
 # PROVIDER CONFIGURATION
 # =============================================================================
-# Supports: fal, openrouter, openai, replicate, inference
+# Supports: fal, openrouter, openai, replicate, inference, gpt-image2
 # All generation goes through core provider adapters.
 
 PROVIDER = os.environ.get("IMAGE_PROVIDER", "{provider}").lower()
-SUPPORTED_PROVIDERS = {{"fal", "openrouter", "openai", "replicate", "inference"}}
+SUPPORTED_PROVIDERS = {{"fal", "openrouter", "openai", "replicate", "inference", "gpt-image2"}}
 if PROVIDER not in SUPPORTED_PROVIDERS:
     print(f"WARNING: Unknown provider '{{PROVIDER}}', defaulting to FAL.")
     PROVIDER = "fal"
@@ -1349,11 +1366,30 @@ INFERENCE_APP = "{inference_app}".strip()
 if INFERENCE_APP:
     os.environ.setdefault("INFERENCE_IMAGE_APP", INFERENCE_APP)
 
+DESIGN_MEMORY_URL = os.environ.get("BRANDMINT_DESIGN_MEMORY_URL", "{design_memory_url}").strip()
+DESIGN_MEMORY_ENABLED = os.environ.get("BRANDMINT_DESIGN_MEMORY_ENABLED", "{design_memory_enabled}").strip().lower()
+DESIGN_MEMORY_ENABLED = DESIGN_MEMORY_ENABLED not in {{"", "0", "false", "off", "no"}}
+
+def _env_int(name, default):
+    try:
+        return int(os.environ.get(name, str(default)))
+    except ValueError:
+        return default
+
+DESIGN_MEMORY_MAX_REFS = _env_int("BRANDMINT_DESIGN_MEMORY_MAX_REFS", {design_memory_max_refs})
+DESIGN_MEMORY_TIMEOUT_SEC = _env_int("BRANDMINT_DESIGN_MEMORY_TIMEOUT_SEC", {design_memory_timeout_sec})
+
 try:
     from brandmint.core.providers import get_provider as _bm_get_provider
 except Exception as e:
     print(f"ERROR: Failed to import core provider adapters: {{e}}")
     sys.exit(1)
+
+try:
+    from brandmint.core.design_memory import search_design_memory
+except Exception as e:
+    print(f"WARNING: Failed to import design memory client: {{e}}")
+    search_design_memory = None
 
 try:
     CORE_PROVIDER = _bm_get_provider(PROVIDER)
@@ -1446,6 +1482,29 @@ def get_supp_ref_images(pid, limit=3):
                 urls.append(uploaded)
     _supp_ref_url_cache[pid] = urls
     return urls
+
+
+_design_memory_ref_cache = {{}}
+def get_design_memory_refs(pid, prompt, aspect):
+    """Retrieve reusable local reference images from the Design Memory Worker."""
+    if not DESIGN_MEMORY_ENABLED or not DESIGN_MEMORY_URL or search_design_memory is None:
+        return []
+    cache_key = (pid, aspect)
+    if cache_key in _design_memory_ref_cache:
+        return _design_memory_ref_cache[cache_key]
+    query = f"{{BRAND_NAME}}\\nasset:{{pid}}\\naspect:{{aspect}}\\n{{prompt}}"
+    refs = search_design_memory(
+        DESIGN_MEMORY_URL,
+        query=query,
+        limit=DESIGN_MEMORY_MAX_REFS,
+        brand=BRAND_NAME,
+        aspect=aspect,
+        timeout_sec=DESIGN_MEMORY_TIMEOUT_SEC,
+    )
+    if refs:
+        print(f"  Design memory refs for {{pid}}: {{', '.join(os.path.basename(p) for p in refs)}}")
+    _design_memory_ref_cache[cache_key] = refs
+    return refs
 
 
 REFERENCE_POLICY = os.environ.get("BRANDMINT_REFERENCE_POLICY", "error").strip().lower()
@@ -1570,8 +1629,8 @@ def gen_with_provider(
         image_urls=image_urls,
         **kwargs,
     )
-    if not (result and result.success):
-        err = result.error if result else "unknown adapter error"
+    if result is None or not result.success:
+        err = result.error if result is not None else "unknown adapter error"
         print(f"  ERROR: generation failed for {{model}} via {{PROVIDER}}: {{err}}")
         return False
 
@@ -1587,6 +1646,8 @@ FUNC_NANO_BANANA = '''
 def gen_nano_banana(pid, slug, prompt, aspect, image_urls, seeds=({seed_a}, {seed_b})):
     """Generate with Nano Banana Pro via unified core provider adapter path."""
     full_prompt = f"{{prompt}}\\n\\nAvoid: {{NEGATIVE}}"
+    image_urls = list(image_urls or [])
+    image_urls.extend(get_design_memory_refs(pid, prompt, aspect))
     enforce_reference_payload(pid, image_urls)
     
     # Parse aspect ratio to get dimensions

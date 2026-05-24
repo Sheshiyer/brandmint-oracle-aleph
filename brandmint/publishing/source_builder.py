@@ -94,6 +94,89 @@ SOURCE_GROUPS: Dict[str, Dict[str, Any]] = dict(CORE_SOURCE_GROUPS)
 
 SOURCE_DOCUMENT_MODES = {"hybrid", "legacy-only", "kickstarter-only"}
 
+# ---------------------------------------------------------------------------
+# Source profile system
+# ---------------------------------------------------------------------------
+
+SOURCE_PROFILES: Dict[str, Dict[str, Any]] = {
+    "brand-public": {
+        "description": "External-facing brand documentation for public consumption.",
+        "included_groups": [],  # Empty means include all non-excluded groups
+        "excluded_groups": set(),
+        "min_quality_score": 85,
+        "allow_placeholders": False,
+        "allow_meta_content": False,
+    },
+    "strategy-internal": {
+        "description": "Internal strategy documents including competitive analysis and market research.",
+        "included_groups": ["brand-foundation", "brand-strategy"],
+        "excluded_groups": {"campaign-content", "communications-social"},
+        "min_quality_score": 75,
+        "allow_placeholders": True,
+        "allow_meta_content": True,
+    },
+    "kickstarter-conditional": {
+        "description": "Kickstarter documentation only when all mandatory artifacts are present.",
+        "included_groups": [],
+        "excluded_groups": set(),
+        "min_quality_score": 80,
+        "allow_placeholders": False,
+        "allow_meta_content": False,
+        "require_kickstarter_complete": True,
+    },
+    "debug-internal": {
+        "description": "Full internal documentation including all groups and debug information.",
+        "included_groups": [],  # Empty means include all
+        "excluded_groups": set(),
+        "min_quality_score": 0,
+        "allow_placeholders": True,
+        "allow_meta_content": True,
+    },
+}
+
+DEFAULT_SOURCE_PROFILE = "brand-public"
+
+
+def resolve_source_profile(config: dict) -> str:
+    """Resolve which source profile to use for document generation."""
+    profile = (
+        config.get("publishing", {})
+        .get("notebooklm", {})
+        .get("source_profile", DEFAULT_SOURCE_PROFILE)
+    )
+    profile = str(profile).strip().lower() if profile is not None else DEFAULT_SOURCE_PROFILE
+    if profile not in SOURCE_PROFILES:
+        return DEFAULT_SOURCE_PROFILE
+    return profile
+
+
+def get_profile_config(profile_name: str) -> Dict[str, Any]:
+    """Get configuration for a specific source profile."""
+    return SOURCE_PROFILES.get(profile_name, SOURCE_PROFILES[DEFAULT_SOURCE_PROFILE])
+
+
+def filter_groups_by_profile(groups: Dict[str, Dict[str, Any]], profile_name: str) -> Dict[str, Dict[str, Any]]:
+    """Filter source groups based on the active profile."""
+    if not profile_name or profile_name not in SOURCE_PROFILES:
+        return groups
+
+    profile = get_profile_config(profile_name)
+    included = profile.get("included_groups", [])
+    excluded = profile.get("excluded_groups", set())
+
+    if not included and not excluded:
+        return groups
+
+    filtered = {}
+    for group_id, group_def in groups.items():
+        if group_id in excluded:
+            continue
+        if included and group_id not in included:
+            continue
+        filtered[group_id] = group_def
+
+    return filtered
+
 
 def resolve_source_document_mode(config: dict) -> str:
     """Resolve which source document families should be generated."""
@@ -196,13 +279,13 @@ def _dict_summary(d: dict) -> str:
 
 
 def _render_config_section(config: dict, section_key: str) -> str:
-    """Render a brand-config.yaml section as markdown."""
+    """Render a brand-config.yaml section as brand-native markdown."""
     section = config.get(section_key, {})
     if not section:
         return ""
 
-    heading = section_key.replace("_", " ").title()
-    parts = [f"### {heading} (from brand config)\n"]
+    heading = section_key.replace("_", " ").replace("palette", "Colour System").replace("typography", "Type System").replace("materials", "Materials & Texture").replace("photography", "Photography Direction").replace("illustration", "Illustration Style").title()
+    parts = [f"### {heading}\n"]
     parts.append(_render_value(section, depth=0))
     return "\n".join(parts)
 
@@ -396,7 +479,7 @@ def _render_kickstarter_readiness_doc(skill_outputs: Dict[str, dict], config: di
 # ---------------------------------------------------------------------------
 
 
-def get_source_group_definitions(document_mode: str = "hybrid") -> Dict[str, Dict[str, Any]]:
+def get_source_group_definitions(document_mode: str = "hybrid", profile_name: str = "") -> Dict[str, Dict[str, Any]]:
     """Return metadata for all generated source documents."""
     mode = document_mode if document_mode in SOURCE_DOCUMENT_MODES else "hybrid"
     groups: Dict[str, Dict[str, Any]] = {}
@@ -427,6 +510,11 @@ def get_source_group_definitions(document_mode: str = "hybrid") -> Dict[str, Dic
             "skills": [],
             "category": "kickstarter-readiness",
         }
+
+    # Apply profile filtering if a profile is specified
+    if profile_name and profile_name in SOURCE_PROFILES:
+        groups = filter_groups_by_profile(groups, profile_name)
+
     return groups
 
 
@@ -460,6 +548,9 @@ def build_source_documents(
                 pass
 
     document_mode = resolve_source_document_mode(config)
+    source_profile = resolve_source_profile(config)
+    profile_cfg = get_profile_config(source_profile)
+
     synthesized: Dict[str, str] = {}
     if synthesize and document_mode in {"hybrid", "legacy-only"}:
         from .prose_synthesizer import ProseSynthesizer, DEFAULT_MODEL
@@ -474,8 +565,10 @@ def build_source_documents(
         )
 
         if synth.available:
+            # Get groups filtered by profile
+            all_groups = get_source_group_definitions(document_mode, source_profile)
             synthesized = synth.synthesize_all(
-                groups=SOURCE_GROUPS,
+                groups=all_groups,
                 skill_outputs=skill_outputs,
                 config=config,
             )
@@ -487,8 +580,15 @@ def build_source_documents(
     result: Dict[str, Path] = {}
     brand_name = config.get("brand", {}).get("name", "Brand")
 
+    # Get filtered groups based on profile
+    active_groups = get_source_group_definitions(document_mode, source_profile)
+
     if document_mode in {"hybrid", "legacy-only"}:
-        for group_id, group_def in CORE_SOURCE_GROUPS.items():
+        for group_id, group_def in active_groups.items():
+            # Skip kickstarter groups in this block
+            if group_def.get("category", "").startswith("kickstarter"):
+                continue
+
             if group_id in synthesized:
                 doc_path = output_dir / f"{group_id}.md"
                 doc_path.write_text(synthesized[group_id])
@@ -497,8 +597,7 @@ def build_source_documents(
 
             parts: List[str] = []
             parts.append(f"# {group_def['title']}\n")
-            parts.append(f"> {group_def['description']}\n")
-            parts.append(f"**Brand:** {brand_name}\n")
+            parts.append(f"{brand_name} — {group_def['description']}\n")
 
             for section_key in group_def.get("include_config_sections", []):
                 rendered = _render_config_section(config, section_key)
@@ -518,9 +617,23 @@ def build_source_documents(
             result[group_id] = doc_path
 
     if document_mode in {"hybrid", "kickstarter-only"}:
+        # Check if kickstarter is required and complete
+        if profile_cfg.get("require_kickstarter_complete", False):
+            from ..core.kickstarter_blueprint import build_kickstarter_readiness
+            readiness = build_kickstarter_readiness(skill_outputs)
+            if not readiness.get("all_ready", False):
+                _console.print(
+                    f"  [yellow]Profile '{source_profile}' requires complete Kickstarter artifacts, but some are missing. Skipping kickstarter docs.[/yellow]"
+                )
+                # Still process non-kickstarter groups above
+                return result
+
         # Section-oriented Kickstarter docs
         for section_id in MANDATORY_KICKSTARTER_SECTIONS:
             group_id = section_doc_stem(section_id)
+            # Check if this group is in active_groups
+            if active_groups and group_id not in active_groups:
+                continue
             doc_path = output_dir / f"{group_id}.md"
             doc_path.write_text(_render_kickstarter_section_doc(section_id, skill_outputs, config))
             result[group_id] = doc_path
@@ -531,13 +644,17 @@ def build_source_documents(
             if rendered is None:
                 continue
             group_id = artifact_doc_stem(artifact_id)
+            if active_groups and group_id not in active_groups:
+                continue
             doc_path = output_dir / f"{group_id}.md"
             doc_path.write_text(rendered)
             result[group_id] = doc_path
 
-        readiness_path = output_dir / f"{KICKSTARTER_READINESS_DOC_STEM}.md"
-        readiness_path.write_text(_render_kickstarter_readiness_doc(skill_outputs, config))
-        result[KICKSTARTER_READINESS_DOC_STEM] = readiness_path
+        readiness_group_id = KICKSTARTER_READINESS_DOC_STEM
+        if not active_groups or readiness_group_id in active_groups:
+            readiness_path = output_dir / f"{KICKSTARTER_READINESS_DOC_STEM}.md"
+            readiness_path.write_text(_render_kickstarter_readiness_doc(skill_outputs, config))
+            result[KICKSTARTER_READINESS_DOC_STEM] = readiness_path
 
     known_paths: Set[Path] = {
         output_dir / f"{group_id}.md"

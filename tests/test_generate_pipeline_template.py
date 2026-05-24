@@ -31,6 +31,13 @@ def test_template_supports_inference_provider_env_bridge() -> None:
     assert 'os.environ.setdefault("INFERENCE_IMAGE_APP", INFERENCE_APP)' in src
 
 
+def test_template_accepts_gpt_image2_provider() -> None:
+    src = _template_source()
+
+    assert '"gpt-image2"' in src
+    assert "SUPPORTED_PROVIDERS = {{" in src
+
+
 def test_template_loads_configured_env_file_when_present() -> None:
     src = _template_source()
 
@@ -60,6 +67,15 @@ def test_template_enforces_reference_payload_for_nano_banana() -> None:
     assert "def enforce_reference_payload(pid, image_urls):" in src
     assert "enforce_reference_payload(pid, image_urls)" in src
     assert "degrade to text-only generation" in src
+
+
+def test_template_queries_design_memory_before_provider_generation() -> None:
+    src = _template_source()
+
+    assert "from brandmint.core.design_memory import search_design_memory" in src
+    assert "DESIGN_MEMORY_URL =" in src
+    assert "def get_design_memory_refs(pid, prompt, aspect):" in src
+    assert "image_urls.extend(get_design_memory_refs(pid, prompt, aspect))" in src
 
 
 

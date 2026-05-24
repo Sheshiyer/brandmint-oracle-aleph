@@ -244,6 +244,23 @@ class FalProvider(ImageProvider):
                 arguments["negative_prompt"] = negative_prompt
             return arguments
 
+        if "gpt-image" in model_id:
+            # GPT Image 2 uses different params: size, quality, n
+            # Default to 1024x1024; derive size string from width/height
+            if width == height:
+                size_str = f"{width}x{height}"
+            else:
+                size_str = f"{width}x{height}"
+            arguments = {
+                "prompt": prompt,
+                "size": kwargs.get("size", size_str),
+                "quality": kwargs.get("quality", "high"),
+                "n": kwargs.get("n", kwargs.get("num_images", 1)),
+            }
+            if seed is not None:
+                arguments["seed"] = seed
+            return arguments
+
         if "recraft" in model_id:
             arguments = {
                 "prompt": prompt,
