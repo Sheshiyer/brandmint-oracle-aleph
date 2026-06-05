@@ -16,6 +16,11 @@ const {
 const Tag = href ? 'a' : 'div';
 ---
 
+<!--
+  Refero-design: GlassCard is a legacy wrapper — prefer sections + borders + media blocks per anti-slop.
+  Use only for interactive containers (clickable items, forms, expandable panels) where the border/shadow
+  carries meaningful interaction affordance.
+-->
 <Tag
   href={href}
   class:list={[

@@ -1,10 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import GlassCard from './GlassCard.astro';
 import siteData from '../data/site-data.json';
 import type { Locale } from '../i18n';
-import { localizedDocTitle, localizedFeature, localizedPath, t } from '../i18n';
+import { localizedDocTitle, localizedFeature, localizedPath, plainText, t } from '../i18n';
 
 interface Props {
   locale: Locale;
@@ -13,20 +12,7 @@ interface Props {
 const { locale } = Astro.props;
 const copy = t(locale);
 const docs = await getCollection('docs');
-const frDocs = await getCollection('frDocs');
-const frDocsBySlug = new Map(frDocs.map((entry) => [entry.slug, entry]));
-const localizedDocs = docs.map((doc) => {
-  const localized = locale === 'fr' ? frDocsBySlug.get(doc.slug) : undefined;
-  return localized
-    ? {
-        ...doc,
-        data: {
-          ...doc.data,
-          ...localized.data,
-        },
-      }
-    : doc;
-});
+const localizedDocs = docs;
 const docsBySlug = new Map(localizedDocs.map((doc) => [doc.slug, doc]));
 const metrics = siteData.metrics || [];
 const storyPillars = siteData.storyPillars || [];
@@ -47,20 +33,36 @@ const orderedCategories = Object.entries(categories).sort(([a], [b]) => {
   const order = ['general', 'product', 'brand', 'audience', 'marketing'];
   return (order.indexOf(a) === -1 ? 99 : order.indexOf(a)) - (order.indexOf(b) === -1 ? 99 : order.indexOf(b));
 });
+
+function containsEmoji(str: string): boolean {
+  const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+  return emojiRegex.test(str);
+}
 ---
 
+<!--
+  Refero-design v2: research-first, anti-AI-slop home page template.
+  Principles:
+  - NO default cards (use sections, columns, dividers, media blocks).
+  - Max 2 columns (no 3-col feature grids).
+  - No emojis (guarded via containsEmoji).
+  - No indigo/violet palette defaults.
+  - Neutral color system driven by site-data.json palette.
+-->
 <BaseLayout title={`${siteData.brandName} Launch Portal`} description={siteData.heroSubtitle || siteData.tagline} locale={locale}>
-  <section class="home-stage">
-    <section class="hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">{siteData.themeName.toUpperCase()} · {siteData.launchChannel}</p>
-        <h1>{siteData.heroTitle}</h1>
+  <section class="home-stage swiss-home">
+
+    <!-- Asymmetric Hero (2-col max: copy + visual). No card wrapper. -->
+    <section class="hero hero--asymmetric">
+      <div class="hero-copy" style="max-width: 60ch;">
+        <p class="eyebrow">{siteData.themeName.toUpperCase()} &middot; {siteData.launchChannel}</p>
+        <h1 class="hero-title">{siteData.heroTitle}</h1>
         <p class="hero-subtitle">{siteData.heroSubtitle}</p>
         {siteData.heroDescription && <p class="hero-description">{siteData.heroDescription}</p>}
 
         <div class="hero-actions">
-          <a class="cta cta--primary" href={localizedPath(locale, siteData.heroPrimaryHref || '/docs/product/overview')}>{locale === 'fr' ? 'Explorer le récit produit' : 'Explore the product story'}</a>
-          <a class="cta cta--secondary" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>{locale === 'fr' ? 'Ouvrir la recherche & NotebookLM' : 'Open research & NotebookLM'}</a>
+          <a class="cta cta--primary" href={localizedPath(locale, siteData.heroPrimaryHref || '/docs/product/overview')}>Explore the product story</a>
+          <a class="cta cta--secondary" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>Open research &amp; NotebookLM</a>
         </div>
 
         {storyPillars.length > 0 && (
@@ -70,44 +72,54 @@ const orderedCategories = Object.entries(categories).sort(([a], [b]) => {
         )}
 
         {metrics.length > 0 && (
-          <div class="metric-grid">
+          <div class="metric-row">
             {metrics.map((metric) => (
-              <GlassCard class="metric-card" tone="warm">
+              <div class="metric">
                 <strong>{metric.value}</strong>
                 <span>{metric.label}</span>
-              </GlassCard>
+              </div>
             ))}
           </div>
         )}
       </div>
 
-      <GlassCard class="hero-visual-card" tone="accent">
-        <div class="hero-visual-card__frame">
-          {siteData.heroImage && <img src={siteData.heroImage} alt={siteData.heroImageAlt || siteData.brandName} />}
+      <div class="hero-visual">
+        <div class="hero-visual__frame">
+          {siteData.heroImage && (
+            <img
+              src={siteData.heroImage}
+              alt={siteData.heroImageAlt || siteData.brandName}
+              loading="eager"
+              decoding="async"
+            />
+          )}
         </div>
-        <div class="hero-visual-card__copy">
+        <div class="hero-visual__copy">
           <p class="eyebrow">{copy.shell.launchReadyPortal}</p>
           <h2>{siteData.brandName}</h2>
           <p>{siteData.tagline}</p>
         </div>
-        <div class="launch-facts">
-          {(siteData.launchFacts || []).map((fact) => (
-            <div class="launch-fact">
-              <small>{fact.label}</small>
-              <strong>{fact.value}</strong>
-            </div>
-          ))}
-        </div>
-      </GlassCard>
+        {(siteData.launchFacts || []).length > 0 && (
+          <div class="launch-facts">
+            {(siteData.launchFacts || []).map((fact) => (
+              <div class="launch-fact">
+                <small>{fact.label}</small>
+                <strong>{fact.value}</strong>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </section>
 
-    <section class="home-section">
+    <!-- Featured docs: 2-col max media blocks with dividers (no GlassCard). -->
+    <section class="home-section" data-scroll>
       <div class="section-heading">
         <p class="eyebrow">{copy.home.curatedLaunchTracks}</p>
         <h2>{copy.home.homeHeading}</h2>
         <p>{copy.home.homeBlurb}</p>
       </div>
-      <div class="feature-grid">
+      <div class="feature-grid swiss-grid-2">
         {featuredDocs.map((doc) => {
           const slug = (doc.href || '').replace(/^\/docs\//, '').replace(/^\//, '');
           const localizedDoc = docsBySlug.get(slug);
@@ -117,95 +129,105 @@ const orderedCategories = Object.entries(categories).sort(([a], [b]) => {
             description: localizedDoc?.data.description || doc.description,
           });
           return (
-            <GlassCard class="feature-card" interactive href={localizedPath(locale, doc.href)} tone="default">
-              <p class="feature-card__eyebrow">{localized.eyebrow}</p>
-              <h3>{doc.icon ? `${doc.icon} ${localized.title}` : localized.title}</h3>
-              <p>{localized.description}</p>
-              <span class="feature-link">{copy.shell.openSection}</span>
-            </GlassCard>
+            <div class="media-block" style="padding-bottom:var(--space-3);border-bottom:1px solid var(--surface-border);">
+              <a href={localizedPath(locale, doc.href)} style="text-decoration:none;color:inherit;display:block;">
+                <p class="panel-eyebrow">{plainText(localized.eyebrow)}</p>
+                <h3>
+                  {doc.icon && !containsEmoji(doc.icon) ? `${doc.icon} ` : ''}
+                  {plainText(localized.title)}
+                </h3>
+                <p>{plainText(localized.description)}</p>
+                <span class="panel-link" style="display:block;margin-top:var(--space-2);">{copy.shell.openSection} →</span>
+              </a>
+            </div>
           );
         })}
       </div>
     </section>
 
-    <section class="home-section">
+    <!-- Visual highlights: 2-col max media blocks + dividers (refero anti-slop). -->
+    <section class="home-section" data-scroll>
       <div class="section-heading">
         <p class="eyebrow">{copy.home.visualWorld}</p>
         <h2>{copy.home.visualHeading}</h2>
       </div>
-      <div class="visual-grid">
+      <div class="visual-grid swiss-grid-4">
         {visualHighlights.map((item) => (
-          <GlassCard class="visual-card" interactive href={localizedPath(locale, item.href)} tone="signal">
-            {item.image && <img src={item.image} alt={item.title} class="visual-card__image" />}
-            <div class="visual-card__copy">
-              <p class="feature-card__eyebrow">{item.eyebrow}</p>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <span class="feature-link">{copy.shell.reviewContext}</span>
-            </div>
-          </GlassCard>
+          <div class="media-block" style="border-bottom:1px solid var(--surface-border);padding-bottom:var(--space-3);margin-bottom:var(--space-3);">
+            <a href={localizedPath(locale, item.href)} style="display:block;">
+              {item.image && <img src={item.image} alt={item.title} class="panel-image" style="margin-bottom:var(--space-2);width:100%;" loading="lazy" />}
+              <div>
+                <p class="panel-eyebrow">{item.eyebrow}</p>
+                <h3 style="margin:0 0 var(--space-1);">{item.title}</h3>
+                <p style="margin:0;">{item.description}</p>
+              </div>
+            </a>
+          </div>
         ))}
       </div>
     </section>
 
-    <section class="home-section home-section--dual">
-      <GlassCard class="knowledge-map" tone="default">
+    <!-- Dual: 2-col max (knowledge list + research media rows). Refero: sections + dividers + media blocks. -->
+    <section class="home-section home-section--dual" data-scroll>
+      <div class="dual-block" style="border:1px solid var(--surface-border);padding:var(--space-3);">
         <div class="section-heading section-heading--compact">
           <p class="eyebrow">{copy.home.knowledgeMap}</p>
           <h2>{copy.home.knowledgeHeading}</h2>
         </div>
-        <div class="knowledge-map__grid">
+        <div class="knowledge-grid">
           {orderedCategories.map(([category, categoryDocs]) => (
-            <section class="knowledge-map__section">
-              <p class="feature-card__eyebrow">{copy.categories[category as keyof typeof copy.categories] || category}</p>
-              <ul>
+            <div style="border-bottom:1px solid var(--surface-border);padding-bottom:var(--space-2);margin-bottom:var(--space-2);">
+              <p class="panel-eyebrow">{copy.categories[category as keyof typeof copy.categories] || category}</p>
+              <ul class="knowledge-list">
                 {categoryDocs.map((doc) => (
                   <li>
                     <a href={localizedPath(locale, `/docs/${doc.slug}`)}>
-                      {doc.data.icon && <span>{doc.data.icon} </span>}
-                      {localizedDocTitle(locale, doc.slug, doc.data.title)}
+                      {doc.data.icon && !containsEmoji(doc.data.icon) && <span>{doc.data.icon} </span>}
+                      {plainText(localizedDocTitle(locale, doc.slug, doc.data.title))}
                     </a>
                   </li>
                 ))}
               </ul>
-            </section>
+            </div>
           ))}
         </div>
-      </GlassCard>
+      </div>
 
-      <GlassCard class="research-panel" tone="warm">
+      <div class="dual-block" style="border:1px solid var(--surface-border);padding:var(--space-3);">
         <div class="section-heading section-heading--compact">
           <p class="eyebrow">{copy.home.notebooklmSpotlight}</p>
           <h2>{copy.home.notebooklmHeading}</h2>
         </div>
-        <div class="research-panel__list">
+        <div class="research-list">
           {notebooklmHighlights.map((item) => (
-            <a class="research-item" href={localizedPath(locale, item.href || siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>
-              {item.image && <img src={item.image} alt={item.title} class="research-item__image" />}
-              <div>
-                <p class="feature-card__eyebrow">{item.kind}</p>
+            <a class="research-row" href={localizedPath(locale, item.href || siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>
+              {item.image && <img src={item.image} alt={item.title} class="research-thumb" />}
+              <div class="research-meta">
+                <p class="panel-eyebrow">{item.kind}</p>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-                <span class="feature-link">{copy.shell.openInWiki}</span>
               </div>
             </a>
           ))}
         </div>
-      </GlassCard>
+        <a class="panel-link" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>Browse all NotebookLM artifacts &rarr;</a>
+      </div>
     </section>
 
-    <section class="home-section">
-      <GlassCard class="closing-banner" tone="accent">
+    <!-- Closing: bordered section (no card) per refero anti-slop. -->
+    <section class="home-section" data-scroll>
+      <div style="border:1px solid var(--surface-border);padding:var(--space-4);">
         <div>
           <p class="eyebrow">{copy.shell.freshBuild}</p>
-          <h2>{siteData.runLabel}</h2>
-          <p>{locale === 'fr' ? 'Publié ' : 'Published '}{siteData.publishedAtHuman}. {locale === 'fr' ? 'Ce portail conserve la profondeur du wiki tout en l’alignant au système de marque actif.' : 'This portal keeps the wiki depth while presenting it through the active brand system.'}</p>
+          <h2>{siteData.runLabel || siteData.brandName}</h2>
+          {siteData.publishedAtHuman && <p style="max-width:60ch">Published {siteData.publishedAtHuman}. This portal keeps the wiki depth while presenting it through the active brand system.</p>}
         </div>
-        <div class="closing-banner__actions">
+        <div class="closing-actions">
           <a class="cta cta--secondary" href={localizedPath(locale, siteData.docsHomeHref || '/docs/index')}>{copy.shell.openDocsIndex}</a>
           <a class="cta cta--primary" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>{copy.shell.openResearchHub}</a>
         </div>
-      </GlassCard>
+      </div>
     </section>
+
   </section>
 </BaseLayout>

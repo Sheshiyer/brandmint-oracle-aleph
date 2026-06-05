@@ -6,6 +6,7 @@ const docSchema = z.object({
   category: z.string().optional(),
   order: z.number().optional(),
   icon: z.string().optional(),
+  lastUpdated: z.string().optional(),
 });
 
 const docs = defineCollection({

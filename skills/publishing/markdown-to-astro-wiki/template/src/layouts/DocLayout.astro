@@ -11,40 +11,50 @@ interface Props {
   category?: string;
   headings?: { depth: number; slug: string; text: string }[];
   locale: Locale;
+  lastUpdated?: string;
 }
 
-const { title, description, category, headings = [], locale } = Astro.props;
+const { title, description, category, headings = [], locale, lastUpdated } = Astro.props;
 const copy = t(locale);
 const content = await Astro.slots.render('default');
 const wordCount = content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 const readingTime = Math.max(1, Math.ceil(wordCount / 210));
 ---
 
+<!--
+  Refero-design v2: non-3-column inside page layout.
+  Overall portal = left nav (sidebar-frame) + content (full). 
+  TOC integrated into article header as inline "On this page" list (no right sidebar column).
+  Use sections, media blocks, dividers over cards. Keep Astro framework, slots, islands.
+-->
 <BaseLayout title={title} description={description} locale={locale}>
   <section class="doc-stage">
-    <div class="doc-shell">
-      <article class="doc-panel glass-panel">
+    <div class="doc-shell doc-shell--single">
+      <article class="doc-panel swiss-panel">
         <Breadcrumb title={title} category={category} locale={locale} />
 
         <header class="doc-header">
           <div class="doc-header__meta">
             {category && <span class="pill pill--soft">{category}</span>}
             <span class="pill pill--warm">{readingTime} {copy.shell.minRead}</span>
+            {lastUpdated && <span class="pill pill--soft">Updated {lastUpdated}</span>}
           </div>
           <h1>{title}</h1>
-          {description && <p class="doc-description">{description}</p>}
+          {description && <p class="doc-description" style="max-width:60ch">{description}</p>}
+
+          <!-- Integrated TOC (non-sidebar) for single-column flow per refero non-3-col -->
+          {headings.length > 0 && (
+            <div class="doc-inline-toc">
+              <p class="eyebrow">{copy.shell.onThisPage}</p>
+              <TableOfContents headings={headings} locale={locale} />
+            </div>
+          )}
         </header>
 
-        <div class="prose portal-prose">
+        <div class="prose portal-prose" id="doc-content">
           <slot />
         </div>
       </article>
-
-      {headings.length > 0 && (
-        <div class="doc-sidebar">
-          <TableOfContents headings={headings} locale={locale} />
-        </div>
-      )}
     </div>
   </section>
 </BaseLayout>

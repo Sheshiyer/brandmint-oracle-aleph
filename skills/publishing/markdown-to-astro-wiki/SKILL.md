@@ -1,6 +1,6 @@
 ---
 name: markdown-to-astro-wiki
-description: Transform markdown documentation folders into beautiful Astro-based wikis with Apple iOS26-style glassmorphism design. Use when the user has a folder of .md files and wants to generate a polished wiki/documentation site with dark/light mode support, readable typography, and modern frosted-glass aesthetics. Triggers on requests involving markdown-to-wiki conversion, documentation site generation, Astro wiki creation, or glassmorphism documentation themes.
+description: Transform markdown documentation folders into professional Astro-based wikis using refero-design principles (research-first, anti-AI-slop: no default emojis, no 3-column layouts, sections + dividers + media blocks over cards, neutral color system). Use when the user has a folder of .md files and wants to generate a polished wiki/documentation site with dark/light mode support, readable typography, and professional aesthetics. Triggers on requests involving markdown-to-wiki conversion, documentation site generation, Astro wiki creation, or brand wiki themes.
 ---
 
 ## Execution Context

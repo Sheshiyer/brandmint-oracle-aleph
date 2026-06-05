@@ -13,16 +13,16 @@ const toc = headings.filter((heading) => heading.depth >= 2 && heading.depth <= 
 ---
 
 {toc.length > 0 && (
-  <aside class="toc-panel glass-panel glass-panel--soft">
-    <p class="eyebrow eyebrow--muted">{copy.shell.onThisPage}</p>
-    <ul class="toc-list">
-      {toc.map((heading) => (
-        <li class:list={['toc-item', `toc-item--${heading.depth}`]}>
-          <a href={`#${heading.slug}`} class="toc-link">{heading.text}</a>
-        </li>
-      ))}
-    </ul>
-  </aside>
+  <!-- Refero anti-slop: neutral list output only (no default glass-panel/card wrapper).
+       Parent (e.g. .doc-inline-toc or doc-header) controls container + "On this page" label.
+       Active state via IntersectionObserver provides purposeful focus/hierarchy feedback. -->
+  <ul class="toc-list" role="list">
+    {toc.map((heading) => (
+      <li class:list={['toc-item', `toc-item--${heading.depth}`]}>
+        <a href={`#${heading.slug}`} class="toc-link">{heading.text}</a>
+      </li>
+    ))}
+  </ul>
 )}
 
 <script is:inline>

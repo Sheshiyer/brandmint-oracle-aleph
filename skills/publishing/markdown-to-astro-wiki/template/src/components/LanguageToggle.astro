@@ -10,15 +10,17 @@ interface Props {
 const { locale, pathname } = Astro.props;
 ---
 
-<div class="language-toggle" aria-label="Language switcher">
-  {LOCALES.map((candidate) => (
-    <a
-      href={switchLocalePath(pathname, candidate)}
-      class:list={['language-toggle__link', { 'is-active': candidate === locale }]}
-      lang={candidate}
-      hrefLang={candidate}
-    >
-      {candidate.toUpperCase()}
-    </a>
-  ))}
-</div>
+{LOCALES.length > 1 && (
+  <div class="language-toggle" aria-label="Language switcher">
+    {LOCALES.map((candidate) => (
+      <a
+        href={switchLocalePath(pathname, candidate)}
+        class:list={['language-toggle__link', { 'is-active': candidate === locale }]}
+        lang={candidate}
+        hrefLang={candidate}
+      >
+        {candidate.toUpperCase()}
+      </a>
+    ))}
+  </div>
+)}

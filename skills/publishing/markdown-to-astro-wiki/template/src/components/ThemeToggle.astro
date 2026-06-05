@@ -1,9 +1,15 @@
 ---
 ---
 
+<!-- Refero anti-slop: SVG icons instead of emoji (☀️/🌙). Simple sun/moon toggle with brand-primary accent. -->
 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-  <span class="theme-toggle__emoji">☀️</span>
-  <span class="theme-toggle__emoji theme-toggle__emoji--dark">🌙</span>
+  <svg class="theme-toggle__icon theme-toggle__icon--light" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+    <circle cx="9" cy="9" r="4" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M9 1.5v1.5M9 15v1.5M2.76 2.76l1.06 1.06M14.18 14.18l1.06 1.06M1.5 9h1.5M15 9h1.5M2.76 15.24l1.06-1.06M14.18 3.82l1.06-1.06" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>
+  <svg class="theme-toggle__icon theme-toggle__icon--dark" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+    <path d="M14.5 10.5a6 6 0 0 1-7-7 6 6 0 0 0 7 7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
 </button>
 
 <script is:inline>

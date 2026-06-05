@@ -10,53 +10,109 @@ interface Props {
   title: string;
   description?: string;
   locale: Locale;
+  slug?: string;
 }
 
-const { title, description, locale } = Astro.props;
+const { title, description, locale, slug: _slug } = Astro.props;
 const palette = siteData.palette || {};
+const typo = siteData.typography || {};
 const brandVars = {
-  '--brand-primary': palette.primary?.hex || '#AA98D6',
-  '--brand-secondary': palette.secondary?.hex || '#F8F6F2',
-  '--brand-accent': palette.accent?.hex || '#E67A2E',
-  '--brand-support': palette.support?.hex || '#D9D3C1',
-  '--brand-signal': palette.signal?.hex || '#4CC8B2',
-  '--font-display': siteData.typography?.header?.font || 'Figtree',
-  '--font-body': siteData.typography?.body?.font || 'Inter',
+  '--brand-primary': palette.primary?.hex || '#2563eb',
+  '--brand-secondary': palette.secondary?.hex || '#1c1917',
+  '--brand-accent': palette.accent?.hex || '#fafaf9',
+  '--brand-support': palette.support?.hex || '#78716c',
+  '--brand-signal': palette.signal?.hex || '#f59e0b',
+  '--font-display': typo.header?.font || 'IBM Plex Sans',
+  '--font-body': typo.body?.font || 'IBM Plex Sans',
 };
+const defaultTheme = siteData.defaultTheme || 'light';
 const pathname = Astro.url.pathname;
+const ogImage = '/assets/website/og-image.png';
+const canonicalUrl = `https://iverif-wiki-deploy.vercel.app${pathname}`;
 ---
 
 <!DOCTYPE html>
-<html lang={locale} data-theme="light">
+<html lang={locale} data-theme={defaultTheme}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
+
     {description && <meta name="description" content={description} />}
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={siteData.brandName} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": siteData.brandName,
+      "description": siteData.tagline,
+      "url": canonicalUrl,
+      "logo": `${canonicalUrl.replace(/\/$/, '')}/assets/website/favicon.png`
+    })} />
+
     <script is:inline>
       const savedTheme = localStorage.getItem('theme');
-      const preferred = savedTheme || 'light';
+      const preferred = savedTheme || document.documentElement.dataset.theme || 'light';
       document.documentElement.setAttribute('data-theme', preferred);
     </script>
   </head>
   <body style={brandVars}>
-    <div class="ambient ambient--primary"></div>
-    <div class="ambient ambient--accent"></div>
-    <div class="ambient ambient--signal"></div>
+    <a href="#content" class="skip-link">Skip to content</a>
 
     <div class="portal-shell">
-      <aside class="sidebar-frame">
+      <div class="mobile-header">
+        <a href={localizedPath(locale, '/')} class="mobile-brand">{siteData.brandName.slice(0, 2)}</a>
+        <button id="nav-toggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+      </div>
+
+      <aside class="sidebar-frame" aria-label="Main navigation">
         <div class="sidebar-frame__topbar">
           <LanguageToggle locale={locale} pathname={pathname} />
         </div>
-        <Navigation locale={locale} />
+        <Navigation locale={locale} currentPath={pathname} />
       </aside>
 
-      <main class="content-frame">
+      <main id="content" class="content-frame" tabindex="-1">
         <slot />
       </main>
     </div>
 
     <ThemeToggle />
+
+    <script is:inline>
+      (function() {
+        const toggle = document.getElementById('nav-toggle');
+        const sidebar = document.querySelector('.sidebar-frame');
+        if (!toggle || !sidebar) return;
+
+        toggle.addEventListener('click', () => {
+          const isOpen = sidebar.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          toggle.textContent = isOpen ? 'Close' : 'Menu';
+        });
+
+        sidebar.addEventListener('click', (e) => {
+          if ((e.target as HTMLElement | null)?.closest('a') && window.innerWidth <= 1024) {
+            sidebar.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.textContent = 'Menu';
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

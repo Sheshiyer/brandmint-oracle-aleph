@@ -2,29 +2,17 @@
 import { getCollection } from 'astro:content';
 import siteData from '../data/site-data.json';
 import type { Locale } from '../i18n';
-import { localizedPath, localizedDocTitle, t } from '../i18n';
+import { localizedPath, localizedDocTitle, plainText, t } from '../i18n';
 
 interface Props {
   locale: Locale;
+  currentPath?: string;
 }
 
-const { locale } = Astro.props;
+const { locale, currentPath } = Astro.props;
 const copy = t(locale);
 const docs = await getCollection('docs');
-const frDocs = await getCollection('frDocs');
-const frDocsBySlug = new Map(frDocs.map((entry) => [entry.slug, entry]));
-const localizedDocs = docs.map((doc) => {
-  const localized = locale === 'fr' ? frDocsBySlug.get(doc.slug) : undefined;
-  return localized
-    ? {
-        ...doc,
-        data: {
-          ...doc.data,
-          ...localized.data,
-        },
-      }
-    : doc;
-});
+const localizedDocs = docs;
 const categories: Record<string, typeof localizedDocs> = {};
 
 for (const doc of localizedDocs) {
@@ -45,18 +33,31 @@ const sortedCategories = Object.entries(categories).sort(([a], [b]) => {
   const bRank = bi === -1 ? 99 : bi;
   return aRank === bRank ? a.localeCompare(b) : aRank - bRank;
 });
+
+function containsEmoji(str: string): boolean {
+  const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/u;
+  return emojiRegex.test(str);
+}
+
+function isActive(docSlug: string): boolean {
+  if (!currentPath) return false;
+  const docPath = localizedPath(locale, `/docs/${docSlug}`);
+  return currentPath === docPath || currentPath.startsWith(`${docPath}/`);
+}
 ---
 
-<nav class="portal-nav">
+<nav class="portal-nav" aria-label="Documentation">
   <a href={localizedPath(locale, '/')} class="brand-lockup">
-    <span class="brand-lockup__orb">✦</span>
+    <!-- Refero anti-slop: brand orb as text initials (no emoji ✦ or decorative icon). Override with brand-minted SVG via site-data. -->
+    <span class="brand-lockup__orb">{siteData.brandName.slice(0, 2).toUpperCase()}</span>
     <span>
       <strong>{siteData.brandName}</strong>
       <small>{siteData.tagline}</small>
     </span>
   </a>
 
-  <div class="brand-summary glass-panel glass-panel--soft">
+  <!-- Refero: use bordered section / media block instead of default glass-panel card for static brand summary. -->
+  <div class="brand-summary" style="border:1px solid var(--surface-border); padding: var(--space-2); margin-bottom: var(--space-2);">
     <p class="eyebrow">{siteData.themeName}</p>
     <h2>{siteData.heroTitle}</h2>
     <p>{siteData.heroSubtitle}</p>
@@ -68,6 +69,16 @@ const sortedCategories = Object.entries(categories).sort(([a], [b]) => {
     <a class="quicklink" href={localizedPath(locale, siteData.heroSecondaryHref || '/docs/research/notebooklm-artifacts')}>{copy.shell.notebooklm}</a>
   </div>
 
+  <div class="sidebar-search">
+    <input
+      type="search"
+      id="sidebar-search"
+      placeholder="Search docs..."
+      aria-label="Search documentation"
+      class="sidebar-search__input"
+    />
+  </div>
+
   {sortedCategories.map(([category, categoryDocs]) => (
     <section class="nav-section">
       <div class="nav-section__header">
@@ -77,11 +88,17 @@ const sortedCategories = Object.entries(categories).sort(([a], [b]) => {
       <ul class="nav-list">
         {categoryDocs.map((doc) => (
           <li>
-            <a href={localizedPath(locale, `/docs/${doc.slug}`)} class="nav-link">
-              {doc.data.icon && <span class="nav-link__icon">{doc.data.icon}</span>}
+            <a
+              href={localizedPath(locale, `/docs/${doc.slug}`)}
+              class={`nav-link${isActive(doc.slug) ? ' is-active' : ''}`}
+              aria-current={isActive(doc.slug) ? 'page' : undefined}
+              data-search-text={`${doc.data.title} ${doc.data.description || ''}`.toLowerCase()}
+            >
+              <!-- Refero anti-slop: emoji icon guard — only render non-emoji icons -->
+              {doc.data.icon && !containsEmoji(doc.data.icon) && <span class="nav-link__icon">{doc.data.icon}</span>}
               <span>
-                <strong>{localizedDocTitle(locale, doc.slug, doc.data.title)}</strong>
-                {doc.data.description && <small>{doc.data.description}</small>}
+                <strong>{plainText(localizedDocTitle(locale, doc.slug, doc.data.title))}</strong>
+                {doc.data.description && <small>{plainText(doc.data.description)}</small>}
               </span>
             </a>
           </li>

@@ -2,6 +2,7 @@
   "brandName": "Brand",
   "tagline": "Launch portal",
   "themeName": "Brand Theme",
+  "defaultTheme": "light",
   "launchChannel": "launch",
   "heroTitle": "Launch Portal",
   "heroSubtitle": "Curated brand, product, and research materials.",
@@ -20,14 +21,27 @@
   "publishedAtHuman": "",
   "runLabel": "",
   "palette": {
-    "primary": { "name": "Muted Lilac", "hex": "#AA98D6" },
-    "secondary": { "name": "Cloud White", "hex": "#F8F6F2" },
-    "accent": { "name": "Warm Sunset Orange", "hex": "#E67A2E" },
-    "support": { "name": "Soft Almond Cream", "hex": "#D9D3C1" },
-    "signal": { "name": "Soft Aqua Teal", "hex": "#4CC8B2" }
+    "primary": { "name": "Signal Blue", "hex": "#2563eb", "role": "CTAs, links, primary actions, brand accent — used sparingly" },
+    "secondary": { "name": "Regulatory Stone", "hex": "#1c1917", "role": "Text, anchoring surfaces, authority" },
+    "accent": { "name": "Clean White", "hex": "#fafaf9", "role": "Backgrounds, breathing room, contrast" },
+    "support": { "name": "Medium Stone", "hex": "#78716c", "role": "Borders, metadata, secondary text" },
+    "signal": { "name": "Alert Amber", "hex": "#f59e0b", "role": "Warning states, attention flags, review needed" }
   },
   "typography": {
-    "header": { "font": "Figtree" },
-    "body": { "font": "Inter" }
+    "header": {
+      "font": "IBM Plex Sans",
+      "weights": ["Light", "Regular", "SemiBold"],
+      "display_weight": "Light",
+      "emphasis_weight": "SemiBold",
+      "case": "title case"
+    },
+    "body": {
+      "font": "IBM Plex Sans",
+      "weights": ["Regular", "Medium"]
+    },
+    "data": {
+      "font": "IBM Plex Mono",
+      "weights": ["Regular", "Medium"]
+    }
   }
 }
