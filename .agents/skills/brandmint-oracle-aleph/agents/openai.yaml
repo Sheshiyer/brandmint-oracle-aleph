@@ -1,0 +1,6 @@
+interface:
+  display_name: "Brandmint Oracle Aleph"
+  short_description: "Repo-specific patterns and workflows for brandmint-oracle-aleph"
+  default_prompt: "Use the brandmint-oracle-aleph repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
