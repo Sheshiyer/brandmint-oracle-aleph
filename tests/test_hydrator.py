@@ -305,6 +305,8 @@ class TestHydrateBrandConfig:
         assert result["audience"]["persona_name"] == "The Adventurous Explorer"
         assert result["positioning"]["hero_headline"] == "Travel Like a Local"
         assert len(result["positioning"]["pillars"]) == 3
+        assert result["downstream_variable_contract"]["brand_system"]["voice"] == "The Confident Local Friend"
+        assert "asset_requirements" in result["downstream_variable_contract"]
 
     def test_modifies_in_place(self, empty_config, voice_tone_output):
         outputs = {"voice-and-tone": voice_tone_output}
