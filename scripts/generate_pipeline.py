@@ -24,6 +24,8 @@ try:
 except ImportError:
     pass
 
+from brandmint.core.downstream_contract import build_downstream_variable_contract
+
 
 # =====================================================================
 # REFERENCE MAP LOADING
@@ -1303,6 +1305,11 @@ def build_vars(cfg, exec_ctx=None, config_path=None):
     v["design_memory_url"] = design_memory_url
     v["design_memory_max_refs"] = int(design_memory.get("max_refs", 3) or 3)
     v["design_memory_timeout_sec"] = int(design_memory.get("timeout_sec", 10) or 10)
+    v["downstream_variable_contract_json"] = json.dumps(
+        cfg.get("downstream_variable_contract") or build_downstream_variable_contract(cfg),
+        ensure_ascii=False,
+        sort_keys=True,
+    )
     v["brandmint_repo_root"] = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
     return v
@@ -1378,6 +1385,7 @@ def _env_int(name, default):
 
 DESIGN_MEMORY_MAX_REFS = _env_int("BRANDMINT_DESIGN_MEMORY_MAX_REFS", {design_memory_max_refs})
 DESIGN_MEMORY_TIMEOUT_SEC = _env_int("BRANDMINT_DESIGN_MEMORY_TIMEOUT_SEC", {design_memory_timeout_sec})
+DOWNSTREAM_VARIABLE_CONTRACT = {downstream_variable_contract_json}
 
 try:
     from brandmint.core.providers import get_provider as _bm_get_provider
@@ -1499,6 +1507,7 @@ def get_design_memory_refs(pid, prompt, aspect):
         limit=DESIGN_MEMORY_MAX_REFS,
         brand=BRAND_NAME,
         aspect=aspect,
+        variable_contract=DOWNSTREAM_VARIABLE_CONTRACT,
         timeout_sec=DESIGN_MEMORY_TIMEOUT_SEC,
     )
     if refs:

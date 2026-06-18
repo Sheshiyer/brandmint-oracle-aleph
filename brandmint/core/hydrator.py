@@ -28,6 +28,8 @@ from typing import Any, Dict
 
 import yaml
 
+from brandmint.core.downstream_contract import build_downstream_variable_contract
+
 
 # ---------------------------------------------------------------------------
 # Hydration mapping: skill_id -> { config_dot_path: output_dot_path }
@@ -176,6 +178,8 @@ def hydrate_brand_config(config: dict, skill_outputs: Dict[str, dict]) -> dict:
             if value is not None:
                 _set_nested(config, config_path, value)
 
+    if any(skill_id in HYDRATION_MAP for skill_id in skill_outputs):
+        config["downstream_variable_contract"] = build_downstream_variable_contract(config, skill_outputs)
     return config
 
 

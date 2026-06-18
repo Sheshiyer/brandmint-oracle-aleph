@@ -74,7 +74,9 @@ def test_template_queries_design_memory_before_provider_generation() -> None:
 
     assert "from brandmint.core.design_memory import search_design_memory" in src
     assert "DESIGN_MEMORY_URL =" in src
+    assert "DOWNSTREAM_VARIABLE_CONTRACT =" in src
     assert "def get_design_memory_refs(pid, prompt, aspect):" in src
+    assert "variable_contract=DOWNSTREAM_VARIABLE_CONTRACT" in src
     assert "image_urls.extend(get_design_memory_refs(pid, prompt, aspect))" in src
 
 
