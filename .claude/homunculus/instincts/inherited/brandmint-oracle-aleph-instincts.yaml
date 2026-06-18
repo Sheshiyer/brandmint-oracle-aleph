@@ -1,0 +1,358 @@
+# Instincts generated from https://github.com/Sheshiyer/brandmint-oracle-aleph
+# Generated: 2026-06-18T06:55:39.113Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: brandmint-oracle-aleph-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: feat
+
+## Evidence
+
+- 1 commits analyzed
+- Detected conventional commit pattern
+- Examples: feat: seed downstream variable contracts
+
+---
+id: brandmint-oracle-aleph-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Commit Length
+
+## Action
+
+Keep commit messages concise (~40 characters)
+
+## Evidence
+
+- Average commit message length: 40 chars
+- Based on 1 commits
+
+---
+id: brandmint-oracle-aleph-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Naming Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: snake_case
+
+---
+id: brandmint-oracle-aleph-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: brandmint-oracle-aleph-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: brandmint-oracle-aleph-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: brandmint-oracle-aleph-test-naming
+trigger: "when creating a test file"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Test Naming
+
+## Action
+
+Name test files using the pattern: *.test.ts
+
+## Evidence
+
+- File pattern: *.test.ts
+- Consistent across test files
+
+---
+id: brandmint-oracle-aleph-instinct-file-naming
+trigger: "When creating a new Python file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct File Naming
+
+## Action
+
+Name the file using snake_case
+
+## Evidence
+
+- Pattern in namingConventions.files
+
+---
+id: brandmint-oracle-aleph-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Function Naming
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in namingConventions.functions
+
+---
+id: brandmint-oracle-aleph-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in namingConventions.classes
+
+---
+id: brandmint-oracle-aleph-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in namingConventions.constants
+
+---
+id: brandmint-oracle-aleph-instinct-import-style
+trigger: "When importing modules in Python files"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Import Style
+
+## Action
+
+Use relative imports
+
+## Evidence
+
+- Pattern in importStyle
+
+---
+id: brandmint-oracle-aleph-instinct-export-style
+trigger: "When exporting functions or classes"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle
+
+---
+id: brandmint-oracle-aleph-instinct-commit-format
+trigger: "When making a Git commit"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Commit Format
+
+## Action
+
+Use the conventional commit format with 'feat' prefix for new features
+
+## Evidence
+
+- Seen in commit: 'feat: seed downstream variable contracts'
+- Pattern in commits.prefixes
+
+---
+id: brandmint-oracle-aleph-instinct-commit-length
+trigger: "When writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Commit Length
+
+## Action
+
+Keep the commit message around 40 characters on average
+
+## Evidence
+
+- Pattern in commits.averageLength
+
+---
+id: brandmint-oracle-aleph-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Test Location
+
+## Action
+
+Place test files in the separate 'tests' folder
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation
+- Pattern in architecture.folderStructure.commonFolders
+
+---
+id: brandmint-oracle-aleph-instinct-test-pattern
+trigger: "When naming a test file"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Test Pattern
+
+## Action
+
+Use the '*.test.ts' pattern for test files
+
+## Evidence
+
+- Pattern in testing.filePattern
+
+---
+id: brandmint-oracle-aleph-instinct-test-type
+trigger: "When writing tests"
+confidence: 0.6
+domain: testing
+source: repo-analysis
+source_repo: Sheshiyer/brandmint-oracle-aleph
+---
+
+# Brandmint Oracle Aleph Instinct Test Type
+
+## Action
+
+Write unit tests
+
+## Evidence
+
+- Pattern in testing.testTypes
+
