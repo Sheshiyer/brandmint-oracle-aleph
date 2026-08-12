@@ -3,7 +3,8 @@ Agent Scaffolder - Generates context-specific prompts for skill agents
 Phase 3 implementation
 """
 
-from typing import Dict, Any, List
+import json
+from typing import Dict, Any, List, Optional
 from ..models.skill import UnifiedSkill
 from ..models.scenario import ExecutionContext
 
@@ -22,6 +23,7 @@ class AgentScaffolder:
         context: ExecutionContext,
         upstream_data: Dict[str, Any] = None,
         scenario_name: str = "execution",
+        brand_config: Optional[Dict[str, Any]] = None,
     ) -> str:
         """
         Generate a fully scaffolded prompt for running a skill
@@ -39,6 +41,7 @@ class AgentScaffolder:
         
         # Build sections
         context_section = self._build_context_section(context, scenario_name)
+        brand_section = self._build_brand_section(brand_config)
         platform_section = self._build_platform_section(context)
         input_section = self._build_input_section(skill, upstream_data)
         task_section = self._build_task_section(skill)
@@ -50,6 +53,7 @@ class AgentScaffolder:
             skill_name=skill.name,
             scenario_name=scenario_name,
             context_section=context_section,
+            brand_section=brand_section,
             platform_section=platform_section,
             input_section=input_section,
             task_section=task_section,
@@ -58,6 +62,26 @@ class AgentScaffolder:
         )
         
         return prompt
+
+    def _build_brand_section(self, brand_config: Optional[Dict[str, Any]]) -> str:
+        """Build the brand source-of-truth section for skill prompts."""
+        if not brand_config:
+            return ""
+
+        payload = dict(brand_config)
+        payload.pop("_brandmint", None)
+        rendered = json.dumps(payload, indent=2, ensure_ascii=True, default=str)
+        max_chars = 20000
+        if len(rendered) > max_chars:
+            rendered = rendered[:max_chars].rstrip() + "\n... [brand config truncated]"
+
+        return f"""
+BRAND CONFIG SOURCE OF TRUTH:
+Use this approved brand config as the factual source for this skill. Do not invent facts, claims, markets, pricing, products, or launch assumptions that conflict with it.
+
+```json
+{rendered}
+```"""
     
     def _build_context_section(self, context: ExecutionContext, scenario_name: str) -> str:
         """Build the CONTEXT CONSTRAINTS section"""
@@ -197,6 +221,7 @@ BUDGET OPTIMIZATION:
         return """You are executing the {skill_name} skill as part of a {scenario_name} campaign.
 
 {context_section}
+{brand_section}
 {platform_section}
 {input_section}
 {task_section}

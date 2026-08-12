@@ -3,7 +3,7 @@ Scenario models for context-aware execution plans
 """
 
 from enum import Enum
-from typing import List, Dict, Any, Optional
+from typing import List
 from pydantic import BaseModel, Field
 
 from .product import BudgetTier, LaunchChannel, MaturityStage
@@ -17,6 +17,7 @@ class ScenarioType(str, Enum):
     BOOTSTRAPPED_DTC = "bootstrapped-dtc"
     ENTERPRISE_GTM = "enterprise-gtm"
     CUSTOM_HYBRID = "custom-hybrid"
+    KLEAR_KARMA_COMBINED = "klear-karma-combined"
 
 
 class ExecutionContext(BaseModel):
