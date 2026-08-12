@@ -3,13 +3,19 @@ Scenario Recommender - Generates context-aware execution scenarios
 Phase 1 implementation
 """
 
-from typing import List
-from ..models.product import ProductData, LaunchContext, BudgetTier, LaunchChannel, MaturityStage
+
+from ..models.product import (
+    BudgetTier,
+    LaunchChannel,
+    LaunchContext,
+    MaturityStage,
+    ProductData,
+)
 from ..models.scenario import (
-    Scenario,
-    ScenarioType,
     ExecutionContext,
+    Scenario,
     ScenarioMatch,
+    ScenarioType,
 )
 
 
@@ -26,7 +32,7 @@ class ScenarioRecommender:
         product: ProductData,
         context: LaunchContext,
         limit: int = 4,
-    ) -> List[ScenarioMatch]:
+    ) -> list[ScenarioMatch]:
         """
         Recommend top scenarios for the given context
         
@@ -35,6 +41,9 @@ class ScenarioRecommender:
         matches = []
         
         for scenario in self.scenarios:
+            if not scenario.is_applicable_to_brand(product.brand.name):
+                continue
+
             score = scenario.matches_context(
                 context.budget_tier,
                 context.channel,
@@ -67,7 +76,7 @@ class ScenarioRecommender:
         self,
         scenario: Scenario,
         context: LaunchContext,
-    ) -> tuple[str, List[str], List[str]]:
+    ) -> tuple[str, list[str], list[str]]:
         """
         Generate reasoning for why a scenario matches
         
@@ -101,9 +110,11 @@ class ScenarioRecommender:
         # Maturity analysis
         if context.maturity_stage in scenario.best_for_maturity:
             pros.append(f"Designed for {context.maturity_stage.value} stage")
-        elif scenario.best_for_maturity:
-            if context.maturity_stage == MaturityStage.PRE_LAUNCH:
-                cons.append("Assumes existing brand assets")
+        elif (
+            scenario.best_for_maturity
+            and context.maturity_stage == MaturityStage.PRE_LAUNCH
+        ):
+            cons.append("Assumes existing brand assets")
         
         # Timeline analysis
         if context.timeline_urgency.value == "rushed" and scenario.estimated_timeline_days.startswith("2-3"):
@@ -118,7 +129,7 @@ class ScenarioRecommender:
         
         return reasoning, pros, cons
     
-    def _build_scenario_catalog(self) -> List[Scenario]:
+    def _build_scenario_catalog(self) -> list[Scenario]:
         """
         Build the catalog of available scenarios
         """
@@ -493,6 +504,7 @@ class ScenarioRecommender:
                 MaturityStage.LAUNCH_READY,
                 MaturityStage.GROWTH,
             ],
+            eligible_brand_names=["Klear Karma"],
             skill_ids=[
                 "niche-validator",
                 "buyer-persona",

@@ -4,9 +4,23 @@ Phase 3 implementation
 """
 
 import json
-from typing import Dict, Any, List, Optional
-from ..models.skill import UnifiedSkill
+from typing import Any
+
 from ..models.scenario import ExecutionContext
+from ..models.skill import UnifiedSkill
+
+
+def _redact_brandmint_metadata(value: Any) -> Any:
+    """Return a prompt-safe copy with private Brandmint metadata removed."""
+    if isinstance(value, dict):
+        return {
+            key: _redact_brandmint_metadata(item)
+            for key, item in value.items()
+            if key != "_brandmint"
+        }
+    if isinstance(value, list):
+        return [_redact_brandmint_metadata(item) for item in value]
+    return value
 
 
 class AgentScaffolder:
@@ -21,9 +35,9 @@ class AgentScaffolder:
         self,
         skill: UnifiedSkill,
         context: ExecutionContext,
-        upstream_data: Dict[str, Any] = None,
+        upstream_data: dict[str, Any] | None = None,
         scenario_name: str = "execution",
-        brand_config: Optional[Dict[str, Any]] = None,
+        brand_config: dict[str, Any] | None = None,
     ) -> str:
         """
         Generate a fully scaffolded prompt for running a skill
@@ -63,13 +77,12 @@ class AgentScaffolder:
         
         return prompt
 
-    def _build_brand_section(self, brand_config: Optional[Dict[str, Any]]) -> str:
+    def _build_brand_section(self, brand_config: dict[str, Any] | None) -> str:
         """Build the brand source-of-truth section for skill prompts."""
         if not brand_config:
             return ""
 
-        payload = dict(brand_config)
-        payload.pop("_brandmint", None)
+        payload = _redact_brandmint_metadata(brand_config)
         rendered = json.dumps(payload, indent=2, ensure_ascii=True, default=str)
         max_chars = 20000
         if len(rendered) > max_chars:
@@ -104,7 +117,7 @@ Use this approved brand config as the factual source for this skill. Do not inve
 PLATFORM CONSTRAINTS:
 {constraints_list}"""
     
-    def _build_input_section(self, skill: UnifiedSkill, upstream_data: Dict[str, Any]) -> str:
+    def _build_input_section(self, skill: UnifiedSkill, upstream_data: dict[str, Any]) -> str:
         """Build the INPUT DATA section"""
         if not upstream_data:
             return """
@@ -174,7 +187,7 @@ BUDGET OPTIMIZATION:
         }
         return formats.get(output_format, formats["standard"])
     
-    def _get_validation_note(self, required_keys: List[str]) -> str:
+    def _get_validation_note(self, required_keys: list[str]) -> str:
         """Get validation note"""
         if not required_keys:
             return "Include structured JSON for machine consumption."

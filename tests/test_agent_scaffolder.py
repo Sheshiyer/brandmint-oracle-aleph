@@ -48,3 +48,41 @@ def test_prompt_omits_brand_section_when_config_missing() -> None:
     )
 
     assert "BRAND CONFIG SOURCE OF TRUTH" not in prompt
+
+
+def test_prompt_recursively_redacts_brandmint_metadata() -> None:
+    brand_config = {
+        "brand": {
+            "name": "Klear Karma",
+            "details": {
+                "safe": "keep nested value",
+                "_brandmint": {"approval": "nested dictionary metadata"},
+            },
+        },
+        "products": [
+            {
+                "name": "Mirror",
+                "_brandmint": {"approval": "list item metadata"},
+            },
+            [
+                {
+                    "safe": "keep deeply nested value",
+                    "_brandmint": {"approval": "deep list metadata"},
+                }
+            ],
+        ],
+    }
+
+    prompt = AgentScaffolder().generate_context_prompt(
+        skill=_skill(),
+        context=_context(),
+        brand_config=brand_config,
+    )
+
+    assert "_brandmint" not in prompt
+    assert "dictionary metadata" not in prompt
+    assert "list item metadata" not in prompt
+    assert "deep list metadata" not in prompt
+    assert "keep nested value" in prompt
+    assert "keep deeply nested value" in prompt
+    assert "_brandmint" in brand_config["products"][0]
