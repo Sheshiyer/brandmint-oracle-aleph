@@ -3,13 +3,19 @@ Scenario Recommender - Generates context-aware execution scenarios
 Phase 1 implementation
 """
 
-from typing import List, Dict, Any
-from ..models.product import ProductData, LaunchContext, BudgetTier, LaunchChannel, MaturityStage
+
+from ..models.product import (
+    BudgetTier,
+    LaunchChannel,
+    LaunchContext,
+    MaturityStage,
+    ProductData,
+)
 from ..models.scenario import (
-    Scenario,
-    ScenarioType,
     ExecutionContext,
+    Scenario,
     ScenarioMatch,
+    ScenarioType,
 )
 
 
@@ -26,7 +32,7 @@ class ScenarioRecommender:
         product: ProductData,
         context: LaunchContext,
         limit: int = 4,
-    ) -> List[ScenarioMatch]:
+    ) -> list[ScenarioMatch]:
         """
         Recommend top scenarios for the given context
         
@@ -35,6 +41,9 @@ class ScenarioRecommender:
         matches = []
         
         for scenario in self.scenarios:
+            if not scenario.is_applicable_to_brand(product.brand.name):
+                continue
+
             score = scenario.matches_context(
                 context.budget_tier,
                 context.channel,
@@ -67,7 +76,7 @@ class ScenarioRecommender:
         self,
         scenario: Scenario,
         context: LaunchContext,
-    ) -> tuple[str, List[str], List[str]]:
+    ) -> tuple[str, list[str], list[str]]:
         """
         Generate reasoning for why a scenario matches
         
@@ -101,9 +110,11 @@ class ScenarioRecommender:
         # Maturity analysis
         if context.maturity_stage in scenario.best_for_maturity:
             pros.append(f"Designed for {context.maturity_stage.value} stage")
-        elif scenario.best_for_maturity:
-            if context.maturity_stage == MaturityStage.PRE_LAUNCH:
-                cons.append("Assumes existing brand assets")
+        elif (
+            scenario.best_for_maturity
+            and context.maturity_stage == MaturityStage.PRE_LAUNCH
+        ):
+            cons.append("Assumes existing brand assets")
         
         # Timeline analysis
         if context.timeline_urgency.value == "rushed" and scenario.estimated_timeline_days.startswith("2-3"):
@@ -118,7 +129,7 @@ class ScenarioRecommender:
         
         return reasoning, pros, cons
     
-    def _build_scenario_catalog(self) -> List[Scenario]:
+    def _build_scenario_catalog(self) -> list[Scenario]:
         """
         Build the catalog of available scenarios
         """
@@ -129,6 +140,7 @@ class ScenarioRecommender:
             self._build_bootstrapped_dtc(),
             self._build_enterprise_gtm(),
             self._build_custom_hybrid(),
+            self._build_klear_karma_combined(),
         ]
     
     def _build_brand_genesis(self) -> Scenario:
@@ -470,4 +482,82 @@ class ScenarioRecommender:
             deliverables=["Varies based on selection"],
             skip_deliverables=[],
             tags=["custom", "flexible", "hybrid"],
+        )
+
+    def _build_klear_karma_combined(self) -> Scenario:
+        """Internal-first Klear Karma strategy and wiki scenario."""
+        return Scenario(
+            id=ScenarioType.KLEAR_KARMA_COMBINED,
+            name="🔮 Klear Karma Combined",
+            emoji="🔮",
+            description=(
+                "Internal founder/investor strategy plus filtered public docs for the "
+                "Klear Karma Mirror app, token wallet, practitioner trust layer, and "
+                "protocol-reviewed commerce."
+            ),
+            best_for_budget=BudgetTier.STANDARD,
+            best_for_channels=[
+                LaunchChannel.ORGANIC,
+                LaunchChannel.SAAS,
+            ],
+            best_for_maturity=[
+                MaturityStage.LAUNCH_READY,
+                MaturityStage.GROWTH,
+            ],
+            eligible_brand_names=["Klear Karma"],
+            skill_ids=[
+                "niche-validator",
+                "buyer-persona",
+                "competitor-analysis",
+                "detailed-product-description",
+                "product-positioning-summary",
+                "mds-messaging-direction-summary",
+                "voice-and-tone",
+                "visual-identity-core",
+                "campaign-page-copy",
+                "campaign-video-script",
+                "welcome-email-sequence",
+                "pre-launch-email-sequence",
+                "launch-email-sequence",
+                "pre-launch-ads",
+                "live-campaign-ads",
+                "press-release-copy",
+                "social-content-engine",
+                "short-form-hook-generator",
+                "influencer-outreach-pro",
+                "review-response-strategist",
+            ],
+            execution_context=ExecutionContext(
+                budget_tier=BudgetTier.STANDARD,
+                tone="reflective, consent-safe, founder-led, investor-literate",
+                output_format="maximum",
+                depth_level="exhaustive",
+                quality_bar="premium",
+                token_limit_per_skill=10000,
+                platform_constraints=[
+                    "internal_strategy_first",
+                    "no_medical_or_deterministic_claims",
+                    "no_crowdfunding_or_physical_product_framing",
+                    "reuse_existing_app_assets_before_generation",
+                    "notebooklm_sources_require_review_before_publish",
+                ],
+                prioritize="quality",
+            ),
+            estimated_cost_usd=12000,
+            estimated_tokens=120000,
+            estimated_timeline_days="2-4 days",
+            deliverables=[
+                "Founder/investor strategy source pack",
+                "Product, audience, market, and messaging wiki pages",
+                "Beta-safe campaign, email, social, and ad copy",
+                "Reused app-native visual asset library",
+                "Review-ready Brand Docs/Astro wiki scaffold",
+            ],
+            skip_deliverables=[
+                "Crowdfunding page structure",
+                "Physical product or packaging campaign assets",
+                "NotebookLM publishing before source review",
+                "Medical, diagnostic, fate, or guaranteed-outcome claims",
+            ],
+            tags=["klear-karma", "internal-strategy", "app", "marketplace", "wiki"],
         )

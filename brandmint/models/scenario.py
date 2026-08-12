@@ -3,7 +3,7 @@ Scenario models for context-aware execution plans
 """
 
 from enum import Enum
-from typing import List, Dict, Any, Optional
+
 from pydantic import BaseModel, Field
 
 from .product import BudgetTier, LaunchChannel, MaturityStage
@@ -17,6 +17,7 @@ class ScenarioType(str, Enum):
     BOOTSTRAPPED_DTC = "bootstrapped-dtc"
     ENTERPRISE_GTM = "enterprise-gtm"
     CUSTOM_HYBRID = "custom-hybrid"
+    KLEAR_KARMA_COMBINED = "klear-karma-combined"
 
 
 class ExecutionContext(BaseModel):
@@ -29,7 +30,7 @@ class ExecutionContext(BaseModel):
     token_limit_per_skill: int = Field(default=5000)
     
     # Platform-specific
-    platform_constraints: List[str] = Field(default_factory=list)
+    platform_constraints: list[str] = Field(default_factory=list)
     
     # Optimization flags
     prioritize: str = Field(default="balanced", description="speed|quality|cost")
@@ -42,8 +43,8 @@ class ScenarioMatch(BaseModel):
     scenario_id: ScenarioType
     match_score: float = Field(..., ge=0.0, le=1.0, description="0-1 confidence")
     reasoning: str = Field(..., description="Why this scenario matches")
-    pros: List[str] = Field(default_factory=list)
-    cons: List[str] = Field(default_factory=list)
+    pros: list[str] = Field(default_factory=list)
+    cons: list[str] = Field(default_factory=list)
 
 
 class Scenario(BaseModel):
@@ -57,11 +58,15 @@ class Scenario(BaseModel):
     
     # Suitability
     best_for_budget: BudgetTier
-    best_for_channels: List[LaunchChannel] = Field(default_factory=list)
-    best_for_maturity: List[MaturityStage] = Field(default_factory=list)
+    best_for_channels: list[LaunchChannel] = Field(default_factory=list)
+    best_for_maturity: list[MaturityStage] = Field(default_factory=list)
+    eligible_brand_names: list[str] = Field(
+        default_factory=list,
+        description="Brand names this scenario is eligible for; empty means unrestricted",
+    )
     
     # Skills to execute
-    skill_ids: List[str] = Field(..., description="Ordered skill IDs")
+    skill_ids: list[str] = Field(..., description="Ordered skill IDs")
     
     # Execution context
     execution_context: ExecutionContext
@@ -72,14 +77,25 @@ class Scenario(BaseModel):
     estimated_timeline_days: str = Field(..., description="2-3 days, etc")
     
     # Deliverables
-    deliverables: List[str] = Field(default_factory=list, description="What you'll get")
-    skip_deliverables: List[str] = Field(default_factory=list, description="What's excluded")
+    deliverables: list[str] = Field(default_factory=list, description="What you'll get")
+    skip_deliverables: list[str] = Field(default_factory=list, description="What's excluded")
     
     # Metadata
-    tags: List[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list)
     
     def __repr__(self) -> str:
         return f"Scenario({self.id}): {self.name} - {len(self.skill_ids)} skills, ${self.estimated_cost_usd}"
+
+    def is_applicable_to_brand(self, brand_name: str) -> bool:
+        """Return whether this scenario is eligible for the structured brand identity."""
+        if not self.eligible_brand_names:
+            return True
+
+        normalized_brand_name = brand_name.strip().casefold()
+        return normalized_brand_name in {
+            eligible_name.strip().casefold()
+            for eligible_name in self.eligible_brand_names
+        }
     
     def matches_context(
         self,

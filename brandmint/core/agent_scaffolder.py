@@ -3,9 +3,24 @@ Agent Scaffolder - Generates context-specific prompts for skill agents
 Phase 3 implementation
 """
 
-from typing import Dict, Any, List
-from ..models.skill import UnifiedSkill
+import json
+from typing import Any
+
 from ..models.scenario import ExecutionContext
+from ..models.skill import UnifiedSkill
+
+
+def _redact_brandmint_metadata(value: Any) -> Any:
+    """Return a prompt-safe copy with private Brandmint metadata removed."""
+    if isinstance(value, dict):
+        return {
+            key: _redact_brandmint_metadata(item)
+            for key, item in value.items()
+            if key != "_brandmint"
+        }
+    if isinstance(value, list):
+        return [_redact_brandmint_metadata(item) for item in value]
+    return value
 
 
 class AgentScaffolder:
@@ -20,8 +35,9 @@ class AgentScaffolder:
         self,
         skill: UnifiedSkill,
         context: ExecutionContext,
-        upstream_data: Dict[str, Any] = None,
+        upstream_data: dict[str, Any] | None = None,
         scenario_name: str = "execution",
+        brand_config: dict[str, Any] | None = None,
     ) -> str:
         """
         Generate a fully scaffolded prompt for running a skill
@@ -39,6 +55,7 @@ class AgentScaffolder:
         
         # Build sections
         context_section = self._build_context_section(context, scenario_name)
+        brand_section = self._build_brand_section(brand_config)
         platform_section = self._build_platform_section(context)
         input_section = self._build_input_section(skill, upstream_data)
         task_section = self._build_task_section(skill)
@@ -50,6 +67,7 @@ class AgentScaffolder:
             skill_name=skill.name,
             scenario_name=scenario_name,
             context_section=context_section,
+            brand_section=brand_section,
             platform_section=platform_section,
             input_section=input_section,
             task_section=task_section,
@@ -58,6 +76,25 @@ class AgentScaffolder:
         )
         
         return prompt
+
+    def _build_brand_section(self, brand_config: dict[str, Any] | None) -> str:
+        """Build the brand source-of-truth section for skill prompts."""
+        if not brand_config:
+            return ""
+
+        payload = _redact_brandmint_metadata(brand_config)
+        rendered = json.dumps(payload, indent=2, ensure_ascii=True, default=str)
+        max_chars = 20000
+        if len(rendered) > max_chars:
+            rendered = rendered[:max_chars].rstrip() + "\n... [brand config truncated]"
+
+        return f"""
+BRAND CONFIG SOURCE OF TRUTH:
+Use this approved brand config as the factual source for this skill. Do not invent facts, claims, markets, pricing, products, or launch assumptions that conflict with it.
+
+```json
+{rendered}
+```"""
     
     def _build_context_section(self, context: ExecutionContext, scenario_name: str) -> str:
         """Build the CONTEXT CONSTRAINTS section"""
@@ -80,7 +117,7 @@ class AgentScaffolder:
 PLATFORM CONSTRAINTS:
 {constraints_list}"""
     
-    def _build_input_section(self, skill: UnifiedSkill, upstream_data: Dict[str, Any]) -> str:
+    def _build_input_section(self, skill: UnifiedSkill, upstream_data: dict[str, Any]) -> str:
         """Build the INPUT DATA section"""
         if not upstream_data:
             return """
@@ -150,7 +187,7 @@ BUDGET OPTIMIZATION:
         }
         return formats.get(output_format, formats["standard"])
     
-    def _get_validation_note(self, required_keys: List[str]) -> str:
+    def _get_validation_note(self, required_keys: list[str]) -> str:
         """Get validation note"""
         if not required_keys:
             return "Include structured JSON for machine consumption."
@@ -197,6 +234,7 @@ BUDGET OPTIMIZATION:
         return """You are executing the {skill_name} skill as part of a {scenario_name} campaign.
 
 {context_section}
+{brand_section}
 {platform_section}
 {input_section}
 {task_section}
